@@ -1,16 +1,100 @@
-# React + Vite
+# 🔒 CyberLock Tools
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A fast, privacy-first toolkit for encoding, decoding, hashing, and automation utilities. All processing happens in your browser—no data is sent to any server.
 
-Currently, two official plugins are available:
+## ✨ Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **🔄 ROT Cipher** - Encode and decode ROT13/ROT47 with adjustable shift (0-25)
+- **📝 Base64** - Encode and decode Base64 strings with error handling
+- **🔗 URL Encoder** - Coming soon
+- **#️⃣ Hash Generator** - Coming soon
+- **⏰ Cron Parser** - Coming soon
 
-## React Compiler
+## 🚀 Quick Start
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### Prerequisites
+- Node.js 16+ 
+- npm or yarn
 
-## Expanding the ESLint configuration
+### Installation
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+```bash
+# Clone the repository
+git clone https://github.com/R0uty/CyberLockTools.git
+cd CyberLockTools
+
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+```
+
+The app will be available at `http://localhost:5173`
+
+### Build for Production
+
+```bash
+npm run build
+npm run preview
+```
+
+## 📦 Tech Stack
+
+- **Frontend Framework:** React 18
+- **Build Tool:** Vite 8
+- **Styling:** CSS3 with animations
+- **Package Manager:** npm
+
+## 🔒 Privacy
+
+All processing happens entirely in your browser. No data is transmitted to any server. Your sensitive information stays on your device.
+
+## 📁 Project Structure
+
+```
+src/
+├── components/
+│   ├── Header.jsx      # Navigation header
+│   └── ToolCard.jsx    # Tool card component
+├── pages/
+│   ├── ROT.jsx         # ROT cipher tool
+│   └── Base64.jsx      # Base64 encoder/decoder
+├── App.jsx             # Main app component with routing
+├── App.css             # Global styles and animations
+└── main.jsx            # React entry point
+```
+
+## 🎨 Design
+
+- Modern gradient theme (purple/blue)
+- Smooth animations and transitions
+- Fully responsive design
+- Accessible UI components
+- Professional error handling
+
+## 🛠️ Available Scripts
+
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run preview` - Preview production build
+- `npm run lint` - Run ESLint
+
+## 🤝 Contributing
+
+Contributions are welcome! Feel free to submit issues and pull requests.
+
+## 📄 License
+
+MIT
+
+## 🎯 Roadmap
+
+- [ ] URL Encoder tool
+- [ ] Hash Generator (MD5, SHA1, SHA256, etc.)
+- [ ] Cron Parser
+- [ ] JWT Debugger
+- [ ] JSON Formatter
+- [ ] Dark mode toggle
+- [ ] Keyboard shortcuts
+- [ ] Settings/preferences panel
