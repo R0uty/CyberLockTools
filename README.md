@@ -36,6 +36,27 @@ A comprehensive, privacy-first suite of **free online tools** for developers, se
 - Examples: "0 3 * * *" → "At 03:00 AM"
 - Essential for task scheduling and automation
 
+### 🔐 JWT Debugger & Decoder
+- Decode JWT tokens to view header, payload, and signature
+- Understand JWT structure and content
+- Validate JWT format with helpful error messages
+- Perfect for debugging authentication tokens
+- Copy each JWT component to clipboard
+
+### 📋 JSON Formatter & Validator
+- Format raw JSON with 2-space indentation
+- Validate JSON structure and show errors
+- Display JSON statistics (type, size, depth, key count)
+- Copy formatted JSON to clipboard
+- Example JSON tokens included for testing
+
+### 📄 YAML Formatter & Converter
+- Format YAML files with proper indentation
+- Convert YAML to JSON format
+- Display YAML statistics and structure info
+- Perfect for working with configuration files
+- Example YAML configurations for testing
+
 ## 🎯 Use Cases
 
 **For Developers:**
@@ -43,6 +64,9 @@ A comprehensive, privacy-first suite of **free online tools** for developers, se
 - Base64 encoding for data transmission
 - Hash generation for checksums and verification
 - Cron expression builder for scheduled tasks
+- JWT token debugging for authentication flows
+- JSON formatting for API responses
+- YAML formatting for configuration files
 
 **For Security Professionals:**
 - Educational cryptography demonstrations
@@ -108,6 +132,7 @@ The optimized production build will be in the `dist/` directory.
 - **Styling:** CSS3 with gradient animations
 - **Cryptography:** crypto-js (MD5, SHA algorithms)
 - **Cron Parsing:** cronstrue (human-readable explanations)
+- **YAML Processing:** js-yaml (YAML parsing and dumping)
 - **Package Manager:** npm
 - **Linting:** ESLint 9
 
@@ -126,8 +151,15 @@ src/
 │   ├── URLEncoder.jsx      # URL encoder/decoder
 │   ├── HashGenerator.jsx   # Hash generator with multiple algorithms
 │   ├── CronParser.jsx      # Cron expression parser & builder
+│   ├── JWTDebugger.jsx     # JWT token decoder
+│   ├── JSONFormatter.jsx   # JSON formatter and validator
+│   ├── YAMLFormatter.jsx   # YAML formatter and converter
 │   ├── About.jsx           # About page with mission and tech stack
 │   └── Contact.jsx         # Contact form
+├── utils/
+│   ├── jwtDecoder.js       # JWT decoding utility
+│   ├── jsonFormatter.js    # JSON formatting and validation
+│   └── yamlFormatter.js    # YAML formatting and conversion
 ├── App.jsx                 # Main app component with routing
 ├── App.css                 # Global styles and animations
 └── main.jsx                # React entry point
@@ -192,6 +224,9 @@ All pages are optimized for search engines:
 - **URL Tool:** Targets "online url tool", "url encoder"
 - **Hash Tool:** Targets "hash generator", "sha256", "md5"
 - **Cron Tool:** Targets "cron parser", "cron expression"
+- **JWT Tool:** Targets "jwt debugger", "jwt decoder"
+- **JSON Tool:** Targets "json formatter", "json validator"
+- **YAML Tool:** Targets "yaml formatter", "yaml converter"
 
 Each page includes:
 - Unique, descriptive title (50-60 chars)
@@ -223,6 +258,9 @@ MIT License - see the LICENSE file for details
 - ✅ URL Encoder/Decoder
 - ✅ Hash Generator (MD5, SHA1, SHA256, SHA384, SHA512)
 - ✅ Cron Parser & Generator
+- ✅ JWT Debugger & Decoder
+- ✅ JSON Formatter & Validator
+- ✅ YAML Formatter & Converter
 - ✅ About Page
 - ✅ Contact Page
 - ✅ SEO Optimization
@@ -230,9 +268,6 @@ MIT License - see the LICENSE file for details
 - ✅ Responsive Design
 
 ### Planned Features 🔜
-- [ ] JWT Debugger / Validator
-- [ ] JSON Formatter & Validator
-- [ ] YAML Formatter
 - [ ] Markdown Preview
 - [ ] Dark Mode Toggle
 - [ ] Keyboard Shortcuts
@@ -281,6 +316,40 @@ Expression: "0 3 * * *"
 Meaning: "At 03:00 AM every day"
 ```
 
+### JWT Debugger Example
+```
+Input: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIn0.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ
+
+Output:
+Header: {"alg": "HS256", "typ": "JWT"}
+Payload: {"sub": "1234567890", "name": "John Doe"}
+Signature: TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ
+```
+
+### JSON Formatter Example
+```
+Input: {"name":"John","age":30,"city":"New York"}
+
+Output:
+{
+  "name": "John",
+  "age": 30,
+  "city": "New York"
+}
+```
+
+### YAML Formatter Example
+```
+Input: app: MyApp
+version: 1.0
+debug: true
+
+Output:
+app: MyApp
+version: 1.0
+debug: true
+```
+
 ## 🐛 Bug Reports & Feature Requests
 
 Found a bug or have a feature suggestion? 
@@ -291,11 +360,12 @@ Found a bug or have a feature suggestion?
 
 ## 📈 Performance
 
-- **Build Size:** ~320 KB JavaScript + 13.6 KB CSS
-- **Gzipped:** ~103 KB total
+- **Build Size:** ~382 KB JavaScript + 13.6 KB CSS
+- **Gzipped:** ~119 KB total
 - **Load Time:** < 2 seconds on modern connections
 - **Runtime:** No external server calls, instant processing
 - **Caching:** All dependencies cached in dist/
+- **8 Tools:** All integrated in a single optimized bundle
 
 ## 🔐 Security Considerations
 
