@@ -8,6 +8,7 @@ import URLEncoder from './pages/URLEncoder'
 import HashGenerator from './pages/HashGenerator'
 import CronParser from './pages/CronParser'
 import JWTDebugger from './pages/JWTDebugger'
+import JSONFormatter from './pages/JSONFormatter'
 import About from './pages/About'
 import Contact from './pages/Contact'
 import './App.css'
@@ -69,6 +70,11 @@ export default function App() {
       icon: '🔐',
       title: 'JWT Debugger',
       description: 'Decode and debug JWT tokens to see their content.'
+    },
+    {
+      icon: '📋',
+      title: 'JSON Formatter',
+      description: 'Format and validate JSON with proper indentation.'
     }
   ]
 
@@ -133,6 +139,17 @@ export default function App() {
         <Header onLogoClick={handleLogoClick} currentPage={currentPage} onPageChange={handlePageChange} />
         <div className="main-content">
           <JWTDebugger />
+        </div>
+      </div>
+    )
+  }
+
+  if (currentTool === 'JSON Formatter') {
+    return (
+      <div className="app">
+        <Header onLogoClick={handleLogoClick} currentPage={currentPage} onPageChange={handlePageChange} />
+        <div className="main-content">
+          <JSONFormatter />
         </div>
       </div>
     )
@@ -241,6 +258,11 @@ export default function App() {
           <div className="tool-detail">
             <h3>🔐 <a href="#jwt">JWT Debugger and Decoder</a></h3>
             <p>Paste a JWT token and instantly see the decoded header, payload, and signature. Perfect for debugging and understanding JWT tokens during development. All decoding happens locally in your browser - no tokens are sent to any server.</p>
+          </div>
+
+          <div className="tool-detail">
+            <h3>📋 <a href="#json">JSON Formatter and Validator</a></h3>
+            <p>Paste raw JSON and format it with proper indentation for readability. The formatter also validates your JSON structure and provides helpful error messages. All processing happens locally - your data never leaves your browser.</p>
           </div>
         </section>
 
