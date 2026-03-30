@@ -7,6 +7,7 @@ import Base64 from './pages/Base64'
 import URLEncoder from './pages/URLEncoder'
 import HashGenerator from './pages/HashGenerator'
 import CronParser from './pages/CronParser'
+import JWTDebugger from './pages/JWTDebugger'
 import About from './pages/About'
 import Contact from './pages/Contact'
 import './App.css'
@@ -63,6 +64,11 @@ export default function App() {
       icon: '⏰',
       title: 'Cron Parser',
       description: 'Parse and understand cron expressions easily.'
+    },
+    {
+      icon: '🔐',
+      title: 'JWT Debugger',
+      description: 'Decode and debug JWT tokens to see their content.'
     }
   ]
 
@@ -116,6 +122,17 @@ export default function App() {
         <Header onLogoClick={handleLogoClick} currentPage={currentPage} onPageChange={handlePageChange} />
         <div className="main-content">
           <CronParser />
+        </div>
+      </div>
+    )
+  }
+
+  if (currentTool === 'JWT Debugger') {
+    return (
+      <div className="app">
+        <Header onLogoClick={handleLogoClick} currentPage={currentPage} onPageChange={handlePageChange} />
+        <div className="main-content">
+          <JWTDebugger />
         </div>
       </div>
     )
@@ -219,6 +236,11 @@ export default function App() {
           <div className="tool-detail">
             <h3>⏰ <a href="#cron">Cron Expression Parser and Generator</a></h3>
             <p>Create cron expressions with an intuitive dropdown interface or parse existing cron syntax into human-readable explanations. Essential for developers working with task schedulers, server automation, and cronjobs. Understand complex scheduling expressions with ease.</p>
+          </div>
+
+          <div className="tool-detail">
+            <h3>🔐 <a href="#jwt">JWT Debugger and Decoder</a></h3>
+            <p>Paste a JWT token and instantly see the decoded header, payload, and signature. Perfect for debugging and understanding JWT tokens during development. All decoding happens locally in your browser - no tokens are sent to any server.</p>
           </div>
         </section>
 
