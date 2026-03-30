@@ -1,6 +1,12 @@
 import { useState } from 'react'
+import { useSEO } from '../hooks/useSEO'
 
 export default function Base64() {
+  useSEO({
+    title: 'Online Base64 Encoder and Decoder Tool',
+    description: 'Free online Base64 encoder and decoder. Convert text to Base64 and decode Base64 strings back to text. Useful for data encoding, email attachments, and web transmission.',
+    keywords: 'online base64 tool, base64 encoder, base64 decoder, base64 converter, text encoder'
+  })
   const [input, setInput] = useState('')
   const [output, setOutput] = useState('')
   const [error, setError] = useState('')
@@ -59,8 +65,8 @@ export default function Base64() {
         🔒 All processing happens in your browser • No data is sent to server
       </div>
       <div className="tool-header">
-        <h2>📝 Base64 Encoder/Decoder</h2>
-        <p>Encode text to Base64 or decode Base64 strings back to text</p>
+        <h1>📝 Online Base64 Encoder and Decoder Tool</h1>
+        <p>Easily encode text to Base64 or decode Base64 strings back to plain text. Base64 is a binary-to-text encoding scheme that represents binary data in ASCII format, commonly used for email attachments, data transmission, and web APIs.</p>
       </div>
 
       <div className="tool-container">

@@ -1,6 +1,12 @@
 import { useState } from 'react'
+import { useSEO } from '../hooks/useSEO'
 
 export default function URLEncoder() {
+  useSEO({
+    title: 'Online URL Encoder and Decoder Tool',
+    description: 'Free online URL encoder and decoder. Convert text to URL-safe format and decode URL-encoded strings. Essential for web developers working with URLs, query parameters, and URI encoding.',
+    keywords: 'online url tool, url encoder, url decoder, uri encoder, percent encoding, url converter'
+  })
   const [input, setInput] = useState('')
   const [output, setOutput] = useState('')
   const [error, setError] = useState('')
@@ -59,8 +65,8 @@ export default function URLEncoder() {
         🔒 All processing happens in your browser • No data is sent to server
       </div>
       <div className="tool-header">
-        <h2>🔗 URL Encoder/Decoder</h2>
-        <p>Encode text to URL-safe format or decode URL-encoded strings back to text</p>
+        <h1>🔗 Online URL Encoder and Decoder Tool</h1>
+        <p>Instantly encode text to URL-safe format or decode URL-encoded strings back to readable text. URL encoding (percent encoding) is essential for safe web transmission of special characters in URLs, query parameters, and form data.</p>
       </div>
 
       <div className="tool-container">

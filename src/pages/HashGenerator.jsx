@@ -1,7 +1,13 @@
 import { useState } from 'react'
 import CryptoJS from 'crypto-js'
+import { useSEO } from '../hooks/useSEO'
 
 export default function HashGenerator() {
+  useSEO({
+    title: 'Online Hash Generator Tool - MD5, SHA256, SHA512',
+    description: 'Free online hash generator supporting MD5, SHA-1, SHA-256, SHA-384, and SHA-512. Generate cryptographic hashes for strings and text. Educational tool for cryptography.',
+    keywords: 'online hash tool, hash generator, sha256 generator, md5 hash, sha512, cryptographic hash, text hash'
+  })
   const [input, setInput] = useState('')
   const [algorithm, setAlgorithm] = useState('SHA-256')
   const [output, setOutput] = useState('')
@@ -76,8 +82,8 @@ export default function HashGenerator() {
         🔒 All processing happens in your browser • No data is sent to server
       </div>
       <div className="tool-header">
-        <h2>#️⃣ Hash Generator</h2>
-        <p>Generate cryptographic hashes using various algorithms</p>
+        <h1>#️⃣ Online Hash Generator Tool</h1>
+        <p>Generate cryptographic hashes instantly using multiple algorithms including SHA-256, SHA-512, and more. Perfect for developers, security professionals, and students learning about cryptography and data integrity verification.</p>
       </div>
 
       <div className="tool-container">

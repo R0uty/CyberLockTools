@@ -1,6 +1,12 @@
 import { useState } from 'react'
+import { useSEO } from '../hooks/useSEO'
 
 export default function ROT() {
+  useSEO({
+    title: 'Online ROT13 and Caesar Cipher Tool',
+    description: 'Free online ROT13, ROT47, and Caesar cipher tool. Encode and decode text using letter rotation. Educational cryptography tool for text transformation.',
+    keywords: 'online rot13 tool, caesar cipher, rot47, text encoder, cryptography tool, letter rotation'
+  })
   const [input, setInput] = useState('')
   const [shift, setShift] = useState(13)
   const [mode, setMode] = useState('encode')
@@ -35,8 +41,8 @@ export default function ROT() {
         🔒 All processing happens in your browser • No data is sent to server
       </div>
       <div className="tool-header">
-        <h2>🔄 ROT Cipher</h2>
-        <p>Rotate letters in your text by a specified amount</p>
+        <h1>🔄 Online ROT13 and Caesar Cipher Tool</h1>
+        <p>Rotate letters in your text by a specified amount. ROT13 is a simple letter substitution cipher that replaces a letter with the letter 13 positions after it in the alphabet, commonly used for basic text transformation and educational purposes.</p>
       </div>
 
       <div className="tool-container">
