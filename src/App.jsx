@@ -3,6 +3,7 @@ import Header from './components/Header'
 import ToolCard from './components/ToolCard'
 import ROT from './pages/ROT'
 import Base64 from './pages/Base64'
+import URLEncoder from './pages/URLEncoder'
 import './App.css'
 
 export default function App() {
@@ -61,6 +62,17 @@ export default function App() {
         <Header onLogoClick={handleLogoClick} />
         <div className="main-content">
           <Base64 />
+        </div>
+      </div>
+    )
+  }
+
+  if (currentTool === 'URL Encoder') {
+    return (
+      <div className="app">
+        <Header onLogoClick={handleLogoClick} />
+        <div className="main-content">
+          <URLEncoder />
         </div>
       </div>
     )
