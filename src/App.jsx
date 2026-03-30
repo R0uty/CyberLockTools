@@ -9,6 +9,7 @@ import HashGenerator from './pages/HashGenerator'
 import CronParser from './pages/CronParser'
 import JWTDebugger from './pages/JWTDebugger'
 import JSONFormatter from './pages/JSONFormatter'
+import YAMLFormatter from './pages/YAMLFormatter'
 import About from './pages/About'
 import Contact from './pages/Contact'
 import './App.css'
@@ -75,6 +76,11 @@ export default function App() {
       icon: '📋',
       title: 'JSON Formatter',
       description: 'Format and validate JSON with proper indentation.'
+    },
+    {
+      icon: '📄',
+      title: 'YAML Formatter',
+      description: 'Format YAML files and convert to JSON.'
     }
   ]
 
@@ -150,6 +156,17 @@ export default function App() {
         <Header onLogoClick={handleLogoClick} currentPage={currentPage} onPageChange={handlePageChange} />
         <div className="main-content">
           <JSONFormatter />
+        </div>
+      </div>
+    )
+  }
+
+  if (currentTool === 'YAML Formatter') {
+    return (
+      <div className="app">
+        <Header onLogoClick={handleLogoClick} currentPage={currentPage} onPageChange={handlePageChange} />
+        <div className="main-content">
+          <YAMLFormatter />
         </div>
       </div>
     )
@@ -263,6 +280,11 @@ export default function App() {
           <div className="tool-detail">
             <h3>📋 <a href="#json">JSON Formatter and Validator</a></h3>
             <p>Paste raw JSON and format it with proper indentation for readability. The formatter also validates your JSON structure and provides helpful error messages. All processing happens locally - your data never leaves your browser.</p>
+          </div>
+
+          <div className="tool-detail">
+            <h3>📄 <a href="#yaml">YAML Formatter and Converter</a></h3>
+            <p>Paste raw YAML and format it with proper indentation. You can also convert YAML configuration files to JSON format. Perfect for working with configuration files and data serialization. All processing happens locally in your browser.</p>
           </div>
         </section>
 
