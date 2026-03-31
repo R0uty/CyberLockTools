@@ -3,8 +3,8 @@ import { useSEO } from '../hooks/useSEO'
 
 export default function Base64() {
   useSEO({
-    title: 'Online Base64 Encoder and Decoder Tool',
-    description: 'Free online Base64 encoder and decoder. Convert text to Base64 and decode Base64 strings back to text. Useful for data encoding, email attachments, and web transmission.',
+    title: 'Online Base64 Encoder and Decoder - Encode Text',
+    description: 'Free online Base64 encoder and decoder. Instantly convert text to Base64 and decode Base64 strings back to plaintext. Perfect for web development, data encoding, and API work.',
     keywords: 'online base64 tool, base64 encoder, base64 decoder, base64 converter, text encoder'
   })
   const [input, setInput] = useState('')

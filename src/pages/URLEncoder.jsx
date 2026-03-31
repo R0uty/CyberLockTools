@@ -3,8 +3,8 @@ import { useSEO } from '../hooks/useSEO'
 
 export default function URLEncoder() {
   useSEO({
-    title: 'Online URL Encoder and Decoder Tool',
-    description: 'Free online URL encoder and decoder. Convert text to URL-safe format and decode URL-encoded strings. Essential for web developers working with URLs, query parameters, and URI encoding.',
+    title: 'Online URL Encoder and Decoder - Encode URLs',
+    description: 'Free online URL encoder and decoder. Convert text to URL-safe format, encode query parameters, and decode percent-encoded strings. Essential web development tool for URI encoding.',
     keywords: 'online url tool, url encoder, url decoder, uri encoder, percent encoding, url converter'
   })
   const [input, setInput] = useState('')

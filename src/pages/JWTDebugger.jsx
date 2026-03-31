@@ -5,7 +5,7 @@ import { decodeJWT, formatJSON } from '../utils/jwtDecoder'
 export default function JWTDebugger() {
   useSEO({
     title: 'Online JWT Debugger and Decoder Tool',
-    description: 'Free online JWT decoder. Paste a JWT token and instantly see the decoded header, payload, and signature. Perfect for debugging JWT tokens locally in your browser.',
+    description: 'Free online JWT debugger and decoder. Paste any JSON Web Token and instantly decode the header, payload, and verify the signature. Perfect for debugging JWT tokens locally in your browser.',
     keywords: 'jwt debugger, jwt decoder, jwt validator, online jwt tool, json web token decoder'
   })
 

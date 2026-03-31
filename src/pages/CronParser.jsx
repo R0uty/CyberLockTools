@@ -4,8 +4,8 @@ import { useSEO } from '../hooks/useSEO'
 
 export default function CronParser() {
   useSEO({
-    title: 'Online Cron Expression Parser and Generator Tool',
-    description: 'Free online cron expression parser and generator. Build cron expressions with dropdowns or parse existing cron syntax into human-readable explanations. Learn scheduling for servers and automation.',
+    title: 'Online Cron Expression Parser and Generator',
+    description: 'Free online cron parser and generator. Create cron expressions with easy dropdowns or parse existing cron syntax into human-readable explanations. Perfect for server scheduling and automation.',
     keywords: 'online cron tool, cron parser, cron generator, cron expression builder, scheduling tool, crontab help'
   })
   const [minute, setMinute] = useState('*')

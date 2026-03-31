@@ -5,7 +5,7 @@ import { formatYAML, getYAMLStats, yamlToJSON } from '../utils/yamlFormatter'
 export default function YAMLFormatter() {
   useSEO({
     title: 'Online YAML Formatter and Converter Tool',
-    description: 'Free online YAML formatter. Paste YAML and instantly format it with 2-space indentation. Convert YAML to JSON. All processing happens in your browser.',
+    description: 'Free online YAML formatter, beautifier, and converter. Format YAML with perfect indentation, validate syntax, and convert to JSON. Essential DevOps and configuration tool.',
     keywords: 'yaml formatter, yaml beautifier, yaml to json, online yaml tool, yaml converter'
   })
 

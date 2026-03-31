@@ -4,8 +4,8 @@ import { useSEO } from '../hooks/useSEO'
 
 export default function HashGenerator() {
   useSEO({
-    title: 'Online Hash Generator Tool - MD5, SHA256, SHA512',
-    description: 'Free online hash generator supporting MD5, SHA-1, SHA-256, SHA-384, and SHA-512. Generate cryptographic hashes for strings and text. Educational tool for cryptography.',
+    title: 'Online Hash Generator Tool - Generate Hashes',
+    description: 'Free online hash generator for MD5, SHA-1, SHA-256, SHA-384, and SHA-512. Generate cryptographic hashes instantly from any text or string. Educational cryptography tool.',
     keywords: 'online hash tool, hash generator, sha256 generator, md5 hash, sha512, cryptographic hash, text hash'
   })
   const [input, setInput] = useState('')

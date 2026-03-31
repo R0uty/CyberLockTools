@@ -4,8 +4,8 @@ import { useSEO } from '../hooks/useSEO';
 
 export default function MarkdownPreview() {
   useSEO({
-    title: 'Online Markdown Preview Tool - Real-time Rendering',
-    description: 'Convert markdown to HTML instantly with live preview. Copy HTML, download files, and render markdown in real-time online.',
+    title: 'Online Markdown Preview Tool - Live HTML Rendering',
+    description: 'Free online markdown preview and converter. Write markdown and see live HTML preview instantly. Download as HTML files, copy code, and render markdown in real-time. Perfect for documentation and writing.',
     keywords: 'markdown preview, markdown to html, live preview, markdown converter, render markdown online',
   });
 

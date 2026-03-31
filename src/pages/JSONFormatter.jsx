@@ -5,7 +5,7 @@ import { formatJSON, getJSONStats } from '../utils/jsonFormatter'
 export default function JSONFormatter() {
   useSEO({
     title: 'Online JSON Formatter and Validator Tool',
-    description: 'Free online JSON formatter and validator. Paste JSON and instantly format it with 2-space indentation and validation. Identify JSON errors with helpful error messages.',
+    description: 'Free online JSON formatter, validator, and beautifier. Paste JSON and instantly format with proper indentation, validate syntax, and identify errors. Essential web development tool.',
     keywords: 'json formatter, json validator, json beautifier, json minifier, online json tool'
   })
 

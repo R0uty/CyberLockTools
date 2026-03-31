@@ -3,8 +3,8 @@ import { useSEO } from '../hooks/useSEO'
 
 export default function ROT() {
   useSEO({
-    title: 'Online ROT13 and Caesar Cipher Tool',
-    description: 'Free online ROT13, ROT47, and Caesar cipher tool. Encode and decode text using letter rotation. Educational cryptography tool for text transformation.',
+    title: 'Online ROT13 and Caesar Cipher Tool - Text Encoder',
+    description: 'Free online ROT13, ROT47, and Caesar cipher encoder/decoder. Rotate letters in text, transform messages, and decode cipher text. Educational cryptography and text transformation tool.',
     keywords: 'online rot13 tool, caesar cipher, rot47, text encoder, cryptography tool, letter rotation'
   })
   const [input, setInput] = useState('')
