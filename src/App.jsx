@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { useSEO } from './hooks/useSEO'
 import Header from './components/Header'
-import ToolCard from './components/ToolCard'
 import ROT from './pages/ROT'
 import Base64 from './pages/Base64'
 import URLEncoder from './pages/URLEncoder'
@@ -12,6 +11,7 @@ import JSONFormatter from './pages/JSONFormatter'
 import YAMLFormatter from './pages/YAMLFormatter'
 import MarkdownPreview from './pages/MarkdownPreview'
 import RegexTester from './pages/RegexTester'
+import Tools from './pages/Tools'
 import About from './pages/About'
 import Contact from './pages/Contact'
 import './App.css'
@@ -206,6 +206,17 @@ export default function App() {
     )
   }
 
+  if (currentPage === 'tools' && !currentTool) {
+    return (
+      <div className="app">
+        <Header onLogoClick={handleLogoClick} currentPage={currentPage} onPageChange={handlePageChange} />
+        <div className="main-content">
+          <Tools tools={tools} onToolClick={handleToolClick} />
+        </div>
+      </div>
+    )
+  }
+
   if (currentPage === 'about') {
     return (
       <div className="app">
@@ -237,25 +248,6 @@ export default function App() {
           <p>A free, all-in-one suite of online utilities for encoding, decoding, hashing, and automation. All tools are secure, private, and run completely in your browser.</p>
         </section>
 
-        <section className="tools-grid">
-          <h2>Our Online Tools</h2>
-          <p className="tools-intro">Choose from our collection of free online tools designed for developers, security professionals, and students:</p>
-          <div className="cards-container">
-            {tools.map((tool, idx) => (
-              <div 
-                key={idx}
-                onClick={() => handleToolClick(tool.title)}
-              >
-                <ToolCard 
-                  icon={tool.icon}
-                  title={tool.title}
-                  description={tool.description}
-                />
-              </div>
-            ))}
-          </div>
-        </section>
-
         <section className="features">
           <h2>Why Choose CyberLock Tools?</h2>
           <div className="features-grid">
@@ -278,54 +270,10 @@ export default function App() {
           </div>
         </section>
 
-        <section className="tool-overview">
-          <h2>Tool Overview</h2>
-          
-          <div className="tool-detail">
-            <h3>🔄 <a href="#rot">ROT13 and Caesar Cipher Tool</a></h3>
-            <p>Encode and decode text using ROT13 and Caesar cipher with adjustable rotation amounts (0-25). Perfect for learning about basic cryptography and text transformation. The ROT13 variant uses a rotation of 13 positions and is commonly used for obfuscation.</p>
-          </div>
-
-          <div className="tool-detail">
-            <h3>📝 <a href="#base64">Base64 Encoder and Decoder</a></h3>
-            <p>Convert text to Base64 encoding or decode Base64 strings back to plain text. Base64 is widely used for email attachments, data transmission over text-only protocols, and API data encoding. Essential for web developers working with data that needs to be transmitted safely.</p>
-          </div>
-
-          <div className="tool-detail">
-            <h3>🔗 <a href="#url">URL Encoder and Decoder</a></h3>
-            <p>Encode text to URL-safe format (percent encoding) or decode URL-encoded strings. URL encoding is crucial for safe transmission of special characters in URLs, query parameters, and form data. Web developers rely on this for building secure, properly-formatted URLs.</p>
-          </div>
-
-          <div className="tool-detail">
-            <h3>#️⃣ <a href="#hash">Hash Generator Tool</a></h3>
-            <p>Generate cryptographic hashes using multiple algorithms: MD5, SHA-1, SHA-256, SHA-384, and SHA-512. Useful for data integrity verification, checksums, and learning cryptography. Includes educational warnings about using MD5 and SHA-1 only for non-security purposes.</p>
-          </div>
-
-          <div className="tool-detail">
-            <h3>⏰ <a href="#cron">Cron Expression Parser and Generator</a></h3>
-            <p>Create cron expressions with an intuitive dropdown interface or parse existing cron syntax into human-readable explanations. Essential for developers working with task schedulers, server automation, and cronjobs. Understand complex scheduling expressions with ease.</p>
-          </div>
-
-          <div className="tool-detail">
-            <h3>🔐 <a href="#jwt">JWT Debugger and Decoder</a></h3>
-            <p>Paste a JWT token and instantly see the decoded header, payload, and signature. Perfect for debugging and understanding JWT tokens during development. All decoding happens locally in your browser - no tokens are sent to any server.</p>
-          </div>
-
-          <div className="tool-detail">
-            <h3>📋 <a href="#json">JSON Formatter and Validator</a></h3>
-            <p>Paste raw JSON and format it with proper indentation for readability. The formatter also validates your JSON structure and provides helpful error messages. All processing happens locally - your data never leaves your browser.</p>
-          </div>
-
-          <div className="tool-detail">
-            <h3>📄 <a href="#yaml">YAML Formatter and Converter</a></h3>
-            <p>Paste raw YAML and format it with proper indentation. You can also convert YAML configuration files to JSON format. Perfect for working with configuration files and data serialization. All processing happens locally in your browser.</p>
-          </div>
-        </section>
-
         <section className="cta">
           <h2>Ready to Get Started?</h2>
-          <p>Select a tool above to begin encoding, decoding, hashing, parsing, or generating. All tools are completely free and work offline in your browser.</p>
-          <button className="cta-button" onClick={() => handleToolClick('ROT')}>Explore Tools</button>
+          <p>Choose from our collection of 10 free online tools for encoding, decoding, hashing, and more.</p>
+          <button className="cta-button" onClick={() => handlePageChange('tools')}>Browse All Tools</button>
         </section>
       </main>
     </div>
