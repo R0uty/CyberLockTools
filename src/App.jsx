@@ -10,6 +10,7 @@ import CronParser from './pages/CronParser'
 import JWTDebugger from './pages/JWTDebugger'
 import JSONFormatter from './pages/JSONFormatter'
 import YAMLFormatter from './pages/YAMLFormatter'
+import MarkdownPreview from './pages/MarkdownPreview'
 import About from './pages/About'
 import Contact from './pages/Contact'
 import './App.css'
@@ -81,6 +82,11 @@ export default function App() {
       icon: '📄',
       title: 'YAML Formatter',
       description: 'Format YAML files and convert to JSON.'
+    },
+    {
+      icon: '📑',
+      title: 'Markdown Preview',
+      description: 'Convert and preview markdown with live rendering.'
     }
   ]
 
@@ -167,6 +173,17 @@ export default function App() {
         <Header onLogoClick={handleLogoClick} currentPage={currentPage} onPageChange={handlePageChange} />
         <div className="main-content">
           <YAMLFormatter />
+        </div>
+      </div>
+    )
+  }
+
+  if (currentTool === 'Markdown Preview') {
+    return (
+      <div className="app">
+        <Header onLogoClick={handleLogoClick} currentPage={currentPage} onPageChange={handlePageChange} />
+        <div className="main-content">
+          <MarkdownPreview />
         </div>
       </div>
     )
