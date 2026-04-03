@@ -11,6 +11,7 @@ import JSONFormatter from './pages/JSONFormatter'
 import YAMLFormatter from './pages/YAMLFormatter'
 import MarkdownPreview from './pages/MarkdownPreview'
 import RegexTester from './pages/RegexTester'
+import XMLFormatter from './pages/XMLFormatter'
 import Tools from './pages/Tools'
 import About from './pages/About'
 import Contact from './pages/Contact'
@@ -93,6 +94,11 @@ export default function App() {
       icon: '🔍',
       title: 'Regex Tester',
       description: 'Test regex patterns with live matching and highlighting.'
+    },
+    {
+      icon: '📄',
+      title: 'XML Formatter',
+      description: 'Format and validate XML with proper indentation.'
     }
   ]
 
@@ -201,6 +207,17 @@ export default function App() {
         <Header onLogoClick={handleLogoClick} currentPage={currentPage} onPageChange={handlePageChange} />
         <div className="main-content">
           <RegexTester />
+        </div>
+      </div>
+    )
+  }
+
+  if (currentTool === 'XML Formatter') {
+    return (
+      <div className="app">
+        <Header onLogoClick={handleLogoClick} currentPage={currentPage} onPageChange={handlePageChange} />
+        <div className="main-content">
+          <XMLFormatter />
         </div>
       </div>
     )
