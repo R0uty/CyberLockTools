@@ -57,6 +57,32 @@ A comprehensive, privacy-first suite of **free online tools** for developers, se
 - Perfect for working with configuration files
 - Example YAML configurations for testing
 
+### 📑 Markdown Preview
+- Live markdown editor with real-time preview
+- Convert markdown to formatted HTML
+- Copy markdown, HTML, or plain text to clipboard
+- Download rendered HTML as a file
+- Support for all markdown syntax features
+- Perfect for documentation and content creation
+
+### 🔍 Regex Tester
+- Test regular expressions with live matching
+- Support for regex flags (global, case-insensitive, multiline, single-line)
+- Highlight matches in test string
+- Extract capture groups automatically
+- Test replace functionality with live preview
+- Copy patterns, matches, or replaced text
+- Download test results as text file
+
+### 📋 XML Formatter & Validator
+- Format XML with proper 2-space indentation
+- Validate XML structure and syntax
+- Minify XML to reduce file size
+- Display XML statistics (element count, depth, attributes)
+- Copy formatted XML or download as file
+- Example XML documents for testing
+- Perfect for API responses and configuration files
+
 ## 🎯 Use Cases
 
 **For Developers:**
@@ -67,17 +93,23 @@ A comprehensive, privacy-first suite of **free online tools** for developers, se
 - JWT token debugging for authentication flows
 - JSON formatting for API responses
 - YAML formatting for configuration files
+- Markdown preview for documentation
+- Regex testing for pattern matching
+- XML formatting for data processing and APIs
 
 **For Security Professionals:**
 - Educational cryptography demonstrations
 - Hash generation and analysis
 - Encoding scheme exploration
+- Regex pattern testing for security scanning
 
 **For Students:**
 - Learn about cryptography and encoding
 - Understand cron scheduling
 - Explore different cipher types
 - Study cryptographic algorithms
+- Practice regex patterns
+- Work with data formats (JSON, XML, YAML)
 
 ## 🔒 Privacy & Security
 
@@ -154,12 +186,17 @@ src/
 │   ├── JWTDebugger.jsx     # JWT token decoder
 │   ├── JSONFormatter.jsx   # JSON formatter and validator
 │   ├── YAMLFormatter.jsx   # YAML formatter and converter
+│   ├── MarkdownPreview.jsx # Markdown editor with live preview
+│   ├── RegexTester.jsx     # Regex pattern tester and matcher
+│   ├── XMLFormatter.jsx    # XML formatter and validator
+│   ├── Tools.jsx           # Tools browsing page with grid
 │   ├── About.jsx           # About page with mission and tech stack
 │   └── Contact.jsx         # Contact form
 ├── utils/
 │   ├── jwtDecoder.js       # JWT decoding utility
 │   ├── jsonFormatter.js    # JSON formatting and validation
-│   └── yamlFormatter.js    # YAML formatting and conversion
+│   ├── yamlFormatter.js    # YAML formatting and conversion
+│   └── xmlFormatter.js     # XML formatting and validation
 ├── App.jsx                 # Main app component with routing
 ├── App.css                 # Global styles and animations
 └── main.jsx                # React entry point
@@ -216,9 +253,11 @@ npm run lint      # Run ESLint to check code quality
 
 ## 📊 SEO Implementation
 
+### SEO Implementation
 All pages are optimized for search engines:
 
 - **Homepage:** Targets "online tools" and general keywords
+- **Tools Page:** Targets "online tools" and tool browsing keywords
 - **ROT Tool:** Targets "online rot13 tool", "caesar cipher"
 - **Base64 Tool:** Targets "base64 encoder", "base64 decoder"
 - **URL Tool:** Targets "online url tool", "url encoder"
@@ -227,6 +266,9 @@ All pages are optimized for search engines:
 - **JWT Tool:** Targets "jwt debugger", "jwt decoder"
 - **JSON Tool:** Targets "json formatter", "json validator"
 - **YAML Tool:** Targets "yaml formatter", "yaml converter"
+- **Markdown Tool:** Targets "markdown preview", "markdown editor"
+- **Regex Tool:** Targets "regex tester", "regex tester online"
+- **XML Tool:** Targets "xml formatter", "xml validator"
 
 Each page includes:
 - Unique, descriptive title (50-60 chars)
@@ -261,23 +303,26 @@ MIT License - see the LICENSE file for details
 - ✅ JWT Debugger & Decoder
 - ✅ JSON Formatter & Validator
 - ✅ YAML Formatter & Converter
+- ✅ Markdown Preview with live rendering
+- ✅ Regex Tester with pattern matching
+- ✅ XML Formatter & Validator
+- ✅ Tools Browsing Page
 - ✅ About Page
 - ✅ Contact Page
-- ✅ SEO Optimization
+- ✅ SEO Optimization (13 unique pages)
 - ✅ Navigation System
 - ✅ Responsive Design
 
 ### Planned Features 🔜
-- [ ] Markdown Preview
 - [ ] Dark Mode Toggle
 - [ ] Keyboard Shortcuts
 - [ ] Settings/Preferences Panel
 - [ ] History of Recent Operations
-- [ ] Export/Download Results
 - [ ] More Hash Algorithms (BLAKE2, Argon2)
-- [ ] Regex Tester
-- [ ] XML Formatter
+- [ ] CSV Parser & Formatter
+- [ ] SQL Formatter
 - [ ] API Documentation
+- [ ] Unit Tests
 
 ## 💡 Usage Examples
 
@@ -350,6 +395,41 @@ version: 1.0
 debug: true
 ```
 
+### Markdown Preview Example
+```
+Input: 
+# Hello World
+This is **bold** and this is *italic*
+
+Output:
+<h1>Hello World</h1>
+<p>This is <strong>bold</strong> and this is <em>italic</em></p>
+```
+
+### Regex Tester Example
+```
+Pattern: \d{3}-\d{4}
+Test String: "Call 555-1234 or 555-5678"
+Flags: global
+
+Matches:
+- 555-1234
+- 555-5678
+```
+
+### XML Formatter Example
+```
+Input: <?xml version="1.0"?><root><user><name>John</name></user></root>
+
+Output:
+<?xml version="1.0"?>
+<root>
+  <user>
+    <name>John</name>
+  </user>
+</root>
+```
+
 ## 🐛 Bug Reports & Feature Requests
 
 Found a bug or have a feature suggestion? 
@@ -358,14 +438,15 @@ Found a bug or have a feature suggestion?
 2. **Contact Form:** Use the contact page on the website
 3. **Email:** Include feature requests or bug reports
 
-## 📈 Performance
+## 📊 Performance
 
-- **Build Size:** ~382 KB JavaScript + 13.6 KB CSS
-- **Gzipped:** ~119 KB total
+- **Build Size:** ~451 KB JavaScript + 20 KB CSS
+- **Gzipped:** ~137.75 KB JavaScript + 4.14 KB CSS (~142 KB total)
 - **Load Time:** < 2 seconds on modern connections
 - **Runtime:** No external server calls, instant processing
 - **Caching:** All dependencies cached in dist/
-- **8 Tools:** All integrated in a single optimized bundle
+- **11 Tools:** All integrated in a single optimized bundle
+- **Module Count:** 77 modules bundled efficiently
 
 ## 🔐 Security Considerations
 
