@@ -29,11 +29,12 @@ import './App.css'
 export default function App() {
   const [currentTool, setCurrentTool] = useState(null)
   const [currentPage, setCurrentPage] = useState('home')
+  const [searchQuery, setSearchQuery] = useState('')
 
   useSEO({
-    title: 'Free Online Tools Suite - Encoding, Hashing, and More',
-    description: 'CyberLock Tools - Free collection of online encoding tools, hash generators, and utilities. ROT cipher, Base64 encoder, URL encoder, hash generator, and cron parser. All tools run securely in your browser.',
-    keywords: 'online tools, encoder decoder, hash generator, base64, rot13, url encoder, cron parser, free tools'
+    title: "R0uty's Cyber Lab - My Free Online Tools Suite",
+    description: "R0uty's Cyber Lab - My collection of powerful online utilities for encoding, hashing, formatting, and generation. All tools run securely in your browser with zero server uploads.",
+    keywords: 'online tools, encoder decoder, hash generator, base64, rot13, url encoder, cron parser, free tools, r0uty'
   })
 
   const handlePageChange = (page) => {
@@ -414,16 +415,42 @@ export default function App() {
       <Header onLogoClick={handleLogoClick} currentPage={currentPage} onPageChange={handlePageChange} />
       <main className="main-content">
         <section className="hero">
-          <h1>Welcome to CyberLock Tools</h1>
-          <p>A free, all-in-one suite of online utilities for encoding, decoding, hashing, and automation. All tools are secure, private, and run completely in your browser.</p>
+          <h1>Welcome to My Cyber Lab</h1>
+          <p>Hey there! I'm R0uty, and this is my personal collection of 20+ powerful online utilities for encoding, decoding, hashing, formatting, and generation. All my tools are secure, private, and run completely in your browser—no data ever touches my servers.</p>
+          
+          {/* Search Bar */}
+          <div style={{ marginTop: '2rem', marginBottom: '2rem' }}>
+            <input
+              type="text"
+              placeholder="🔍 Search tools... (e.g., 'hash', 'color', 'json')"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              onKeyPress={(e) => {
+                if (e.key === 'Enter' && searchQuery.trim()) {
+                  setCurrentPage('tools')
+                }
+              }}
+              style={{
+                width: '100%',
+                maxWidth: '600px',
+                padding: '12px 20px',
+                fontSize: '16px',
+                border: '2px solid #c0c0c0',
+                borderRadius: '8px',
+                backgroundColor: '#1a1a1a',
+                color: '#e8e8e8',
+                fontFamily: 'inherit'
+              }}
+            />
+          </div>
         </section>
 
         <section className="features">
-          <h2>Why Choose CyberLock Tools?</h2>
+          <h2>Why I Built This Lab</h2>
           <div className="features-grid">
             <div className="feature-item">
               <h3>🔒 100% Private & Secure</h3>
-              <p>All tools run entirely in your browser. Your data never leaves your device or reaches our servers.</p>
+              <p>My tools run entirely in your browser. Your data never leaves your device or reaches my servers.</p>
             </div>
             <div className="feature-item">
               <h3>⚡ Lightning Fast</h3>
@@ -435,15 +462,15 @@ export default function App() {
             </div>
             <div className="feature-item">
               <h3>🎨 User-Friendly</h3>
-              <p>Intuitive interface with clear inputs, outputs, and helpful documentation for each tool.</p>
+              <p>Intuitive interfaces with clear inputs, outputs, and helpful documentation for each tool.</p>
             </div>
           </div>
         </section>
 
         <section className="cta">
-          <h2>Ready to Get Started?</h2>
-          <p>Choose from our collection of 20 free online tools for encoding, decoding, hashing, generating, converting, formatting, and more.</p>
-          <button className="cta-button" onClick={() => handlePageChange('tools')}>Browse All Tools</button>
+          <h2>Explore My Lab</h2>
+          <p>Pick from my collection of 20 specialized tools for all your encoding, hashing, formatting, and generation needs.</p>
+          <button className="cta-button" onClick={() => handlePageChange('tools')}>Browse My Tools</button>
         </section>
       </main>
     </div>
