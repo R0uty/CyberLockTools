@@ -20,6 +20,7 @@ import PasswordGenerator from './pages/PasswordGenerator'
 import JWTEncoder from './pages/JWTEncoder'
 import QRCodeGenerator from './pages/QRCodeGenerator'
 import ColorConverter from './pages/ColorConverter'
+import CSSBeautifier from './pages/CSSBeautifier'
 import Tools from './pages/Tools'
 import About from './pages/About'
 import Contact from './pages/Contact'
@@ -147,6 +148,11 @@ export default function App() {
       icon: '🎨',
       title: 'Color Converter',
       description: 'Convert between HEX, RGB, HSL, and HSV color formats with live preview.'
+    },
+    {
+      icon: '💅',
+      title: 'CSS Beautifier',
+      description: 'Format, minify, and validate CSS with file size optimization analysis.'
     }
   ]
 
@@ -359,6 +365,17 @@ export default function App() {
     )
   }
 
+  if (currentTool === 'CSS Beautifier') {
+    return (
+      <div className="app">
+        <Header onLogoClick={handleLogoClick} currentPage={currentPage} onPageChange={handlePageChange} />
+        <div className="main-content">
+          <CSSBeautifier />
+        </div>
+      </div>
+    )
+  }
+
   if (currentPage === 'tools' && !currentTool) {
     return (
       <div className="app">
@@ -425,7 +442,7 @@ export default function App() {
 
         <section className="cta">
           <h2>Ready to Get Started?</h2>
-          <p>Choose from our collection of 19 free online tools for encoding, decoding, hashing, generating, converting, and more.</p>
+          <p>Choose from our collection of 20 free online tools for encoding, decoding, hashing, generating, converting, formatting, and more.</p>
           <button className="cta-button" onClick={() => handlePageChange('tools')}>Browse All Tools</button>
         </section>
       </main>
