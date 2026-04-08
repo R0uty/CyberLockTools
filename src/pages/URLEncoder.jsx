@@ -62,7 +62,7 @@ export default function URLEncoder() {
   return (
     <div className="tool-page">
       <div className="privacy-badge">
-        🔒 All processing happens in your browser • No data is sent to server
+        All processing happens in your browser • No data is sent to server
       </div>
       <div className="tool-header">
         <h1>🔗 Online URL Encoder and Decoder Tool</h1>
@@ -72,19 +72,19 @@ export default function URLEncoder() {
       <div className="tool-container">
         <div className="button-group">
           <button onClick={handleEncode} className="action-btn encode-btn">
-            🔐 Encode
+            Encode
           </button>
           <button onClick={handleDecode} className="action-btn decode-btn">
             🔓 Decode
           </button>
           <button onClick={handleClear} className="action-btn clear-btn">
-            🗑️ Clear
+            Clear
           </button>
         </div>
 
         {error && (
           <div className="error-message">
-            ⚠️ {error}
+            {error}
           </div>
         )}
 
@@ -113,14 +113,14 @@ export default function URLEncoder() {
             />
             {output && (
               <button onClick={handleCopy} className="copy-btn">
-                📋 Copy to Clipboard
+                Copy to Clipboard
               </button>
             )}
           </div>
         </div>
 
         <div className="info-box">
-          <h4>ℹ️ About URL Encoding</h4>
+          <h4>About URL Encoding</h4>
           <p>
             URL encoding (also called percent encoding) converts special characters into a format that can be safely transmitted over the internet.
             Characters like spaces become %20, and special characters are replaced with %xx where xx is the hexadecimal value.

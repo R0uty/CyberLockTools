@@ -118,10 +118,10 @@ export default function UUIDGenerator() {
   return (
     <div className="tool-page">
       <div className="privacy-badge">
-        🔒 All processing happens in your browser • No data is sent to server
+        All processing happens in your browser • No data is sent to server
       </div>
       <div className="tool-header">
-        <h1>🆔 UUID/GUID Generator</h1>
+        <h1>UUID/GUID Generator</h1>
         <p>Generate unique identifiers instantly. Create single or bulk UUIDs (v1 and v4), validate existing UUIDs, and choose from multiple format options including braces. Perfect for developers, database design, and system integration. All processing happens locally in your browser with no data transmission to any server.</p>
       </div>
 
@@ -129,7 +129,7 @@ export default function UUIDGenerator() {
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', marginBottom: '2rem' }}>
           {/* Generation Panel */}
           <div style={{ padding: '1.5rem', backgroundColor: '#f9f9f9', borderRadius: '10px' }}>
-            <h3 style={{ marginTop: 0, marginBottom: '1.5rem' }}>📝 Generate UUIDs</h3>
+            <h3 style={{ marginTop: 0, marginBottom: '1.5rem' }}>Generate UUIDs</h3>
 
             <div style={{ marginBottom: '1.5rem' }}>
               <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold', fontSize: '14px' }}>
@@ -218,14 +218,14 @@ export default function UUIDGenerator() {
             )}
 
             <button onClick={handleClear} className="action-btn clear-btn" style={{ width: '100%' }}>
-              🗑️ Clear
+              Clear
             </button>
           </div>
         </div>
 
         {error && (
           <div className="error-message">
-            ⚠️ {error}
+            {error}
           </div>
         )}
 
@@ -235,7 +235,7 @@ export default function UUIDGenerator() {
               <h3 style={{ margin: 0 }}>Generated UUIDs ({uuids.length})</h3>
               <div style={{ display: 'flex', gap: '10px' }}>
                 <button onClick={handleCopyAll} className="copy-btn">
-                  📋 Copy All
+                  Copy All
                 </button>
                 <button onClick={handleDownload} className="copy-btn">
                   ⬇️ Download
@@ -291,7 +291,7 @@ export default function UUIDGenerator() {
         )}
 
         <div className="info-box">
-          <h4>ℹ️ About UUID</h4>
+          <h4>About UUID</h4>
           <p>
             UUID (Universally Unique Identifier) or GUID (Globally Unique Identifier) is a 128-bit identifier used to uniquely identify information in distributed systems. UUIDs are widely used in databases, APIs, and distributed systems.
           </p>

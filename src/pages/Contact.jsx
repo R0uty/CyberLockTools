@@ -3,8 +3,8 @@ import { useSEO } from '../hooks/useSEO'
 
 export default function Contact() {
   useSEO({
-    title: 'Contact CyberLock Tools',
-    description: 'Get in touch with CyberLock Tools. Send us feedback, feature requests, bug reports, or general inquiries. We\'d love to hear from you!',
+    title: 'Contact R0uty - Cyber Lab',
+    description: 'Get in touch with R0uty. Send me feedback, feature requests, bug reports, or general inquiries. I\'d love to hear from you!',
     keywords: 'contact, feedback, support, bug report, feature request'
   })
 
@@ -51,11 +51,11 @@ export default function Contact() {
   return (
     <div className="tool-page">
       <div className="privacy-badge">
-        🔒 All processing happens in your browser • No data is sent to server
+        All processing happens in your browser • No data is sent to server
       </div>
       <div className="tool-header">
-        <h1>Contact Us</h1>
-        <p>We'd love to hear from you. Send us your feedback, feature requests, or bug reports!</p>
+        <h1>Get In Touch</h1>
+        <p>I'd love to hear from you. Send me your feedback, feature requests, or bug reports!</p>
       </div>
 
       <div className="tool-container" style={{ maxWidth: '700px', margin: '0 auto' }}>
@@ -69,13 +69,13 @@ export default function Contact() {
             border: '2px solid #4caf50',
             fontWeight: '600'
           }}>
-            ✓ Thank you for your message! We appreciate your feedback and will review it soon.
+            ✓ Thank you for your message! I appreciate your feedback and will review it soon.
           </div>
         )}
 
         {error && (
           <div className="error-message">
-            ⚠️ {error}
+            {error}
           </div>
         )}
 
@@ -91,13 +91,13 @@ export default function Contact() {
               placeholder="Your name"
               style={{
                 padding: '0.75rem',
-                border: '2px solid #e0e0e0',
+                border: "2px solid #4a4a4a",
                 borderRadius: '8px',
                 fontSize: '1rem',
                 fontFamily: 'inherit'
               }}
-              onFocus={(e) => e.target.style.borderColor = '#667eea'}
-              onBlur={(e) => e.target.style.borderColor = '#e0e0e0'}
+              onFocus={(e) => e.target.style.borderColor = "#c0c0c0"}
+              onBlur={(e) => e.target.style.borderColor = "#4a4a4a"}
             />
           </div>
 
@@ -112,13 +112,13 @@ export default function Contact() {
               placeholder="your@email.com"
               style={{
                 padding: '0.75rem',
-                border: '2px solid #e0e0e0',
+                border: "2px solid #4a4a4a",
                 borderRadius: '8px',
                 fontSize: '1rem',
                 fontFamily: 'inherit'
               }}
-              onFocus={(e) => e.target.style.borderColor = '#667eea'}
-              onBlur={(e) => e.target.style.borderColor = '#e0e0e0'}
+              onFocus={(e) => e.target.style.borderColor = "#c0c0c0"}
+              onBlur={(e) => e.target.style.borderColor = "#4a4a4a"}
             />
           </div>
 
@@ -133,13 +133,13 @@ export default function Contact() {
               placeholder="e.g., Feature Request, Bug Report"
               style={{
                 padding: '0.75rem',
-                border: '2px solid #e0e0e0',
+                border: "2px solid #4a4a4a",
                 borderRadius: '8px',
                 fontSize: '1rem',
                 fontFamily: 'inherit'
               }}
-              onFocus={(e) => e.target.style.borderColor = '#667eea'}
-              onBlur={(e) => e.target.style.borderColor = '#e0e0e0'}
+              onFocus={(e) => e.target.style.borderColor = "#c0c0c0"}
+              onBlur={(e) => e.target.style.borderColor = "#4a4a4a"}
             />
           </div>
 
@@ -150,7 +150,7 @@ export default function Contact() {
               name="message"
               value={formData.message}
               onChange={handleChange}
-              placeholder="Tell us what you think, request a feature, or report a bug..."
+              placeholder="Tell me what you think, request a feature, or report a bug..."
               className="textarea"
               rows="6"
             />
@@ -160,8 +160,8 @@ export default function Contact() {
             type="submit"
             style={{
               padding: '0.75rem 2rem',
-              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-              color: 'white',
+              background: 'linear-gradient(135deg, #c0c0c0 0%, #808080 100%)',
+              color: '#1a1a1a',
               border: 'none',
               borderRadius: '8px',
               fontSize: '1rem',
@@ -171,7 +171,7 @@ export default function Contact() {
             }}
             onMouseEnter={(e) => {
               e.target.style.transform = 'translateY(-2px)'
-              e.target.style.boxShadow = '0 4px 12px rgba(102, 126, 234, 0.3)'
+              e.target.style.boxShadow = '0 4px 12px rgba(192, 192, 192, 0.3)'
             }}
             onMouseLeave={(e) => {
               e.target.style.transform = 'translateY(0)'
@@ -188,13 +188,13 @@ export default function Contact() {
             Have a quick question or just want to chat? Here are some things you can do:
           </p>
           <ul>
-            <li><strong>Report a Bug:</strong> Let us know if you find any issues with the tools</li>
+            <li><strong>Report a Bug:</strong> Let me know if you find any issues with the tools</li>
             <li><strong>Request a Feature:</strong> Suggest new tools or improvements</li>
-            <li><strong>Share Feedback:</strong> Tell us what you like or what could be better</li>
-            <li><strong>Ask Questions:</strong> Confused about how something works? We're here to help</li>
+            <li><strong>Share Feedback:</strong> Tell me what you like or what could be better</li>
+            <li><strong>Ask Questions:</strong> Confused about how something works? I'm here to help</li>
           </ul>
           <p style={{ marginTop: '1.5rem', color: '#666', fontSize: '0.95rem' }}>
-            <strong>Note:</strong> This contact form is for demonstration purposes. In a production environment, messages would be sent to our email or stored in a database.
+            <strong>Note:</strong> This contact form is for demonstration purposes. In a production environment, messages would be sent to my email or stored in a database.
           </p>
         </section>
       </div>

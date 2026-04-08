@@ -38,10 +38,10 @@ export default function ROT() {
   return (
     <div className="tool-page">
       <div className="privacy-badge">
-        🔒 All processing happens in your browser • No data is sent to server
+        All processing happens in your browser • No data is sent to server
       </div>
       <div className="tool-header">
-        <h1>🔄 Online ROT13 and Caesar Cipher Tool</h1>
+        <h1> Online ROT13 and Caesar Cipher Tool</h1>
         <p>Rotate letters in your text by a specified amount. ROT13 is a simple letter substitution cipher that replaces a letter with the letter 13 positions after it in the alphabet, commonly used for basic text transformation and educational purposes.</p>
       </div>
 
@@ -109,7 +109,7 @@ export default function ROT() {
               rows="8"
             />
             <button onClick={handleCopy} className="copy-btn">
-              📋 Copy to Clipboard
+              Copy to Clipboard
             </button>
           </div>
         </div>

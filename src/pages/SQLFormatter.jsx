@@ -128,17 +128,17 @@ export default function SQLFormatter() {
   return (
     <div className="tool-page">
       <div className="privacy-badge">
-        🔒 All processing happens in your browser • No data is sent to server
+        All processing happens in your browser • No data is sent to server
       </div>
       <div className="tool-header">
-        <h1>🗄️ Online SQL Formatter and Validator</h1>
+        <h1> Online SQL Formatter and Validator</h1>
         <p>Paste raw SQL and instantly format it with proper indentation for readability. The formatter also validates your SQL structure, identifies syntax errors, and provides helpful error messages. You can also minify SQL to reduce file size. All processing happens locally in your browser with no data transmission to any server.</p>
       </div>
 
       <div className="tool-container">
         <div className="button-group">
           <button onClick={handleFormat} className="action-btn encode-btn">
-            📝 Format SQL
+            Format SQL
           </button>
           <button onClick={handleValidate} className="action-btn encode-btn">
             ✓ Validate
@@ -147,13 +147,13 @@ export default function SQLFormatter() {
             ⚙️ Minify
           </button>
           <button onClick={handleClear} className="action-btn clear-btn">
-            🗑️ Clear
+            Clear
           </button>
         </div>
 
         {error && (
           <div className="error-message">
-            ⚠️ {error}
+            {error}
           </div>
         )}
 
@@ -181,7 +181,7 @@ export default function SQLFormatter() {
             {output && output !== '✅ Valid SQL syntax' && (
               <div style={{ display: 'flex', gap: '10px', marginTop: '10px' }}>
                 <button onClick={handleCopy} className="copy-btn">
-                  📋 Copy SQL
+                  Copy SQL
                 </button>
                 <button onClick={handleDownload} className="copy-btn">
                   ⬇️ Download
@@ -193,7 +193,7 @@ export default function SQLFormatter() {
 
         {stats && (
           <div className="info-box" style={{ backgroundColor: '#f0f0f0', marginTop: '20px' }}>
-            <h4>📊 SQL Statistics</h4>
+            <h4>SQL Statistics</h4>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px', fontSize: '14px' }}>
               <div>
                 <strong>Query Type:</strong> {stats.queryType}
@@ -218,7 +218,7 @@ export default function SQLFormatter() {
         )}
 
         <div className="info-box">
-          <h4>ℹ️ About SQL</h4>
+          <h4>About SQL</h4>
           <p>
             SQL (Structured Query Language) is the standard language for managing and querying relational databases. It's used in virtually every application that stores data. SQL supports various operations: SELECT for querying, INSERT for adding data, UPDATE for modifying, and DELETE for removing data.
           </p>

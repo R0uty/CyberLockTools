@@ -118,10 +118,10 @@ export default function PasswordGenerator() {
   return (
     <div className="tool-page">
       <div className="privacy-badge">
-        🔒 All processing happens in your browser • No data is sent to server
+        All processing happens in your browser • No data is sent to server
       </div>
       <div className="tool-header">
-        <h1>🔐 Secure Password Generator</h1>
+        <h1> Secure Password Generator</h1>
         <p>Generate strong, random passwords instantly with customizable options. Includes real-time password strength analysis, bulk generation, and security recommendations. All passwords are generated locally in your browser - no data is sent to any server.</p>
       </div>
 
@@ -200,7 +200,7 @@ export default function PasswordGenerator() {
 
           {/* Bulk Generation */}
           <div style={{ padding: '1.5rem', backgroundColor: '#f9f9f9', borderRadius: '10px' }}>
-            <h3 style={{ marginTop: 0 }}>📋 Bulk Generate</h3>
+            <h3 style={{ marginTop: 0 }}>Bulk Generate</h3>
 
             <div style={{ marginBottom: '1.5rem' }}>
               <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold', fontSize: '14px' }}>
@@ -224,14 +224,14 @@ export default function PasswordGenerator() {
             </div>
 
             <button onClick={handleGenerateBulk} className="action-btn encode-btn" style={{ width: '100%' }}>
-              📊 Generate Multiple
+              Generate Multiple
             </button>
           </div>
         </div>
 
         {error && (
           <div className="error-message">
-            ⚠️ {error}
+            {error}
           </div>
         )}
 
@@ -240,7 +240,7 @@ export default function PasswordGenerator() {
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
               <h3 style={{ margin: 0 }}>Generated Password</h3>
               <button onClick={() => handleCopy(password)} className="copy-btn">
-                📋 Copy
+                Copy
               </button>
             </div>
 
@@ -313,7 +313,7 @@ export default function PasswordGenerator() {
               <h3 style={{ margin: 0 }}>Generated Passwords ({passwords.length})</h3>
               <div style={{ display: 'flex', gap: '10px' }}>
                 <button onClick={handleCopyAll} className="copy-btn">
-                  📋 Copy All
+                  Copy All
                 </button>
                 <button onClick={handleDownload} className="copy-btn">
                   ⬇️ Download
@@ -367,12 +367,12 @@ export default function PasswordGenerator() {
 
         <div className="button-group">
           <button onClick={handleClear} className="action-btn clear-btn">
-            🗑️ Clear All
+            Clear All
           </button>
         </div>
 
         <div className="info-box" style={{ marginTop: '2rem' }}>
-          <h4>ℹ️ Password Security Tips</h4>
+          <h4>Password Security Tips</h4>
           <ul style={{ margin: '0.5rem 0', paddingLeft: '1.5rem' }}>
             <li>Use at least 12-16 characters for maximum security</li>
             <li>Include mix of uppercase, lowercase, numbers, and symbols</li>

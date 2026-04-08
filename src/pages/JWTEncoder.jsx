@@ -120,10 +120,10 @@ export default function JWTEncoder() {
   return (
     <div className="tool-page">
       <div className="privacy-badge">
-        🔒 All processing happens in your browser • No data is sent to server
+        All processing happens in your browser • No data is sent to server
       </div>
       <div className="tool-header">
-        <h1>🔑 JWT Encoder and Signer</h1>
+        <h1> JWT Encoder and Signer</h1>
         <p>Create and verify JWT (JSON Web Tokens) with custom header and payload. Sign tokens with HS256 or HS512 algorithms. Perfect for testing authentication flows and debugging token generation. All processing happens locally in your browser with no data transmission to any server.</p>
       </div>
 
@@ -243,7 +243,7 @@ export default function JWTEncoder() {
                 ⏱️ Add Expiration
               </button>
               <button onClick={handleClear} className="action-btn clear-btn">
-                🗑️ Clear
+                Clear
               </button>
             </div>
           </>
@@ -275,7 +275,7 @@ export default function JWTEncoder() {
                 ✓ Verify Token
               </button>
               <button onClick={handleClear} className="action-btn clear-btn">
-                🗑️ Clear
+                Clear
               </button>
             </div>
           </>
@@ -283,13 +283,13 @@ export default function JWTEncoder() {
 
         {error && (
           <div className="error-message" style={{ marginTop: '1.5rem' }}>
-            ⚠️ {error}
+            {error}
           </div>
         )}
 
         {result && (
           <div className="info-box" style={{ backgroundColor: '#f0f0f0', marginTop: '1.5rem' }}>
-            <h4>📊 Result</h4>
+            <h4>Result</h4>
 
             {result.type === 'encode' && (
               <>
@@ -392,7 +392,7 @@ export default function JWTEncoder() {
         )}
 
         <div className="info-box" style={{ marginTop: '1.5rem' }}>
-          <h4>ℹ️ About JWT</h4>
+          <h4>About JWT</h4>
           <p>
             JWT (JSON Web Token) is a compact, URL-safe means of representing claims between two parties. It consists of three parts: header (type and algorithm), payload (claims), and signature (for verification). Widely used for authentication and authorization.
           </p>

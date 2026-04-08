@@ -91,29 +91,29 @@ export default function YAMLFormatter() {
   return (
     <div className="tool-page">
       <div className="privacy-badge">
-        🔒 All processing happens in your browser • No data is sent to server
+        All processing happens in your browser • No data is sent to server
       </div>
       <div className="tool-header">
-        <h1>📋 Online YAML Formatter and Converter</h1>
+        <h1> Online YAML Formatter and Converter</h1>
         <p>Paste raw YAML and instantly format it with proper indentation for readability. You can also convert YAML to JSON format. All processing happens locally in your browser with no data transmission to any server.</p>
       </div>
 
       <div className="tool-container">
         <div className="button-group">
           <button onClick={handleFormat} className="action-btn encode-btn">
-            📝 Format YAML
+            Format YAML
           </button>
           <button onClick={handleConvertJSON} className="action-btn encode-btn">
-            🔄 Convert to JSON
+            Convert to JSON
           </button>
           <button onClick={handleClear} className="action-btn clear-btn">
-            🗑️ Clear
+            Clear
           </button>
         </div>
 
         {error && (
           <div className="error-message">
-            ⚠️ {error}
+            {error}
           </div>
         )}
 
@@ -142,7 +142,7 @@ export default function YAMLFormatter() {
             />
             {output && (
               <button onClick={handleCopy} className="copy-btn">
-                📋 Copy Output
+                Copy Output
               </button>
             )}
           </div>
@@ -150,7 +150,7 @@ export default function YAMLFormatter() {
 
         {stats && (
           <div className="info-box" style={{ backgroundColor: '#f0f0f0', marginTop: '20px' }}>
-            <h4>📊 YAML Statistics</h4>
+            <h4>YAML Statistics</h4>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px', fontSize: '14px' }}>
               <div>
                 <strong>Type:</strong> {stats.type}
@@ -172,7 +172,7 @@ export default function YAMLFormatter() {
         )}
 
         <div className="info-box">
-          <h4>ℹ️ About YAML</h4>
+          <h4>About YAML</h4>
           <p>
             YAML (YAML Ain't Markup Language) is a human-friendly data serialization format used for configuration files and data exchange. It uses indentation and simple syntax to represent structured data.
           </p>

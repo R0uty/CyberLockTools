@@ -198,7 +198,7 @@ ${html}
       {/* Features & Info Section */}
       <div className="info-section">
         <div className="feature-item">
-          <h4>📝 Supported Markdown</h4>
+          <h4>Supported Markdown</h4>
           <ul>
             <li><strong>Headings:</strong> # H1, ## H2, ### H3, etc.</li>
             <li><strong>Bold/Italic:</strong> **bold**, *italic*, ***both***</li>
@@ -214,12 +214,12 @@ ${html}
         <div className="feature-item">
           <h4>✨ Features</h4>
           <ul>
-            <li>⚡ Real-time live preview as you type</li>
-            <li>📋 Copy markdown source or rendered HTML</li>
+            <li>Real-time live preview as you type</li>
+            <li>Copy markdown source or rendered HTML</li>
             <li>💾 Download as complete HTML file with styling</li>
-            <li>🎨 Professional markdown styling</li>
-            <li>📱 Responsive split-pane design</li>
-            <li>🔒 100% client-side - no data sent to servers</li>
+            <li>Professional markdown styling</li>
+            <li>Responsive split-pane design</li>
+            <li>100% client-side - no data sent to servers</li>
           </ul>
         </div>
 

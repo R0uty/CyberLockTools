@@ -128,17 +128,17 @@ export default function XMLFormatter() {
   return (
     <div className="tool-page">
       <div className="privacy-badge">
-        🔒 All processing happens in your browser • No data is sent to server
+        All processing happens in your browser • No data is sent to server
       </div>
       <div className="tool-header">
-        <h1>📄 Online XML Formatter and Validator</h1>
+        <h1> Online XML Formatter and Validator</h1>
         <p>Paste raw XML and instantly format it with proper indentation for readability. The formatter also validates your XML structure, identifies errors, and provides helpful error messages. You can also minify XML to reduce file size. All processing happens locally in your browser with no data transmission to any server.</p>
       </div>
 
       <div className="tool-container">
         <div className="button-group">
           <button onClick={handleFormat} className="action-btn encode-btn">
-            📝 Format XML
+            Format XML
           </button>
           <button onClick={handleValidate} className="action-btn encode-btn">
             ✓ Validate
@@ -147,13 +147,13 @@ export default function XMLFormatter() {
             ⚙️ Minify
           </button>
           <button onClick={handleClear} className="action-btn clear-btn">
-            🗑️ Clear
+            Clear
           </button>
         </div>
 
         {error && (
           <div className="error-message">
-            ⚠️ {error}
+            {error}
           </div>
         )}
 
@@ -181,7 +181,7 @@ export default function XMLFormatter() {
             {output && output !== '✅ Valid XML' && (
               <div style={{ display: 'flex', gap: '10px', marginTop: '10px' }}>
                 <button onClick={handleCopy} className="copy-btn">
-                  📋 Copy XML
+                  Copy XML
                 </button>
                 <button onClick={handleDownload} className="copy-btn">
                   ⬇️ Download
@@ -193,7 +193,7 @@ export default function XMLFormatter() {
 
         {stats && (
           <div className="info-box" style={{ backgroundColor: '#f0f0f0', marginTop: '20px' }}>
-            <h4>📊 XML Statistics</h4>
+            <h4>XML Statistics</h4>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px', fontSize: '14px' }}>
               <div>
                 <strong>Root Element:</strong> {stats.rootElement}
@@ -218,7 +218,7 @@ export default function XMLFormatter() {
         )}
 
         <div className="info-box">
-          <h4>ℹ️ About XML</h4>
+          <h4>About XML</h4>
           <p>
             XML (eXtensible Markup Language) is a text-based format designed for storing and transporting data. It emphasizes simplicity, generality, and usability across the internet. XML is widely used for configuration files, data interchange, document markup, and web services.
           </p>

@@ -62,29 +62,29 @@ export default function Base64() {
   return (
     <div className="tool-page">
       <div className="privacy-badge">
-        🔒 All processing happens in your browser • No data is sent to server
+        All processing happens in your browser • No data is sent to server
       </div>
       <div className="tool-header">
-        <h1>📝 Online Base64 Encoder and Decoder Tool</h1>
+        <h1> Online Base64 Encoder and Decoder Tool</h1>
         <p>Easily encode text to Base64 or decode Base64 strings back to plain text. Base64 is a binary-to-text encoding scheme that represents binary data in ASCII format, commonly used for email attachments, data transmission, and web APIs.</p>
       </div>
 
       <div className="tool-container">
         <div className="button-group">
           <button onClick={handleEncode} className="action-btn encode-btn">
-            🔐 Encode
+            Encode
           </button>
           <button onClick={handleDecode} className="action-btn decode-btn">
             🔓 Decode
           </button>
           <button onClick={handleClear} className="action-btn clear-btn">
-            🗑️ Clear
+            Clear
           </button>
         </div>
 
         {error && (
           <div className="error-message">
-            ⚠️ {error}
+            {error}
           </div>
         )}
 
@@ -113,14 +113,14 @@ export default function Base64() {
             />
             {output && (
               <button onClick={handleCopy} className="copy-btn">
-                📋 Copy to Clipboard
+                Copy to Clipboard
               </button>
             )}
           </div>
         </div>
 
         <div className="info-box">
-          <h4>ℹ️ About Base64</h4>
+          <h4>About Base64</h4>
           <p>
             Base64 is a binary-to-text encoding scheme that represents binary data in an ASCII string format.
             It's commonly used for encoding data for transmission over text-only protocols like email and HTTP.

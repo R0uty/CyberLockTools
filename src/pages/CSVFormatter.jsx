@@ -137,26 +137,26 @@ export default function CSVFormatter() {
   return (
     <div className="tool-page">
       <div className="privacy-badge">
-        🔒 All processing happens in your browser • No data is sent to server
+        All processing happens in your browser • No data is sent to server
       </div>
       <div className="tool-header">
-        <h1>📊 Online CSV Parser and Formatter</h1>
+        <h1>Online CSV Parser and Formatter</h1>
         <p>Paste CSV or JSON data and instantly format, validate, or convert between formats. The parser handles quoted fields, special characters, and complex data structures. Display statistics about your data including row/column counts and data types. All processing happens locally in your browser with no data transmission to any server.</p>
       </div>
 
       <div className="tool-container">
         <div className="button-group">
           <button onClick={handleFormat} className="action-btn encode-btn">
-            📝 Format CSV
+            Format CSV
           </button>
           <button onClick={handleValidate} className="action-btn encode-btn">
             ✓ Validate
           </button>
           <button onClick={handleConvert} className="action-btn encode-btn">
-            🔄 {mode === 'csv' ? 'CSV → JSON' : 'JSON → CSV'}
+            {mode === 'csv' ? 'CSV → JSON' : 'JSON → CSV'}
           </button>
           <button onClick={handleClear} className="action-btn clear-btn">
-            🗑️ Clear
+            Clear
           </button>
         </div>
 
@@ -185,7 +185,7 @@ export default function CSVFormatter() {
 
         {error && (
           <div className="error-message">
-            ⚠️ {error}
+            {error}
           </div>
         )}
 
@@ -219,7 +219,7 @@ export default function CSVFormatter() {
             {output && output !== '✅ Valid CSV' && !output.startsWith('✅') && (
               <div style={{ display: 'flex', gap: '10px', marginTop: '10px' }}>
                 <button onClick={handleCopy} className="copy-btn">
-                  📋 Copy
+                  Copy
                 </button>
                 <button onClick={handleDownload} className="copy-btn">
                   ⬇️ Download
@@ -231,7 +231,7 @@ export default function CSVFormatter() {
 
         {stats && (
           <div className="info-box" style={{ backgroundColor: '#f0f0f0', marginTop: '20px' }}>
-            <h4>📊 CSV Statistics</h4>
+            <h4>CSV Statistics</h4>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px', fontSize: '14px' }}>
               <div>
                 <strong>Rows:</strong> {stats.rows}
@@ -259,7 +259,7 @@ export default function CSVFormatter() {
         )}
 
         <div className="info-box">
-          <h4>ℹ️ About CSV</h4>
+          <h4>About CSV</h4>
           <p>
             CSV (Comma-Separated Values) is a simple text-based format for storing tabular data. It's widely used for data interchange between applications, spreadsheets, and databases. Each line represents a row, and values are separated by commas.
           </p>

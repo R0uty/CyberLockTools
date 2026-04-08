@@ -94,10 +94,10 @@ export default function TimestampConverter() {
   return (
     <div className="tool-page">
       <div className="privacy-badge">
-        🔒 All processing happens in your browser • No data is sent to server
+        All processing happens in your browser • No data is sent to server
       </div>
       <div className="tool-header">
-        <h1>🕐 Unix Timestamp Converter</h1>
+        <h1>Unix Timestamp Converter</h1>
         <p>Convert between Unix timestamps and human-readable dates instantly. Support for both seconds and milliseconds. Calculate differences between dates, get current timestamp, and work with timezones. All processing happens locally in your browser with no data transmission to any server.</p>
       </div>
 
@@ -169,7 +169,7 @@ export default function TimestampConverter() {
             </button>
           ) : (
             <button onClick={handleConvert} className="action-btn encode-btn">
-              🔄 Convert
+              Convert
             </button>
           )}
           {mode === 'ts-to-date' && (
@@ -178,19 +178,19 @@ export default function TimestampConverter() {
             </button>
           )}
           <button onClick={handleClear} className="action-btn clear-btn">
-            🗑️ Clear
+            Clear
           </button>
         </div>
 
         {error && (
           <div className="error-message">
-            ⚠️ {error}
+            {error}
           </div>
         )}
 
         {result && (
           <div className="info-box" style={{ backgroundColor: '#f0f0f0', marginTop: '2rem' }}>
-            <h4>📊 Result</h4>
+            <h4>Result</h4>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px', fontSize: '14px' }}>
               {mode === 'ts-to-date' && (
                 <>
@@ -294,7 +294,7 @@ export default function TimestampConverter() {
         )}
 
         <div className="info-box" style={{ marginTop: '2rem' }}>
-          <h4>ℹ️ About Unix Timestamp</h4>
+          <h4>About Unix Timestamp</h4>
           <p>
             Unix Timestamp (also called Epoch time or POSIX time) is the number of seconds (or milliseconds) since January 1, 1970, 00:00:00 UTC. It's widely used in programming, databases, and system logs for tracking time.
           </p>

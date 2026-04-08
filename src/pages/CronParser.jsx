@@ -90,17 +90,17 @@ export default function CronParser() {
   return (
     <div className="tool-page">
       <div className="privacy-badge">
-        🔒 All processing happens in your browser • No data is sent to server
+        All processing happens in your browser • No data is sent to server
       </div>
       <div className="tool-header">
-        <h1>⏰ Online Cron Expression Parser and Generator Tool</h1>
+        <h1> Online Cron Expression Parser and Generator Tool</h1>
         <p>Create and understand cron expressions effortlessly. Use interactive dropdowns to build scheduling expressions or paste existing cron syntax to see human-readable explanations. Essential for developers working with task schedulers, cronjobs, and automation systems.</p>
       </div>
 
       <div className="tool-container">
         {error && (
           <div className="error-message">
-            ⚠️ {error}
+            {error}
           </div>
         )}
 
@@ -240,10 +240,10 @@ export default function CronParser() {
 
         <div className="button-group">
           <button onClick={handleCopy} className="action-btn encode-btn">
-            📋 Copy Expression
+            Copy Expression
           </button>
           <button onClick={handleClear} className="action-btn clear-btn">
-            🗑️ Clear All
+            Clear All
           </button>
         </div>
 
@@ -252,13 +252,13 @@ export default function CronParser() {
             <h3>Result</h3>
             <div className="result-box">
               <p className="cron-expression">{rawCron || generateCronString()}</p>
-              <p className="cron-description">📝 {output}</p>
+              <p className="cron-description">{output}</p>
             </div>
           </div>
         )}
 
         <div className="info-box">
-          <h4>ℹ️ About Cron Expressions</h4>
+          <h4>About Cron Expressions</h4>
           <p>
             Cron is a time-based job scheduler used in Unix-like systems. A cron expression has 5 fields:
           </p>

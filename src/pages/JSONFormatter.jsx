@@ -89,29 +89,29 @@ export default function JSONFormatter() {
   return (
     <div className="tool-page">
       <div className="privacy-badge">
-        🔒 All processing happens in your browser • No data is sent to server
+        All processing happens in your browser • No data is sent to server
       </div>
       <div className="tool-header">
-        <h1>📋 Online JSON Formatter and Validator</h1>
+        <h1> Online JSON Formatter and Validator</h1>
         <p>Paste raw JSON and instantly format it with proper indentation for readability. The formatter also validates your JSON structure and provides helpful error messages if there are syntax errors. All processing happens locally in your browser with no data transmission to any server.</p>
       </div>
 
       <div className="tool-container">
         <div className="button-group">
           <button onClick={handleFormat} className="action-btn encode-btn">
-            📝 Format JSON
+            Format JSON
           </button>
           <button onClick={handleValidate} className="action-btn encode-btn">
             ✓ Validate
           </button>
           <button onClick={handleClear} className="action-btn clear-btn">
-            🗑️ Clear
+            Clear
           </button>
         </div>
 
         {error && (
           <div className="error-message">
-            ⚠️ {error}
+            {error}
           </div>
         )}
 
@@ -138,7 +138,7 @@ export default function JSONFormatter() {
             />
             {output && output !== '✅ Valid JSON' && (
               <button onClick={handleCopy} className="copy-btn">
-                📋 Copy Formatted JSON
+                Copy Formatted JSON
               </button>
             )}
           </div>
@@ -146,7 +146,7 @@ export default function JSONFormatter() {
 
         {stats && (
           <div className="info-box" style={{ backgroundColor: '#f0f0f0', marginTop: '20px' }}>
-            <h4>📊 JSON Statistics</h4>
+            <h4>JSON Statistics</h4>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px', fontSize: '14px' }}>
               <div>
                 <strong>Type:</strong> {stats.type}
@@ -168,7 +168,7 @@ export default function JSONFormatter() {
         )}
 
         <div className="info-box">
-          <h4>ℹ️ About JSON</h4>
+          <h4>About JSON</h4>
           <p>
             JSON (JavaScript Object Notation) is a lightweight, text-based data format used for data interchange. It's human-readable and widely supported in programming languages and APIs.
           </p>

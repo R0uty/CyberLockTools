@@ -130,10 +130,10 @@ export default function ColorConverter() {
   return (
     <div className="tool-page">
       <div className="privacy-badge">
-        🔒 All processing happens in your browser • No data is sent to server
+        All processing happens in your browser • No data is sent to server
       </div>
       <div className="tool-header">
-        <h1>🎨 Color Converter</h1>
+        <h1>Color Converter</h1>
         <p>Convert colors between HEX, RGB, HSL, and HSV formats instantly. See live color preview, complementary colors, brightness analysis, and more. Perfect for web designers, developers, and color enthusiasts.</p>
       </div>
 
@@ -377,7 +377,7 @@ export default function ColorConverter() {
 
             {/* Color Info */}
             <div className="info-box">
-              <h4>📊 Color Information</h4>
+              <h4>Color Information</h4>
               <div style={{ fontSize: '13px', lineHeight: '1.8' }}>
                 <div><strong>HEX:</strong> <code>{colorInfo.hex}</code></div>
                 <div><strong>RGB:</strong> <code>{colorInfo.rgb}</code></div>
@@ -390,7 +390,7 @@ export default function ColorConverter() {
 
             {/* Color Palette */}
             <div className="info-box" style={{ marginTop: '1.5rem' }}>
-              <h4>🎨 Color Palette</h4>
+              <h4>Color Palette</h4>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '0.5rem' }}>
                 {[10, 30, 50, 70, 90].map((lightness) => {
                   const rgb = hslToRgb(hslH, hslS, lightness)
@@ -424,14 +424,14 @@ export default function ColorConverter() {
 
             {error && (
               <div className="error-message" style={{ marginTop: '1.5rem' }}>
-                ⚠️ {error}
+                {error}
               </div>
             )}
           </div>
         </div>
 
         <div className="info-box" style={{ marginTop: '1.5rem' }}>
-          <h4>ℹ️ About Color Formats</h4>
+          <h4>About Color Formats</h4>
           <ul style={{ margin: '0.5rem 0', paddingLeft: '1.5rem', fontSize: '13px' }}>
             <li><strong>HEX:</strong> Hexadecimal color notation (#RRGGBB) - most common in web</li>
             <li><strong>RGB:</strong> Red, Green, Blue values (0-255) - standard for screens</li>

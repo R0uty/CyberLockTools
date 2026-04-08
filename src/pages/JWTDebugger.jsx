@@ -50,10 +50,10 @@ export default function JWTDebugger() {
   return (
     <div className="tool-page">
       <div className="privacy-badge">
-        🔒 All processing happens in your browser • No data is sent to server
+        All processing happens in your browser • No data is sent to server
       </div>
       <div className="tool-header">
-        <h1>🔐 Online JWT Debugger and Decoder</h1>
+        <h1> Online JWT Debugger and Decoder</h1>
         <p>Paste a JWT token and instantly see the decoded header, payload, and signature. JWT (JSON Web Token) is a compact, URL-safe way to represent claims to be transferred between two parties. This tool helps you debug and understand JWT tokens without sending them to any server.</p>
       </div>
 
@@ -63,13 +63,13 @@ export default function JWTDebugger() {
             🔓 Decode JWT
           </button>
           <button onClick={handleClear} className="action-btn clear-btn">
-            🗑️ Clear
+            Clear
           </button>
         </div>
 
         {error && (
           <div className="error-message">
-            ⚠️ {error}
+            {error}
           </div>
         )}
 
@@ -98,7 +98,7 @@ export default function JWTDebugger() {
                 />
                 {decoded.header && (
                   <button onClick={() => handleCopy(formatJSON(decoded.header))} className="copy-btn">
-                    📋 Copy Header
+                    Copy Header
                   </button>
                 )}
               </div>
@@ -118,7 +118,7 @@ export default function JWTDebugger() {
               />
               {decoded.payload && (
                 <button onClick={() => handleCopy(formatJSON(decoded.payload))} className="copy-btn">
-                  📋 Copy Payload
+                  Copy Payload
                 </button>
               )}
             </div>
@@ -133,7 +133,7 @@ export default function JWTDebugger() {
               />
               {decoded.signature && (
                 <button onClick={() => handleCopy(decoded.signature)} className="copy-btn">
-                  📋 Copy Signature
+                  Copy Signature
                 </button>
               )}
             </div>
@@ -141,7 +141,7 @@ export default function JWTDebugger() {
         )}
 
         <div className="info-box">
-          <h4>ℹ️ About JWT Tokens</h4>
+          <h4>About JWT Tokens</h4>
           <p>
             A JWT consists of three Base64-encoded parts separated by dots:
           </p>

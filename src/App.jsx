@@ -18,6 +18,28 @@ import UUIDGenerator from './pages/UUIDGenerator'
 import TimestampConverter from './pages/TimestampConverter'
 import PasswordGenerator from './pages/PasswordGenerator'
 import JWTEncoder from './pages/JWTEncoder'
+import {
+  RotateClockwiseIcon,
+  File01Icon,
+  Link01Icon,
+  HashtagIcon,
+  Clock01Icon,
+  LockIcon,
+  FileScriptIcon,
+  DocumentCodeIcon,
+  Search01Icon,
+  Xml01Icon,
+  Database01Icon,
+  GridIcon,
+  IdentityCardIcon,
+  Calendar01Icon,
+  PasswordValidationIcon,
+  Ticket01Icon,
+  MobileNavigator02Icon,
+  IdeaIcon,
+  CssFile02Icon,
+  AiChemistry02Icon
+} from 'hugeicons-react'
 import QRCodeGenerator from './pages/QRCodeGenerator'
 import ColorConverter from './pages/ColorConverter'
 import CSSBeautifier from './pages/CSSBeautifier'
@@ -56,102 +78,102 @@ export default function App() {
 
   const tools = [
     {
-      icon: '🔄',
+      iconName: 'RotateClockwiseIcon',
       title: 'ROT',
       description: 'Encode and decode ROT13 and ROT47 cipher text.'
     },
     {
-      icon: '📝',
+      iconName: 'File01Icon',
       title: 'Base64',
       description: 'Encode and decode Base64 strings.'
     },
     {
-      icon: '🔗',
+      iconName: 'Link01Icon',
       title: 'URL Encoder',
       description: 'Encode and decode URLs for safe web transmission.'
     },
     {
-      icon: '#️⃣',
+      iconName: 'HashtagIcon',
       title: 'Hash Generator',
       description: 'Generate MD5, SHA1, SHA256, and more hash algorithms.'
     },
     {
-      icon: '⏰',
+      iconName: 'Clock01Icon',
       title: 'Cron Parser',
       description: 'Parse and understand cron expressions easily.'
     },
     {
-      icon: '🔐',
+      iconName: 'LockIcon',
       title: 'JWT Debugger',
       description: 'Decode and debug JWT tokens to see their content.'
     },
     {
-      icon: '📋',
+      iconName: 'FileScriptIcon',
       title: 'JSON Formatter',
       description: 'Format and validate JSON with proper indentation.'
     },
     {
-      icon: '📄',
+      iconName: 'File01Icon',
       title: 'YAML Formatter',
       description: 'Format YAML files and convert to JSON.'
     },
     {
-      icon: '📑',
+      iconName: 'DocumentCodeIcon',
       title: 'Markdown Preview',
       description: 'Convert and preview markdown with live rendering.'
     },
     {
-      icon: '🔍',
+      iconName: 'Search01Icon',
       title: 'Regex Tester',
       description: 'Test regex patterns with live matching and highlighting.'
     },
     {
-      icon: '📄',
+      iconName: 'Xml01Icon',
       title: 'XML Formatter',
       description: 'Format and validate XML with proper indentation.'
     },
     {
-      icon: '🗄️',
+      iconName: 'Database01Icon',
       title: 'SQL Formatter',
       description: 'Format and validate SQL queries with proper indentation.'
     },
     {
-      icon: '📊',
+      iconName: 'GridIcon',
       title: 'CSV Formatter',
       description: 'Parse, format, and convert CSV to/from JSON.'
     },
     {
-      icon: '🆔',
+      iconName: 'IdentityCardIcon',
       title: 'UUID Generator',
       description: 'Generate and validate UUID v1 and v4 identifiers.'
     },
     {
-      icon: '🕐',
+      iconName: 'Calendar01Icon',
       title: 'Timestamp Converter',
       description: 'Convert between Unix timestamps and human-readable dates.'
     },
     {
-      icon: '🔑',
+      iconName: 'PasswordValidationIcon',
       title: 'Password Generator',
       description: 'Generate secure passwords with customizable options and strength analysis.'
     },
     {
-      icon: '🔑',
+      iconName: 'Ticket01Icon',
       title: 'JWT Encoder',
       description: 'Create and verify JWT tokens with custom payload and signature.'
     },
     {
-      icon: '📱',
+      iconName: 'MobileNavigator02Icon',
       title: 'QR Code Generator',
       description: 'Generate QR codes from text, URLs, and contact information.'
     },
     {
-      icon: '🎨',
+      iconName: 'IdeaIcon',
       title: 'Color Converter',
       description: 'Convert between HEX, RGB, HSL, and HSV color formats with live preview.'
     },
     {
-      icon: '💅',
+      iconName: 'CssFile02Icon',
       title: 'CSS Beautifier',
       description: 'Format, minify, and validate CSS with file size optimization analysis.'
     }
@@ -422,10 +444,10 @@ export default function App() {
           <div style={{ marginTop: '2rem', marginBottom: '2rem' }}>
             <input
               type="text"
-              placeholder="🔍 Search tools... (e.g., 'hash', 'color', 'json')"
+              placeholder=" Search tools... (e.g., 'hash', 'color', 'json')"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              onKeyPress={(e) => {
+              onKeyDown={(e) => {
                 if (e.key === 'Enter' && searchQuery.trim()) {
                   setCurrentPage('tools')
                 }
@@ -449,19 +471,19 @@ export default function App() {
           <h2>Why I Built This Lab</h2>
           <div className="features-grid">
             <div className="feature-item">
-              <h3>🔒 100% Private & Secure</h3>
+              <h3>100% Private & Secure</h3>
               <p>My tools run entirely in your browser. Your data never leaves your device or reaches my servers.</p>
             </div>
             <div className="feature-item">
-              <h3>⚡ Lightning Fast</h3>
+              <h3>Lightning Fast</h3>
               <p>No waiting for uploads or downloads. Process your data instantly with browser-based computation.</p>
             </div>
             <div className="feature-item">
-              <h3>📚 Educational</h3>
+              <h3>Educational</h3>
               <p>Learn about cryptography, encoding schemes, and scheduling with built-in explanations and examples.</p>
             </div>
             <div className="feature-item">
-              <h3>🎨 User-Friendly</h3>
+              <h3>User-Friendly</h3>
               <p>Intuitive interfaces with clear inputs, outputs, and helpful documentation for each tool.</p>
             </div>
           </div>

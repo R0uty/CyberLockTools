@@ -137,10 +137,10 @@ export default function CSSBeautifier() {
   return (
     <div className="tool-page">
       <div className="privacy-badge">
-        🔒 All processing happens in your browser • No data is sent to server
+        All processing happens in your browser • No data is sent to server
       </div>
       <div className="tool-header">
-        <h1>💅 CSS Beautifier & Minifier</h1>
+        <h1> CSS Beautifier & Minifier</h1>
         <p>Format CSS with proper indentation or minify for production. Validate syntax, check file size reduction, and analyze CSS complexity. Perfect for web developers and designers optimizing stylesheets.</p>
       </div>
 
@@ -292,7 +292,7 @@ export default function CSSBeautifier() {
 
         {error && (
           <div className="error-message" style={{ marginBottom: '1.5rem' }}>
-            ⚠️ {error}
+            {error}
           </div>
         )}
 
@@ -313,12 +313,12 @@ export default function CSSBeautifier() {
             </button>
           )}
           <button onClick={handleLoadExample} className="action-btn copy-btn">
-            📋 Load Example
+            Load Example
           </button>
           {output && (
             <>
               <button onClick={() => handleCopy(output)} className="action-btn copy-btn">
-                📋 Copy Output
+                Copy Output
               </button>
               <button onClick={() => handleDownload(mode === 'minify' ? 'style.min.css' : 'style.css')} className="action-btn copy-btn">
                 📥 Download
@@ -326,13 +326,13 @@ export default function CSSBeautifier() {
             </>
           )}
           <button onClick={handleClear} className="action-btn clear-btn">
-            🗑️ Clear
+            Clear
           </button>
         </div>
 
         {stats && (
           <div className="info-box" style={{ marginBottom: '1.5rem' }}>
-            <h4>📊 CSS Statistics</h4>
+            <h4>CSS Statistics</h4>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', fontSize: '13px' }}>
               <div><strong>Selectors:</strong> {stats.selectors}</div>
               <div><strong>Rules:</strong> {stats.rules}</div>
@@ -361,7 +361,7 @@ export default function CSSBeautifier() {
         )}
 
         <div className="info-box">
-          <h4>ℹ️ Usage Tips</h4>
+          <h4>Usage Tips</h4>
           <ul style={{ margin: '0.5rem 0', paddingLeft: '1.5rem', fontSize: '13px' }}>
             <li><strong>Format:</strong> Beautifies CSS with proper indentation for readability and maintenance</li>
             <li><strong>Minify:</strong> Removes all whitespace and comments to reduce file size for production</li>

@@ -12,6 +12,7 @@
   "dependencies": {
     "cronstrue": "^3.14.0",
     "crypto-js": "^4.2.0",
+    "hugeicons-react": "^0.4.0",
     "js-yaml": "^4.1.1",
     "marked": "^17.0.5",
     "qrcode.react": "4.2.0",

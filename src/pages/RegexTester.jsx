@@ -112,7 +112,7 @@ ${getReplacedString()}`;
 
   return (
     <div className="tool-container">
-      <h1>🔍 Online Regex Tester Tool</h1>
+      <h1> Online Regex Tester Tool</h1>
       <p className="tool-intro">
         Test your regular expressions in real-time with live highlighting. See all matches, capture groups, and test replacements instantly.
       </p>
@@ -292,7 +292,7 @@ ${getReplacedString()}`;
         </div>
 
         <div className="feature-item">
-          <h4>📚 Regex Syntax Quick Reference</h4>
+          <h4> Regex Syntax Quick Reference</h4>
           <ul>
             <li><code>.</code> - Any character (or newline with s flag)</li>
             <li><code>*</code> - Zero or more of previous</li>
@@ -314,12 +314,12 @@ ${getReplacedString()}`;
         <div className="feature-item">
           <h4>✨ Features</h4>
           <ul>
-            <li>⚡ Real-time regex matching with live results</li>
-            <li>🎨 Visual highlighting of all matches in text</li>
+            <li>Real-time regex matching with live results</li>
+            <li>Visual highlighting of all matches in text</li>
             <li>🚩 Support for 4 major flags (g, i, m, s)</li>
             <li>👥 Capture group display and analysis</li>
-            <li>🔄 Replace demo with replacement string</li>
-            <li>📋 Copy pattern, matches (JSON), or replaced text</li>
+            <li>Replace demo with replacement string</li>
+            <li>Copy pattern, matches (JSON), or replaced text</li>
             <li>💾 Download complete results as text file</li>
             <li>❌ Error messages for invalid patterns</li>
           </ul>

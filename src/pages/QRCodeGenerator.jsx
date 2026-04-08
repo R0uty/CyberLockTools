@@ -79,10 +79,10 @@ export default function QRCodeGenerator() {
   return (
     <div className="tool-page">
       <div className="privacy-badge">
-        🔒 All processing happens in your browser • No data is sent to server
+        All processing happens in your browser • No data is sent to server
       </div>
       <div className="tool-header">
-        <h1>📱 QR Code Generator</h1>
+        <h1> QR Code Generator</h1>
         <p>Generate professional QR codes from text, URLs, contact info, WiFi credentials, and more. Customize colors, size, and error correction level. Download in PNG or SVG format, or copy directly to clipboard. Perfect for marketing materials, product packaging, event tickets, and business cards.</p>
       </div>
 
@@ -230,10 +230,10 @@ export default function QRCodeGenerator() {
 
             <div className="button-group">
               <button onClick={copyToClipboard} className="action-btn copy-btn">
-                📋 Copy to Clipboard
+                Copy to Clipboard
               </button>
               <button onClick={() => { setInput(''); setSize(200); setLevel('H'); }} className="action-btn clear-btn">
-                🗑️ Clear
+                Clear
               </button>
             </div>
           </div>
@@ -264,14 +264,14 @@ export default function QRCodeGenerator() {
               </div>
               {!input && (
                 <div style={{ color: '#999', textAlign: 'center' }}>
-                  <div style={{ fontSize: '48px', marginBottom: '1rem' }}>📱</div>
+                  
                   <div>Enter text or URL above to generate QR code</div>
                 </div>
               )}
             </div>
 
             <div className="info-box" style={{ marginTop: '1.5rem' }}>
-              <h4>📊 QR Code Info</h4>
+              <h4>QR Code Info</h4>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem', fontSize: '13px' }}>
                 {Object.entries(stats).map(([key, value]) => (
                   <div key={key}>
@@ -284,7 +284,7 @@ export default function QRCodeGenerator() {
         </div>
 
         <div className="info-box" style={{ marginTop: '1.5rem' }}>
-          <h4>ℹ️ About QR Codes</h4>
+          <h4>About QR Codes</h4>
           <ul style={{ margin: '0.5rem 0', paddingLeft: '1.5rem', fontSize: '13px' }}>
             <li><strong>Error Correction:</strong> Allows the QR code to work even if partially damaged (L: 7%, M: 15%, Q: 25%, H: 30%)</li>
             <li><strong>WiFi Format:</strong> Use WIFI:T:WPA;S:NetworkName;P:Password;; to share network credentials</li>

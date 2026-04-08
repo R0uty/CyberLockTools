@@ -14,8 +14,8 @@ export default function HashGenerator() {
   const [error, setError] = useState('')
 
   const algorithms = [
-    { value: 'MD5', label: 'MD5 ⚠️ (Cryptographically broken)' },
-    { value: 'SHA-1', label: 'SHA-1 ⚠️ (Deprecated)' },
+    { value: 'MD5', label: 'MD5 (Cryptographically broken)' },
+    { value: 'SHA-1', label: 'SHA-1 (Deprecated)' },
     { value: 'SHA-256', label: 'SHA-256 (Recommended)' },
     { value: 'SHA-384', label: 'SHA-384' },
     { value: 'SHA-512', label: 'SHA-512' },
@@ -83,10 +83,10 @@ export default function HashGenerator() {
   return (
     <div className="tool-page">
       <div className="privacy-badge">
-        🔒 All processing happens in your browser • No data is sent to server
+        All processing happens in your browser • No data is sent to server
       </div>
       <div className="tool-header">
-        <h1>#️⃣ Online Hash Generator Tool</h1>
+        <h1> Online Hash Generator Tool</h1>
         <p>Generate cryptographic hashes instantly using multiple algorithms including SHA-256, SHA-512, and more. Perfect for developers, security professionals, and students learning about cryptography and data integrity verification.</p>
       </div>
 
@@ -108,22 +108,22 @@ export default function HashGenerator() {
             ))}
           </select>
           <button onClick={handleGenerateHash} className="action-btn encode-btn">
-            🔐 Generate Hash
+            Generate Hash
           </button>
           <button onClick={handleClear} className="action-btn clear-btn">
-            🗑️ Clear
+            Clear
           </button>
         </div>
 
         {showWarning && (
           <div className="warning-box">
-            ⚠️ <strong>Security Warning:</strong> MD5 and SHA-1 are cryptographically broken and should not be used for password storage or any security-sensitive applications. This tool is for educational purposes only.
+            <strong>Security Warning:</strong> MD5 and SHA-1 are cryptographically broken and should not be used for password storage or any security-sensitive applications. This tool is for educational purposes only.
           </div>
         )}
 
         {error && (
           <div className="error-message">
-            ⚠️ {error}
+            {error}
           </div>
         )}
 
@@ -152,14 +152,14 @@ export default function HashGenerator() {
             />
             {output && (
               <button onClick={handleCopy} className="copy-btn">
-                📋 Copy to Clipboard
+                Copy to Clipboard
               </button>
             )}
           </div>
         </div>
 
         <div className="info-box">
-          <h4>ℹ️ About Hashing</h4>
+          <h4>About Hashing</h4>
           <p>
             Hash functions produce a fixed-size string of bytes from any input. The same input always produces the same hash, but it's computationally infeasible to reverse.
           </p>
