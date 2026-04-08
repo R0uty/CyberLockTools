@@ -19,6 +19,7 @@ import TimestampConverter from './pages/TimestampConverter'
 import PasswordGenerator from './pages/PasswordGenerator'
 import JWTEncoder from './pages/JWTEncoder'
 import QRCodeGenerator from './pages/QRCodeGenerator'
+import ColorConverter from './pages/ColorConverter'
 import Tools from './pages/Tools'
 import About from './pages/About'
 import Contact from './pages/Contact'
@@ -141,6 +142,11 @@ export default function App() {
       icon: '📱',
       title: 'QR Code Generator',
       description: 'Generate QR codes from text, URLs, and contact information.'
+    },
+    {
+      icon: '🎨',
+      title: 'Color Converter',
+      description: 'Convert between HEX, RGB, HSL, and HSV color formats with live preview.'
     }
   ]
 
@@ -342,6 +348,17 @@ export default function App() {
     )
   }
 
+  if (currentTool === 'Color Converter') {
+    return (
+      <div className="app">
+        <Header onLogoClick={handleLogoClick} currentPage={currentPage} onPageChange={handlePageChange} />
+        <div className="main-content">
+          <ColorConverter />
+        </div>
+      </div>
+    )
+  }
+
   if (currentPage === 'tools' && !currentTool) {
     return (
       <div className="app">
@@ -408,7 +425,7 @@ export default function App() {
 
         <section className="cta">
           <h2>Ready to Get Started?</h2>
-          <p>Choose from our collection of 18 free online tools for encoding, decoding, hashing, generating, and more.</p>
+          <p>Choose from our collection of 19 free online tools for encoding, decoding, hashing, generating, converting, and more.</p>
           <button className="cta-button" onClick={() => handlePageChange('tools')}>Browse All Tools</button>
         </section>
       </main>

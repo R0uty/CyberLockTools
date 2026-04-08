@@ -5,8 +5,8 @@ import { useSEO } from '../hooks/useSEO'
 export default function HashGenerator() {
   useSEO({
     title: 'Online Hash Generator Tool - Generate Hashes',
-    description: 'Free online hash generator for MD5, SHA-1, SHA-256, SHA-384, and SHA-512. Generate cryptographic hashes instantly from any text or string. Educational cryptography tool.',
-    keywords: 'online hash tool, hash generator, sha256 generator, md5 hash, sha512, cryptographic hash, text hash'
+    description: 'Free online hash generator for MD5, SHA-1, SHA-256, SHA-384, SHA-512, RIPEMD-160, and more. Generate cryptographic hashes instantly from any text. Educational cryptography tool.',
+    keywords: 'online hash tool, hash generator, sha256 generator, md5 hash, sha512, cryptographic hash, ripemd160, text hash'
   })
   const [input, setInput] = useState('')
   const [algorithm, setAlgorithm] = useState('SHA-256')
@@ -18,7 +18,8 @@ export default function HashGenerator() {
     { value: 'SHA-1', label: 'SHA-1 ⚠️ (Deprecated)' },
     { value: 'SHA-256', label: 'SHA-256 (Recommended)' },
     { value: 'SHA-384', label: 'SHA-384' },
-    { value: 'SHA-512', label: 'SHA-512' }
+    { value: 'SHA-512', label: 'SHA-512' },
+    { value: 'RIPEMD-160', label: 'RIPEMD-160 (Legacy)' }
   ]
 
   const handleGenerateHash = () => {
@@ -47,6 +48,9 @@ export default function HashGenerator() {
           break
         case 'SHA-512':
           hash = CryptoJS.SHA512(input).toString()
+          break
+        case 'RIPEMD-160':
+          hash = CryptoJS.RIPEMD160(input).toString()
           break
         default:
           hash = CryptoJS.SHA256(input).toString()
