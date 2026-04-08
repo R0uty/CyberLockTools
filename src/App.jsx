@@ -14,6 +14,11 @@ import RegexTester from './pages/RegexTester'
 import XMLFormatter from './pages/XMLFormatter'
 import SQLFormatter from './pages/SQLFormatter'
 import CSVFormatter from './pages/CSVFormatter'
+import UUIDGenerator from './pages/UUIDGenerator'
+import TimestampConverter from './pages/TimestampConverter'
+import PasswordGenerator from './pages/PasswordGenerator'
+import JWTEncoder from './pages/JWTEncoder'
+import QRCodeGenerator from './pages/QRCodeGenerator'
 import Tools from './pages/Tools'
 import About from './pages/About'
 import Contact from './pages/Contact'
@@ -111,6 +116,31 @@ export default function App() {
       icon: '📊',
       title: 'CSV Formatter',
       description: 'Parse, format, and convert CSV to/from JSON.'
+    },
+    {
+      icon: '🆔',
+      title: 'UUID Generator',
+      description: 'Generate and validate UUID v1 and v4 identifiers.'
+    },
+    {
+      icon: '🕐',
+      title: 'Timestamp Converter',
+      description: 'Convert between Unix timestamps and human-readable dates.'
+    },
+    {
+      icon: '🔑',
+      title: 'Password Generator',
+      description: 'Generate secure passwords with customizable options and strength analysis.'
+    },
+    {
+      icon: '🔑',
+      title: 'JWT Encoder',
+      description: 'Create and verify JWT tokens with custom payload and signature.'
+    },
+    {
+      icon: '📱',
+      title: 'QR Code Generator',
+      description: 'Generate QR codes from text, URLs, and contact information.'
     }
   ]
 
@@ -257,6 +287,61 @@ export default function App() {
     )
   }
 
+  if (currentTool === 'UUID Generator') {
+    return (
+      <div className="app">
+        <Header onLogoClick={handleLogoClick} currentPage={currentPage} onPageChange={handlePageChange} />
+        <div className="main-content">
+          <UUIDGenerator />
+        </div>
+      </div>
+    )
+  }
+
+  if (currentTool === 'Timestamp Converter') {
+    return (
+      <div className="app">
+        <Header onLogoClick={handleLogoClick} currentPage={currentPage} onPageChange={handlePageChange} />
+        <div className="main-content">
+          <TimestampConverter />
+        </div>
+      </div>
+    )
+  }
+
+  if (currentTool === 'Password Generator') {
+    return (
+      <div className="app">
+        <Header onLogoClick={handleLogoClick} currentPage={currentPage} onPageChange={handlePageChange} />
+        <div className="main-content">
+          <PasswordGenerator />
+        </div>
+      </div>
+    )
+  }
+
+  if (currentTool === 'JWT Encoder') {
+    return (
+      <div className="app">
+        <Header onLogoClick={handleLogoClick} currentPage={currentPage} onPageChange={handlePageChange} />
+        <div className="main-content">
+          <JWTEncoder />
+        </div>
+      </div>
+    )
+  }
+
+  if (currentTool === 'QR Code Generator') {
+    return (
+      <div className="app">
+        <Header onLogoClick={handleLogoClick} currentPage={currentPage} onPageChange={handlePageChange} />
+        <div className="main-content">
+          <QRCodeGenerator />
+        </div>
+      </div>
+    )
+  }
+
   if (currentPage === 'tools' && !currentTool) {
     return (
       <div className="app">
@@ -323,7 +408,7 @@ export default function App() {
 
         <section className="cta">
           <h2>Ready to Get Started?</h2>
-          <p>Choose from our collection of 10 free online tools for encoding, decoding, hashing, and more.</p>
+          <p>Choose from our collection of 18 free online tools for encoding, decoding, hashing, generating, and more.</p>
           <button className="cta-button" onClick={() => handlePageChange('tools')}>Browse All Tools</button>
         </section>
       </main>
