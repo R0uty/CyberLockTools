@@ -38,7 +38,12 @@ import {
   MobileNavigator02Icon,
   IdeaIcon,
   CssFile02Icon,
-  AiChemistry02Icon
+  LockKeyIcon,
+  CheckmarkBadge01Icon,
+  BookOpen01Icon,
+  SmileIcon,
+  ArrowDataTransferHorizontalIcon,
+  GlobeIcon
 } from 'hugeicons-react'
 import QRCodeGenerator from './pages/QRCodeGenerator'
 import ColorConverter from './pages/ColorConverter'
@@ -51,7 +56,6 @@ import './App.css'
 export default function App() {
   const [currentTool, setCurrentTool] = useState(null)
   const [currentPage, setCurrentPage] = useState('home')
-  const [searchQuery, setSearchQuery] = useState('')
 
   useSEO({
     title: "R0uty's Cyber Lab - My Free Online Tools Suite",
@@ -439,50 +443,28 @@ export default function App() {
         <section className="hero">
           <h1>Welcome to My Cyber Lab</h1>
           <p>Hey there! I'm R0uty, and this is my personal collection of 20+ powerful online utilities for encoding, decoding, hashing, formatting, and generation. All my tools are secure, private, and run completely in your browser—no data ever touches my servers.</p>
-          
-          {/* Search Bar */}
-          <div style={{ marginTop: '2rem', marginBottom: '2rem' }}>
-            <input
-              type="text"
-              placeholder=" Search tools... (e.g., 'hash', 'color', 'json')"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' && searchQuery.trim()) {
-                  setCurrentPage('tools')
-                }
-              }}
-              style={{
-                width: '100%',
-                maxWidth: '600px',
-                padding: '12px 20px',
-                fontSize: '16px',
-                border: '2px solid #c0c0c0',
-                borderRadius: '8px',
-                backgroundColor: '#1a1a1a',
-                color: '#e8e8e8',
-                fontFamily: 'inherit'
-              }}
-            />
-          </div>
         </section>
 
         <section className="features">
           <h2>Why I Built This Lab</h2>
           <div className="features-grid">
             <div className="feature-item">
+              <div style={{ fontSize: '2rem', marginBottom: '0.5rem' }}><LockKeyIcon size={32} color="#c0c0c0" /></div>
               <h3>100% Private & Secure</h3>
               <p>My tools run entirely in your browser. Your data never leaves your device or reaches my servers.</p>
             </div>
             <div className="feature-item">
+              <div style={{ fontSize: '2rem', marginBottom: '0.5rem' }}><CheckmarkBadge01Icon size={32} color="#c0c0c0" /></div>
               <h3>Lightning Fast</h3>
               <p>No waiting for uploads or downloads. Process your data instantly with browser-based computation.</p>
             </div>
             <div className="feature-item">
+              <div style={{ fontSize: '2rem', marginBottom: '0.5rem' }}><BookOpen01Icon size={32} color="#c0c0c0" /></div>
               <h3>Educational</h3>
               <p>Learn about cryptography, encoding schemes, and scheduling with built-in explanations and examples.</p>
             </div>
             <div className="feature-item">
+              <div style={{ fontSize: '2rem', marginBottom: '0.5rem' }}><SmileIcon size={32} color="#c0c0c0" /></div>
               <h3>User-Friendly</h3>
               <p>Intuitive interfaces with clear inputs, outputs, and helpful documentation for each tool.</p>
             </div>
