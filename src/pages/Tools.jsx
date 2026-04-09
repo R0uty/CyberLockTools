@@ -112,12 +112,12 @@ export default function Tools({ tools, onToolClick }) {
               />
             </div>
             {filteredTools.length > 0 && (
-              <p style={{ textAlign: 'center', color: '#a0a0a0', marginTop: '0.5rem', fontSize: '0.9rem' }}>
+              <p style={{ textAlign: 'center', color: '#d0d0d0', marginTop: '0.5rem', fontSize: '0.9rem' }}>
                 Found {filteredTools.length} tool{filteredTools.length !== 1 ? 's' : ''}
               </p>
             )}
             {filteredTools.length === 0 && searchQuery.trim() !== '' && (
-              <p style={{ textAlign: 'center', color: '#808080', marginTop: '0.5rem', fontSize: '0.9rem' }}>
+              <p style={{ textAlign: 'center', color: '#c0c0c0', marginTop: '0.5rem', fontSize: '0.9rem' }}>
                 No tools match your search. Try different keywords.
               </p>
             )}

@@ -160,7 +160,7 @@ export default function Contact() {
             type="submit"
             style={{
               padding: '0.75rem 2rem',
-              background: 'linear-gradient(135deg, #c0c0c0 0%, #808080 100%)',
+              background: 'linear-gradient(135deg, #d0d0d0 0%, #a0a0a0 100%)',
               color: '#1a1a1a',
               border: 'none',
               borderRadius: '8px',
