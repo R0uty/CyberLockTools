@@ -23,7 +23,8 @@ import {
   CssFile02Icon,
   CommandLineIcon,
   AiSecurity02Icon,
-  Bug02Icon
+  Bug02Icon,
+  CodeIcon
 } from 'hugeicons-react'
 
 const iconMap = {
@@ -54,11 +55,13 @@ const iconMap = {
   GlobeIcon,
   CommandLineIcon,
   AiSecurity02Icon,
-  Bug02Icon
+  Bug02Icon,
+  CodeIcon
 }
 
 export default function Tools({ tools, onToolClick }) {
   const [searchQuery, setSearchQuery] = useState('')
+  const [selectedCategory, setSelectedCategory] = useState('General')
 
   useSEO({
     title: 'All Online Tools - Free Encoder, Decoder, Generator, Formatter',
@@ -66,13 +69,18 @@ export default function Tools({ tools, onToolClick }) {
     keywords: 'online tools, encoder, decoder, formatter, generator, parser, free tools, browser tools, utilities',
   });
 
-  // Filter tools based on search query
-  const filteredTools = searchQuery.trim() === '' 
-    ? tools 
-    : tools.filter(tool => 
-        tool.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        tool.description.toLowerCase().includes(searchQuery.toLowerCase())
-      );
+  // Get unique categories
+  const categories = [...new Set(tools.map(tool => tool.category))].sort();
+
+  // Filter tools based on category and search query
+  const filteredTools = tools.filter(tool => {
+    const matchesCategory = tool.category === selectedCategory;
+    const matchesSearch = searchQuery.trim() === '' 
+      ? true 
+      : tool.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        tool.description.toLowerCase().includes(searchQuery.toLowerCase());
+    return matchesCategory && matchesSearch;
+  });
 
   return (
     <div className="tool-page">
@@ -83,6 +91,44 @@ export default function Tools({ tools, onToolClick }) {
 
       <div className="tool-container">
         <section className="tools-grid">
+          {/* Category Tabs */}
+          <div style={{ marginBottom: '2rem', width: '100%' }}>
+            <div style={{ display: 'flex', justifyContent: 'center', gap: '12px', flexWrap: 'wrap' }}>
+              {categories.map(category => (
+                <button
+                  key={category}
+                  onClick={() => {
+                    setSelectedCategory(category);
+                    setSearchQuery('');
+                  }}
+                  style={{
+                    padding: '10px 20px',
+                    backgroundColor: selectedCategory === category ? '#c0c0c0' : '#2a2a2a',
+                    color: selectedCategory === category ? '#1a1a1a' : '#d0d0d0',
+                    border: '2px solid #c0c0c0',
+                    borderRadius: '6px',
+                    cursor: 'pointer',
+                    fontSize: '14px',
+                    fontWeight: 'bold',
+                    transition: 'all 0.2s'
+                  }}
+                  onMouseOver={(e) => {
+                    if (selectedCategory !== category) {
+                      e.target.style.backgroundColor = '#3a3a3a';
+                    }
+                  }}
+                  onMouseOut={(e) => {
+                    if (selectedCategory !== category) {
+                      e.target.style.backgroundColor = '#2a2a2a';
+                    }
+                  }}
+                >
+                  {category}
+                </button>
+              ))}
+            </div>
+          </div>
+
           {/* Search Bar */}
           <div style={{ marginBottom: '2rem', width: '100%' }}>
             <div style={{ position: 'relative', maxWidth: '600px', margin: '0 auto' }}>
@@ -130,7 +176,7 @@ export default function Tools({ tools, onToolClick }) {
           </div>
 
           <div className="tools-intro">
-            <p>{filteredTools.length} tool{filteredTools.length !== 1 ? 's' : ''} available:</p>
+            <p>{filteredTools.length} tool{filteredTools.length !== 1 ? 's' : ''} available in {selectedCategory}:</p>
           </div>
 
           <div className="cards-container">

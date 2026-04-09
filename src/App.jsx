@@ -46,7 +46,8 @@ import {
   GlobeIcon,
   CommandLineIcon,
   AiSecurity02Icon,
-  Bug02Icon
+  Bug02Icon,
+  CodeIcon
 } from 'hugeicons-react'
 import QRCodeGenerator from './pages/QRCodeGenerator'
 import ColorConverter from './pages/ColorConverter'
@@ -54,6 +55,8 @@ import CSSBeautifier from './pages/CSSBeautifier'
 import ReverseShellGenerator from './pages/ReverseShellGenerator'
 import XXEGenerator from './pages/XXEGenerator'
 import XSSGenerator from './pages/XSSGenerator'
+import SQLInjectionGenerator from './pages/SQLInjectionGenerator'
+import GraphQLInjectionGenerator from './pages/GraphQLInjectionGenerator'
 import Tools from './pages/Tools'
 import About from './pages/About'
 import Contact from './pages/Contact'
@@ -87,120 +90,157 @@ export default function App() {
   }
 
   const tools = [
+    // General Utility Tools
     {
+      category: 'General',
       iconName: 'RotateClockwiseIcon',
       title: 'ROT',
       description: 'Encode and decode ROT13 and ROT47 cipher text.'
     },
     {
+      category: 'General',
       iconName: 'File01Icon',
       title: 'Base64',
       description: 'Encode and decode Base64 strings.'
     },
     {
+      category: 'General',
       iconName: 'Link01Icon',
       title: 'URL Encoder',
       description: 'Encode and decode URLs for safe web transmission.'
     },
     {
+      category: 'General',
       iconName: 'HashtagIcon',
       title: 'Hash Generator',
       description: 'Generate MD5, SHA1, SHA256, and more hash algorithms.'
     },
     {
+      category: 'General',
       iconName: 'Clock01Icon',
       title: 'Cron Parser',
       description: 'Parse and understand cron expressions easily.'
     },
     {
+      category: 'General',
       iconName: 'LockIcon',
       title: 'JWT Debugger',
       description: 'Decode and debug JWT tokens to see their content.'
     },
     {
+      category: 'General',
       iconName: 'FileScriptIcon',
       title: 'JSON Formatter',
       description: 'Format and validate JSON with proper indentation.'
     },
     {
+      category: 'General',
       iconName: 'File01Icon',
       title: 'YAML Formatter',
       description: 'Format YAML files and convert to JSON.'
     },
     {
+      category: 'General',
       iconName: 'DocumentCodeIcon',
       title: 'Markdown Preview',
       description: 'Convert and preview markdown with live rendering.'
     },
     {
+      category: 'General',
       iconName: 'Search01Icon',
       title: 'Regex Tester',
       description: 'Test regex patterns with live matching and highlighting.'
     },
     {
+      category: 'General',
       iconName: 'Xml01Icon',
       title: 'XML Formatter',
       description: 'Format and validate XML with proper indentation.'
     },
     {
+      category: 'General',
       iconName: 'Database01Icon',
       title: 'SQL Formatter',
       description: 'Format and validate SQL queries with proper indentation.'
     },
     {
+      category: 'General',
       iconName: 'GridIcon',
       title: 'CSV Formatter',
       description: 'Parse, format, and convert CSV to/from JSON.'
     },
     {
+      category: 'General',
       iconName: 'IdentityCardIcon',
       title: 'UUID Generator',
       description: 'Generate and validate UUID v1 and v4 identifiers.'
     },
     {
+      category: 'General',
       iconName: 'Calendar01Icon',
       title: 'Timestamp Converter',
       description: 'Convert between Unix timestamps and human-readable dates.'
     },
     {
+      category: 'General',
       iconName: 'PasswordValidationIcon',
       title: 'Password Generator',
       description: 'Generate secure passwords with customizable options and strength analysis.'
     },
     {
+      category: 'General',
       iconName: 'Ticket01Icon',
       title: 'JWT Encoder',
       description: 'Create and verify JWT tokens with custom payload and signature.'
     },
     {
+      category: 'General',
       iconName: 'MobileNavigator02Icon',
       title: 'QR Code Generator',
       description: 'Generate QR codes from text, URLs, and contact information.'
     },
     {
+      category: 'General',
       iconName: 'IdeaIcon',
       title: 'Color Converter',
       description: 'Convert between HEX, RGB, HSL, and HSV color formats with live preview.'
     },
     {
+      category: 'General',
       iconName: 'CssFile02Icon',
       title: 'CSS Beautifier',
       description: 'Format, minify, and validate CSS with file size optimization analysis.'
     },
+    // Penetration Testing Tools
     {
+      category: 'Penetration Testing',
       iconName: 'CommandLineIcon',
       title: 'Reverse Shell Generator',
       description: 'Generate reverse shell payloads for authorized penetration testing. Supports bash, python, PHP, perl, ruby, netcat, and PowerShell.'
     },
     {
+      category: 'Penetration Testing',
       iconName: 'AiSecurity02Icon',
       title: 'XXE Generator',
       description: 'Generate XXE (XML External Entity) payloads for authorized security testing. Includes file disclosure, SSRF, and blind XXE techniques.'
     },
     {
+      category: 'Penetration Testing',
       iconName: 'Bug02Icon',
       title: 'XSS Generator',
       description: 'Generate XSS (Cross-Site Scripting) payloads for authorized web security testing. Includes stored, reflected, DOM-based, and WAF bypass techniques.'
+    },
+    {
+      category: 'Penetration Testing',
+      iconName: 'Database01Icon',
+      title: 'SQL Injection Generator',
+      description: 'Generate SQL injection payloads for authorized security testing. Includes union-based, blind, time-based, and error-based techniques.'
+    },
+    {
+      category: 'Penetration Testing',
+      iconName: 'CodeIcon',
+      title: 'GraphQL Injection Generator',
+      description: 'Generate GraphQL injection and introspection payloads for authorized security testing. Includes schema enumeration, authentication bypass, and DoS techniques.'
     }
   ]
 
@@ -452,6 +492,28 @@ export default function App() {
         <Header onLogoClick={handleLogoClick} currentPage={currentPage} onPageChange={handlePageChange} />
         <div className="main-content">
           <XSSGenerator />
+        </div>
+      </div>
+    )
+  }
+
+  if (currentTool === 'SQL Injection Generator') {
+    return (
+      <div className="app">
+        <Header onLogoClick={handleLogoClick} currentPage={currentPage} onPageChange={handlePageChange} />
+        <div className="main-content">
+          <SQLInjectionGenerator />
+        </div>
+      </div>
+    )
+  }
+
+  if (currentTool === 'GraphQL Injection Generator') {
+    return (
+      <div className="app">
+        <Header onLogoClick={handleLogoClick} currentPage={currentPage} onPageChange={handlePageChange} />
+        <div className="main-content">
+          <GraphQLInjectionGenerator />
         </div>
       </div>
     )
