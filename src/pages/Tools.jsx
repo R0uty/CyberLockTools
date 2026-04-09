@@ -177,7 +177,7 @@ export default function Tools({ tools, onToolClick }) {
               </ul>
             </div>
             <div className="category-item">
-              <div style={{ fontSize: '2rem', marginBottom: '0.5rem' }}><SearchRegexIcon size={32} color="#c0c0c0" /></div>
+              <div style={{ fontSize: '2rem', marginBottom: '0.5rem' }}><Search01Icon size={32} color="#c0c0c0" /></div>
               <h3>Testers & Parsers</h3>
               <ul>
                 <li>Regex Tester & Matcher</li>
@@ -196,12 +196,12 @@ export default function Tools({ tools, onToolClick }) {
               <p>All processing happens in your browser. Your data never reaches our servers or leaves your device.</p>
             </div>
             <div className="feature-card">
-              <div style={{ fontSize: '2rem', marginBottom: '0.5rem' }}><BadgeCheckIcon size={32} color="#c0c0c0" /></div>
+              <div style={{ fontSize: '2rem', marginBottom: '0.5rem' }}><CheckmarkBadge01Icon size={32} color="#c0c0c0" /></div>
               <h3>Lightning Fast</h3>
               <p>Instant results with no waiting. All computations run locally in your web browser.</p>
             </div>
             <div className="feature-card">
-              <div style={{ fontSize: '2rem', marginBottom: '0.5rem' }}><BookIcon size={32} color="#c0c0c0" /></div>
+              <div style={{ fontSize: '2rem', marginBottom: '0.5rem' }}><BookOpen01Icon size={32} color="#c0c0c0" /></div>
               <h3>Educational</h3>
               <p>Learn about encoding, hashing, formatting, and pattern matching with built-in explanations.</p>
             </div>
@@ -211,7 +211,7 @@ export default function Tools({ tools, onToolClick }) {
               <p>Intuitive interfaces with clear inputs, live previews, and helpful tips for each tool.</p>
             </div>
             <div className="feature-card">
-              <div style={{ fontSize: '2rem', marginBottom: '0.5rem' }}><BadgeCheckIcon size={32} color="#c0c0c0" /></div>
+              <div style={{ fontSize: '2rem', marginBottom: '0.5rem' }}><CheckmarkBadge01Icon size={32} color="#c0c0c0" /></div>
               <h3>Free & Open</h3>
               <p>Completely free with no ads, registrations, or subscriptions required.</p>
             </div>
