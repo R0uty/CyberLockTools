@@ -47,7 +47,8 @@ import {
   CommandLineIcon,
   AiSecurity02Icon,
   Bug02Icon,
-  CodeIcon
+  CodeIcon,
+  GitPullRequestIcon
 } from 'hugeicons-react'
 import QRCodeGenerator from './pages/QRCodeGenerator'
 import ColorConverter from './pages/ColorConverter'
@@ -57,6 +58,7 @@ import XXEGenerator from './pages/XXEGenerator'
 import XSSGenerator from './pages/XSSGenerator'
 import SQLInjectionGenerator from './pages/SQLInjectionGenerator'
 import GraphQLInjectionGenerator from './pages/GraphQLInjectionGenerator'
+import HTTPParameterPollutionGenerator from './pages/HTTPParameterPollutionGenerator'
 import Tools from './pages/Tools'
 import About from './pages/About'
 import Contact from './pages/Contact'
@@ -75,6 +77,8 @@ export default function App() {
   const handlePageChange = (page) => {
     setCurrentPage(page)
     if (page === 'tools') {
+      setCurrentTool(null)
+    } else if (page === 'home') {
       setCurrentTool(null)
     }
   }
@@ -241,6 +245,12 @@ export default function App() {
       iconName: 'CodeIcon',
       title: 'GraphQL Injection Generator',
       description: 'Generate GraphQL injection and introspection payloads for authorized security testing. Includes schema enumeration, authentication bypass, and DoS techniques.'
+    },
+    {
+      category: 'Penetration Testing',
+      iconName: 'GitPullRequestIcon',
+      title: 'HTTP Parameter Pollution Generator',
+      description: 'Generate HTTP parameter pollution payloads for authorized security testing. Includes WAF bypass, cache poisoning, and backend confusion techniques.'
     }
   ]
 
@@ -514,6 +524,17 @@ export default function App() {
         <Header onLogoClick={handleLogoClick} currentPage={currentPage} onPageChange={handlePageChange} />
         <div className="main-content">
           <GraphQLInjectionGenerator />
+        </div>
+      </div>
+    )
+  }
+
+  if (currentTool === 'HTTP Parameter Pollution Generator') {
+    return (
+      <div className="app">
+        <Header onLogoClick={handleLogoClick} currentPage={currentPage} onPageChange={handlePageChange} />
+        <div className="main-content">
+          <HTTPParameterPollutionGenerator />
         </div>
       </div>
     )
