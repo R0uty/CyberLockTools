@@ -44,12 +44,16 @@ import {
   SmileIcon,
   ArrowDataTransferHorizontalIcon,
   GlobeIcon,
-  CommandLineIcon
+  CommandLineIcon,
+  AiSecurity02Icon,
+  Bug02Icon
 } from 'hugeicons-react'
 import QRCodeGenerator from './pages/QRCodeGenerator'
 import ColorConverter from './pages/ColorConverter'
 import CSSBeautifier from './pages/CSSBeautifier'
 import ReverseShellGenerator from './pages/ReverseShellGenerator'
+import XXEGenerator from './pages/XXEGenerator'
+import XSSGenerator from './pages/XSSGenerator'
 import Tools from './pages/Tools'
 import About from './pages/About'
 import Contact from './pages/Contact'
@@ -187,6 +191,16 @@ export default function App() {
       iconName: 'CommandLineIcon',
       title: 'Reverse Shell Generator',
       description: 'Generate reverse shell payloads for authorized penetration testing. Supports bash, python, PHP, perl, ruby, netcat, and PowerShell.'
+    },
+    {
+      iconName: 'AiSecurity02Icon',
+      title: 'XXE Generator',
+      description: 'Generate XXE (XML External Entity) payloads for authorized security testing. Includes file disclosure, SSRF, and blind XXE techniques.'
+    },
+    {
+      iconName: 'Bug02Icon',
+      title: 'XSS Generator',
+      description: 'Generate XSS (Cross-Site Scripting) payloads for authorized web security testing. Includes stored, reflected, DOM-based, and WAF bypass techniques.'
     }
   ]
 
@@ -416,6 +430,28 @@ export default function App() {
         <Header onLogoClick={handleLogoClick} currentPage={currentPage} onPageChange={handlePageChange} />
         <div className="main-content">
           <ReverseShellGenerator />
+        </div>
+      </div>
+    )
+  }
+
+  if (currentTool === 'XXE Generator') {
+    return (
+      <div className="app">
+        <Header onLogoClick={handleLogoClick} currentPage={currentPage} onPageChange={handlePageChange} />
+        <div className="main-content">
+          <XXEGenerator />
+        </div>
+      </div>
+    )
+  }
+
+  if (currentTool === 'XSS Generator') {
+    return (
+      <div className="app">
+        <Header onLogoClick={handleLogoClick} currentPage={currentPage} onPageChange={handlePageChange} />
+        <div className="main-content">
+          <XSSGenerator />
         </div>
       </div>
     )
