@@ -20,7 +20,8 @@ import {
   Ticket01Icon,
   MobileNavigator02Icon,
   IdeaIcon,
-  CssFile02Icon
+  CssFile02Icon,
+  CommandLineIcon
 } from 'hugeicons-react'
 
 const iconMap = {
@@ -48,7 +49,8 @@ const iconMap = {
   BookOpen01Icon,
   SmileIcon,
   CheckmarkBadge01Icon,
-  GlobeIcon
+  GlobeIcon,
+  CommandLineIcon
 }
 
 export default function Tools({ tools, onToolClick }) {

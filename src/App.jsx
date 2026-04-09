@@ -43,11 +43,13 @@ import {
   BookOpen01Icon,
   SmileIcon,
   ArrowDataTransferHorizontalIcon,
-  GlobeIcon
+  GlobeIcon,
+  CommandLineIcon
 } from 'hugeicons-react'
 import QRCodeGenerator from './pages/QRCodeGenerator'
 import ColorConverter from './pages/ColorConverter'
 import CSSBeautifier from './pages/CSSBeautifier'
+import ReverseShellGenerator from './pages/ReverseShellGenerator'
 import Tools from './pages/Tools'
 import About from './pages/About'
 import Contact from './pages/Contact'
@@ -180,6 +182,11 @@ export default function App() {
       iconName: 'CssFile02Icon',
       title: 'CSS Beautifier',
       description: 'Format, minify, and validate CSS with file size optimization analysis.'
+    },
+    {
+      iconName: 'CommandLineIcon',
+      title: 'Reverse Shell Generator',
+      description: 'Generate reverse shell payloads for authorized penetration testing. Supports bash, python, PHP, perl, ruby, netcat, and PowerShell.'
     }
   ]
 
@@ -398,6 +405,17 @@ export default function App() {
         <Header onLogoClick={handleLogoClick} currentPage={currentPage} onPageChange={handlePageChange} />
         <div className="main-content">
           <CSSBeautifier />
+        </div>
+      </div>
+    )
+  }
+
+  if (currentTool === 'Reverse Shell Generator') {
+    return (
+      <div className="app">
+        <Header onLogoClick={handleLogoClick} currentPage={currentPage} onPageChange={handlePageChange} />
+        <div className="main-content">
+          <ReverseShellGenerator />
         </div>
       </div>
     )

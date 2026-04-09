@@ -1655,3 +1655,33 @@ p {
     padding: 8px;
   }
 }
+
+/* Two-Column Layout */
+.two-column-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+}
+
+.column h2 {
+  margin-bottom: 1.5rem;
+  color: #e8e8e8;
+  font-size: 1.3rem;
+}
+
+.column label {
+  color: #e8e8e8;
+  font-weight: 600;
+}
+
+@media (max-width: 1024px) {
+  .two-column-layout {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+}
