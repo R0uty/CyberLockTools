@@ -1,0 +1,113 @@
+/* NumberBaseConverter.css */
+
+.nbc-input-row {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-end;
+  flex-wrap: wrap;
+}
+
+.nbc-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.nbc-input-group--grow {
+  flex: 1;
+  min-width: 200px;
+}
+
+.nbc-input {
+  width: 100%;
+  font-family: monospace;
+  font-size: 1.1rem;
+  letter-spacing: 0.05em;
+}
+
+.nbc-bit-length {
+  color: #a0a0a0;
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+}
+
+.nbc-results-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1rem;
+}
+
+.nbc-result-card {
+  background-color: #1a1a1a;
+  border: 1px solid #3a3a3a;
+  border-radius: 8px;
+  padding: 1rem;
+  transition: border-color 0.2s;
+}
+
+.nbc-result-card--active {
+  border-color: #c0c0c0;
+}
+
+.nbc-result-label {
+  font-size: 0.8rem;
+  color: #a0a0a0;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.5rem;
+}
+
+.nbc-result-value {
+  font-family: monospace;
+  font-size: 1.1rem;
+  color: #e8e8e8;
+  word-break: break-all;
+  margin-bottom: 0.75rem;
+  min-height: 1.5rem;
+}
+
+.nbc-result-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.nbc-copy-btn,
+.nbc-swap-btn {
+  font-size: 0.8rem;
+  padding: 0.3rem 0.6rem;
+}
+
+.nbc-swap-btn {
+  background-color: transparent;
+  border: 1px solid #3a3a3a;
+  color: #a0a0a0;
+}
+
+.nbc-swap-btn:hover {
+  border-color: #c0c0c0;
+  color: #e8e8e8;
+}
+
+.nbc-examples-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.nbc-example-btn {
+  padding: 0.4rem 0.8rem;
+  background-color: #1a1a1a;
+  border: 1px solid #3a3a3a;
+  border-radius: 6px;
+  color: #c0c0c0;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: all 0.2s;
+}
+
+.nbc-example-btn:hover {
+  border-color: #c0c0c0;
+  color: #e8e8e8;
+}

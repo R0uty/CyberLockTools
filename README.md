@@ -83,6 +83,42 @@ A comprehensive, privacy-first suite of **free online tools** for developers, se
 - Example XML documents for testing
 - Perfect for API responses and configuration files
 
+### 🔢 Number Base Converter
+- Convert numbers between binary (base 2), octal (base 8), decimal (base 10), and hexadecimal (base 16)
+- Select the source base and enter a value for instant conversion to all other bases
+- Copy output with or without prefix (`0b`, `0o`, `0x`)
+- Shows bit length and quick-example buttons
+- Handles large numbers with BigInt precision
+
+### 🌐 HTML Encoder & Decoder
+- Standard mode: encode critical characters (`& < > " ' / = \``) to HTML entities
+- Full mode: encode all non-ASCII characters as `&#NNN;` decimal entities
+- Decode named entities (`&amp;`), decimal (`&#38;`), and hex (`&#x26;`) numeric entities
+- Shows encoding statistics (length, ratio, entity count)
+- Essential for preventing XSS and safely embedding dynamic content in HTML
+
+### 🔴 SSRF Generator *(Penetration Testing)*
+- Generate Server-Side Request Forgery payloads for authorized security testing
+- Cloud metadata: AWS IMDSv1/v2, GCP, Azure credential endpoints
+- Internal services: Redis, Elasticsearch, Docker API, Kubernetes
+- File read via `file://`, IP encoding bypasses (decimal/hex/octal/IPv6)
+- Protocol schemes: Gopher, DICT, LDAP; DNS/OOB probe templates
+
+### 💉 Command Injection Generator *(Penetration Testing)*
+- Generate OS command injection payloads for authorized security testing
+- Unix operators (`;`, `&&`, `||`, `|`, backtick, `$()`) and Windows operators (`&`, `^`)
+- File read, network enumeration, and filter bypass techniques
+- IFS substitution, quote insertion, hex/base64 encoding, newline bypasses
+- OOB exfiltration via DNS and HTTP callbacks
+
+### 📂 Path Traversal Generator *(Penetration Testing)*
+- Generate directory traversal payloads for authorized security testing
+- Unix and Windows sensitive file targets (`/etc/passwd`, SAM, win.ini)
+- URL-encoded, double-encoded, and overlong UTF-8 bypass sequences
+- Null-byte injection for file extension check bypass
+- Web app config targets (`.env`, `wp-config.php`, `WEB-INF/web.xml`)
+- Variable depth from 1 to 10+ traversal levels
+
 ## 🎯 Use Cases
 
 **For Developers:**
@@ -312,6 +348,11 @@ MIT License - see the LICENSE file for details
 - ✅ SEO Optimization (13 unique pages)
 - ✅ Navigation System
 - ✅ Responsive Design
+- ✅ Number Base Converter (Binary/Octal/Decimal/Hex)
+- ✅ HTML Encoder & Decoder
+- ✅ SSRF Generator (Penetration Testing)
+- ✅ Command Injection Generator (Penetration Testing)
+- ✅ Path Traversal Generator (Penetration Testing)
 
 ### Planned Features 🔜
 - [ ] Dark Mode Toggle
