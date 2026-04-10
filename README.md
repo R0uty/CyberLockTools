@@ -83,7 +83,47 @@ A comprehensive, privacy-first suite of **free online tools** for developers, se
 - Example XML documents for testing
 - Perfect for API responses and configuration files
 
-## 🎯 Use Cases
+### 🔢 Number Base Converter
+- Convert numbers between binary (base 2), octal (base 8), decimal (base 10), and hexadecimal (base 16)
+- Select the source base and enter a value for instant conversion to all other bases
+- Displays bit length and all common representations
+- Copy individual result with prefix (e.g. 0x, 0b)
+- Quick examples for common values
+
+### 🏷️ HTML Encoder & Decoder
+- Encode special characters to HTML entities (& < > " ' / ` =)
+- Optional full mode encodes all non-ASCII characters as numeric entities
+- Decode HTML entities including named, decimal, and hex numeric entities
+- Built-in entity reference table
+- Essential for preventing XSS and ensuring safe HTML rendering
+
+### 🌐 SSRF Generator *(Penetration Testing)*
+- Generate Server-Side Request Forgery (SSRF) payloads for authorized security testing
+- Cloud metadata endpoints: AWS IMDSv1/v2, GCP, Azure, DigitalOcean
+- Internal service payloads: Redis, Elasticsearch, Docker API, Kubernetes
+- File read via file:// URI scheme (Linux and Windows targets)
+- IP encoding bypass techniques (decimal, hex, octal, IPv6)
+- Protocol scheme payloads: Gopher, DICT, LDAP, FTP
+- DNS rebinding and out-of-band detection probes
+- Quick detection probes for initial SSRF testing
+
+### 💉 Command Injection Generator *(Penetration Testing)*
+- Generate OS command injection payloads for authorized security testing
+- Unix/Linux injection operators: ; | && || & $() backtick
+- Windows injection operators: & && | || cmd /c, PowerShell
+- File read payloads: /etc/passwd, SSH keys, env vars, cron jobs
+- Network enumeration: ping, ifconfig, netstat, curl, wget
+- Filter bypass: IFS substitution, quotes, backslashes, base64, hex encoding
+- Out-of-band exfiltration via DNS and HTTP callbacks
+
+### 📁 Path Traversal Generator *(Penetration Testing)*
+- Generate path traversal and directory traversal payloads for authorized testing
+- Unix targets: /etc/passwd, /etc/shadow, SSH keys, web configs
+- Windows targets: win.ini, SAM, boot.ini, web.config
+- URL/percent-encoded traversal sequences to bypass input filters
+- Double encoding, null byte, overlong UTF-8, and Unicode bypass techniques
+- Web application config file targets: .env, wp-config.php, WEB-INF/web.xml
+- Quick detection probes for initial traversal testing
 
 **For Developers:**
 - Quick URL encoding/decoding for APIs
@@ -306,10 +346,30 @@ MIT License - see the LICENSE file for details
 - ✅ Markdown Preview with live rendering
 - ✅ Regex Tester with pattern matching
 - ✅ XML Formatter & Validator
+- ✅ SQL Formatter & Validator
+- ✅ CSV Formatter & JSON converter
+- ✅ UUID Generator (v1, v4)
+- ✅ Unix Timestamp Converter
+- ✅ Secure Password Generator
+- ✅ JWT Encoder (create & verify)
+- ✅ QR Code Generator
+- ✅ Color Converter (HEX/RGB/HSL/HSV)
+- ✅ CSS Beautifier & Minifier
+- ✅ **Number Base Converter** (binary/octal/decimal/hex)
+- ✅ **HTML Encoder & Decoder** (HTML entities)
+- ✅ Reverse Shell Generator *(Pentest)*
+- ✅ XXE Generator *(Pentest)*
+- ✅ XSS Generator *(Pentest)*
+- ✅ SQL Injection Generator *(Pentest)*
+- ✅ GraphQL Injection Generator *(Pentest)*
+- ✅ HTTP Parameter Pollution Generator *(Pentest)*
+- ✅ **SSRF Generator** *(Pentest)*
+- ✅ **Command Injection Generator** *(Pentest)*
+- ✅ **Path Traversal Generator** *(Pentest)*
 - ✅ Tools Browsing Page
 - ✅ About Page
 - ✅ Contact Page
-- ✅ SEO Optimization (13 unique pages)
+- ✅ SEO Optimization
 - ✅ Navigation System
 - ✅ Responsive Design
 
@@ -319,8 +379,8 @@ MIT License - see the LICENSE file for details
 - [ ] Settings/Preferences Panel
 - [ ] History of Recent Operations
 - [ ] More Hash Algorithms (BLAKE2, Argon2)
-- [ ] CSV Parser & Formatter
-- [ ] SQL Formatter
+- [ ] LDAP Injection Generator
+- [ ] Open Redirect Generator
 - [ ] API Documentation
 - [ ] Unit Tests
 

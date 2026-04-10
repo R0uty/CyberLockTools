@@ -48,7 +48,12 @@ import {
   AiSecurity02Icon,
   Bug02Icon,
   CodeIcon,
-  GitPullRequestIcon
+  GitPullRequestIcon,
+  BinaryCodeIcon,
+  CodeCircleIcon,
+  InternetIcon,
+  ComputerTerminal01Icon,
+  FolderSecurityIcon
 } from 'hugeicons-react'
 import QRCodeGenerator from './pages/QRCodeGenerator'
 import ColorConverter from './pages/ColorConverter'
@@ -59,6 +64,11 @@ import XSSGenerator from './pages/XSSGenerator'
 import SQLInjectionGenerator from './pages/SQLInjectionGenerator'
 import GraphQLInjectionGenerator from './pages/GraphQLInjectionGenerator'
 import HTTPParameterPollutionGenerator from './pages/HTTPParameterPollutionGenerator'
+import NumberBaseConverter from './pages/NumberBaseConverter'
+import HTMLEncoder from './pages/HTMLEncoder'
+import SSRFGenerator from './pages/SSRFGenerator'
+import CommandInjectionGenerator from './pages/CommandInjectionGenerator'
+import PathTraversalGenerator from './pages/PathTraversalGenerator'
 import Tools from './pages/Tools'
 import About from './pages/About'
 import Contact from './pages/Contact'
@@ -216,6 +226,18 @@ export default function App() {
       title: 'CSS Beautifier',
       description: 'Format, minify, and validate CSS with file size optimization analysis.'
     },
+    {
+      category: 'General',
+      iconName: 'BinaryCodeIcon',
+      title: 'Number Base Converter',
+      description: 'Convert numbers between binary, octal, decimal, and hexadecimal instantly.'
+    },
+    {
+      category: 'General',
+      iconName: 'CodeCircleIcon',
+      title: 'HTML Encoder',
+      description: 'Encode special characters to HTML entities and decode HTML entities back to text.'
+    },
     // Penetration Testing Tools
     {
       category: 'Penetration Testing',
@@ -252,6 +274,24 @@ export default function App() {
       iconName: 'GitPullRequestIcon',
       title: 'HTTP Parameter Pollution Generator',
       description: 'Generate HTTP parameter pollution payloads for authorized security testing. Includes WAF bypass, cache poisoning, and backend confusion techniques.'
+    },
+    {
+      category: 'Penetration Testing',
+      iconName: 'InternetIcon',
+      title: 'SSRF Generator',
+      description: 'Generate Server-Side Request Forgery payloads for authorized security testing. Includes cloud metadata, internal services, file read, and bypass techniques.'
+    },
+    {
+      category: 'Penetration Testing',
+      iconName: 'ComputerTerminal01Icon',
+      title: 'Command Injection Generator',
+      description: 'Generate OS command injection payloads for authorized security testing. Includes Unix, Windows, filter bypass, and out-of-band exfiltration techniques.'
+    },
+    {
+      category: 'Penetration Testing',
+      iconName: 'FolderSecurityIcon',
+      title: 'Path Traversal Generator',
+      description: 'Generate path traversal and directory traversal payloads for authorized security testing. Includes Unix, Windows, encoded, and bypass techniques.'
     }
   ]
 
@@ -541,6 +581,61 @@ export default function App() {
     )
   }
 
+  if (currentTool === 'Number Base Converter') {
+    return (
+      <div className="app">
+        <Header onLogoClick={handleLogoClick} currentPage={currentPage} onPageChange={handlePageChange} />
+        <div className="main-content">
+          <NumberBaseConverter />
+        </div>
+      </div>
+    )
+  }
+
+  if (currentTool === 'HTML Encoder') {
+    return (
+      <div className="app">
+        <Header onLogoClick={handleLogoClick} currentPage={currentPage} onPageChange={handlePageChange} />
+        <div className="main-content">
+          <HTMLEncoder />
+        </div>
+      </div>
+    )
+  }
+
+  if (currentTool === 'SSRF Generator') {
+    return (
+      <div className="app">
+        <Header onLogoClick={handleLogoClick} currentPage={currentPage} onPageChange={handlePageChange} />
+        <div className="main-content">
+          <SSRFGenerator />
+        </div>
+      </div>
+    )
+  }
+
+  if (currentTool === 'Command Injection Generator') {
+    return (
+      <div className="app">
+        <Header onLogoClick={handleLogoClick} currentPage={currentPage} onPageChange={handlePageChange} />
+        <div className="main-content">
+          <CommandInjectionGenerator />
+        </div>
+      </div>
+    )
+  }
+
+  if (currentTool === 'Path Traversal Generator') {
+    return (
+      <div className="app">
+        <Header onLogoClick={handleLogoClick} currentPage={currentPage} onPageChange={handlePageChange} />
+        <div className="main-content">
+          <PathTraversalGenerator />
+        </div>
+      </div>
+    )
+  }
+
   if (currentPage === 'tools' && !currentTool) {
     return (
       <div className="app">
@@ -611,7 +706,7 @@ export default function App() {
 
         <section className="cta">
           <h2>Explore My Lab</h2>
-          <p>Pick from my collection of 20 specialized tools for all your encoding, hashing, formatting, and generation needs.</p>
+          <p>Pick from my collection of 25 specialized tools for all your encoding, hashing, formatting, and generation needs.</p>
           <button className="cta-button" onClick={() => handlePageChange('tools')}>Browse My Tools</button>
         </section>
       </main>

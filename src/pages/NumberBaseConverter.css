@@ -1,0 +1,154 @@
+/* NumberBaseConverter.css */
+
+.base-input-section {
+  margin-bottom: 1.5rem;
+}
+
+.base-from-selector {
+  margin-bottom: 1.5rem;
+}
+
+.base-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.base-btn {
+  padding: 0.5rem 1rem;
+  background-color: #1a1a1a;
+  border: 1px solid #3a3a3a;
+  border-radius: 6px;
+  color: #e8e8e8;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+}
+
+.base-btn:hover {
+  border-color: #808080;
+}
+
+.base-btn--active {
+  background-color: #2a2a2a;
+  border: 2px solid #c0c0c0;
+  font-weight: 600;
+}
+
+.base-input-full {
+  width: 100%;
+  font-family: monospace;
+  font-size: 1.1rem;
+  letter-spacing: 0.05em;
+}
+
+.base-results {
+  margin-top: 1.5rem;
+  padding: 1.5rem;
+  background-color: #1a1a1a;
+  border: 1px solid #3a3a3a;
+  border-radius: 8px;
+}
+
+.base-results-title {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  color: #e8e8e8;
+  font-size: 1rem;
+}
+
+.base-results-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.base-result-card {
+  background-color: #0f0f0f;
+  border: 1px solid #3a3a3a;
+  border-radius: 8px;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.base-result-label {
+  font-size: 0.8rem;
+  color: #a0a0a0;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.base-result-value {
+  display: flex;
+  align-items: baseline;
+  gap: 0.25rem;
+  flex-wrap: wrap;
+}
+
+.base-result-prefix {
+  font-family: monospace;
+  font-size: 0.85rem;
+  color: #a0a0a0;
+}
+
+.base-result-code {
+  font-family: monospace;
+  font-size: 1.1rem;
+  color: #a8d5ba;
+  word-break: break-all;
+}
+
+.base-copy-btn {
+  margin-top: auto;
+  padding: 0.4rem 0.8rem;
+  background-color: #c0c0c0;
+  border: none;
+  border-radius: 4px;
+  color: #0f0f0f;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.8rem;
+  transition: all 0.2s ease;
+  align-self: flex-start;
+}
+
+.base-copy-btn--copied {
+  background-color: #4a7c4e;
+  color: #e8e8e8;
+}
+
+.base-bit-info {
+  font-size: 0.85rem;
+  color: #a0a0a0;
+  padding-top: 0.75rem;
+  border-top: 1px solid #3a3a3a;
+}
+
+.base-examples {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.base-example-btn {
+  padding: 0.4rem 0.9rem;
+  background-color: #1a1a1a;
+  border: 1px solid #3a3a3a;
+  border-radius: 6px;
+  color: #a8d5ba;
+  cursor: pointer;
+  font-family: monospace;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+}
+
+.base-example-btn:hover {
+  border-color: #808080;
+  background-color: #2a2a2a;
+}
