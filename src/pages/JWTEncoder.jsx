@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useSEO } from '../hooks/useSEO'
 import { createJWT, decodeJWT, verifyJWT } from '../utils/jwtEncoder'
+import './JWTEncoder.css'
 
 export default function JWTEncoder() {
   useSEO({
@@ -128,51 +129,45 @@ export default function JWTEncoder() {
       </div>
 
       <div className="tool-container">
-        <div style={{ marginBottom: '1.5rem', paddingBottom: '1rem', borderBottom: '1px solid #e0e0e0' }}>
-          <label style={{ marginRight: '2rem', fontSize: '14px' }}>
+        <div className="mode-selector">
+          <label className="mode-label">
             <input
               type="radio"
               value="encode"
               checked={mode === 'encode'}
               onChange={(e) => { setMode(e.target.value); setResult(null); setError('') }}
-              style={{ marginRight: '0.5rem' }}
+              className="mode-radio"
             />
             Create Token
           </label>
-          <label style={{ fontSize: '14px' }}>
+          <label className="mode-label">
             <input
               type="radio"
               value="verify"
               checked={mode === 'verify'}
               onChange={(e) => { setMode(e.target.value); setResult(null); setError('') }}
-              style={{ marginRight: '0.5rem' }}
+              className="mode-radio"
             />
             Verify Token
           </label>
         </div>
 
-        <div style={{ marginBottom: '1.5rem' }}>
-          <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold' }}>
+        <div className="form-section">
+          <label className="field-label">
             Algorithm:
           </label>
           <select
             value={algorithm}
             onChange={(e) => setAlgorithm(e.target.value)}
-            style={{
-              padding: '0.75rem',
-              border: '1px solid #ddd',
-              borderRadius: '5px',
-              fontSize: '14px',
-              minWidth: '150px'
-            }}
+            className="algo-select"
           >
             <option value="HS256">HS256 (SHA-256)</option>
             <option value="HS512">HS512 (SHA-512)</option>
           </select>
         </div>
 
-        <div style={{ marginBottom: '1.5rem' }}>
-          <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold' }}>
+        <div className="form-section">
+          <label className="field-label">
             Secret Key:
           </label>
           <input
@@ -180,57 +175,32 @@ export default function JWTEncoder() {
             value={secret}
             onChange={(e) => setSecret(e.target.value)}
             placeholder="Enter your secret key"
-            style={{
-              width: '100%',
-              padding: '0.75rem',
-              border: '1px solid #ddd',
-              borderRadius: '5px',
-              fontSize: '14px',
-              boxSizing: 'border-box'
-            }}
+            className="secret-input"
           />
         </div>
 
         {mode === 'encode' ? (
           <>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1.5rem' }}>
+            <div className="jwt-input-grid">
               <div>
-                <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold' }}>
+                <label className="field-label">
                   Header (JSON):
                 </label>
                 <textarea
                   value={headerInput}
                   onChange={(e) => setHeaderInput(e.target.value)}
-                  style={{
-                    width: '100%',
-                    padding: '0.75rem',
-                    border: '1px solid #ddd',
-                    borderRadius: '5px',
-                    fontSize: '12px',
-                    fontFamily: 'monospace',
-                    minHeight: '120px',
-                    boxSizing: 'border-box'
-                  }}
+                  className="jwt-textarea jwt-textarea--header"
                 />
               </div>
 
               <div>
-                <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold' }}>
+                <label className="field-label">
                   Payload (JSON):
                 </label>
                 <textarea
                   value={payloadInput}
                   onChange={(e) => setPayloadInput(e.target.value)}
-                  style={{
-                    width: '100%',
-                    padding: '0.75rem',
-                    border: '1px solid #ddd',
-                    borderRadius: '5px',
-                    fontSize: '12px',
-                    fontFamily: 'monospace',
-                    minHeight: '120px',
-                    boxSizing: 'border-box'
-                  }}
+                  className="jwt-textarea jwt-textarea--payload"
                 />
               </div>
             </div>
@@ -249,24 +219,15 @@ export default function JWTEncoder() {
           </>
         ) : (
           <>
-            <div style={{ marginBottom: '1.5rem' }}>
-              <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold' }}>
+            <div className="form-section">
+              <label className="field-label">
                 Token to Verify:
               </label>
               <textarea
                 value={verifyToken}
                 onChange={(e) => setVerifyToken(e.target.value)}
                 placeholder="Paste JWT token here..."
-                style={{
-                  width: '100%',
-                  padding: '0.75rem',
-                  border: '1px solid #ddd',
-                  borderRadius: '5px',
-                  fontSize: '12px',
-                  fontFamily: 'monospace',
-                  minHeight: '100px',
-                  boxSizing: 'border-box'
-                }}
+                className="jwt-textarea jwt-textarea--verify"
               />
             </div>
 
@@ -282,65 +243,40 @@ export default function JWTEncoder() {
         )}
 
         {error && (
-          <div className="error-message" style={{ marginTop: '1.5rem' }}>
+          <div className="error-message error-message--mt">
             {error}
           </div>
         )}
 
         {result && (
-          <div className="info-box" style={{ backgroundColor: '#f0f0f0', marginTop: '1.5rem' }}>
+          <div className="info-box info-box--gray info-box--mt">
             <h4>Result</h4>
 
             {result.type === 'encode' && (
               <>
-                <div style={{ marginBottom: '1.5rem' }}>
+                <div className="jwt-token-section">
                   <strong>Generated Token:</strong>
-                  <div style={{
-                    backgroundColor: '#fff',
-                    padding: '1rem',
-                    borderRadius: '5px',
-                    marginTop: '0.5rem',
-                    fontFamily: 'monospace',
-                    fontSize: '11px',
-                    wordBreak: 'break-all',
-                    border: '1px solid #ddd'
-                  }}>
+                  <div className="jwt-token-display">
                     {result.token}
                     <button
                       onClick={() => handleCopy(result.token)}
-                      style={{ marginLeft: '10px', padding: '4px 8px', fontSize: '11px', cursor: 'pointer' }}
+                      className="jwt-copy-btn"
                     >
                       Copy
                     </button>
                   </div>
                 </div>
 
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                <div className="jwt-result-grid">
                   <div>
                     <strong>Header:</strong>
-                    <pre style={{
-                      backgroundColor: '#fff',
-                      padding: '0.75rem',
-                      borderRadius: '5px',
-                      fontSize: '11px',
-                      border: '1px solid #ddd',
-                      maxHeight: '150px',
-                      overflowY: 'auto'
-                    }}>
+                    <pre className="jwt-pre jwt-pre--scrollable">
                       {result.header}
                     </pre>
                   </div>
                   <div>
                     <strong>Payload:</strong>
-                    <pre style={{
-                      backgroundColor: '#fff',
-                      padding: '0.75rem',
-                      borderRadius: '5px',
-                      fontSize: '11px',
-                      border: '1px solid #ddd',
-                      maxHeight: '150px',
-                      overflowY: 'auto'
-                    }}>
+                    <pre className="jwt-pre jwt-pre--scrollable">
                       {result.payload}
                     </pre>
                   </div>
@@ -350,38 +286,26 @@ export default function JWTEncoder() {
 
             {result.type === 'verify' && (
               <>
-                <div style={{ marginBottom: '1rem', padding: '0.75rem', backgroundColor: result.verification.valid ? '#d4edda' : '#f8d7da', borderRadius: '5px', border: `1px solid ${result.verification.valid ? '#c3e6cb' : '#f5c6cb'}`, color: result.verification.valid ? '#155724' : '#721c24' }}>
+                <div className={result.verification.valid ? 'verify-status verify-status--valid' : 'verify-status verify-status--error'}>
                   {result.verification.message}
                 </div>
 
-                <div style={{ marginBottom: '1rem' }}>
+                <div className="jwt-verify-section">
                   <strong>Header:</strong>
-                  <pre style={{
-                    backgroundColor: '#fff',
-                    padding: '0.75rem',
-                    borderRadius: '5px',
-                    fontSize: '11px',
-                    border: '1px solid #ddd'
-                  }}>
+                  <pre className="jwt-pre">
                     {JSON.stringify(result.decoded.header, null, 2)}
                   </pre>
                 </div>
 
-                <div style={{ marginBottom: '1rem' }}>
+                <div className="jwt-verify-section">
                   <strong>Payload:</strong>
-                  <pre style={{
-                    backgroundColor: '#fff',
-                    padding: '0.75rem',
-                    borderRadius: '5px',
-                    fontSize: '11px',
-                    border: '1px solid #ddd'
-                  }}>
+                  <pre className="jwt-pre">
                     {JSON.stringify(result.decoded.payload, null, 2)}
                   </pre>
                 </div>
 
                 {result.decoded.expiresAt && (
-                  <div style={{ fontSize: '13px' }}>
+                  <div className="jwt-expiration-info">
                     <strong>Expires:</strong> {result.decoded.expiresAt}<br/>
                     <strong>Status:</strong> {result.decoded.isExpired ? '❌ Expired' : '✅ Valid'}
                   </div>
@@ -391,7 +315,7 @@ export default function JWTEncoder() {
           </div>
         )}
 
-        <div className="info-box" style={{ marginTop: '1.5rem' }}>
+        <div className="info-box info-box--mt">
           <h4>About JWT</h4>
           <p>
             JWT (JSON Web Token) is a compact, URL-safe means of representing claims between two parties. It consists of three parts: header (type and algorithm), payload (claims), and signature (for verification). Widely used for authentication and authorization.

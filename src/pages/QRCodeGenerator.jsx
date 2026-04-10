@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react'
 import { QRCodeCanvas } from 'qrcode.react'
 import { useSEO } from '../hooks/useSEO'
+import './QRCodeGenerator.css'
 
 export default function QRCodeGenerator() {
   useSEO({
@@ -87,53 +88,34 @@ export default function QRCodeGenerator() {
       </div>
 
       <div className="tool-container">
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem' }}>
+        <div className="qr-layout">
           {/* Left side: Controls */}
           <div>
-            <div style={{ marginBottom: '1.5rem' }}>
-              <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold' }}>
+            <div className="form-field">
+              <label className="field-label">
                 Text or URL:
               </label>
               <textarea
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 placeholder="Enter text, URL, contact info, WiFi credentials..."
-                style={{
-                  width: '100%',
-                  padding: '0.75rem',
-                  border: '1px solid #ddd',
-                  borderRadius: '5px',
-                  fontSize: '13px',
-                  minHeight: '100px',
-                  boxSizing: 'border-box',
-                  fontFamily: 'monospace'
-                }}
+                className="field-textarea"
               />
-              <div style={{ fontSize: '12px', color: '#666', marginTop: '0.5rem' }}>
+              <div className="char-count">
                 {input.length} characters
               </div>
             </div>
 
-            <div style={{ marginBottom: '1.5rem' }}>
-              <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold', fontSize: '13px' }}>
+            <div className="form-field">
+              <label className="field-label--sm">
                 Quick Templates:
               </label>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem' }}>
+              <div className="templates-grid">
                 {presetTexts.map((preset) => (
                   <button
                     key={preset.label}
                     onClick={() => applyPreset(preset.value)}
-                    style={{
-                      padding: '0.5rem 0.75rem',
-                      fontSize: '12px',
-                      border: '1px solid #ddd',
-                      borderRadius: '5px',
-                      cursor: 'pointer',
-                      backgroundColor: '#f5f5f5',
-                      transition: 'background-color 0.2s'
-                    }}
-                    onMouseOver={(e) => e.target.style.backgroundColor = '#e0e0e0'}
-                    onMouseOut={(e) => e.target.style.backgroundColor = '#f5f5f5'}
+                    className="template-btn"
                   >
                     {preset.label}
                   </button>
@@ -141,8 +123,8 @@ export default function QRCodeGenerator() {
               </div>
             </div>
 
-            <div style={{ marginBottom: '1.5rem', padding: '1rem', backgroundColor: '#f5f5f5', borderRadius: '5px' }}>
-              <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold' }}>
+            <div className="slider-section">
+              <label className="field-label">
                 Size: {size}px
               </label>
               <input
@@ -151,24 +133,20 @@ export default function QRCodeGenerator() {
                 max="500"
                 value={size}
                 onChange={(e) => setSize(parseInt(e.target.value))}
-                style={{ width: '100%' }}
+                className="slider-range"
               />
             </div>
 
-            <div style={{ marginBottom: '1.5rem' }}>
-              <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold' }}>
+            <div className="error-correction-section">
+              <label className="field-label">
                 Error Correction Level:
               </label>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '0.5rem' }}>
+              <div className="error-correction-grid">
                 {['L', 'M', 'Q', 'H'].map((lv) => (
                   <button
                     key={lv}
                     onClick={() => setLevel(lv)}
-                    className={level === lv ? 'action-btn encode-btn' : 'action-btn clear-btn'}
-                    style={{
-                      padding: '0.5rem',
-                      fontSize: '13px'
-                    }}
+                    className={`${level === lv ? 'action-btn encode-btn' : 'action-btn clear-btn'} error-correction-btn`}
                   >
                     {lv === 'L' && '7% Recovery'}
                     {lv === 'M' && '15% Recovery'}
@@ -177,43 +155,43 @@ export default function QRCodeGenerator() {
                   </button>
                 ))}
               </div>
-              <div style={{ fontSize: '12px', color: '#666', marginTop: '0.5rem' }}>
+              <div className="hint-text">
                 Higher levels allow recovery if QR code is partially damaged
               </div>
             </div>
 
-            <div style={{ marginBottom: '1.5rem', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+            <div className="color-inputs">
               <div>
-                <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold', fontSize: '13px' }}>
+                <label className="field-label--sm">
                   Foreground:
                 </label>
                 <input
                   type="color"
                   value={color}
                   onChange={(e) => setColor(e.target.value)}
-                  style={{ width: '100%', height: '40px', border: 'none', borderRadius: '5px', cursor: 'pointer' }}
+                  className="color-input"
                 />
               </div>
               <div>
-                <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold', fontSize: '13px' }}>
+                <label className="field-label--sm">
                   Background:
                 </label>
                 <input
                   type="color"
                   value={bgColor}
                   onChange={(e) => setBgColor(e.target.value)}
-                  style={{ width: '100%', height: '40px', border: 'none', borderRadius: '5px', cursor: 'pointer' }}
+                  className="color-input"
                 />
               </div>
             </div>
 
-            <div style={{ marginBottom: '1.5rem' }}>
-              <label style={{ fontSize: '13px' }}>
+            <div className="margin-option">
+              <label>
                 <input
                   type="checkbox"
                   checked={includeMargin}
                   onChange={(e) => setIncludeMargin(e.target.checked)}
-                  style={{ marginRight: '0.5rem' }}
+                  className="margin-checkbox"
                 />
                 Include Margin (Quiet Zone)
               </label>
@@ -240,17 +218,8 @@ export default function QRCodeGenerator() {
 
           {/* Right side: Preview */}
           <div>
-            <div style={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'center',
-              padding: '2rem',
-              backgroundColor: '#f9f9f9',
-              borderRadius: '8px',
-              minHeight: '400px'
-            }}>
-              <div ref={qrRef} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <div className="qr-preview">
+              <div ref={qrRef} className="qr-ref-wrapper">
                 {input && (
                   <QRCodeCanvas
                     value={input}
@@ -263,16 +232,16 @@ export default function QRCodeGenerator() {
                 )}
               </div>
               {!input && (
-                <div style={{ color: '#999', textAlign: 'center' }}>
+                <div className="qr-empty">
                   
                   <div>Enter text or URL above to generate QR code</div>
                 </div>
               )}
             </div>
 
-            <div className="info-box" style={{ marginTop: '1.5rem' }}>
+            <div className="info-box info-box--spaced">
               <h4>QR Code Info</h4>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem', fontSize: '13px' }}>
+              <div className="qr-info-grid">
                 {Object.entries(stats).map(([key, value]) => (
                   <div key={key}>
                     <strong>{key}:</strong> {value}
@@ -283,9 +252,9 @@ export default function QRCodeGenerator() {
           </div>
         </div>
 
-        <div className="info-box" style={{ marginTop: '1.5rem' }}>
+        <div className="info-box info-box--spaced">
           <h4>About QR Codes</h4>
-          <ul style={{ margin: '0.5rem 0', paddingLeft: '1.5rem', fontSize: '13px' }}>
+          <ul className="about-list">
             <li><strong>Error Correction:</strong> Allows the QR code to work even if partially damaged (L: 7%, M: 15%, Q: 25%, H: 30%)</li>
             <li><strong>WiFi Format:</strong> Use WIFI:T:WPA;S:NetworkName;P:Password;; to share network credentials</li>
             <li><strong>Contact Format:</strong> Create vCard format for easy phone contact import</li>

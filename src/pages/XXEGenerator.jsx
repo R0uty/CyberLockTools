@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useSEO } from '../hooks/useSEO'
 import { xxePayloads, commonTargets, getAllCategories, getPayloadsByCategory, disclaimer } from '../utils/xxeGenerator'
+import './XXEGenerator.css'
 
 export default function XXEGenerator() {
   useSEO({
@@ -56,18 +57,12 @@ export default function XXEGenerator() {
       {/* Disclaimer Box */}
       <div className="tool-container">
         <section className="tool-section">
-          <div style={{
-            backgroundColor: '#2a2a2a',
-            border: '2px solid #ff6b6b',
-            borderRadius: '8px',
-            padding: '1.5rem',
-            marginBottom: '2rem'
-          }}>
-            <h3 style={{ color: '#ff6b6b', marginTop: 0 }}>⚠️ LEGAL & ETHICAL DISCLAIMER</h3>
-            <p style={{ color: '#d0d0d0', fontSize: '0.9rem' }}>
+          <div className="xxe-disclaimer">
+            <h3 className="xxe-disclaimer-title">⚠️ LEGAL & ETHICAL DISCLAIMER</h3>
+            <p className="xxe-disclaimer-text">
               This tool is for AUTHORIZED SECURITY TESTING & EDUCATIONAL PURPOSES ONLY.
             </p>
-            <ul style={{ color: '#d0d0d0', fontSize: '0.9rem' }}>
+            <ul className="xxe-disclaimer-text">
               <li>✓ Only use with explicit written authorization from system owner</li>
               <li>✓ Only test systems you own or have permission to test</li>
               <li>✓ XXE attacks can cause significant data breaches and system compromise</li>
@@ -85,8 +80,8 @@ export default function XXEGenerator() {
                 <h2>Configuration</h2>
 
                 {/* Target File */}
-                <div style={{ marginBottom: '1.5rem' }}>
-                  <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '600', color: '#e8e8e8' }}>
+                <div className="xxe-form-group">
+                  <label className="xxe-form-label">
                     Target File / Path
                   </label>
                   <input
@@ -94,38 +89,22 @@ export default function XXEGenerator() {
                     placeholder="/etc/passwd"
                     value={targetFile}
                     onChange={(e) => setTargetFile(e.target.value)}
-                    className="input"
-                    style={{ width: '100%' }}
+                    className="input xxe-input-full"
                   />
                 </div>
 
                 {/* Common Targets */}
                 {showCommonTargets && (
-                  <div style={{ marginBottom: '1.5rem' }}>
-                    <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '600', color: '#e8e8e8', fontSize: '0.9rem' }}>
+                  <div className="xxe-form-group">
+                    <label className="xxe-form-label--small">
                       Quick Select
                     </label>
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                    <div className="xxe-common-targets-list">
                       {commonTargets.linux.map((file, idx) => (
                         <button
                           key={`linux-${idx}`}
                           onClick={() => setTargetFile(file)}
-                          style={{
-                            padding: '0.4rem 0.7rem',
-                            backgroundColor: '#1a1a1a',
-                            border: '1px solid #3a3a3a',
-                            borderRadius: '4px',
-                            color: '#d0d0d0',
-                            cursor: 'pointer',
-                            fontSize: '0.8rem',
-                            textAlign: 'left'
-                          }}
-                          onMouseEnter={(e) => {
-                            e.target.style.borderColor = '#c0c0c0'
-                          }}
-                          onMouseLeave={(e) => {
-                            e.target.style.borderColor = '#3a3a3a'
-                          }}
+                          className="xxe-target-btn"
                         >
                           {file}
                         </button>
@@ -136,24 +115,14 @@ export default function XXEGenerator() {
 
                 <button
                   onClick={() => setShowCommonTargets(!showCommonTargets)}
-                  style={{
-                    padding: '0.5rem 1rem',
-                    backgroundColor: '#1a1a1a',
-                    border: '1px solid #c0c0c0',
-                    borderRadius: '6px',
-                    color: '#d0d0d0',
-                    cursor: 'pointer',
-                    marginBottom: '1.5rem',
-                    width: '100%',
-                    fontSize: '0.9rem'
-                  }}
+                  className="xxe-toggle-btn"
                 >
                   {showCommonTargets ? '▼ Hide Common Targets' : '▶ Show Common Targets'}
                 </button>
 
                 {/* Attacker Host */}
-                <div style={{ marginBottom: '1.5rem' }}>
-                  <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '600', color: '#e8e8e8' }}>
+                <div className="xxe-form-group">
+                  <label className="xxe-form-label">
                     Attacker Host / Domain
                   </label>
                   <input
@@ -161,14 +130,13 @@ export default function XXEGenerator() {
                     placeholder="attacker.com"
                     value={attackerHost}
                     onChange={(e) => setAttackerHost(e.target.value)}
-                    className="input"
-                    style={{ width: '100%' }}
+                    className="input xxe-input-full"
                   />
                 </div>
 
                 {/* Category Filter */}
-                <div style={{ marginBottom: '1.5rem' }}>
-                  <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '600', color: '#e8e8e8' }}>
+                <div className="xxe-form-group">
+                  <label className="xxe-form-label">
                     Attack Type
                   </label>
                   <select
@@ -187,50 +155,30 @@ export default function XXEGenerator() {
                 </div>
 
                 {/* Search */}
-                <div style={{ marginBottom: '1.5rem' }}>
+                <div className="xxe-form-group">
                   <input
                     type="text"
                     placeholder="Search payloads..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="input"
-                    style={{ width: '100%' }}
+                    className="input xxe-input-full"
                   />
                 </div>
 
                 {/* Payload List */}
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                <div className="xxe-payload-list">
                   {filteredPayloads.map(([key, payload]) => (
                     <button
                       key={key}
                       onClick={() => handlePayloadSelect(key, payload)}
-                      style={{
-                        padding: '1rem',
-                        backgroundColor: selectedPayload?.key === key ? '#2a2a2a' : '#1a1a1a',
-                        border: selectedPayload?.key === key ? '2px solid #c0c0c0' : '1px solid #3a3a3a',
-                        borderRadius: '8px',
-                        color: '#e8e8e8',
-                        cursor: 'pointer',
-                        textAlign: 'left',
-                        transition: 'all 0.3s ease'
-                      }}
-                      onMouseEnter={(e) => {
-                        if (selectedPayload?.key !== key) {
-                          e.target.style.borderColor = '#808080'
-                        }
-                      }}
-                      onMouseLeave={(e) => {
-                        if (selectedPayload?.key !== key) {
-                          e.target.style.borderColor = '#3a3a3a'
-                        }
-                      }}
+                      className={`xxe-payload-item${selectedPayload?.key === key ? ' xxe-payload-item--selected' : ''}`}
                     >
-                      <div style={{ fontWeight: '600', marginBottom: '0.25rem' }}>{payload.name}</div>
-                      <div style={{ fontSize: '0.85rem', color: '#a0a0a0' }}>{payload.description}</div>
+                      <div className="xxe-payload-item__name">{payload.name}</div>
+                      <div className="xxe-payload-item__desc">{payload.description}</div>
                     </button>
                   ))}
                   {filteredPayloads.length === 0 && (
-                    <p style={{ color: '#808080', textAlign: 'center', padding: '1rem' }}>
+                    <p className="xxe-no-results">
                       No payloads match your search
                     </p>
                   )}
@@ -244,32 +192,16 @@ export default function XXEGenerator() {
                     <h2>{selectedPayload.name}</h2>
 
                     {/* Available Payloads */}
-                    <div style={{ marginBottom: '1.5rem' }}>
-                      <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '600', color: '#e8e8e8' }}>
+                    <div className="xxe-form-group">
+                      <label className="xxe-form-label">
                         Available Payloads
                       </label>
-                      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                      <div className="xxe-variant-list">
                         {selectedPayload.payloads.map((payload, idx) => (
                           <button
                             key={idx}
                             onClick={() => handleGeneratePayload(payload)}
-                            style={{
-                              padding: '0.75rem',
-                              backgroundColor: '#1a1a1a',
-                              border: '1px solid #3a3a3a',
-                              borderRadius: '6px',
-                              color: '#e8e8e8',
-                              cursor: 'pointer',
-                              textAlign: 'left',
-                              transition: 'all 0.3s ease',
-                              fontSize: '0.9rem'
-                            }}
-                            onMouseEnter={(e) => {
-                              e.target.style.borderColor = '#c0c0c0'
-                            }}
-                            onMouseLeave={(e) => {
-                              e.target.style.borderColor = '#3a3a3a'
-                            }}
+                            className="xxe-variant-btn"
                           >
                             {payload.name}
                           </button>
@@ -279,42 +211,16 @@ export default function XXEGenerator() {
 
                     {/* Generated Payload */}
                     {generatedPayload && (
-                      <div style={{ marginBottom: '1.5rem' }}>
-                        <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '600', color: '#e8e8e8' }}>
+                      <div className="xxe-form-group">
+                        <label className="xxe-form-label">
                           Generated XXE Payload
                         </label>
-                        <div
-                          className="textarea output"
-                          style={{
-                            padding: '1rem',
-                            backgroundColor: '#0f0f0f',
-                            borderRadius: '8px',
-                            fontFamily: 'monospace',
-                            fontSize: '0.8rem',
-                            whiteSpace: 'pre-wrap',
-                            wordBreak: 'break-all',
-                            color: '#a8d5ba',
-                            minHeight: '200px',
-                            maxHeight: '400px',
-                            overflow: 'auto'
-                          }}
-                        >
+                        <div className="textarea output xxe-code-output">
                           {generatedPayload}
                         </div>
                         <button
                           onClick={() => handleCopyCommand(generatedPayload, -1)}
-                          style={{
-                            marginTop: '0.5rem',
-                            padding: '0.5rem 1rem',
-                            backgroundColor: copiedIndex === -1 ? '#4a7c4e' : '#c0c0c0',
-                            border: 'none',
-                            borderRadius: '6px',
-                            color: copiedIndex === -1 ? '#e8e8e8' : '#0f0f0f',
-                            cursor: 'pointer',
-                            fontWeight: '600',
-                            transition: 'all 0.3s ease',
-                            width: '100%'
-                          }}
+                          className={`xxe-copy-btn${copiedIndex === -1 ? ' xxe-copy-btn--copied' : ''}`}
                         >
                           {copiedIndex === -1 ? '✓ Copied!' : 'Copy Payload'}
                         </button>
@@ -322,7 +228,7 @@ export default function XXEGenerator() {
                     )}
                   </>
                 ) : (
-                  <div style={{ textAlign: 'center', padding: '2rem', color: '#808080' }}>
+                  <div className="xxe-empty-state">
                     <p>Select an attack type and then choose a specific payload to generate</p>
                   </div>
                 )}
@@ -338,7 +244,7 @@ export default function XXEGenerator() {
             <p>
               XML External Entity (XXE) attacks exploit the way XML parsers handle external entity declarations. When an application parses untrusted XML input without properly disabling external entity processing, attackers can:
             </p>
-            <ul style={{ color: '#d0d0d0' }}>
+            <ul className="xxe-info-list">
               <li><strong>Disclose sensitive files</strong> - Read /etc/passwd, SSH keys, config files</li>
               <li><strong>Perform SSRF attacks</strong> - Access internal services, AWS metadata, etc.</li>
               <li><strong>Blind XXE</strong> - Extract data even without direct output via error/timing channels</li>
@@ -346,7 +252,7 @@ export default function XXEGenerator() {
             </ul>
 
             <h4>Common Vulnerable Applications:</h4>
-            <ul style={{ color: '#d0d0d0' }}>
+            <ul className="xxe-info-list">
               <li>SOAP web services</li>
               <li>XML API endpoints</li>
               <li>Document upload features (XML, Office files)</li>
@@ -355,7 +261,7 @@ export default function XXEGenerator() {
             </ul>
 
             <h4>Prevention & Mitigation:</h4>
-            <ul style={{ color: '#d0d0d0' }}>
+            <ul className="xxe-info-list">
               <li>Disable external entity processing in XML parsers</li>
               <li>Use whitelisting for allowed XML schemas</li>
               <li>Implement proper input validation</li>
@@ -364,8 +270,8 @@ export default function XXEGenerator() {
             </ul>
 
             <h4>Legal & Ethical Requirements:</h4>
-            <div style={{ backgroundColor: '#1a1a1a', padding: '1rem', borderRadius: '6px', borderLeft: '4px solid #ff6b6b', marginTop: '1rem' }}>
-              <ul style={{ color: '#d0d0d0', margin: 0 }}>
+            <div className="xxe-legal-note">
+              <ul className="xxe-legal-note-list">
                 <li>⚠️ Use ONLY in authorized penetration testing engagements</li>
                 <li>✓ Always get explicit written permission before testing</li>
                 <li>✓ Test only on systems you own or have authorization for</li>

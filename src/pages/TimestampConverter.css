@@ -1,0 +1,99 @@
+.mode-selector {
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.radio-label {
+  margin-right: 2rem;
+  font-size: 14px;
+}
+
+.radio-label--last {
+  font-size: 14px;
+}
+
+.radio-input {
+  margin-right: 0.5rem;
+}
+
+.form-field {
+  margin-bottom: 1.5rem;
+}
+
+.field-label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+}
+
+.field-textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 14px;
+  font-family: monospace;
+  box-sizing: border-box;
+  min-height: 80px;
+}
+
+.info-box--result {
+  background-color: #f0f0f0;
+  margin-top: 2rem;
+}
+
+.result-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+  font-size: 14px;
+}
+
+.mono-value {
+  font-family: monospace;
+  word-break: break-all;
+  margin-top: 5px;
+}
+
+.mono-value--large {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.mono-value--medium {
+  font-size: 16px;
+}
+
+.inline-copy-btn {
+  margin-left: 10px;
+  padding: 2px 8px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.grid-full-width {
+  grid-column: 1 / -1;
+}
+
+.value-details {
+  margin-top: 5px;
+}
+
+.info-box--spaced {
+  margin-top: 2rem;
+}
+
+.info-box--alt {
+  background-color: #f0f0f0;
+  margin-top: 1rem;
+}
+
+.info-text {
+  margin-top: 10px;
+}
+
+.examples-text {
+  font-size: 12px;
+  margin: 0.5rem 0;
+}

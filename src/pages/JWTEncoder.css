@@ -1,0 +1,150 @@
+.mode-selector {
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.mode-label {
+  margin-right: 2rem;
+  font-size: 14px;
+}
+
+.mode-label:last-child {
+  margin-right: 0;
+}
+
+.mode-radio {
+  margin-right: 0.5rem;
+}
+
+.form-section {
+  margin-bottom: 1.5rem;
+}
+
+.field-label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+}
+
+.algo-select {
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 14px;
+  min-width: 150px;
+}
+
+.secret-input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.jwt-input-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.jwt-textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 12px;
+  font-family: monospace;
+  box-sizing: border-box;
+}
+
+.jwt-textarea--header,
+.jwt-textarea--payload {
+  min-height: 120px;
+}
+
+.jwt-textarea--verify {
+  min-height: 100px;
+}
+
+.error-message--mt {
+  margin-top: 1.5rem;
+}
+
+.info-box--gray {
+  background-color: #f0f0f0;
+}
+
+.info-box--mt {
+  margin-top: 1.5rem;
+}
+
+.jwt-token-section {
+  margin-bottom: 1.5rem;
+}
+
+.jwt-token-display {
+  background-color: #fff;
+  padding: 1rem;
+  border-radius: 5px;
+  margin-top: 0.5rem;
+  font-family: monospace;
+  font-size: 11px;
+  word-break: break-all;
+  border: 1px solid #ddd;
+}
+
+.jwt-copy-btn {
+  margin-left: 10px;
+  padding: 4px 8px;
+  font-size: 11px;
+  cursor: pointer;
+}
+
+.jwt-result-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.jwt-pre {
+  background-color: #fff;
+  padding: 0.75rem;
+  border-radius: 5px;
+  font-size: 11px;
+  border: 1px solid #ddd;
+}
+
+.jwt-pre--scrollable {
+  max-height: 150px;
+  overflow-y: auto;
+}
+
+.verify-status {
+  margin-bottom: 1rem;
+  padding: 0.75rem;
+  border-radius: 5px;
+}
+
+.verify-status--valid {
+  background-color: #d4edda;
+  border: 1px solid #c3e6cb;
+  color: #155724;
+}
+
+.verify-status--error {
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+  color: #721c24;
+}
+
+.jwt-verify-section {
+  margin-bottom: 1rem;
+}
+
+.jwt-expiration-info {
+  font-size: 13px;
+}

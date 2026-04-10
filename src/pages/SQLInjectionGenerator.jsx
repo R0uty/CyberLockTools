@@ -9,6 +9,7 @@ import {
   DATABASE_INFO,
   LEGAL_DISCLAIMER
 } from '../utils/sqlInjectionGenerator';
+import './SQLInjectionGenerator.css';
 
 export default function SQLInjectionGenerator() {
   useSEO(
@@ -36,55 +37,20 @@ export default function SQLInjectionGenerator() {
 
   if (showLegalWarning) {
     return (
-      <div style={{ maxWidth: '900px', margin: '0 auto', padding: '20px' }}>
+      <div className="sqli-disclaimer-page">
         <h1>SQL Injection Generator</h1>
-        <div
-          style={{
-            backgroundColor: '#ff6b6b22',
-            border: '2px solid #ff6b6b',
-            borderRadius: '8px',
-            padding: '20px',
-            marginBottom: '20px',
-            color: '#d0d0d0',
-            whiteSpace: 'pre-wrap',
-            fontFamily: 'monospace',
-            fontSize: '13px',
-            lineHeight: '1.6'
-          }}
-        >
+        <div className="sqli-legal-box">
           {LEGAL_DISCLAIMER}
         </div>
         <button
           onClick={() => setShowLegalWarning(false)}
-          style={{
-            backgroundColor: '#c0c0c0',
-            color: '#1a1a1a',
-            border: 'none',
-            padding: '12px 24px',
-            borderRadius: '6px',
-            cursor: 'pointer',
-            fontSize: '16px',
-            fontWeight: 'bold',
-            marginRight: '10px'
-          }}
-          onMouseOver={(e) => (e.target.style.backgroundColor = '#d0d0d0')}
-          onMouseOut={(e) => (e.target.style.backgroundColor = '#c0c0c0')}
+          className="sqli-accept-btn"
         >
           I Understand & Accept
         </button>
         <button
           onClick={() => window.history.back()}
-          style={{
-            backgroundColor: '#2a2a2a',
-            color: '#d0d0d0',
-            border: '2px solid #c0c0c0',
-            padding: '12px 24px',
-            borderRadius: '6px',
-            cursor: 'pointer',
-            fontSize: '16px'
-          }}
-          onMouseOver={(e) => (e.target.style.backgroundColor = '#333333')}
-          onMouseOut={(e) => (e.target.style.backgroundColor = '#2a2a2a')}
+          className="sqli-back-btn"
         >
           Go Back
         </button>
@@ -93,31 +59,21 @@ export default function SQLInjectionGenerator() {
   }
 
   return (
-    <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '20px' }}>
+    <div className="sqli-page">
       <h1>SQL Injection Generator</h1>
-      <p style={{ color: '#c0c0c0', marginBottom: '20px' }}>
+      <p className="sqli-page-desc">
         Learn SQL injection techniques for authorized security testing and educational purposes.
       </p>
 
       {/* Database Selection */}
-      <div style={{ marginBottom: '30px' }}>
-        <label style={{ display: 'block', marginBottom: '8px', color: '#d0d0d0', fontWeight: 'bold' }}>
+      <div className="sqli-section-mb">
+        <label className="sqli-field-label">
           Target Database Type:
         </label>
         <select
           value={databaseType}
           onChange={(e) => setDatabaseType(e.target.value)}
-          style={{
-            backgroundColor: '#2a2a2a',
-            color: '#d0d0d0',
-            border: '2px solid #c0c0c0',
-            padding: '10px',
-            borderRadius: '6px',
-            width: '100%',
-            maxWidth: '300px',
-            fontSize: '14px',
-            cursor: 'pointer'
-          }}
+          className="sqli-select"
         >
           {Object.keys(DATABASE_INFO).map((db) => (
             <option key={db} value={db}>
@@ -128,32 +84,13 @@ export default function SQLInjectionGenerator() {
       </div>
 
       {/* Database Info Card */}
-      <div
-        style={{
-          backgroundColor: '#2a2a2a',
-          border: '2px solid #c0c0c0',
-          borderRadius: '8px',
-          padding: '15px',
-          marginBottom: '30px'
-        }}
-      >
-        <h3 style={{ color: '#c0c0c0', marginTop: 0 }}>{databaseType} Commands:</h3>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px' }}>
+      <div className="sqli-db-card">
+        <h3 className="sqli-db-card-title">{databaseType} Commands:</h3>
+        <div className="sqli-db-grid">
           {Object.entries(DATABASE_INFO[databaseType]).map(([key, value]) => (
             <div key={key}>
-              <strong style={{ color: '#d0d0d0' }}>{key.replace(/_/g, ' ')}:</strong>
-              <div
-                style={{
-                  backgroundColor: '#1a1a1a',
-                  padding: '8px',
-                  borderRadius: '4px',
-                  marginTop: '5px',
-                  fontFamily: 'monospace',
-                  fontSize: '12px',
-                  color: '#c0c0c0',
-                  wordBreak: 'break-all'
-                }}
-              >
+              <strong className="sqli-db-entry-label">{key.replace(/_/g, ' ')}:</strong>
+              <div className="sqli-db-entry-value">
                 {value}
               </div>
             </div>
@@ -162,10 +99,10 @@ export default function SQLInjectionGenerator() {
       </div>
 
       {/* Two Column Layout */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', marginBottom: '30px' }}>
+      <div className="sqli-two-col-grid">
         {/* Left: Category & Payload Selection */}
         <div>
-          <h3 style={{ color: '#c0c0c0', marginTop: 0 }}>Injection Type</h3>
+          <h3 className="sqli-col-heading">Injection Type</h3>
 
           {/* Search */}
           <input
@@ -176,21 +113,12 @@ export default function SQLInjectionGenerator() {
               setSearchQuery(e.target.value);
               setSelectedPayload(0);
             }}
-            style={{
-              width: '100%',
-              backgroundColor: '#2a2a2a',
-              color: '#d0d0d0',
-              border: '2px solid #c0c0c0',
-              padding: '10px',
-              borderRadius: '6px',
-              marginBottom: '15px',
-              fontSize: '14px'
-            }}
+            className="sqli-search-input"
           />
 
           {/* Category Buttons */}
           {!searchQuery && (
-            <div style={{ marginBottom: '15px' }}>
+            <div className="sqli-category-btns">
               {categories.map(({ key, label }) => (
                 <button
                   key={key}
@@ -198,30 +126,7 @@ export default function SQLInjectionGenerator() {
                     setSelectedCategory(key);
                     setSelectedPayload(0);
                   }}
-                  style={{
-                    display: 'block',
-                    width: '100%',
-                    padding: '12px',
-                    marginBottom: '8px',
-                    backgroundColor: selectedCategory === key ? '#c0c0c0' : '#2a2a2a',
-                    color: selectedCategory === key ? '#1a1a1a' : '#d0d0d0',
-                    border: '2px solid #c0c0c0',
-                    borderRadius: '6px',
-                    cursor: 'pointer',
-                    fontSize: '14px',
-                    fontWeight: 'bold',
-                    transition: 'all 0.2s'
-                  }}
-                  onMouseOver={(e) => {
-                    if (selectedCategory !== key) {
-                      e.target.style.backgroundColor = '#444444';
-                    }
-                  }}
-                  onMouseOut={(e) => {
-                    if (selectedCategory !== key) {
-                      e.target.style.backgroundColor = '#2a2a2a';
-                    }
-                  }}
+                  className={`sqli-category-btn${selectedCategory === key ? ' sqli-category-btn--active' : ''}`}
                 >
                   {label}
                 </button>
@@ -230,17 +135,9 @@ export default function SQLInjectionGenerator() {
           )}
 
           {/* Payload List */}
-          <div
-            style={{
-              backgroundColor: '#2a2a2a',
-              border: '2px solid #c0c0c0',
-              borderRadius: '8px',
-              maxHeight: '500px',
-              overflowY: 'auto'
-            }}
-          >
+          <div className="sqli-payload-list">
             {currentPayloads.length === 0 ? (
-              <div style={{ padding: '20px', color: '#c0c0c0', textAlign: 'center' }}>
+              <div className="sqli-payload-empty">
                 No payloads found
               </div>
             ) : (
@@ -248,31 +145,10 @@ export default function SQLInjectionGenerator() {
                 <button
                   key={index}
                   onClick={() => setSelectedPayload(index)}
-                  style={{
-                    display: 'block',
-                    width: '100%',
-                    padding: '12px 15px',
-                    textAlign: 'left',
-                    backgroundColor: selectedPayload === index ? '#444444' : '#2a2a2a',
-                    color: selectedPayload === index ? '#d0d0d0' : '#c0c0c0',
-                    border: 'none',
-                    borderBottom: '1px solid #1a1a1a',
-                    cursor: 'pointer',
-                    fontSize: '13px',
-                    transition: 'all 0.1s',
-                    fontWeight: selectedPayload === index ? 'bold' : 'normal'
-                  }}
-                  onMouseOver={(e) => {
-                    e.target.style.backgroundColor = '#444444';
-                    e.target.style.color = '#d0d0d0';
-                  }}
-                  onMouseOut={(e) => {
-                    e.target.style.backgroundColor = selectedPayload === index ? '#444444' : '#2a2a2a';
-                    e.target.style.color = selectedPayload === index ? '#d0d0d0' : '#c0c0c0';
-                  }}
+                  className={`sqli-payload-item${selectedPayload === index ? ' sqli-payload-item--selected' : ''}`}
                 >
                   <strong>{payload.name}</strong>
-                  <div style={{ fontSize: '12px', color: '#a0a0a0', marginTop: '4px' }}>
+                  <div className="sqli-payload-item__desc">
                     {payload.description}
                   </div>
                 </button>
@@ -283,32 +159,13 @@ export default function SQLInjectionGenerator() {
 
         {/* Right: Payload Preview */}
         <div>
-          <h3 style={{ color: '#c0c0c0', marginTop: 0 }}>Payload Preview</h3>
+          <h3 className="sqli-col-heading">Payload Preview</h3>
 
           {currentPayload ? (
             <>
               {/* Payload Code */}
-              <div
-                style={{
-                  backgroundColor: '#1a1a1a',
-                  border: '2px solid #c0c0c0',
-                  borderRadius: '8px',
-                  padding: '15px',
-                  marginBottom: '15px',
-                  maxHeight: '300px',
-                  overflowY: 'auto'
-                }}
-              >
-                <div
-                  style={{
-                    fontFamily: 'monospace',
-                    fontSize: '13px',
-                    color: '#d0d0d0',
-                    lineHeight: '1.6',
-                    wordBreak: 'break-all',
-                    whiteSpace: 'pre-wrap'
-                  }}
-                >
+              <div className="sqli-code-box">
+                <div className="sqli-code-display">
                   {currentPayload.payload}
                 </div>
               </div>
@@ -316,55 +173,22 @@ export default function SQLInjectionGenerator() {
               {/* Copy Button */}
               <button
                 onClick={() => copyToClipboard(currentPayload.payload)}
-                style={{
-                  width: '100%',
-                  backgroundColor: '#c0c0c0',
-                  color: '#1a1a1a',
-                  border: 'none',
-                  padding: '12px',
-                  borderRadius: '6px',
-                  cursor: 'pointer',
-                  fontSize: '14px',
-                  fontWeight: 'bold',
-                  marginBottom: '15px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: '8px'
-                }}
-                onMouseOver={(e) => (e.target.style.backgroundColor = '#d0d0d0')}
-                onMouseOut={(e) => (e.target.style.backgroundColor = '#c0c0c0')}
+                className="sqli-copy-btn"
               >
                 <Copy01Icon size={18} />
                 Copy Payload
               </button>
 
               {/* Explanation */}
-              <div
-                style={{
-                  backgroundColor: '#2a2a2a',
-                  border: '2px solid #c0c0c0',
-                  borderRadius: '8px',
-                  padding: '15px'
-                }}
-              >
-                <h4 style={{ color: '#c0c0c0', marginTop: 0 }}>Explanation:</h4>
-                <p style={{ color: '#c0c0c0', margin: '0', lineHeight: '1.6' }}>
+              <div className="sqli-explanation-box">
+                <h4 className="sqli-explanation-title">Explanation:</h4>
+                <p className="sqli-explanation-text">
                   {currentPayload.explanation}
                 </p>
               </div>
             </>
           ) : (
-            <div
-              style={{
-                backgroundColor: '#2a2a2a',
-                border: '2px solid #c0c0c0',
-                borderRadius: '8px',
-                padding: '30px',
-                textAlign: 'center',
-                color: '#a0a0a0'
-              }}
-            >
+            <div className="sqli-empty-preview">
               Select a payload to view details
             </div>
           )}
@@ -372,27 +196,13 @@ export default function SQLInjectionGenerator() {
       </div>
 
       {/* Common Vulnerable Parameters */}
-      <div style={{ marginBottom: '30px' }}>
-        <h3 style={{ color: '#c0c0c0' }}>Common Vulnerable Parameters</h3>
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-            gap: '15px'
-          }}
-        >
+      <div className="sqli-section-mb">
+        <h3 className="sqli-section-title">Common Vulnerable Parameters</h3>
+        <div className="sqli-params-grid">
           {COMMON_VULNERABLE_PARAMETERS.map((param, index) => (
-            <div
-              key={index}
-              style={{
-                backgroundColor: '#2a2a2a',
-                border: '2px solid #c0c0c0',
-                borderRadius: '8px',
-                padding: '15px'
-              }}
-            >
-              <strong style={{ color: '#d0d0d0' }}>{param.name}</strong>
-              <p style={{ color: '#a0a0a0', marginTop: '8px', margin: '8px 0 0 0' }}>
+            <div key={index} className="sqli-card">
+              <strong className="sqli-card-title">{param.name}</strong>
+              <p className="sqli-card-text">
                 {param.example}
               </p>
             </div>
@@ -401,17 +211,9 @@ export default function SQLInjectionGenerator() {
       </div>
 
       {/* Prevention Tips */}
-      <div
-        style={{
-          backgroundColor: '#2a2a2a',
-          border: '2px solid #c0c0c0',
-          borderRadius: '8px',
-          padding: '20px',
-          marginBottom: '30px'
-        }}
-      >
-        <h3 style={{ color: '#c0c0c0', marginTop: 0 }}>Prevention Best Practices</h3>
-        <ul style={{ color: '#c0c0c0', lineHeight: '1.8' }}>
+      <div className="sqli-info-section">
+        <h3 className="sqli-info-section-title">Prevention Best Practices</h3>
+        <ul className="sqli-info-list">
           <li>✓ Use parameterized queries/prepared statements exclusively</li>
           <li>✓ Validate and sanitize all user input on both client and server</li>
           <li>✓ Implement whitelist validation for expected input types</li>
@@ -426,16 +228,9 @@ export default function SQLInjectionGenerator() {
       </div>
 
       {/* Testing Tips */}
-      <div
-        style={{
-          backgroundColor: '#2a2a2a',
-          border: '2px solid #c0c0c0',
-          borderRadius: '8px',
-          padding: '20px'
-        }}
-      >
-        <h3 style={{ color: '#c0c0c0', marginTop: 0 }}>Authorized Security Testing Tips</h3>
-        <ol style={{ color: '#c0c0c0', lineHeight: '1.8' }}>
+      <div className="sqli-info-section">
+        <h3 className="sqli-info-section-title">Authorized Security Testing Tips</h3>
+        <ol className="sqli-info-list">
           <li>Always start with least invasive techniques (error-based before blind)</li>
           <li>Document all discovered vulnerabilities with proof-of-concept</li>
           <li>Never modify or delete production data during testing</li>

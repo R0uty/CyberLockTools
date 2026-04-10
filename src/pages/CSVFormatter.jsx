@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useSEO } from '../hooks/useSEO'
 import { formatCSV, getCSVStats, validateCSV, csvToJSON, jsonToCSV } from '../utils/csvFormatter'
+import './CSVFormatter.css'
 
 export default function CSVFormatter() {
   useSEO({
@@ -160,24 +161,24 @@ export default function CSVFormatter() {
           </button>
         </div>
 
-        <div style={{ marginBottom: '1.5rem', paddingBottom: '1rem', borderBottom: '1px solid #e0e0e0' }}>
-          <label style={{ marginRight: '2rem', fontSize: '14px' }}>
+        <div className="mode-selector">
+          <label className="mode-label">
             <input
               type="radio"
               value="csv"
               checked={mode === 'csv'}
               onChange={(e) => setMode(e.target.value)}
-              style={{ marginRight: '0.5rem' }}
+              className="mode-radio"
             />
             CSV Input
           </label>
-          <label style={{ fontSize: '14px' }}>
+          <label className="mode-label">
             <input
               type="radio"
               value="json"
               checked={mode === 'json'}
               onChange={(e) => setMode(e.target.value)}
-              style={{ marginRight: '0.5rem' }}
+              className="mode-radio"
             />
             JSON Input
           </label>
@@ -217,7 +218,7 @@ export default function CSVFormatter() {
               rows="10"
             />
             {output && output !== '✅ Valid CSV' && !output.startsWith('✅') && (
-              <div style={{ display: 'flex', gap: '10px', marginTop: '10px' }}>
+              <div className="btn-group-row">
                 <button onClick={handleCopy} className="copy-btn">
                   Copy
                 </button>
@@ -230,25 +231,25 @@ export default function CSVFormatter() {
         </div>
 
         {stats && (
-          <div className="info-box" style={{ backgroundColor: '#f0f0f0', marginTop: '20px' }}>
+          <div className="info-box info-box--alt">
             <h4>CSV Statistics</h4>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px', fontSize: '14px' }}>
+            <div className="stats-grid">
               <div>
                 <strong>Rows:</strong> {stats.rows}
               </div>
               <div>
                 <strong>Columns:</strong> {stats.columns}
               </div>
-              <div style={{ gridColumn: '1 / -1' }}>
+              <div className="stats-grid__full">
                 <strong>Headers:</strong> {stats.headers}
               </div>
               {Object.keys(stats.dataTypes).length > 0 && (
-                <div style={{ gridColumn: '1 / -1', paddingTop: '10px', borderTop: '1px solid #ddd' }}>
+                <div className="stats-grid__full stats-types">
                   <strong>Data Types by Column:</strong>
-                  <div style={{ marginTop: '8px', fontSize: '13px' }}>
+                  <div className="stats-type-list">
                     {Object.entries(stats.dataTypes).map(([header, type]) => (
-                      <div key={header} style={{ margin: '4px 0' }}>
-                        {header}: <code style={{ backgroundColor: '#fff', padding: '2px 4px', borderRadius: '3px' }}>{type}</code>
+                      <div key={header} className="stats-type-item">
+                        {header}: <code className="stats-type-code">{type}</code>
                       </div>
                     ))}
                   </div>
@@ -263,36 +264,36 @@ export default function CSVFormatter() {
           <p>
             CSV (Comma-Separated Values) is a simple text-based format for storing tabular data. It's widely used for data interchange between applications, spreadsheets, and databases. Each line represents a row, and values are separated by commas.
           </p>
-          <p style={{ marginTop: '10px' }}>
+          <p className="info-note">
             <strong>Features:</strong> Human-readable, lightweight, supports quoted fields with special characters, widely compatible with Excel/Google Sheets
           </p>
         </div>
 
-        <div className="info-box" style={{ backgroundColor: '#f0f0f0', marginTop: '20px' }}>
+        <div className="info-box info-box--alt">
           <h4>🧪 Test CSV Examples</h4>
           
-          <div style={{ marginTop: '10px', paddingBottom: '10px', borderBottom: '1px solid #ddd' }}>
+          <div className="example-block">
             <strong>Simple CSV:</strong>
-            <p style={{ fontSize: '12px', wordBreak: 'break-all', fontFamily: 'monospace', backgroundColor: '#fff', padding: '8px', borderRadius: '4px', margin: '5px 0' }}>
+            <p className="code-snippet">
               {`id,name,email,age\n1,John,john@example.com,30\n2,Jane,jane@example.com,28`}
             </p>
           </div>
 
-          <div style={{ marginTop: '10px', paddingBottom: '10px', borderBottom: '1px solid #ddd' }}>
+          <div className="example-block">
             <strong>CSV with Quoted Fields:</strong>
-            <p style={{ fontSize: '12px', wordBreak: 'break-all', fontFamily: 'monospace', backgroundColor: '#fff', padding: '8px', borderRadius: '4px', margin: '5px 0' }}>
+            <p className="code-snippet">
               {`name,description,price\n"Product A","Has, comma in text",9.99\n"Product B","Normal desc",19.99`}
             </p>
           </div>
 
-          <div style={{ marginTop: '10px' }}>
+          <div className="example-block--last">
             <strong>Sample JSON for conversion:</strong>
-            <p style={{ fontSize: '12px', wordBreak: 'break-all', fontFamily: 'monospace', backgroundColor: '#fff', padding: '8px', borderRadius: '4px', margin: '5px 0' }}>
+            <p className="code-snippet">
               {`[{"id":1,"name":"Alice","city":"NYC"},{"id":2,"name":"Bob","city":"LA"}]`}
             </p>
           </div>
 
-          <p style={{ fontSize: '12px', marginTop: '10px' }}>
+          <p className="example-note">
             Copy any example above and paste it to see parsing/conversion in action!
           </p>
         </div>

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useSEO } from '../hooks/useSEO'
 import { decodeJWT, formatJSON } from '../utils/jwtDecoder'
+import './JWTDebugger.css'
 
 export default function JWTDebugger() {
   useSEO({
@@ -145,7 +146,7 @@ export default function JWTDebugger() {
           <p>
             A JWT consists of three Base64-encoded parts separated by dots:
           </p>
-          <ul style={{ marginTop: '10px', marginBottom: '10px', paddingLeft: '20px' }}>
+          <ul className="jwt-list">
             <li><strong>Header:</strong> Contains the token type (JWT) and hashing algorithm used</li>
             <li><strong>Payload:</strong> Contains claims (user data, roles, permissions, etc.)</li>
             <li><strong>Signature:</strong> Cryptographic signature to verify token integrity</li>
@@ -155,12 +156,12 @@ export default function JWTDebugger() {
           </p>
         </div>
 
-        <div className="info-box" style={{ backgroundColor: '#f0f0f0', marginTop: '20px' }}>
+        <div className="info-box info-box--alt">
           <h4>🧪 Test Token (Example)</h4>
-          <p style={{ fontSize: '12px', wordBreak: 'break-all', fontFamily: 'monospace', backgroundColor: '#fff', padding: '10px', borderRadius: '4px' }}>
+          <p className="code-snippet">
             eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
           </p>
-          <p style={{ fontSize: '12px', marginTop: '8px' }}>
+          <p className="example-note">
             Paste this token above to see how JWT decoding works!
           </p>
         </div>

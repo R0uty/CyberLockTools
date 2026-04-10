@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useSEO } from '../hooks/useSEO'
 import { formatCSS, minifyCSS, validateCSS, getCSSStats, getCompressionRatio } from '../utils/cssFormatter'
+import './CSSBeautifier.css'
 
 export default function CSSBeautifier() {
   useSEO({
@@ -145,68 +146,59 @@ export default function CSSBeautifier() {
       </div>
 
       <div className="tool-container">
-        <div style={{ marginBottom: '1.5rem', paddingBottom: '1rem', borderBottom: '1px solid #e0e0e0' }}>
-          <label style={{ marginRight: '1rem', fontSize: '14px' }}>
+        <div className="mode-selector">
+          <label className="mode-label">
             <input
               type="radio"
               value="format"
               checked={mode === 'format'}
               onChange={(e) => { setMode(e.target.value); setOutput(''); setError('') }}
-              style={{ marginRight: '0.5rem' }}
+              className="mode-radio"
             />
             Format
           </label>
-          <label style={{ marginRight: '1rem', fontSize: '14px' }}>
+          <label className="mode-label">
             <input
               type="radio"
               value="minify"
               checked={mode === 'minify'}
               onChange={(e) => { setMode(e.target.value); setOutput(''); setError('') }}
-              style={{ marginRight: '0.5rem' }}
+              className="mode-radio"
             />
             Minify
           </label>
-          <label style={{ fontSize: '14px' }}>
+          <label className="mode-label">
             <input
               type="radio"
               value="validate"
               checked={mode === 'validate'}
               onChange={(e) => { setMode(e.target.value); setOutput(''); setError('') }}
-              style={{ marginRight: '0.5rem' }}
+              className="mode-radio"
             />
             Validate
           </label>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem', marginBottom: '1.5rem' }}>
+        <div className="two-col-grid">
           {/* Input */}
           <div>
-            <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold' }}>
+            <label className="field-label">
               CSS Input:
             </label>
             <textarea
               value={input}
               onChange={(e) => setInput(e.target.value)}
               placeholder="Paste your CSS here..."
-              style={{
-                width: '100%',
-                padding: '0.75rem',
-                border: '1px solid #ddd',
-                borderRadius: '5px',
-                fontSize: '12px',
-                fontFamily: 'monospace',
-                minHeight: '400px',
-                boxSizing: 'border-box'
-              }}
+              className="css-textarea"
             />
-            <div style={{ fontSize: '12px', color: '#666', marginTop: '0.5rem' }}>
+            <div className="textarea-hint">
               {inputStats.characters} characters • {inputStats.lines} lines • {inputStats.rules} rules
             </div>
           </div>
 
           {/* Output */}
           <div>
-            <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold' }}>
+            <label className="field-label">
               {mode === 'validate' ? 'Validation Results' : 'Output:'}
             </label>
             {mode !== 'validate' && (
@@ -214,46 +206,19 @@ export default function CSSBeautifier() {
                 value={output}
                 readOnly
                 placeholder="Output will appear here..."
-                style={{
-                  width: '100%',
-                  padding: '0.75rem',
-                  border: '1px solid #ddd',
-                  borderRadius: '5px',
-                  fontSize: '12px',
-                  fontFamily: 'monospace',
-                  minHeight: '400px',
-                  boxSizing: 'border-box',
-                  backgroundColor: '#f9f9f9',
-                  color: '#333'
-                }}
+                className="css-textarea css-textarea--output"
               />
             )}
             {mode === 'validate' && validation && (
-              <div style={{
-                width: '100%',
-                padding: '1rem',
-                border: '1px solid #ddd',
-                borderRadius: '5px',
-                minHeight: '400px',
-                boxSizing: 'border-box',
-                backgroundColor: validation.valid ? '#f0fdf4' : '#fef2f2',
-                overflowY: 'auto'
-              }}>
-                <div style={{
-                  padding: '1rem',
-                  borderRadius: '5px',
-                  marginBottom: '1rem',
-                  backgroundColor: validation.valid ? '#dcfce7' : '#fee2e2',
-                  color: validation.valid ? '#166534' : '#991b1b',
-                  fontWeight: 'bold'
-                }}>
+              <div className={`validation-result ${validation.valid ? 'validation-result--valid' : 'validation-result--error'}`}>
+                <div className={`validation-badge ${validation.valid ? 'validation-badge--valid' : 'validation-badge--error'}`}>
                   {validation.valid ? '✅ CSS is valid!' : '❌ CSS has errors'}
                 </div>
 
                 {validation.errors.length > 0 && (
-                  <div style={{ marginBottom: '1rem' }}>
-                    <strong style={{ color: '#991b1b' }}>Errors:</strong>
-                    <ul style={{ margin: '0.5rem 0', paddingLeft: '1.5rem', color: '#7f1d1d' }}>
+                  <div className="validation-section">
+                    <strong className="validation-errors-title">Errors:</strong>
+                    <ul className="validation-errors-list">
                       {validation.errors.map((err, idx) => (
                         <li key={idx}>{err}</li>
                       ))}
@@ -263,8 +228,8 @@ export default function CSSBeautifier() {
 
                 {validation.warnings && validation.warnings.length > 0 && (
                   <div>
-                    <strong style={{ color: '#b45309' }}>Warnings:</strong>
-                    <ul style={{ margin: '0.5rem 0', paddingLeft: '1.5rem', color: '#92400e' }}>
+                    <strong className="validation-warnings-title">Warnings:</strong>
+                    <ul className="validation-warnings-list">
                       {validation.warnings.map((warn, idx) => (
                         <li key={idx}>{warn}</li>
                       ))}
@@ -272,9 +237,9 @@ export default function CSSBeautifier() {
                   </div>
                 )}
 
-                <div style={{ marginTop: '1rem', paddingTop: '1rem', borderTop: '1px solid #ddd' }}>
+                <div className="validation-stats">
                   <strong>Statistics:</strong>
-                  <div style={{ fontSize: '13px', marginTop: '0.5rem', color: '#333' }}>
+                  <div className="validation-stats-content">
                     <div>Rules: {validation.rules}</div>
                     <div>Selectors: {inputStats.selectors}</div>
                     <div>Properties: {inputStats.properties}</div>
@@ -283,7 +248,7 @@ export default function CSSBeautifier() {
               </div>
             )}
             {mode !== 'validate' && (
-              <div style={{ fontSize: '12px', color: '#666', marginTop: '0.5rem' }}>
+              <div className="textarea-hint">
                 {output && `${output.length} characters • ${output.split('\n').length} lines`}
               </div>
             )}
@@ -291,12 +256,12 @@ export default function CSSBeautifier() {
         </div>
 
         {error && (
-          <div className="error-message" style={{ marginBottom: '1.5rem' }}>
+          <div className="error-message error-message--mb">
             {error}
           </div>
         )}
 
-        <div className="button-group" style={{ marginBottom: '1.5rem' }}>
+        <div className="button-group button-group--mb">
           {mode === 'format' && (
             <button onClick={handleFormat} className="action-btn encode-btn">
               ✨ Format CSS
@@ -331,9 +296,9 @@ export default function CSSBeautifier() {
         </div>
 
         {stats && (
-          <div className="info-box" style={{ marginBottom: '1.5rem' }}>
+          <div className="info-box info-box--mb">
             <h4>CSS Statistics</h4>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', fontSize: '13px' }}>
+            <div className="stats-grid">
               <div><strong>Selectors:</strong> {stats.selectors}</div>
               <div><strong>Rules:</strong> {stats.rules}</div>
               <div><strong>Properties:</strong> {stats.properties}</div>
@@ -349,20 +314,20 @@ export default function CSSBeautifier() {
         )}
 
         {compression && (
-          <div className="info-box" style={{ marginBottom: '1.5rem' }}>
+          <div className="info-box info-box--mb">
             <h4>📦 Compression Stats</h4>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', fontSize: '13px' }}>
+            <div className="stats-grid">
               <div><strong>Original Size:</strong> {compression.originalSizeKB} KB</div>
               <div><strong>Minified Size:</strong> {compression.minifiedSizeKB} KB</div>
               <div><strong>Reduction:</strong> {compression.reduction} bytes</div>
-              <div><strong>Compression Ratio:</strong> <span style={{ color: '#10b981', fontWeight: 'bold' }}>{compression.ratio}%</span></div>
+              <div><strong>Compression Ratio:</strong> <span className="compression-ratio">{compression.ratio}%</span></div>
             </div>
           </div>
         )}
 
         <div className="info-box">
           <h4>Usage Tips</h4>
-          <ul style={{ margin: '0.5rem 0', paddingLeft: '1.5rem', fontSize: '13px' }}>
+          <ul className="info-list">
             <li><strong>Format:</strong> Beautifies CSS with proper indentation for readability and maintenance</li>
             <li><strong>Minify:</strong> Removes all whitespace and comments to reduce file size for production</li>
             <li><strong>Validate:</strong> Checks CSS syntax for errors and inconsistencies</li>

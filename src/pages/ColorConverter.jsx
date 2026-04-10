@@ -4,6 +4,7 @@ import {
   hexToRgb, rgbToHex, rgbToHsl, hslToRgb, rgbToHsv, hsvToRgb,
   formatRgb, formatHsl, formatHsv, getColorInfo
 } from '../utils/colorConverter'
+import './ColorConverter.css'
 
 export default function ColorConverter() {
   useSEO({
@@ -138,27 +139,21 @@ export default function ColorConverter() {
       </div>
 
       <div className="tool-container">
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem' }}>
+        <div className="color-grid">
           {/* Left: Color Inputs */}
           <div>
             {/* Color Picker */}
-            <div style={{ marginBottom: '1.5rem' }}>
-              <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold' }}>
+            <div className="form-section">
+              <label className="field-label">
                 Pick Color:
               </label>
-              <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+              <div className="color-picker-row">
                 <input
                   ref={colorInputRef}
                   type="color"
                   value={hexInput}
                   onChange={handleColorPicked}
-                  style={{
-                    width: '80px',
-                    height: '60px',
-                    border: '2px solid #ddd',
-                    borderRadius: '5px',
-                    cursor: 'pointer'
-                  }}
+                  className="color-input-native"
                 />
                 <button onClick={handleRandom} className="action-btn encode-btn">
                   🎲 Random Color
@@ -167,8 +162,8 @@ export default function ColorConverter() {
             </div>
 
             {/* HEX Input */}
-            <div style={{ marginBottom: '1.5rem' }}>
-              <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold' }}>
+            <div className="form-section">
+              <label className="field-label">
                 HEX:
               </label>
               <input
@@ -176,157 +171,140 @@ export default function ColorConverter() {
                 value={hexInput}
                 onChange={(e) => handleHexChange(e.target.value)}
                 placeholder="#FF5733"
-                style={{
-                  width: '100%',
-                  padding: '0.75rem',
-                  border: '1px solid #ddd',
-                  borderRadius: '5px',
-                  fontFamily: 'monospace',
-                  fontSize: '14px',
-                  boxSizing: 'border-box'
-                }}
+                className="hex-input"
               />
               <button
                 onClick={() => handleCopy(hexInput)}
-                style={{ marginTop: '0.5rem', padding: '0.5rem 1rem', fontSize: '12px', cursor: 'pointer' }}
+                className="copy-small-btn"
               >
                 Copy HEX
               </button>
             </div>
 
             {/* RGB Sliders */}
-            <div style={{ marginBottom: '1.5rem', padding: '1rem', backgroundColor: '#f5f5f5', borderRadius: '5px' }}>
-              <label style={{ display: 'block', marginBottom: '1rem', fontWeight: 'bold' }}>
+            <div className="slider-section slider-section--rgb">
+              <label className="slider-section-label">
                 RGB: ({rgbR}, {rgbG}, {rgbB})
               </label>
-              <div style={{ marginBottom: '0.75rem' }}>
-                <label style={{ fontSize: '12px' }}>Red: {rgbR}</label>
+              <div className="slider-item">
+                <label>Red: {rgbR}</label>
                 <input
                   type="range"
                   min="0"
                   max="255"
                   value={rgbR}
                   onChange={(e) => handleRgbChange(parseInt(e.target.value), rgbG, rgbB)}
-                  style={{ width: '100%' }}
                 />
               </div>
-              <div style={{ marginBottom: '0.75rem' }}>
-                <label style={{ fontSize: '12px' }}>Green: {rgbG}</label>
+              <div className="slider-item">
+                <label>Green: {rgbG}</label>
                 <input
                   type="range"
                   min="0"
                   max="255"
                   value={rgbG}
                   onChange={(e) => handleRgbChange(rgbR, parseInt(e.target.value), rgbB)}
-                  style={{ width: '100%' }}
                 />
               </div>
-              <div>
-                <label style={{ fontSize: '12px' }}>Blue: {rgbB}</label>
+              <div className="slider-item">
+                <label>Blue: {rgbB}</label>
                 <input
                   type="range"
                   min="0"
                   max="255"
                   value={rgbB}
                   onChange={(e) => handleRgbChange(rgbR, rgbG, parseInt(e.target.value))}
-                  style={{ width: '100%' }}
                 />
               </div>
               <button
                 onClick={() => handleCopy(formatRgb(currentRgb))}
-                style={{ marginTop: '0.75rem', padding: '0.5rem 1rem', fontSize: '12px', cursor: 'pointer', width: '100%' }}
+                className="copy-small-btn copy-small-btn--full"
               >
                 Copy RGB
               </button>
             </div>
 
             {/* HSL Sliders */}
-            <div style={{ marginBottom: '1.5rem', padding: '1rem', backgroundColor: '#f0f5f0', borderRadius: '5px' }}>
-              <label style={{ display: 'block', marginBottom: '1rem', fontWeight: 'bold' }}>
+            <div className="slider-section slider-section--hsl">
+              <label className="slider-section-label">
                 HSL: ({hslH}°, {hslS}%, {hslL}%)
               </label>
-              <div style={{ marginBottom: '0.75rem' }}>
-                <label style={{ fontSize: '12px' }}>Hue: {hslH}°</label>
+              <div className="slider-item">
+                <label>Hue: {hslH}°</label>
                 <input
                   type="range"
                   min="0"
                   max="360"
                   value={hslH}
                   onChange={(e) => handleHslChange(parseInt(e.target.value), hslS, hslL)}
-                  style={{ width: '100%' }}
                 />
               </div>
-              <div style={{ marginBottom: '0.75rem' }}>
-                <label style={{ fontSize: '12px' }}>Saturation: {hslS}%</label>
+              <div className="slider-item">
+                <label>Saturation: {hslS}%</label>
                 <input
                   type="range"
                   min="0"
                   max="100"
                   value={hslS}
                   onChange={(e) => handleHslChange(hslH, parseInt(e.target.value), hslL)}
-                  style={{ width: '100%' }}
                 />
               </div>
-              <div>
-                <label style={{ fontSize: '12px' }}>Lightness: {hslL}%</label>
+              <div className="slider-item">
+                <label>Lightness: {hslL}%</label>
                 <input
                   type="range"
                   min="0"
                   max="100"
                   value={hslL}
                   onChange={(e) => handleHslChange(hslH, hslS, parseInt(e.target.value))}
-                  style={{ width: '100%' }}
                 />
               </div>
               <button
                 onClick={() => handleCopy(formatHsl({ h: hslH, s: hslS, l: hslL }))}
-                style={{ marginTop: '0.75rem', padding: '0.5rem 1rem', fontSize: '12px', cursor: 'pointer', width: '100%' }}
+                className="copy-small-btn copy-small-btn--full"
               >
                 Copy HSL
               </button>
             </div>
 
             {/* HSV Sliders */}
-            <div style={{ marginBottom: '1.5rem', padding: '1rem', backgroundColor: '#f5f0f5', borderRadius: '5px' }}>
-              <label style={{ display: 'block', marginBottom: '1rem', fontWeight: 'bold' }}>
+            <div className="slider-section slider-section--hsv">
+              <label className="slider-section-label">
                 HSV: ({hsvH}°, {hsvS}%, {hsvV}%)
               </label>
-              <div style={{ marginBottom: '0.75rem' }}>
-                <label style={{ fontSize: '12px' }}>Hue: {hsvH}°</label>
+              <div className="slider-item">
+                <label>Hue: {hsvH}°</label>
                 <input
                   type="range"
                   min="0"
                   max="360"
                   value={hsvH}
                   onChange={(e) => handleHsvChange(parseInt(e.target.value), hsvS, hsvV)}
-                  style={{ width: '100%' }}
                 />
               </div>
-              <div style={{ marginBottom: '0.75rem' }}>
-                <label style={{ fontSize: '12px' }}>Saturation: {hsvS}%</label>
+              <div className="slider-item">
+                <label>Saturation: {hsvS}%</label>
                 <input
                   type="range"
                   min="0"
                   max="100"
                   value={hsvS}
                   onChange={(e) => handleHsvChange(hsvH, parseInt(e.target.value), hsvV)}
-                  style={{ width: '100%' }}
                 />
               </div>
-              <div>
-                <label style={{ fontSize: '12px' }}>Value: {hsvV}%</label>
+              <div className="slider-item">
+                <label>Value: {hsvV}%</label>
                 <input
                   type="range"
                   min="0"
                   max="100"
                   value={hsvV}
                   onChange={(e) => handleHsvChange(hsvH, hsvS, parseInt(e.target.value))}
-                  style={{ width: '100%' }}
                 />
               </div>
               <button
                 onClick={() => handleCopy(formatHsv({ h: hsvH, s: hsvS, v: hsvV }))}
-                style={{ marginTop: '0.75rem', padding: '0.5rem 1rem', fontSize: '12px', cursor: 'pointer', width: '100%' }}
+                className="copy-small-btn copy-small-btn--full"
               >
                 Copy HSV
               </button>
@@ -336,39 +314,25 @@ export default function ColorConverter() {
           {/* Right: Preview & Info */}
           <div>
             {/* Main Color Preview */}
-            <div style={{
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '1.5rem',
-              marginBottom: '1.5rem'
-            }}>
+            <div className="preview-container">
               {/* Current Color */}
-              <div style={{
-                backgroundColor: colorInfo.hex,
-                height: '200px',
-                borderRadius: '8px',
-                border: '2px solid #ddd',
-                boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
-              }} />
+              <div
+                className="color-preview-main"
+                style={{ backgroundColor: colorInfo.hex }}
+              />
 
               {/* Complementary Color */}
               <div>
-                <div style={{ fontSize: '13px', fontWeight: 'bold', marginBottom: '0.5rem' }}>
+                <div className="complementary-label">
                   Complementary Color:
                 </div>
-                <div style={{
-                  backgroundColor: colorInfo.complementary,
-                  height: '80px',
-                  borderRadius: '8px',
-                  border: '2px solid #ddd',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  color: colorInfo.isDark ? '#fff' : '#000',
-                  fontWeight: 'bold',
-                  cursor: 'pointer'
-                }}
-                onClick={() => handleCopy(colorInfo.complementary)}
+                <div
+                  className="complementary-preview"
+                  style={{
+                    backgroundColor: colorInfo.complementary,
+                    color: colorInfo.isDark ? '#fff' : '#000'
+                  }}
+                  onClick={() => handleCopy(colorInfo.complementary)}
                 >
                   {colorInfo.complementary}
                 </div>
@@ -378,7 +342,7 @@ export default function ColorConverter() {
             {/* Color Info */}
             <div className="info-box">
               <h4>Color Information</h4>
-              <div style={{ fontSize: '13px', lineHeight: '1.8' }}>
+              <div className="color-info-content">
                 <div><strong>HEX:</strong> <code>{colorInfo.hex}</code></div>
                 <div><strong>RGB:</strong> <code>{colorInfo.rgb}</code></div>
                 <div><strong>HSL:</strong> <code>{colorInfo.hsl}</code></div>
@@ -389,28 +353,19 @@ export default function ColorConverter() {
             </div>
 
             {/* Color Palette */}
-            <div className="info-box" style={{ marginTop: '1.5rem' }}>
+            <div className="info-box info-box--mt">
               <h4>Color Palette</h4>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '0.5rem' }}>
+              <div className="palette-grid">
                 {[10, 30, 50, 70, 90].map((lightness) => {
                   const rgb = hslToRgb(hslH, hslS, lightness)
                   const hex = rgbToHex(rgb.r, rgb.g, rgb.b)
                   return (
                     <div
                       key={lightness}
+                      className="palette-item"
                       style={{
                         backgroundColor: hex,
-                        height: '50px',
-                        borderRadius: '5px',
-                        cursor: 'pointer',
-                        border: '1px solid #ddd',
-                        display: 'flex',
-                        alignItems: 'flex-end',
-                        justifyContent: 'center',
-                        padding: '4px',
-                        fontSize: '10px',
-                        color: lightness > 50 ? '#000' : '#fff',
-                        fontWeight: 'bold'
+                        color: lightness > 50 ? '#000' : '#fff'
                       }}
                       onClick={() => handleHexChange(hex)}
                       title={`Lightness: ${lightness}%`}
@@ -423,16 +378,16 @@ export default function ColorConverter() {
             </div>
 
             {error && (
-              <div className="error-message" style={{ marginTop: '1.5rem' }}>
+              <div className="error-message error-message--mt">
                 {error}
               </div>
             )}
           </div>
         </div>
 
-        <div className="info-box" style={{ marginTop: '1.5rem' }}>
+        <div className="info-box info-box--mt">
           <h4>About Color Formats</h4>
-          <ul style={{ margin: '0.5rem 0', paddingLeft: '1.5rem', fontSize: '13px' }}>
+          <ul className="about-list">
             <li><strong>HEX:</strong> Hexadecimal color notation (#RRGGBB) - most common in web</li>
             <li><strong>RGB:</strong> Red, Green, Blue values (0-255) - standard for screens</li>
             <li><strong>HSL:</strong> Hue (0-360°), Saturation (0-100%), Lightness (0-100%) - intuitive color selection</li>

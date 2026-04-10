@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useSEO } from '../hooks/useSEO'
+import './Contact.css'
 
 export default function Contact() {
   useSEO({
@@ -58,17 +59,9 @@ export default function Contact() {
         <p>I'd love to hear from you. Send me your feedback, feature requests, or bug reports!</p>
       </div>
 
-      <div className="tool-container" style={{ maxWidth: '700px', margin: '0 auto' }}>
+      <div className="tool-container contact-container">
         {submitted && (
-          <div style={{
-            background: '#e8f5e9',
-            color: '#2e7d32',
-            padding: '1rem',
-            borderRadius: '8px',
-            marginBottom: '1.5rem',
-            border: '2px solid #4caf50',
-            fontWeight: '600'
-          }}>
+          <div className="contact-success">
             ✓ Thank you for your message! I appreciate your feedback and will review it soon.
           </div>
         )}
@@ -79,7 +72,7 @@ export default function Contact() {
           </div>
         )}
 
-        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+        <form onSubmit={handleSubmit} className="contact-form">
           <div className="textarea-group">
             <label htmlFor="name">Name *</label>
             <input
@@ -89,15 +82,7 @@ export default function Contact() {
               value={formData.name}
               onChange={handleChange}
               placeholder="Your name"
-              style={{
-                padding: '0.75rem',
-                border: "2px solid #4a4a4a",
-                borderRadius: '8px',
-                fontSize: '1rem',
-                fontFamily: 'inherit'
-              }}
-              onFocus={(e) => e.target.style.borderColor = "#c0c0c0"}
-              onBlur={(e) => e.target.style.borderColor = "#4a4a4a"}
+              className="contact-input"
             />
           </div>
 
@@ -110,15 +95,7 @@ export default function Contact() {
               value={formData.email}
               onChange={handleChange}
               placeholder="your@email.com"
-              style={{
-                padding: '0.75rem',
-                border: "2px solid #4a4a4a",
-                borderRadius: '8px',
-                fontSize: '1rem',
-                fontFamily: 'inherit'
-              }}
-              onFocus={(e) => e.target.style.borderColor = "#c0c0c0"}
-              onBlur={(e) => e.target.style.borderColor = "#4a4a4a"}
+              className="contact-input"
             />
           </div>
 
@@ -131,15 +108,7 @@ export default function Contact() {
               value={formData.subject}
               onChange={handleChange}
               placeholder="e.g., Feature Request, Bug Report"
-              style={{
-                padding: '0.75rem',
-                border: "2px solid #4a4a4a",
-                borderRadius: '8px',
-                fontSize: '1rem',
-                fontFamily: 'inherit'
-              }}
-              onFocus={(e) => e.target.style.borderColor = "#c0c0c0"}
-              onBlur={(e) => e.target.style.borderColor = "#4a4a4a"}
+              className="contact-input"
             />
           </div>
 
@@ -158,31 +127,13 @@ export default function Contact() {
 
           <button
             type="submit"
-            style={{
-              padding: '0.75rem 2rem',
-              background: 'linear-gradient(135deg, #d0d0d0 0%, #a0a0a0 100%)',
-              color: '#1a1a1a',
-              border: 'none',
-              borderRadius: '8px',
-              fontSize: '1rem',
-              fontWeight: '700',
-              cursor: 'pointer',
-              transition: 'all 0.3s ease'
-            }}
-            onMouseEnter={(e) => {
-              e.target.style.transform = 'translateY(-2px)'
-              e.target.style.boxShadow = '0 4px 12px rgba(192, 192, 192, 0.3)'
-            }}
-            onMouseLeave={(e) => {
-              e.target.style.transform = 'translateY(0)'
-              e.target.style.boxShadow = 'none'
-            }}
+            className="contact-submit-btn"
           >
             Send Message
           </button>
         </form>
 
-        <section className="info-box" style={{ marginTop: '2rem' }}>
+        <section className="info-box contact-info-box">
           <h2>Other Ways to Connect</h2>
           <p>
             Have a quick question or just want to chat? Here are some things you can do:
@@ -193,7 +144,7 @@ export default function Contact() {
             <li><strong>Share Feedback:</strong> Tell me what you like or what could be better</li>
             <li><strong>Ask Questions:</strong> Confused about how something works? I'm here to help</li>
           </ul>
-          <p style={{ marginTop: '1.5rem', color: '#666', fontSize: '0.95rem' }}>
+          <p className="contact-note">
             <strong>Note:</strong> This contact form is for demonstration purposes. In a production environment, messages would be sent to my email or stored in a database.
           </p>
         </section>

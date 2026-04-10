@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useSEO } from '../hooks/useSEO'
 import { formatSQL, getSQLStats, minifySQL, validateSQL } from '../utils/sqlFormatter'
+import './SQLFormatter.css'
 
 export default function SQLFormatter() {
   useSEO({
@@ -179,7 +180,7 @@ export default function SQLFormatter() {
               rows="10"
             />
             {output && output !== '✅ Valid SQL syntax' && (
-              <div style={{ display: 'flex', gap: '10px', marginTop: '10px' }}>
+              <div className="btn-group-row">
                 <button onClick={handleCopy} className="copy-btn">
                   Copy SQL
                 </button>
@@ -192,9 +193,9 @@ export default function SQLFormatter() {
         </div>
 
         {stats && (
-          <div className="info-box" style={{ backgroundColor: '#f0f0f0', marginTop: '20px' }}>
+          <div className="info-box info-box--alt">
             <h4>SQL Statistics</h4>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px', fontSize: '14px' }}>
+            <div className="stats-grid">
               <div>
                 <strong>Query Type:</strong> {stats.queryType}
               </div>
@@ -222,36 +223,36 @@ export default function SQLFormatter() {
           <p>
             SQL (Structured Query Language) is the standard language for managing and querying relational databases. It's used in virtually every application that stores data. SQL supports various operations: SELECT for querying, INSERT for adding data, UPDATE for modifying, and DELETE for removing data.
           </p>
-          <p style={{ marginTop: '10px' }}>
+          <p className="info-note">
             <strong>Common SQL Dialects:</strong> MySQL, PostgreSQL, SQL Server, Oracle, SQLite, MariaDB, Redshift
           </p>
         </div>
 
-        <div className="info-box" style={{ backgroundColor: '#f0f0f0', marginTop: '20px' }}>
+        <div className="info-box info-box--alt">
           <h4>🧪 Test SQL Examples</h4>
           
-          <div style={{ marginTop: '10px', paddingBottom: '10px', borderBottom: '1px solid #ddd' }}>
+          <div className="example-block">
             <strong>Simple SELECT:</strong>
-            <p style={{ fontSize: '12px', wordBreak: 'break-all', fontFamily: 'monospace', backgroundColor: '#fff', padding: '8px', borderRadius: '4px', margin: '5px 0' }}>
+            <p className="code-snippet">
               {`SELECT id, name, email FROM users WHERE active = 1 ORDER BY name`}
             </p>
           </div>
 
-          <div style={{ marginTop: '10px', paddingBottom: '10px', borderBottom: '1px solid #ddd' }}>
+          <div className="example-block">
             <strong>JOIN Query:</strong>
-            <p style={{ fontSize: '12px', wordBreak: 'break-all', fontFamily: 'monospace', backgroundColor: '#fff', padding: '8px', borderRadius: '4px', margin: '5px 0' }}>
+            <p className="code-snippet">
               {`SELECT u.name, o.order_id FROM users u INNER JOIN orders o ON u.id = o.user_id WHERE o.status = 'pending'`}
             </p>
           </div>
 
-          <div style={{ marginTop: '10px' }}>
+          <div className="example-block--last">
             <strong>Complex Query:</strong>
-            <p style={{ fontSize: '12px', wordBreak: 'break-all', fontFamily: 'monospace', backgroundColor: '#fff', padding: '8px', borderRadius: '4px', margin: '5px 0' }}>
+            <p className="code-snippet">
               {`SELECT u.id, u.name, COUNT(o.id) as order_count FROM users u LEFT JOIN orders o ON u.id = o.user_id GROUP BY u.id HAVING COUNT(o.id) > 0 ORDER BY order_count DESC`}
             </p>
           </div>
 
-          <p style={{ fontSize: '12px', marginTop: '10px' }}>
+          <p className="example-note">
             Copy any example above and paste it to see formatting in action!
           </p>
         </div>

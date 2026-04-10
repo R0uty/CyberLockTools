@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useSEO } from '../hooks/useSEO'
 import { timestampToDate, dateToTimestamp, getCurrentTimestamp, dateDifference } from '../utils/timestampConverter'
+import './TimestampConverter.css'
 
 export default function TimestampConverter() {
   useSEO({
@@ -102,41 +103,41 @@ export default function TimestampConverter() {
       </div>
 
       <div className="tool-container">
-        <div style={{ marginBottom: '1.5rem', paddingBottom: '1rem', borderBottom: '1px solid #e0e0e0' }}>
-          <label style={{ marginRight: '2rem', fontSize: '14px' }}>
+        <div className="mode-selector">
+          <label className="radio-label">
             <input
               type="radio"
               value="ts-to-date"
               checked={mode === 'ts-to-date'}
               onChange={(e) => { setMode(e.target.value); setResult(null); setError('') }}
-              style={{ marginRight: '0.5rem' }}
+              className="radio-input"
             />
             Timestamp → Date
           </label>
-          <label style={{ marginRight: '2rem', fontSize: '14px' }}>
+          <label className="radio-label">
             <input
               type="radio"
               value="date-to-ts"
               checked={mode === 'date-to-ts'}
               onChange={(e) => { setMode(e.target.value); setResult(null); setError('') }}
-              style={{ marginRight: '0.5rem' }}
+              className="radio-input"
             />
             Date → Timestamp
           </label>
-          <label style={{ fontSize: '14px' }}>
+          <label className="radio-label--last">
             <input
               type="radio"
               value="difference"
               checked={mode === 'difference'}
               onChange={(e) => { setMode(e.target.value); setResult(null); setError('') }}
-              style={{ marginRight: '0.5rem' }}
+              className="radio-input"
             />
             Date Difference
           </label>
         </div>
 
-        <div style={{ marginBottom: '1.5rem' }}>
-          <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold' }}>
+        <div className="form-field">
+          <label className="field-label">
             {mode === 'ts-to-date' && 'Enter Unix Timestamp (seconds or milliseconds):'}
             {mode === 'date-to-ts' && 'Enter Date (e.g., 2024-01-15 or 2024-01-15 10:30:00):'}
             {mode === 'difference' && 'Enter two dates/timestamps (separated by | or comma):'}
@@ -149,16 +150,7 @@ export default function TimestampConverter() {
               mode === 'date-to-ts' ? '2024-01-15 or 2024-01-15 10:30:00' :
               '2024-01-15 | 2024-01-20'
             }
-            style={{
-              width: '100%',
-              padding: '0.75rem',
-              border: '1px solid #ddd',
-              borderRadius: '5px',
-              fontSize: '14px',
-              fontFamily: 'monospace',
-              boxSizing: 'border-box',
-              minHeight: '80px'
-            }}
+            className="field-textarea"
           />
         </div>
 
@@ -189,18 +181,18 @@ export default function TimestampConverter() {
         )}
 
         {result && (
-          <div className="info-box" style={{ backgroundColor: '#f0f0f0', marginTop: '2rem' }}>
+          <div className="info-box info-box--result">
             <h4>Result</h4>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px', fontSize: '14px' }}>
+            <div className="result-grid">
               {mode === 'ts-to-date' && (
                 <>
                   <div>
                     <strong>ISO Format:</strong>
-                    <div style={{ fontFamily: 'monospace', wordBreak: 'break-all', marginTop: '5px' }}>
+                    <div className="mono-value">
                       {result.iso}
                       <button
                         onClick={() => handleCopy(result.iso)}
-                        style={{ marginLeft: '10px', padding: '2px 8px', fontSize: '12px', cursor: 'pointer' }}
+                        className="inline-copy-btn"
                       >
                         Copy
                       </button>
@@ -208,25 +200,25 @@ export default function TimestampConverter() {
                   </div>
                   <div>
                     <strong>UTC Format:</strong>
-                    <div style={{ fontFamily: 'monospace', wordBreak: 'break-all', marginTop: '5px' }}>
+                    <div className="mono-value">
                       {result.utc}
                       <button
                         onClick={() => handleCopy(result.utc)}
-                        style={{ marginLeft: '10px', padding: '2px 8px', fontSize: '12px', cursor: 'pointer' }}
+                        className="inline-copy-btn"
                       >
                         Copy
                       </button>
                     </div>
                   </div>
-                  <div style={{ gridColumn: '1 / -1' }}>
+                  <div className="grid-full-width">
                     <strong>Local Format:</strong>
-                    <div style={{ fontFamily: 'monospace', wordBreak: 'break-all', marginTop: '5px' }}>
+                    <div className="mono-value">
                       {result.locale}
                     </div>
                   </div>
                   <div>
                     <strong>Date Components:</strong>
-                    <div style={{ marginTop: '5px' }}>
+                    <div className="value-details">
                       Year: {result.year}<br/>
                       Month: {result.month}<br/>
                       Day: {result.day}
@@ -234,7 +226,7 @@ export default function TimestampConverter() {
                   </div>
                   <div>
                     <strong>Time Components:</strong>
-                    <div style={{ marginTop: '5px' }}>
+                    <div className="value-details">
                       Hour: {result.hour}<br/>
                       Minute: {result.minute}<br/>
                       Second: {result.second}
@@ -246,11 +238,11 @@ export default function TimestampConverter() {
                 <>
                   <div>
                     <strong>Timestamp (seconds):</strong>
-                    <div style={{ fontFamily: 'monospace', marginTop: '5px', fontSize: '18px', fontWeight: 'bold' }}>
+                    <div className="mono-value mono-value--large">
                       {result.timestampS}
                       <button
                         onClick={() => handleCopy(result.timestampS.toString())}
-                        style={{ marginLeft: '10px', padding: '2px 8px', fontSize: '12px', cursor: 'pointer' }}
+                        className="inline-copy-btn"
                       >
                         Copy
                       </button>
@@ -258,11 +250,11 @@ export default function TimestampConverter() {
                   </div>
                   <div>
                     <strong>Timestamp (milliseconds):</strong>
-                    <div style={{ fontFamily: 'monospace', marginTop: '5px', fontSize: '16px' }}>
+                    <div className="mono-value mono-value--medium">
                       {result.timestampMs}
                       <button
                         onClick={() => handleCopy(result.timestampMs.toString())}
-                        style={{ marginLeft: '10px', padding: '2px 8px', fontSize: '12px', cursor: 'pointer' }}
+                        className="inline-copy-btn"
                       >
                         Copy
                       </button>
@@ -274,7 +266,7 @@ export default function TimestampConverter() {
                 <>
                   <div>
                     <strong>Difference:</strong>
-                    <div style={{ marginTop: '5px' }}>
+                    <div className="value-details">
                       Days: {result.days}<br/>
                       Hours: {result.hours}<br/>
                       Minutes: {result.minutes}<br/>
@@ -283,7 +275,7 @@ export default function TimestampConverter() {
                   </div>
                   <div>
                     <strong>Formatted:</strong>
-                    <div style={{ marginTop: '5px', fontFamily: 'monospace', wordBreak: 'break-all' }}>
+                    <div className="mono-value">
                       {result.formatted}
                     </div>
                   </div>
@@ -293,19 +285,19 @@ export default function TimestampConverter() {
           </div>
         )}
 
-        <div className="info-box" style={{ marginTop: '2rem' }}>
+        <div className="info-box info-box--spaced">
           <h4>About Unix Timestamp</h4>
           <p>
             Unix Timestamp (also called Epoch time or POSIX time) is the number of seconds (or milliseconds) since January 1, 1970, 00:00:00 UTC. It's widely used in programming, databases, and system logs for tracking time.
           </p>
-          <p style={{ marginTop: '10px' }}>
+          <p className="info-text">
             <strong>Seconds vs Milliseconds:</strong> JavaScript typically uses milliseconds, while many systems use seconds. This tool auto-detects based on value size.
           </p>
         </div>
 
-        <div className="info-box" style={{ backgroundColor: '#f0f0f0', marginTop: '1rem' }}>
+        <div className="info-box info-box--alt">
           <h4>🧪 Examples</h4>
-          <p style={{ fontSize: '12px', margin: '0.5rem 0' }}>
+          <p className="examples-text">
             <code>1704067200</code> → January 1, 2024<br/>
             <code>1704067200000</code> → January 1, 2024 (milliseconds)<br/>
             <code>2024-01-15 10:30:00</code> → 1705316400 (timestamp)

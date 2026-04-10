@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useSEO } from '../hooks/useSEO'
 import { generateUUIDv4, generateUUIDv1, generateMultipleUUIDs, isValidUUID, getUUIDVersion } from '../utils/uuidGenerator'
+import './UUIDGenerator.css'
 
 export default function UUIDGenerator() {
   useSEO({
@@ -126,25 +127,19 @@ export default function UUIDGenerator() {
       </div>
 
       <div className="tool-container">
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', marginBottom: '2rem' }}>
+        <div className="options-grid">
           {/* Generation Panel */}
-          <div style={{ padding: '1.5rem', backgroundColor: '#f9f9f9', borderRadius: '10px' }}>
-            <h3 style={{ marginTop: 0, marginBottom: '1.5rem' }}>Generate UUIDs</h3>
+          <div className="panel">
+            <h3 className="panel-title">Generate UUIDs</h3>
 
-            <div style={{ marginBottom: '1.5rem' }}>
-              <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold', fontSize: '14px' }}>
+            <div className="form-field">
+              <label className="field-label">
                 Format:
               </label>
               <select
                 value={format}
                 onChange={(e) => setFormat(e.target.value)}
-                style={{
-                  width: '100%',
-                  padding: '0.75rem',
-                  border: '1px solid #ddd',
-                  borderRadius: '5px',
-                  fontSize: '14px'
-                }}
+                className="field-input"
               >
                 <option value="v4">UUID v4 (Random)</option>
                 <option value="v1">UUID v1 (Timestamp)</option>
@@ -152,8 +147,8 @@ export default function UUIDGenerator() {
               </select>
             </div>
 
-            <div style={{ marginBottom: '1.5rem' }}>
-              <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold', fontSize: '14px' }}>
+            <div className="form-field">
+              <label className="field-label">
                 Count (1-1000):
               </label>
               <input
@@ -162,28 +157,21 @@ export default function UUIDGenerator() {
                 max="1000"
                 value={count}
                 onChange={(e) => setCount(e.target.value)}
-                style={{
-                  width: '100%',
-                  padding: '0.75rem',
-                  border: '1px solid #ddd',
-                  borderRadius: '5px',
-                  fontSize: '14px',
-                  boxSizing: 'border-box'
-                }}
+                className="field-input"
               />
             </div>
 
-            <button onClick={handleGenerate} className="action-btn encode-btn" style={{ width: '100%' }}>
-              ✨ Generate
+            <button onClick={handleGenerate} className="action-btn encode-btn btn-full-width">
+              Generate
             </button>
           </div>
 
           {/* Validation Panel */}
-          <div style={{ padding: '1.5rem', backgroundColor: '#f9f9f9', borderRadius: '10px' }}>
-            <h3 style={{ marginTop: 0, marginBottom: '1.5rem' }}>✓ Validate UUID</h3>
+          <div className="panel">
+            <h3 className="panel-title">✓ Validate UUID</h3>
 
-            <div style={{ marginBottom: '1.5rem' }}>
-              <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold', fontSize: '14px' }}>
+            <div className="form-field">
+              <label className="field-label">
                 Paste UUID:
               </label>
               <input
@@ -192,32 +180,17 @@ export default function UUIDGenerator() {
                 onChange={(e) => setValidateInput(e.target.value)}
                 onBlur={handleValidate}
                 placeholder="Paste a UUID to validate..."
-                style={{
-                  width: '100%',
-                  padding: '0.75rem',
-                  border: '1px solid #ddd',
-                  borderRadius: '5px',
-                  fontSize: '14px',
-                  boxSizing: 'border-box'
-                }}
+                className="field-input"
               />
             </div>
 
             {validateResult && (
-              <div style={{
-                padding: '1rem',
-                backgroundColor: validateResult.includes('✅') ? '#d4edda' : '#f8d7da',
-                borderRadius: '5px',
-                border: `1px solid ${validateResult.includes('✅') ? '#c3e6cb' : '#f5c6cb'}`,
-                color: validateResult.includes('✅') ? '#155724' : '#721c24',
-                fontSize: '14px',
-                marginBottom: '1rem'
-              }}>
+              <div className={validateResult.includes('✅') ? 'validate-result validate-result--success' : 'validate-result validate-result--error'}>
                 {validateResult}
               </div>
             )}
 
-            <button onClick={handleClear} className="action-btn clear-btn" style={{ width: '100%' }}>
+            <button onClick={handleClear} className="action-btn clear-btn btn-full-width">
               Clear
             </button>
           </div>
@@ -230,10 +203,10 @@ export default function UUIDGenerator() {
         )}
 
         {uuids.length > 0 && (
-          <div style={{ marginBottom: '2rem' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-              <h3 style={{ margin: 0 }}>Generated UUIDs ({uuids.length})</h3>
-              <div style={{ display: 'flex', gap: '10px' }}>
+          <div className="uuid-list-wrapper">
+            <div className="list-header">
+              <h3 className="list-title">Generated UUIDs ({uuids.length})</h3>
+              <div className="list-actions">
                 <button onClick={handleCopyAll} className="copy-btn">
                   Copy All
                 </button>
@@ -243,44 +216,18 @@ export default function UUIDGenerator() {
               </div>
             </div>
 
-            <div style={{
-              backgroundColor: '#f5f5f5',
-              borderRadius: '8px',
-              padding: '1rem',
-              maxHeight: '400px',
-              overflowY: 'auto',
-              border: '1px solid #e0e0e0'
-            }}>
+            <div className="uuid-list">
               {uuids.map((uuid, idx) => (
                 <div
                   key={idx}
-                  style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    padding: '0.75rem',
-                    backgroundColor: '#fff',
-                    borderRadius: '5px',
-                    marginBottom: '0.5rem',
-                    border: '1px solid #e0e0e0'
-                  }}
+                  className="uuid-item"
                 >
-                  <code style={{ fontSize: '12px', flex: 1, wordBreak: 'break-all' }}>
+                  <code className="uuid-code">
                     {uuid}
                   </code>
                   <button
                     onClick={() => handleCopyOne(uuid)}
-                    style={{
-                      marginLeft: '10px',
-                      padding: '0.4rem 0.8rem',
-                      backgroundColor: '#667eea',
-                      color: 'white',
-                      border: 'none',
-                      borderRadius: '4px',
-                      cursor: 'pointer',
-                      fontSize: '12px',
-                      whiteSpace: 'nowrap'
-                    }}
+                    className="uuid-copy-btn"
                   >
                     Copy
                   </button>
@@ -295,7 +242,7 @@ export default function UUIDGenerator() {
           <p>
             UUID (Universally Unique Identifier) or GUID (Globally Unique Identifier) is a 128-bit identifier used to uniquely identify information in distributed systems. UUIDs are widely used in databases, APIs, and distributed systems.
           </p>
-          <p style={{ marginTop: '10px' }}>
+          <p className="info-text">
             <strong>UUID v1:</strong> Time-based, includes timestamp and MAC address<br/>
             <strong>UUID v4:</strong> Random-based, no personal information included (recommended for privacy)
           </p>

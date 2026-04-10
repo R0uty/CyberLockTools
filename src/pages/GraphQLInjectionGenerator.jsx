@@ -9,6 +9,7 @@ import {
   GRAPHQL_DEFENSE_BYPASS,
   LEGAL_DISCLAIMER
 } from '../utils/graphqlInjectionGenerator';
+import './GraphQLInjectionGenerator.css';
 
 export default function GraphQLInjectionGenerator() {
   useSEO(
@@ -36,55 +37,20 @@ export default function GraphQLInjectionGenerator() {
 
   if (showLegalWarning) {
     return (
-      <div style={{ maxWidth: '900px', margin: '0 auto', padding: '20px' }}>
+      <div className="graphql-disclaimer-page">
         <h1>GraphQL Injection Generator</h1>
-        <div
-          style={{
-            backgroundColor: '#ff6b6b22',
-            border: '2px solid #ff6b6b',
-            borderRadius: '8px',
-            padding: '20px',
-            marginBottom: '20px',
-            color: '#d0d0d0',
-            whiteSpace: 'pre-wrap',
-            fontFamily: 'monospace',
-            fontSize: '13px',
-            lineHeight: '1.6'
-          }}
-        >
+        <div className="graphql-legal-box">
           {LEGAL_DISCLAIMER}
         </div>
         <button
           onClick={() => setShowLegalWarning(false)}
-          style={{
-            backgroundColor: '#c0c0c0',
-            color: '#1a1a1a',
-            border: 'none',
-            padding: '12px 24px',
-            borderRadius: '6px',
-            cursor: 'pointer',
-            fontSize: '16px',
-            fontWeight: 'bold',
-            marginRight: '10px'
-          }}
-          onMouseOver={(e) => (e.target.style.backgroundColor = '#d0d0d0')}
-          onMouseOut={(e) => (e.target.style.backgroundColor = '#c0c0c0')}
+          className="graphql-accept-btn"
         >
           I Understand & Accept
         </button>
         <button
           onClick={() => window.history.back()}
-          style={{
-            backgroundColor: '#2a2a2a',
-            color: '#d0d0d0',
-            border: '2px solid #c0c0c0',
-            padding: '12px 24px',
-            borderRadius: '6px',
-            cursor: 'pointer',
-            fontSize: '16px'
-          }}
-          onMouseOver={(e) => (e.target.style.backgroundColor = '#333333')}
-          onMouseOut={(e) => (e.target.style.backgroundColor = '#2a2a2a')}
+          className="graphql-back-btn"
         >
           Go Back
         </button>
@@ -93,31 +59,21 @@ export default function GraphQLInjectionGenerator() {
   }
 
   return (
-    <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '20px' }}>
+    <div className="graphql-page">
       <h1>GraphQL Injection Generator</h1>
-      <p style={{ color: '#c0c0c0', marginBottom: '20px' }}>
+      <p className="graphql-page-desc">
         Learn GraphQL security vulnerabilities for authorized penetration testing and educational research.
       </p>
 
       {/* Target Endpoint Selection */}
-      <div style={{ marginBottom: '30px' }}>
-        <label style={{ display: 'block', marginBottom: '8px', color: '#d0d0d0', fontWeight: 'bold' }}>
+      <div className="graphql-section-mb">
+        <label className="graphql-field-label">
           Common GraphQL Endpoints:
         </label>
         <select
           value={targetEndpoint}
           onChange={(e) => setTargetEndpoint(e.target.value)}
-          style={{
-            backgroundColor: '#2a2a2a',
-            color: '#d0d0d0',
-            border: '2px solid #c0c0c0',
-            padding: '10px',
-            borderRadius: '6px',
-            width: '100%',
-            maxWidth: '400px',
-            fontSize: '14px',
-            cursor: 'pointer'
-          }}
+          className="graphql-select"
         >
           {GRAPHQL_ENDPOINTS.map((endpoint) => (
             <option key={endpoint.path} value={endpoint.path}>
@@ -128,10 +84,10 @@ export default function GraphQLInjectionGenerator() {
       </div>
 
       {/* Two Column Layout */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', marginBottom: '30px' }}>
+      <div className="graphql-two-col-grid">
         {/* Left: Category & Payload Selection */}
         <div>
-          <h3 style={{ color: '#c0c0c0', marginTop: 0 }}>Attack Type</h3>
+          <h3 className="graphql-col-heading">Attack Type</h3>
 
           {/* Search */}
           <input
@@ -142,21 +98,12 @@ export default function GraphQLInjectionGenerator() {
               setSearchQuery(e.target.value);
               setSelectedPayload(0);
             }}
-            style={{
-              width: '100%',
-              backgroundColor: '#2a2a2a',
-              color: '#d0d0d0',
-              border: '2px solid #c0c0c0',
-              padding: '10px',
-              borderRadius: '6px',
-              marginBottom: '15px',
-              fontSize: '14px'
-            }}
+            className="graphql-search-input"
           />
 
           {/* Category Buttons */}
           {!searchQuery && (
-            <div style={{ marginBottom: '15px' }}>
+            <div className="graphql-category-btns">
               {categories.map(({ key, label }) => (
                 <button
                   key={key}
@@ -164,30 +111,7 @@ export default function GraphQLInjectionGenerator() {
                     setSelectedCategory(key);
                     setSelectedPayload(0);
                   }}
-                  style={{
-                    display: 'block',
-                    width: '100%',
-                    padding: '12px',
-                    marginBottom: '8px',
-                    backgroundColor: selectedCategory === key ? '#c0c0c0' : '#2a2a2a',
-                    color: selectedCategory === key ? '#1a1a1a' : '#d0d0d0',
-                    border: '2px solid #c0c0c0',
-                    borderRadius: '6px',
-                    cursor: 'pointer',
-                    fontSize: '14px',
-                    fontWeight: 'bold',
-                    transition: 'all 0.2s'
-                  }}
-                  onMouseOver={(e) => {
-                    if (selectedCategory !== key) {
-                      e.target.style.backgroundColor = '#444444';
-                    }
-                  }}
-                  onMouseOut={(e) => {
-                    if (selectedCategory !== key) {
-                      e.target.style.backgroundColor = '#2a2a2a';
-                    }
-                  }}
+                  className={`graphql-category-btn${selectedCategory === key ? ' graphql-category-btn--active' : ''}`}
                 >
                   {label}
                 </button>
@@ -196,17 +120,9 @@ export default function GraphQLInjectionGenerator() {
           )}
 
           {/* Payload List */}
-          <div
-            style={{
-              backgroundColor: '#2a2a2a',
-              border: '2px solid #c0c0c0',
-              borderRadius: '8px',
-              maxHeight: '500px',
-              overflowY: 'auto'
-            }}
-          >
+          <div className="graphql-payload-list">
             {currentPayloads.length === 0 ? (
-              <div style={{ padding: '20px', color: '#c0c0c0', textAlign: 'center' }}>
+              <div className="graphql-payload-empty">
                 No payloads found
               </div>
             ) : (
@@ -214,31 +130,10 @@ export default function GraphQLInjectionGenerator() {
                 <button
                   key={index}
                   onClick={() => setSelectedPayload(index)}
-                  style={{
-                    display: 'block',
-                    width: '100%',
-                    padding: '12px 15px',
-                    textAlign: 'left',
-                    backgroundColor: selectedPayload === index ? '#444444' : '#2a2a2a',
-                    color: selectedPayload === index ? '#d0d0d0' : '#c0c0c0',
-                    border: 'none',
-                    borderBottom: '1px solid #1a1a1a',
-                    cursor: 'pointer',
-                    fontSize: '13px',
-                    transition: 'all 0.1s',
-                    fontWeight: selectedPayload === index ? 'bold' : 'normal'
-                  }}
-                  onMouseOver={(e) => {
-                    e.target.style.backgroundColor = '#444444';
-                    e.target.style.color = '#d0d0d0';
-                  }}
-                  onMouseOut={(e) => {
-                    e.target.style.backgroundColor = selectedPayload === index ? '#444444' : '#2a2a2a';
-                    e.target.style.color = selectedPayload === index ? '#d0d0d0' : '#c0c0c0';
-                  }}
+                  className={`graphql-payload-item${selectedPayload === index ? ' graphql-payload-item--selected' : ''}`}
                 >
                   <strong>{payload.name}</strong>
-                  <div style={{ fontSize: '12px', color: '#a0a0a0', marginTop: '4px' }}>
+                  <div className="graphql-payload-item__desc">
                     {payload.description}
                   </div>
                 </button>
@@ -249,32 +144,13 @@ export default function GraphQLInjectionGenerator() {
 
         {/* Right: Payload Preview */}
         <div>
-          <h3 style={{ color: '#c0c0c0', marginTop: 0 }}>Payload Preview</h3>
+          <h3 className="graphql-col-heading">Payload Preview</h3>
 
           {currentPayload ? (
             <>
               {/* Payload Code */}
-              <div
-                style={{
-                  backgroundColor: '#1a1a1a',
-                  border: '2px solid #c0c0c0',
-                  borderRadius: '8px',
-                  padding: '15px',
-                  marginBottom: '15px',
-                  maxHeight: '300px',
-                  overflowY: 'auto'
-                }}
-              >
-                <div
-                  style={{
-                    fontFamily: 'monospace',
-                    fontSize: '13px',
-                    color: '#d0d0d0',
-                    lineHeight: '1.6',
-                    wordBreak: 'break-all',
-                    whiteSpace: 'pre-wrap'
-                  }}
-                >
+              <div className="graphql-code-box">
+                <div className="graphql-code-display">
                   {currentPayload.payload}
                 </div>
               </div>
@@ -282,55 +158,22 @@ export default function GraphQLInjectionGenerator() {
               {/* Copy Button */}
               <button
                 onClick={() => copyToClipboard(currentPayload.payload)}
-                style={{
-                  width: '100%',
-                  backgroundColor: '#c0c0c0',
-                  color: '#1a1a1a',
-                  border: 'none',
-                  padding: '12px',
-                  borderRadius: '6px',
-                  cursor: 'pointer',
-                  fontSize: '14px',
-                  fontWeight: 'bold',
-                  marginBottom: '15px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: '8px'
-                }}
-                onMouseOver={(e) => (e.target.style.backgroundColor = '#d0d0d0')}
-                onMouseOut={(e) => (e.target.style.backgroundColor = '#c0c0c0')}
+                className="graphql-copy-btn"
               >
                 <Copy01Icon size={18} />
                 Copy Payload
               </button>
 
               {/* Explanation */}
-              <div
-                style={{
-                  backgroundColor: '#2a2a2a',
-                  border: '2px solid #c0c0c0',
-                  borderRadius: '8px',
-                  padding: '15px'
-                }}
-              >
-                <h4 style={{ color: '#c0c0c0', marginTop: 0 }}>Explanation:</h4>
-                <p style={{ color: '#c0c0c0', margin: '0', lineHeight: '1.6' }}>
+              <div className="graphql-explanation-box">
+                <h4 className="graphql-explanation-title">Explanation:</h4>
+                <p className="graphql-explanation-text">
                   {currentPayload.explanation}
                 </p>
               </div>
             </>
           ) : (
-            <div
-              style={{
-                backgroundColor: '#2a2a2a',
-                border: '2px solid #c0c0c0',
-                borderRadius: '8px',
-                padding: '30px',
-                textAlign: 'center',
-                color: '#a0a0a0'
-              }}
-            >
+            <div className="graphql-empty-preview">
               Select a payload to view details
             </div>
           )}
@@ -338,27 +181,13 @@ export default function GraphQLInjectionGenerator() {
       </div>
 
       {/* Defense Bypass Techniques */}
-      <div style={{ marginBottom: '30px' }}>
-        <h3 style={{ color: '#c0c0c0' }}>Common Defense Bypass Techniques</h3>
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-            gap: '15px'
-          }}
-        >
+      <div className="graphql-section-mb">
+        <h3 className="graphql-section-title">Common Defense Bypass Techniques</h3>
+        <div className="graphql-bypass-grid">
           {GRAPHQL_DEFENSE_BYPASS.map((defense, index) => (
-            <div
-              key={index}
-              style={{
-                backgroundColor: '#2a2a2a',
-                border: '2px solid #c0c0c0',
-                borderRadius: '8px',
-                padding: '15px'
-              }}
-            >
-              <strong style={{ color: '#d0d0d0' }}>Defense: {defense.technique}</strong>
-              <p style={{ color: '#a0a0a0', marginTop: '8px', margin: '8px 0 0 0' }}>
+            <div key={index} className="graphql-card">
+              <strong className="graphql-card-title">Defense: {defense.technique}</strong>
+              <p className="graphql-card-text">
                 <em>Bypass:</em> {defense.bypass}
               </p>
             </div>
@@ -367,17 +196,9 @@ export default function GraphQLInjectionGenerator() {
       </div>
 
       {/* Security Recommendations */}
-      <div
-        style={{
-          backgroundColor: '#2a2a2a',
-          border: '2px solid #c0c0c0',
-          borderRadius: '8px',
-          padding: '20px',
-          marginBottom: '30px'
-        }}
-      >
-        <h3 style={{ color: '#c0c0c0', marginTop: 0 }}>Security Best Practices</h3>
-        <ul style={{ color: '#c0c0c0', lineHeight: '1.8' }}>
+      <div className="graphql-info-section">
+        <h3 className="graphql-info-section-title">Security Best Practices</h3>
+        <ul className="graphql-info-list">
           <li>✓ Disable introspection queries in production environments</li>
           <li>✓ Implement proper authentication and authorization checks on all resolvers</li>
           <li>✓ Set query complexity limits and enforce depth restrictions</li>
@@ -394,16 +215,9 @@ export default function GraphQLInjectionGenerator() {
       </div>
 
       {/* Testing Methodology */}
-      <div
-        style={{
-          backgroundColor: '#2a2a2a',
-          border: '2px solid #c0c0c0',
-          borderRadius: '8px',
-          padding: '20px'
-        }}
-      >
-        <h3 style={{ color: '#c0c0c0', marginTop: 0 }}>Authorized GraphQL Security Testing Methodology</h3>
-        <ol style={{ color: '#c0c0c0', lineHeight: '1.8' }}>
+      <div className="graphql-info-section">
+        <h3 className="graphql-info-section-title">Authorized GraphQL Security Testing Methodology</h3>
+        <ol className="graphql-info-list">
           <li><strong>Reconnaissance:</strong> Identify GraphQL endpoints and enable introspection if possible</li>
           <li><strong>Schema Enumeration:</strong> Map all types, queries, mutations, and subscriptions</li>
           <li><strong>Authentication Analysis:</strong> Test for auth bypass in queries and mutations</li>

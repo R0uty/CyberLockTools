@@ -1,3 +1,5 @@
+import './Header.css'
+
 export default function Header({ onLogoClick, currentPage, onPageChange }) {
   const handleNavClick = (page) => {
     onPageChange(page)
@@ -14,7 +16,7 @@ export default function Header({ onLogoClick, currentPage, onPageChange }) {
           <h1 onClick={() => {
             onLogoClick()
             handleNavClick('home')
-          }} style={{ cursor: 'pointer' }}>R0uty's Cyber Lab</h1>
+          }} className="logo-heading">R0uty's Cyber Lab</h1>
         </div>
         <nav className="nav">
           <a className={getLinkClass('home')} onClick={() => handleNavClick('home')}>Home</a>

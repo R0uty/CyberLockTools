@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useSEO } from '../hooks/useSEO'
 import { formatYAML, getYAMLStats, yamlToJSON } from '../utils/yamlFormatter'
+import './YAMLFormatter.css'
 
 export default function YAMLFormatter() {
   useSEO({
@@ -149,9 +150,9 @@ export default function YAMLFormatter() {
         </div>
 
         {stats && (
-          <div className="info-box" style={{ backgroundColor: '#f0f0f0', marginTop: '20px' }}>
+          <div className="info-box info-box--alt">
             <h4>YAML Statistics</h4>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px', fontSize: '14px' }}>
+            <div className="stats-grid">
               <div>
                 <strong>Type:</strong> {stats.type}
               </div>
@@ -164,7 +165,7 @@ export default function YAMLFormatter() {
               <div>
                 <strong>Max Depth:</strong> {stats.depth}
               </div>
-              <div style={{ gridColumn: '1 / -1' }}>
+              <div className="stats-grid__full">
                 <strong>Total Keys:</strong> {stats.keyCount}
               </div>
             </div>
@@ -176,36 +177,36 @@ export default function YAMLFormatter() {
           <p>
             YAML (YAML Ain't Markup Language) is a human-friendly data serialization format used for configuration files and data exchange. It uses indentation and simple syntax to represent structured data.
           </p>
-          <p style={{ marginTop: '10px' }}>
+          <p className="info-note">
             <strong>Key features:</strong> Whitespace-sensitive, supports lists, mappings (key-value pairs), strings, numbers, booleans, and null values
           </p>
         </div>
 
-        <div className="info-box" style={{ backgroundColor: '#f0f0f0', marginTop: '20px' }}>
+        <div className="info-box info-box--alt">
           <h4>🧪 Test YAML Examples</h4>
           
-          <div style={{ marginTop: '10px', paddingBottom: '10px', borderBottom: '1px solid #ddd' }}>
+          <div className="example-block">
             <strong>Simple Configuration:</strong>
-            <p style={{ fontSize: '12px', wordBreak: 'break-all', fontFamily: 'monospace', backgroundColor: '#fff', padding: '8px', borderRadius: '4px', margin: '5px 0' }}>
+            <p className="code-snippet">
               {`app: MyApp\nversion: 1.0\ndebug: true\nport: 8080`}
             </p>
           </div>
 
-          <div style={{ marginTop: '10px', paddingBottom: '10px', borderBottom: '1px solid #ddd' }}>
+          <div className="example-block">
             <strong>List Example:</strong>
-            <p style={{ fontSize: '12px', wordBreak: 'break-all', fontFamily: 'monospace', backgroundColor: '#fff', padding: '8px', borderRadius: '4px', margin: '5px 0' }}>
+            <p className="code-snippet">
               {`users:\n  - name: Alice\n    role: admin\n  - name: Bob\n    role: user`}
             </p>
           </div>
 
-          <div style={{ marginTop: '10px' }}>
+          <div className="example-block--last">
             <strong>Nested Structure:</strong>
-            <p style={{ fontSize: '12px', wordBreak: 'break-all', fontFamily: 'monospace', backgroundColor: '#fff', padding: '8px', borderRadius: '4px', margin: '5px 0' }}>
+            <p className="code-snippet">
               {`database:\n  host: localhost\n  port: 5432\n  credentials:\n    username: admin\n    password: secret`}
             </p>
           </div>
 
-          <p style={{ fontSize: '12px', marginTop: '10px' }}>
+          <p className="example-note">
             Copy any example above and paste it to see formatting in action!
           </p>
         </div>

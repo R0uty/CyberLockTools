@@ -1,0 +1,317 @@
+/* GraphQLInjectionGenerator.css */
+
+/* Disclaimer screen */
+.graphql-disclaimer-page {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.graphql-legal-box {
+  background-color: #ff6b6b22;
+  border: 2px solid #ff6b6b;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+  color: #d0d0d0;
+  white-space: pre-wrap;
+  font-family: monospace;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.graphql-accept-btn {
+  background-color: #c0c0c0;
+  color: #1a1a1a;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.graphql-accept-btn:hover {
+  background-color: #d0d0d0;
+}
+
+.graphql-back-btn {
+  background-color: #2a2a2a;
+  color: #d0d0d0;
+  border: 2px solid #c0c0c0;
+  padding: 12px 24px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.graphql-back-btn:hover {
+  background-color: #333333;
+}
+
+/* Main page */
+.graphql-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.graphql-page-desc {
+  color: #c0c0c0;
+  margin-bottom: 20px;
+}
+
+/* Section spacing */
+.graphql-section-mb {
+  margin-bottom: 30px;
+}
+
+/* Field labels */
+.graphql-field-label {
+  display: block;
+  margin-bottom: 8px;
+  color: #d0d0d0;
+  font-weight: bold;
+}
+
+/* Select dropdown */
+.graphql-select {
+  background-color: #2a2a2a;
+  color: #d0d0d0;
+  border: 2px solid #c0c0c0;
+  padding: 10px;
+  border-radius: 6px;
+  width: 100%;
+  max-width: 400px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+/* Two-column grid layout */
+.graphql-two-col-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+/* Column headings */
+.graphql-col-heading {
+  color: #c0c0c0;
+  margin-top: 0;
+}
+
+/* Search input */
+.graphql-search-input {
+  width: 100%;
+  background-color: #2a2a2a;
+  color: #d0d0d0;
+  border: 2px solid #c0c0c0;
+  padding: 10px;
+  border-radius: 6px;
+  margin-bottom: 15px;
+  font-size: 14px;
+}
+
+/* Category buttons */
+.graphql-category-btns {
+  margin-bottom: 15px;
+}
+
+.graphql-category-btn {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 8px;
+  background-color: #2a2a2a;
+  color: #d0d0d0;
+  border: 2px solid #c0c0c0;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+  transition: all 0.2s;
+}
+
+.graphql-category-btn:hover {
+  background-color: #444444;
+}
+
+.graphql-category-btn--active {
+  background-color: #c0c0c0;
+  color: #1a1a1a;
+}
+
+.graphql-category-btn--active:hover {
+  background-color: #c0c0c0;
+}
+
+/* Payload list container */
+.graphql-payload-list {
+  background-color: #2a2a2a;
+  border: 2px solid #c0c0c0;
+  border-radius: 8px;
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+/* Empty payload state */
+.graphql-payload-empty {
+  padding: 20px;
+  color: #c0c0c0;
+  text-align: center;
+}
+
+/* Payload item buttons */
+.graphql-payload-item {
+  display: block;
+  width: 100%;
+  padding: 12px 15px;
+  text-align: left;
+  background-color: #2a2a2a;
+  color: #c0c0c0;
+  border: none;
+  border-bottom: 1px solid #1a1a1a;
+  cursor: pointer;
+  font-size: 13px;
+  transition: all 0.1s;
+  font-weight: normal;
+}
+
+.graphql-payload-item:hover {
+  background-color: #444444;
+  color: #d0d0d0;
+}
+
+.graphql-payload-item--selected {
+  background-color: #444444;
+  color: #d0d0d0;
+  font-weight: bold;
+}
+
+.graphql-payload-item--selected:hover {
+  background-color: #444444;
+}
+
+.graphql-payload-item__desc {
+  font-size: 12px;
+  color: #a0a0a0;
+  margin-top: 4px;
+}
+
+/* Payload code box */
+.graphql-code-box {
+  background-color: #1a1a1a;
+  border: 2px solid #c0c0c0;
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 15px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+/* Code content display */
+.graphql-code-display {
+  font-family: monospace;
+  font-size: 13px;
+  color: #d0d0d0;
+  line-height: 1.6;
+  word-break: break-all;
+  white-space: pre-wrap;
+}
+
+/* Copy button */
+.graphql-copy-btn {
+  width: 100%;
+  background-color: #c0c0c0;
+  color: #1a1a1a;
+  border: none;
+  padding: 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.graphql-copy-btn:hover {
+  background-color: #d0d0d0;
+}
+
+/* Explanation / info boxes */
+.graphql-explanation-box {
+  background-color: #2a2a2a;
+  border: 2px solid #c0c0c0;
+  border-radius: 8px;
+  padding: 15px;
+}
+
+.graphql-explanation-title {
+  color: #c0c0c0;
+  margin-top: 0;
+}
+
+.graphql-explanation-text {
+  color: #c0c0c0;
+  margin: 0;
+  line-height: 1.6;
+}
+
+/* Empty payload preview */
+.graphql-empty-preview {
+  background-color: #2a2a2a;
+  border: 2px solid #c0c0c0;
+  border-radius: 8px;
+  padding: 30px;
+  text-align: center;
+  color: #a0a0a0;
+}
+
+/* Defense bypass / cards grid */
+.graphql-bypass-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 15px;
+}
+
+/* Generic card */
+.graphql-card {
+  background-color: #2a2a2a;
+  border: 2px solid #c0c0c0;
+  border-radius: 8px;
+  padding: 15px;
+}
+
+.graphql-card-title {
+  color: #d0d0d0;
+}
+
+.graphql-card-text {
+  color: #a0a0a0;
+  margin: 8px 0 0 0;
+}
+
+/* Bottom info sections */
+.graphql-info-section {
+  background-color: #2a2a2a;
+  border: 2px solid #c0c0c0;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 30px;
+}
+
+.graphql-info-section-title {
+  color: #c0c0c0;
+  margin-top: 0;
+}
+
+.graphql-info-list {
+  color: #c0c0c0;
+  line-height: 1.8;
+}
+.graphql-section-title { color: #c0c0c0; }

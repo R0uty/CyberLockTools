@@ -1,0 +1,241 @@
+/* ReverseShellGenerator.css */
+
+/* Disclaimer box */
+.shell-disclaimer {
+  background-color: #2a2a2a;
+  border: 2px solid #ff6b6b;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.shell-disclaimer-title {
+  color: #ff6b6b;
+  margin-top: 0;
+}
+
+.shell-disclaimer-text {
+  color: #d0d0d0;
+  white-space: pre-wrap;
+  font-size: 0.9rem;
+}
+
+/* Form groups */
+.shell-form-group {
+  margin-bottom: 1.5rem;
+}
+
+.shell-form-label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: #e8e8e8;
+}
+
+.shell-form-label--small {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: #e8e8e8;
+  font-size: 0.9rem;
+}
+
+.shell-input-full {
+  width: 100%;
+}
+
+.shell-select-mb {
+  margin-bottom: 0.5rem;
+}
+
+/* Payload list container */
+.shell-payload-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+/* Payload item buttons */
+.shell-payload-item {
+  padding: 1rem;
+  background-color: #1a1a1a;
+  border: 1px solid #3a3a3a;
+  border-radius: 8px;
+  color: #e8e8e8;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.3s ease;
+}
+
+.shell-payload-item:hover {
+  border-color: #808080;
+}
+
+.shell-payload-item--selected {
+  background-color: #2a2a2a;
+  border: 2px solid #c0c0c0;
+}
+
+.shell-payload-item--selected:hover {
+  border-color: #c0c0c0;
+}
+
+.shell-payload-item__name {
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.shell-payload-item__desc {
+  font-size: 0.85rem;
+  color: #a0a0a0;
+}
+
+/* No results */
+.shell-no-results {
+  color: #808080;
+  text-align: center;
+  padding: 1rem;
+}
+
+/* Variant buttons list */
+.shell-variant-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.shell-variant-btn {
+  padding: 0.75rem;
+  background-color: #1a1a1a;
+  border: 1px solid #3a3a3a;
+  border-radius: 6px;
+  color: #e8e8e8;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.3s ease;
+  font-size: 0.9rem;
+}
+
+.shell-variant-btn:hover {
+  border-color: #c0c0c0;
+}
+
+/* Generated payload code output */
+.shell-code-output {
+  padding: 1rem;
+  background-color: #0f0f0f;
+  border-radius: 8px;
+  font-family: monospace;
+  font-size: 0.85rem;
+  white-space: pre-wrap;
+  word-break: break-all;
+  color: #a8d5ba;
+  min-height: 120px;
+  max-height: 300px;
+  overflow: auto;
+}
+
+/* Copy payload button */
+.shell-copy-btn {
+  margin-top: 0.5rem;
+  padding: 0.5rem 1rem;
+  background-color: #c0c0c0;
+  border: none;
+  border-radius: 6px;
+  color: #0f0f0f;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.shell-copy-btn--copied {
+  background-color: #4a7c4e;
+  color: #e8e8e8;
+}
+
+/* Empty state */
+.shell-empty-state {
+  text-align: center;
+  padding: 2rem;
+  color: #808080;
+}
+
+/* Listener setup section */
+.shell-listener-section {
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid #3a3a3a;
+}
+
+.shell-listener-title {
+  margin-top: 0;
+  color: #e8e8e8;
+}
+
+.shell-listener-form-group {
+  margin-bottom: 1rem;
+}
+
+.shell-generate-listener-btn {
+  padding: 0.5rem 1rem;
+  background-color: #2a2a2a;
+  border: 1px solid #c0c0c0;
+  border-radius: 6px;
+  color: #e8e8e8;
+  cursor: pointer;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  width: 100%;
+}
+
+/* Listener output code */
+.shell-listener-output {
+  padding: 1rem;
+  background-color: #0f0f0f;
+  border-radius: 6px;
+  font-family: monospace;
+  font-size: 0.85rem;
+  color: #a8d5ba;
+  margin-bottom: 0.5rem;
+}
+
+/* Copy listener button */
+.shell-listener-copy-btn {
+  padding: 0.5rem 1rem;
+  background-color: #c0c0c0;
+  border: none;
+  border-radius: 6px;
+  color: #0f0f0f;
+  cursor: pointer;
+  font-weight: 600;
+  width: 100%;
+}
+
+.shell-listener-copy-btn--copied {
+  background-color: #4a7c4e;
+  color: #e8e8e8;
+}
+
+/* Legal note box in info section */
+.shell-legal-note {
+  background-color: #1a1a1a;
+  padding: 1rem;
+  border-radius: 6px;
+  border-left: 4px solid #ff6b6b;
+  margin-top: 1rem;
+}
+
+.shell-legal-note-list {
+  color: #d0d0d0;
+  margin: 0;
+}
+
+/* Colored lists inside info-box */
+.shell-info-list {
+  color: #d0d0d0;
+  line-height: 1.8;
+}
+
+.shell-info-list-plain {
+  color: #d0d0d0;
+}

@@ -1,0 +1,228 @@
+/* XSSGenerator.css */
+
+/* Disclaimer box */
+.xss-disclaimer {
+  background-color: #2a2a2a;
+  border: 2px solid #ff6b6b;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.xss-disclaimer-title {
+  color: #ff6b6b;
+  margin-top: 0;
+}
+
+.xss-disclaimer-text {
+  color: #d0d0d0;
+  font-size: 0.9rem;
+}
+
+/* Form groups */
+.xss-form-group {
+  margin-bottom: 1.5rem;
+}
+
+.xss-form-label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: #e8e8e8;
+}
+
+.xss-input-full {
+  width: 100%;
+}
+
+/* Payload list container */
+.xss-payload-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+/* Payload item buttons */
+.xss-payload-item {
+  padding: 1rem;
+  background-color: #1a1a1a;
+  border: 1px solid #3a3a3a;
+  border-radius: 8px;
+  color: #e8e8e8;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.3s ease;
+}
+
+.xss-payload-item:hover {
+  border-color: #808080;
+}
+
+.xss-payload-item--selected {
+  background-color: #2a2a2a;
+  border: 2px solid #c0c0c0;
+}
+
+.xss-payload-item--selected:hover {
+  border-color: #c0c0c0;
+}
+
+.xss-payload-item__name {
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.xss-payload-item__desc {
+  font-size: 0.85rem;
+  color: #a0a0a0;
+}
+
+/* No results */
+.xss-no-results {
+  color: #808080;
+  text-align: center;
+  padding: 1rem;
+}
+
+/* Variant buttons list */
+.xss-variant-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.xss-variant-btn {
+  padding: 0.75rem;
+  background-color: #1a1a1a;
+  border: 1px solid #3a3a3a;
+  border-radius: 6px;
+  color: #e8e8e8;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.3s ease;
+  font-size: 0.9rem;
+}
+
+.xss-variant-btn:hover {
+  border-color: #c0c0c0;
+}
+
+/* Generated payload code output */
+.xss-code-output {
+  padding: 1rem;
+  background-color: #0f0f0f;
+  border-radius: 8px;
+  font-family: monospace;
+  font-size: 0.85rem;
+  white-space: pre-wrap;
+  word-break: break-all;
+  color: #a8d5ba;
+  min-height: 150px;
+  max-height: 350px;
+  overflow: auto;
+}
+
+/* Copy payload button */
+.xss-copy-btn {
+  margin-top: 0.5rem;
+  padding: 0.5rem 1rem;
+  background-color: #c0c0c0;
+  border: none;
+  border-radius: 6px;
+  color: #0f0f0f;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  width: 100%;
+}
+
+.xss-copy-btn--copied {
+  background-color: #4a7c4e;
+  color: #e8e8e8;
+}
+
+/* Empty state */
+.xss-empty-state {
+  text-align: center;
+  padding: 2rem;
+  color: #808080;
+}
+
+/* Quick testing section */
+.xss-quick-section {
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid #3a3a3a;
+}
+
+.xss-quick-section-title {
+  margin-top: 0;
+  color: #e8e8e8;
+}
+
+.xss-quick-section-desc {
+  font-size: 0.9rem;
+  color: #d0d0d0;
+}
+
+.xss-quick-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.xss-quick-item {
+  padding: 0.75rem;
+  background-color: #0f0f0f;
+  border: 1px solid #3a3a3a;
+  border-radius: 6px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.xss-quick-code {
+  color: #a8d5ba;
+  font-size: 0.8rem;
+  overflow: auto;
+  flex: 1;
+}
+
+.xss-quick-copy-btn {
+  padding: 0.4rem 0.8rem;
+  background-color: #c0c0c0;
+  border: none;
+  border-radius: 4px;
+  color: #0f0f0f;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.8rem;
+  white-space: nowrap;
+}
+
+.xss-quick-copy-btn--copied {
+  background-color: #4a7c4e;
+  color: #e8e8e8;
+}
+
+/* Legal note box in info section */
+.xss-legal-note {
+  background-color: #1a1a1a;
+  padding: 1rem;
+  border-radius: 6px;
+  border-left: 4px solid #ff6b6b;
+  margin-top: 1rem;
+}
+
+.xss-legal-note-list {
+  color: #d0d0d0;
+  margin: 0;
+}
+
+/* Colored lists inside info-box */
+.xss-info-list {
+  color: #d0d0d0;
+}

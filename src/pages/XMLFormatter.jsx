@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useSEO } from '../hooks/useSEO'
 import { formatXML, getXMLStats, minifyXML } from '../utils/xmlFormatter'
+import './XMLFormatter.css'
 
 export default function XMLFormatter() {
   useSEO({
@@ -179,7 +180,7 @@ export default function XMLFormatter() {
               rows="10"
             />
             {output && output !== '✅ Valid XML' && (
-              <div style={{ display: 'flex', gap: '10px', marginTop: '10px' }}>
+              <div className="btn-group-row">
                 <button onClick={handleCopy} className="copy-btn">
                   Copy XML
                 </button>
@@ -192,9 +193,9 @@ export default function XMLFormatter() {
         </div>
 
         {stats && (
-          <div className="info-box" style={{ backgroundColor: '#f0f0f0', marginTop: '20px' }}>
+          <div className="info-box info-box--alt">
             <h4>XML Statistics</h4>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px', fontSize: '14px' }}>
+            <div className="stats-grid">
               <div>
                 <strong>Root Element:</strong> {stats.rootElement}
               </div>
@@ -222,36 +223,36 @@ export default function XMLFormatter() {
           <p>
             XML (eXtensible Markup Language) is a text-based format designed for storing and transporting data. It emphasizes simplicity, generality, and usability across the internet. XML is widely used for configuration files, data interchange, document markup, and web services.
           </p>
-          <p style={{ marginTop: '10px' }}>
+          <p className="info-note">
             <strong>Key Features:</strong> Self-descriptive, hierarchical structure, human-readable, supports attributes and namespaces
           </p>
         </div>
 
-        <div className="info-box" style={{ backgroundColor: '#f0f0f0', marginTop: '20px' }}>
+        <div className="info-box info-box--alt">
           <h4>🧪 Test XML Examples</h4>
           
-          <div style={{ marginTop: '10px', paddingBottom: '10px', borderBottom: '1px solid #ddd' }}>
+          <div className="example-block">
             <strong>Simple Document:</strong>
-            <p style={{ fontSize: '12px', wordBreak: 'break-all', fontFamily: 'monospace', backgroundColor: '#fff', padding: '8px', borderRadius: '4px', margin: '5px 0' }}>
+            <p className="code-snippet">
               {`<?xml version="1.0"?><root><person><name>John</name><age>30</age></person></root>`}
             </p>
           </div>
 
-          <div style={{ marginTop: '10px', paddingBottom: '10px', borderBottom: '1px solid #ddd' }}>
+          <div className="example-block">
             <strong>Document with Attributes:</strong>
-            <p style={{ fontSize: '12px', wordBreak: 'break-all', fontFamily: 'monospace', backgroundColor: '#fff', padding: '8px', borderRadius: '4px', margin: '5px 0' }}>
+            <p className="code-snippet">
               {`<?xml version="1.0"?><library><book id="1" author="John Doe"><title>Learning XML</title></book></library>`}
             </p>
           </div>
 
-          <div style={{ marginTop: '10px' }}>
+          <div className="example-block--last">
             <strong>Complex Document:</strong>
-            <p style={{ fontSize: '12px', wordBreak: 'break-all', fontFamily: 'monospace', backgroundColor: '#fff', padding: '8px', borderRadius: '4px', margin: '5px 0' }}>
+            <p className="code-snippet">
               {`<?xml version="1.0"?><database><users><user id="1"><name>Alice</name><email>alice@example.com</email></user></users></database>`}
             </p>
           </div>
 
-          <p style={{ fontSize: '12px', marginTop: '10px' }}>
+          <p className="example-note">
             Copy any example above and paste it to see formatting in action!
           </p>
         </div>

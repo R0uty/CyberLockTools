@@ -63,6 +63,7 @@ import Tools from './pages/Tools'
 import About from './pages/About'
 import Contact from './pages/Contact'
 import './App.css'
+import './App.extra.css'
 
 export default function App() {
   const [currentTool, setCurrentTool] = useState(null)
@@ -586,22 +587,22 @@ export default function App() {
           <h2>Why I Built This Lab</h2>
           <div className="features-grid">
             <div className="feature-item">
-              <div style={{ fontSize: '2rem', marginBottom: '0.5rem' }}><LockKeyIcon size={32} color="#c0c0c0" /></div>
+              <div className="feature-icon-wrapper"><LockKeyIcon size={32} color="#c0c0c0" /></div>
               <h3>100% Private & Secure</h3>
               <p>My tools run entirely in your browser. Your data never leaves your device or reaches my servers.</p>
             </div>
             <div className="feature-item">
-              <div style={{ fontSize: '2rem', marginBottom: '0.5rem' }}><CheckmarkBadge01Icon size={32} color="#c0c0c0" /></div>
+              <div className="feature-icon-wrapper"><CheckmarkBadge01Icon size={32} color="#c0c0c0" /></div>
               <h3>Lightning Fast</h3>
               <p>No waiting for uploads or downloads. Process your data instantly with browser-based computation.</p>
             </div>
             <div className="feature-item">
-              <div style={{ fontSize: '2rem', marginBottom: '0.5rem' }}><BookOpen01Icon size={32} color="#c0c0c0" /></div>
+              <div className="feature-icon-wrapper"><BookOpen01Icon size={32} color="#c0c0c0" /></div>
               <h3>Educational</h3>
               <p>Learn about cryptography, encoding schemes, and scheduling with built-in explanations and examples.</p>
             </div>
             <div className="feature-item">
-              <div style={{ fontSize: '2rem', marginBottom: '0.5rem' }}><SmileIcon size={32} color="#c0c0c0" /></div>
+              <div className="feature-icon-wrapper"><SmileIcon size={32} color="#c0c0c0" /></div>
               <h3>User-Friendly</h3>
               <p>Intuitive interfaces with clear inputs, outputs, and helpful documentation for each tool.</p>
             </div>

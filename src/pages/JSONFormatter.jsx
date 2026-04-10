@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useSEO } from '../hooks/useSEO'
 import { formatJSON, getJSONStats } from '../utils/jsonFormatter'
+import './JSONFormatter.css'
 
 export default function JSONFormatter() {
   useSEO({
@@ -145,9 +146,9 @@ export default function JSONFormatter() {
         </div>
 
         {stats && (
-          <div className="info-box" style={{ backgroundColor: '#f0f0f0', marginTop: '20px' }}>
+          <div className="info-box info-box--alt">
             <h4>JSON Statistics</h4>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px', fontSize: '14px' }}>
+            <div className="stats-grid">
               <div>
                 <strong>Type:</strong> {stats.type}
               </div>
@@ -160,7 +161,7 @@ export default function JSONFormatter() {
               <div>
                 <strong>Max Depth:</strong> {stats.depth}
               </div>
-              <div style={{ gridColumn: '1 / -1' }}>
+              <div className="stats-grid__full">
                 <strong>Total Keys:</strong> {stats.keyCount}
               </div>
             </div>
@@ -172,36 +173,36 @@ export default function JSONFormatter() {
           <p>
             JSON (JavaScript Object Notation) is a lightweight, text-based data format used for data interchange. It's human-readable and widely supported in programming languages and APIs.
           </p>
-          <p style={{ marginTop: '10px' }}>
+          <p className="info-note">
             <strong>Valid JSON types:</strong> Objects ({}), Arrays ([]), Strings (""), Numbers, Booleans (true/false), and null
           </p>
         </div>
 
-        <div className="info-box" style={{ backgroundColor: '#f0f0f0', marginTop: '20px' }}>
+        <div className="info-box info-box--alt">
           <h4>🧪 Test JSON Examples</h4>
           
-          <div style={{ marginTop: '10px', paddingBottom: '10px', borderBottom: '1px solid #ddd' }}>
+          <div className="example-block">
             <strong>Simple Object:</strong>
-            <p style={{ fontSize: '12px', wordBreak: 'break-all', fontFamily: 'monospace', backgroundColor: '#fff', padding: '8px', borderRadius: '4px', margin: '5px 0' }}>
+            <p className="code-snippet">
               {`{"name":"John","age":30,"city":"New York"}`}
             </p>
           </div>
 
-          <div style={{ marginTop: '10px', paddingBottom: '10px', borderBottom: '1px solid #ddd' }}>
+          <div className="example-block">
             <strong>Array with Objects:</strong>
-            <p style={{ fontSize: '12px', wordBreak: 'break-all', fontFamily: 'monospace', backgroundColor: '#fff', padding: '8px', borderRadius: '4px', margin: '5px 0' }}>
+            <p className="code-snippet">
               {`[{"id":1,"name":"Alice"},{"id":2,"name":"Bob"}]`}
             </p>
           </div>
 
-          <div style={{ marginTop: '10px' }}>
+          <div className="example-block--last">
             <strong>Complex Nested Object:</strong>
-            <p style={{ fontSize: '12px', wordBreak: 'break-all', fontFamily: 'monospace', backgroundColor: '#fff', padding: '8px', borderRadius: '4px', margin: '5px 0' }}>
+            <p className="code-snippet">
               {`{"user":{"id":123,"profile":{"name":"John","email":"john@example.com"},"roles":["admin","user"]}}`}
             </p>
           </div>
 
-          <p style={{ fontSize: '12px', marginTop: '10px' }}>
+          <p className="example-note">
             Copy any example above and paste it to see formatting in action!
           </p>
         </div>

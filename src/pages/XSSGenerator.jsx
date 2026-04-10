@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useSEO } from '../hooks/useSEO'
 import { xssPayloads, testingPayloads, getAllCategories, getPayloadsByCategory } from '../utils/xssGenerator'
+import './XSSGenerator.css'
 
 export default function XSSGenerator() {
   useSEO({
@@ -52,18 +53,12 @@ export default function XSSGenerator() {
       {/* Disclaimer Box */}
       <div className="tool-container">
         <section className="tool-section">
-          <div style={{
-            backgroundColor: '#2a2a2a',
-            border: '2px solid #ff6b6b',
-            borderRadius: '8px',
-            padding: '1.5rem',
-            marginBottom: '2rem'
-          }}>
-            <h3 style={{ color: '#ff6b6b', marginTop: 0 }}>⚠️ LEGAL & ETHICAL DISCLAIMER</h3>
-            <p style={{ color: '#d0d0d0', fontSize: '0.9rem' }}>
+          <div className="xss-disclaimer">
+            <h3 className="xss-disclaimer-title">⚠️ LEGAL & ETHICAL DISCLAIMER</h3>
+            <p className="xss-disclaimer-text">
               This tool is for AUTHORIZED SECURITY TESTING & EDUCATIONAL PURPOSES ONLY.
             </p>
-            <ul style={{ color: '#d0d0d0', fontSize: '0.9rem' }}>
+            <ul className="xss-disclaimer-text">
               <li>✓ Only use with explicit written authorization from system owner</li>
               <li>✓ Only test systems you own or have permission to test</li>
               <li>✓ XSS attacks can steal credentials, distribute malware, and compromise accounts</li>
@@ -81,8 +76,8 @@ export default function XSSGenerator() {
                 <h2>XSS Payload Library</h2>
 
                 {/* Category Filter */}
-                <div style={{ marginBottom: '1.5rem' }}>
-                  <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '600', color: '#e8e8e8' }}>
+                <div className="xss-form-group">
+                  <label className="xss-form-label">
                     Attack Type
                   </label>
                   <select
@@ -101,50 +96,30 @@ export default function XSSGenerator() {
                 </div>
 
                 {/* Search */}
-                <div style={{ marginBottom: '1.5rem' }}>
+                <div className="xss-form-group">
                   <input
                     type="text"
                     placeholder="Search payloads..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="input"
-                    style={{ width: '100%' }}
+                    className="input xss-input-full"
                   />
                 </div>
 
                 {/* Payload List */}
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                <div className="xss-payload-list">
                   {filteredPayloads.map(([key, payload]) => (
                     <button
                       key={key}
                       onClick={() => handlePayloadSelect(key, payload)}
-                      style={{
-                        padding: '1rem',
-                        backgroundColor: selectedPayload?.key === key ? '#2a2a2a' : '#1a1a1a',
-                        border: selectedPayload?.key === key ? '2px solid #c0c0c0' : '1px solid #3a3a3a',
-                        borderRadius: '8px',
-                        color: '#e8e8e8',
-                        cursor: 'pointer',
-                        textAlign: 'left',
-                        transition: 'all 0.3s ease'
-                      }}
-                      onMouseEnter={(e) => {
-                        if (selectedPayload?.key !== key) {
-                          e.target.style.borderColor = '#808080'
-                        }
-                      }}
-                      onMouseLeave={(e) => {
-                        if (selectedPayload?.key !== key) {
-                          e.target.style.borderColor = '#3a3a3a'
-                        }
-                      }}
+                      className={`xss-payload-item${selectedPayload?.key === key ? ' xss-payload-item--selected' : ''}`}
                     >
-                      <div style={{ fontWeight: '600', marginBottom: '0.25rem' }}>{payload.name}</div>
-                      <div style={{ fontSize: '0.85rem', color: '#a0a0a0' }}>{payload.description}</div>
+                      <div className="xss-payload-item__name">{payload.name}</div>
+                      <div className="xss-payload-item__desc">{payload.description}</div>
                     </button>
                   ))}
                   {filteredPayloads.length === 0 && (
-                    <p style={{ color: '#808080', textAlign: 'center', padding: '1rem' }}>
+                    <p className="xss-no-results">
                       No payloads match your search
                     </p>
                   )}
@@ -158,32 +133,16 @@ export default function XSSGenerator() {
                     <h2>{selectedPayload.name}</h2>
 
                     {/* Available Payloads */}
-                    <div style={{ marginBottom: '1.5rem' }}>
-                      <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '600', color: '#e8e8e8' }}>
+                    <div className="xss-form-group">
+                      <label className="xss-form-label">
                         Available Variants
                       </label>
-                      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', maxHeight: '400px', overflowY: 'auto' }}>
+                      <div className="xss-variant-list">
                         {selectedPayload.payloads.map((payload, idx) => (
                           <button
                             key={idx}
                             onClick={() => handleGeneratePayload(payload)}
-                            style={{
-                              padding: '0.75rem',
-                              backgroundColor: '#1a1a1a',
-                              border: '1px solid #3a3a3a',
-                              borderRadius: '6px',
-                              color: '#e8e8e8',
-                              cursor: 'pointer',
-                              textAlign: 'left',
-                              transition: 'all 0.3s ease',
-                              fontSize: '0.9rem'
-                            }}
-                            onMouseEnter={(e) => {
-                              e.target.style.borderColor = '#c0c0c0'
-                            }}
-                            onMouseLeave={(e) => {
-                              e.target.style.borderColor = '#3a3a3a'
-                            }}
+                            className="xss-variant-btn"
                           >
                             {payload.name}
                           </button>
@@ -193,42 +152,16 @@ export default function XSSGenerator() {
 
                     {/* Generated Payload */}
                     {generatedPayload && (
-                      <div style={{ marginBottom: '1.5rem' }}>
-                        <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '600', color: '#e8e8e8' }}>
+                      <div className="xss-form-group">
+                        <label className="xss-form-label">
                           Generated XSS Payload
                         </label>
-                        <div
-                          className="textarea output"
-                          style={{
-                            padding: '1rem',
-                            backgroundColor: '#0f0f0f',
-                            borderRadius: '8px',
-                            fontFamily: 'monospace',
-                            fontSize: '0.85rem',
-                            whiteSpace: 'pre-wrap',
-                            wordBreak: 'break-all',
-                            color: '#a8d5ba',
-                            minHeight: '150px',
-                            maxHeight: '350px',
-                            overflow: 'auto'
-                          }}
-                        >
+                        <div className="textarea output xss-code-output">
                           {generatedPayload}
                         </div>
                         <button
                           onClick={() => handleCopyCommand(generatedPayload, -1)}
-                          style={{
-                            marginTop: '0.5rem',
-                            padding: '0.5rem 1rem',
-                            backgroundColor: copiedIndex === -1 ? '#4a7c4e' : '#c0c0c0',
-                            border: 'none',
-                            borderRadius: '6px',
-                            color: copiedIndex === -1 ? '#e8e8e8' : '#0f0f0f',
-                            cursor: 'pointer',
-                            fontWeight: '600',
-                            transition: 'all 0.3s ease',
-                            width: '100%'
-                          }}
+                          className={`xss-copy-btn${copiedIndex === -1 ? ' xss-copy-btn--copied' : ''}`}
                         >
                           {copiedIndex === -1 ? '✓ Copied!' : 'Copy Payload'}
                         </button>
@@ -236,51 +169,24 @@ export default function XSSGenerator() {
                     )}
                   </>
                 ) : (
-                  <div style={{ textAlign: 'center', padding: '2rem', color: '#808080' }}>
+                  <div className="xss-empty-state">
                     <p>Select an attack type and then choose a specific payload variant</p>
                   </div>
                 )}
 
                 {/* Quick Testing Payloads */}
-                <div style={{ marginTop: '2rem', paddingTop: '2rem', borderTop: '1px solid #3a3a3a' }}>
-                  <h3 style={{ marginTop: 0, color: '#e8e8e8' }}>Quick Testing Payloads</h3>
-                  <p style={{ fontSize: '0.9rem', color: '#d0d0d0' }}>Common payloads for initial vulnerability detection:</p>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                <div className="xss-quick-section">
+                  <h3 className="xss-quick-section-title">Quick Testing Payloads</h3>
+                  <p className="xss-quick-section-desc">Common payloads for initial vulnerability detection:</p>
+                  <div className="xss-quick-list">
                     {testingPayloads.detection.map((payload, idx) => (
-                      <div
-                        key={idx}
-                        style={{
-                          padding: '0.75rem',
-                          backgroundColor: '#0f0f0f',
-                          border: '1px solid #3a3a3a',
-                          borderRadius: '6px',
-                          display: 'flex',
-                          justifyContent: 'space-between',
-                          alignItems: 'center',
-                          gap: '1rem'
-                        }}
-                      >
-                        <code style={{
-                          color: '#a8d5ba',
-                          fontSize: '0.8rem',
-                          overflow: 'auto',
-                          flex: 1
-                        }}>
+                      <div key={idx} className="xss-quick-item">
+                        <code className="xss-quick-code">
                           {payload}
                         </code>
                         <button
                           onClick={() => handleCopyCommand(payload, idx)}
-                          style={{
-                            padding: '0.4rem 0.8rem',
-                            backgroundColor: copiedIndex === idx ? '#4a7c4e' : '#c0c0c0',
-                            border: 'none',
-                            borderRadius: '4px',
-                            color: copiedIndex === idx ? '#e8e8e8' : '#0f0f0f',
-                            cursor: 'pointer',
-                            fontWeight: '600',
-                            fontSize: '0.8rem',
-                            whiteSpace: 'nowrap'
-                          }}
+                          className={`xss-quick-copy-btn${copiedIndex === idx ? ' xss-quick-copy-btn--copied' : ''}`}
                         >
                           {copiedIndex === idx ? '✓' : 'Copy'}
                         </button>
@@ -300,7 +206,7 @@ export default function XSSGenerator() {
             <p>
               Cross-Site Scripting (XSS) allows attackers to inject and execute arbitrary JavaScript code in a victim's browser within the context of a vulnerable web application. This can lead to:
             </p>
-            <ul style={{ color: '#d0d0d0' }}>
+            <ul className="xss-info-list">
               <li><strong>Session Hijacking:</strong> Steal authentication cookies and session tokens</li>
               <li><strong>Credential Theft:</strong> Capture user input through fake login forms</li>
               <li><strong>Malware Distribution:</strong> Inject malicious scripts that download malware</li>
@@ -310,14 +216,14 @@ export default function XSSGenerator() {
             </ul>
 
             <h4>Types of XSS:</h4>
-            <ul style={{ color: '#d0d0d0' }}>
+            <ul className="xss-info-list">
               <li><strong>Stored XSS:</strong> Payload stored in database, affects all users viewing it</li>
               <li><strong>Reflected XSS:</strong> Payload in URL/request, victim must click link</li>
               <li><strong>DOM-based XSS:</strong> Vulnerability in client-side JavaScript code</li>
             </ul>
 
             <h4>Common Vulnerable Functions:</h4>
-            <ul style={{ color: '#d0d0d0' }}>
+            <ul className="xss-info-list">
               <li><code>eval()</code>, <code>innerHTML</code>, <code>document.write()</code></li>
               <li>Unsafe use of <code>jQuery.html()</code>, <code>React.dangerouslySetInnerHTML</code></li>
               <li>Server-side template injection that outputs user input</li>
@@ -325,7 +231,7 @@ export default function XSSGenerator() {
             </ul>
 
             <h4>Prevention & Mitigation:</h4>
-            <ul style={{ color: '#d0d0d0' }}>
+            <ul className="xss-info-list">
               <li>Use Content Security Policy (CSP) headers</li>
               <li>Properly encode/escape all user input based on context (HTML, JS, URL, CSS)</li>
               <li>Use security libraries like DOMPurify for HTML sanitization</li>
@@ -335,8 +241,8 @@ export default function XSSGenerator() {
             </ul>
 
             <h4>Legal & Ethical Requirements:</h4>
-            <div style={{ backgroundColor: '#1a1a1a', padding: '1rem', borderRadius: '6px', borderLeft: '4px solid #ff6b6b', marginTop: '1rem' }}>
-              <ul style={{ color: '#d0d0d0', margin: 0 }}>
+            <div className="xss-legal-note">
+              <ul className="xss-legal-note-list">
                 <li>⚠️ Use ONLY in authorized penetration testing engagements</li>
                 <li>✓ Always get explicit written permission before testing</li>
                 <li>✓ Test only on systems you own or have authorization for</li>
