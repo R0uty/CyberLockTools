@@ -26,7 +26,12 @@ import {
   AiSecurity02Icon,
   Bug02Icon,
   CodeIcon,
-  GitPullRequestIcon
+  GitPullRequestIcon,
+  ComputerTerminal01Icon,
+  Folder01Icon,
+  BinaryCodeIcon,
+  CellularNetworkIcon,
+  DatabaseIcon
 } from 'hugeicons-react'
 
 const iconMap = {
@@ -59,7 +64,12 @@ const iconMap = {
   AiSecurity02Icon,
   Bug02Icon,
   CodeIcon,
-  GitPullRequestIcon
+  GitPullRequestIcon,
+  ComputerTerminal01Icon,
+  Folder01Icon,
+  BinaryCodeIcon,
+  CellularNetworkIcon,
+  DatabaseIcon
 }
 
 export default function Tools({ tools, onToolClick }) {

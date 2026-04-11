@@ -48,7 +48,13 @@ import {
   AiSecurity02Icon,
   Bug02Icon,
   CodeIcon,
-  GitPullRequestIcon
+  GitPullRequestIcon,
+  ComputerTerminal01Icon,
+  Folder01Icon,
+  BinaryCodeIcon,
+  Calculator01Icon,
+  CellularNetworkIcon,
+  DatabaseIcon
 } from 'hugeicons-react'
 import QRCodeGenerator from './pages/QRCodeGenerator'
 import ColorConverter from './pages/ColorConverter'
@@ -59,6 +65,11 @@ import XSSGenerator from './pages/XSSGenerator'
 import SQLInjectionGenerator from './pages/SQLInjectionGenerator'
 import GraphQLInjectionGenerator from './pages/GraphQLInjectionGenerator'
 import HTTPParameterPollutionGenerator from './pages/HTTPParameterPollutionGenerator'
+import CommandInjectionGenerator from './pages/CommandInjectionGenerator'
+import LDAPInjectionGenerator from './pages/LDAPInjectionGenerator'
+import PathTraversalGenerator from './pages/PathTraversalGenerator'
+import NumberBaseConverter from './pages/NumberBaseConverter'
+import SubnetCalculator from './pages/SubnetCalculator'
 import Tools from './pages/Tools'
 import About from './pages/About'
 import Contact from './pages/Contact'
@@ -252,6 +263,37 @@ export default function App() {
       iconName: 'GitPullRequestIcon',
       title: 'HTTP Parameter Pollution Generator',
       description: 'Generate HTTP parameter pollution payloads for authorized security testing. Includes WAF bypass, cache poisoning, and backend confusion techniques.'
+    },
+    {
+      category: 'Penetration Testing',
+      iconName: 'ComputerTerminal01Icon',
+      title: 'Command Injection Generator',
+      description: 'Generate OS command injection payloads for authorized security testing. Includes basic, blind, filter bypass, Windows, Linux, data exfiltration, and OOB techniques.'
+    },
+    {
+      category: 'Penetration Testing',
+      iconName: 'DatabaseIcon',
+      title: 'LDAP Injection Generator',
+      description: 'Generate LDAP injection payloads for authorized security testing. Includes authentication bypass, information disclosure, blind injection, and search filter manipulation.'
+    },
+    {
+      category: 'Penetration Testing',
+      iconName: 'Folder01Icon',
+      title: 'Path Traversal Generator',
+      description: 'Generate path traversal (directory traversal / LFI) payloads for authorized security testing. Includes basic, encoded, filter-bypass, Windows, Linux, and null-byte techniques.'
+    },
+    // Additional General Utility Tools
+    {
+      category: 'General',
+      iconName: 'BinaryCodeIcon',
+      title: 'Number Base Converter',
+      description: 'Convert numbers between binary (base 2), octal (base 8), decimal (base 10), and hexadecimal (base 16).'
+    },
+    {
+      category: 'General',
+      iconName: 'CellularNetworkIcon',
+      title: 'IP Subnet Calculator',
+      description: 'Calculate subnet details from CIDR notation: network address, broadcast, subnet mask, usable hosts, and more.'
     }
   ]
 
@@ -541,6 +583,61 @@ export default function App() {
     )
   }
 
+  if (currentTool === 'Command Injection Generator') {
+    return (
+      <div className="app">
+        <Header onLogoClick={handleLogoClick} currentPage={currentPage} onPageChange={handlePageChange} />
+        <div className="main-content">
+          <CommandInjectionGenerator />
+        </div>
+      </div>
+    )
+  }
+
+  if (currentTool === 'LDAP Injection Generator') {
+    return (
+      <div className="app">
+        <Header onLogoClick={handleLogoClick} currentPage={currentPage} onPageChange={handlePageChange} />
+        <div className="main-content">
+          <LDAPInjectionGenerator />
+        </div>
+      </div>
+    )
+  }
+
+  if (currentTool === 'Path Traversal Generator') {
+    return (
+      <div className="app">
+        <Header onLogoClick={handleLogoClick} currentPage={currentPage} onPageChange={handlePageChange} />
+        <div className="main-content">
+          <PathTraversalGenerator />
+        </div>
+      </div>
+    )
+  }
+
+  if (currentTool === 'Number Base Converter') {
+    return (
+      <div className="app">
+        <Header onLogoClick={handleLogoClick} currentPage={currentPage} onPageChange={handlePageChange} />
+        <div className="main-content">
+          <NumberBaseConverter />
+        </div>
+      </div>
+    )
+  }
+
+  if (currentTool === 'IP Subnet Calculator') {
+    return (
+      <div className="app">
+        <Header onLogoClick={handleLogoClick} currentPage={currentPage} onPageChange={handlePageChange} />
+        <div className="main-content">
+          <SubnetCalculator />
+        </div>
+      </div>
+    )
+  }
+
   if (currentPage === 'tools' && !currentTool) {
     return (
       <div className="app">
@@ -580,7 +677,7 @@ export default function App() {
       <main className="main-content">
         <section className="hero">
           <h1>Welcome to My Cyber Lab</h1>
-          <p>Hey there! I'm R0uty, and this is my personal collection of 20+ powerful online utilities for encoding, decoding, hashing, formatting, and generation. All my tools are secure, private, and run completely in your browser—no data ever touches my servers.</p>
+          <p>Hey there! I'm R0uty, and this is my personal collection of 26+ powerful online utilities for encoding, decoding, hashing, formatting, and generation. All my tools are secure, private, and run completely in your browser—no data ever touches my servers.</p>
         </section>
 
         <section className="features">
@@ -611,7 +708,7 @@ export default function App() {
 
         <section className="cta">
           <h2>Explore My Lab</h2>
-          <p>Pick from my collection of 20 specialized tools for all your encoding, hashing, formatting, and generation needs.</p>
+          <p>Pick from my collection of 26 specialized tools for all your encoding, hashing, formatting, and generation needs.</p>
           <button className="cta-button" onClick={() => handlePageChange('tools')}>Browse My Tools</button>
         </section>
       </main>

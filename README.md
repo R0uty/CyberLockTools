@@ -1,6 +1,6 @@
 # 🔒 CyberLock Tools
 
-A comprehensive, privacy-first suite of **free online tools** for developers, security professionals, and students. Featuring encoding/decoding utilities, cryptographic hash generators, and automation tools. **All processing happens in your browser** — no data is sent to any server, completely private and secure.
+A comprehensive, privacy-first suite of **free online tools** for developers, security professionals, and students. Featuring encoding/decoding utilities, cryptographic hash generators, penetration testing payload generators, and automation tools. **All processing happens in your browser** — no data is sent to any server, completely private and secure.
 
 **🌐 Live Demo:** https://cyberlocktools.com (or your deployment URL)
 
@@ -82,6 +82,38 @@ A comprehensive, privacy-first suite of **free online tools** for developers, se
 - Copy formatted XML or download as file
 - Example XML documents for testing
 - Perfect for API responses and configuration files
+
+### 💉 Command Injection Generator
+- Generate OS command injection payloads for authorized penetration testing
+- Categories: Basic, Blind, Filter Bypass, Windows, Linux, Data Exfiltration, OOB
+- Shell metacharacter reference and quick detection payloads
+- Educational explanations for each technique
+
+### 🗂️ LDAP Injection Generator
+- Generate LDAP injection payloads for authorized security testing
+- Categories: Authentication Bypass, Information Disclosure, Blind Injection, Search Filter Injection, Special Characters
+- LDAP filter syntax reference
+- Quick detection payloads for initial assessment
+
+### 📂 Path Traversal Generator
+- Generate path traversal (LFI/directory traversal) payloads for authorized testing
+- Categories: Basic, Encoded, Filter Bypass, Windows Targets, Linux Targets, Null Byte
+- High-value target file reference
+- Encoded variants to bypass WAFs and input filters
+
+### 🔢 Number Base Converter
+- Convert between binary (base 2), octal (base 8), decimal (base 10), and hexadecimal (base 16)
+- Simultaneous conversion to all bases at once
+- Quick examples with common values (ports, ASCII, IP octets)
+- Reference table for each base system
+
+### 🌐 IP Subnet Calculator
+- Calculate subnet details from CIDR notation
+- Network address, broadcast address, subnet mask, wildcard mask
+- First/last usable host, total and usable host count
+- Binary representation of IP and mask
+- IP class detection and private range identification
+- Common subnet quick-load examples and CIDR reference table
 
 ## 🎯 Use Cases
 
@@ -309,9 +341,29 @@ MIT License - see the LICENSE file for details
 - ✅ Tools Browsing Page
 - ✅ About Page
 - ✅ Contact Page
-- ✅ SEO Optimization (13 unique pages)
+- ✅ SEO Optimization
 - ✅ Navigation System
 - ✅ Responsive Design
+- ✅ SQL Formatter & Validator
+- ✅ CSV Parser & Formatter
+- ✅ UUID Generator
+- ✅ Timestamp Converter
+- ✅ Password Generator
+- ✅ JWT Encoder
+- ✅ QR Code Generator
+- ✅ Color Converter
+- ✅ CSS Beautifier
+- ✅ Reverse Shell Generator
+- ✅ XXE Generator
+- ✅ XSS Generator
+- ✅ SQL Injection Generator
+- ✅ GraphQL Injection Generator
+- ✅ HTTP Parameter Pollution Generator
+- ✅ Command Injection Generator
+- ✅ LDAP Injection Generator
+- ✅ Path Traversal Generator
+- ✅ Number Base Converter
+- ✅ IP Subnet Calculator
 
 ### Planned Features 🔜
 - [ ] Dark Mode Toggle
@@ -319,8 +371,6 @@ MIT License - see the LICENSE file for details
 - [ ] Settings/Preferences Panel
 - [ ] History of Recent Operations
 - [ ] More Hash Algorithms (BLAKE2, Argon2)
-- [ ] CSV Parser & Formatter
-- [ ] SQL Formatter
 - [ ] API Documentation
 - [ ] Unit Tests
 

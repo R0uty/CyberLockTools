@@ -1,0 +1,208 @@
+/* NumberBaseConverter.css */
+
+.nbc-input-row {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+  align-items: end;
+}
+
+@media (max-width: 600px) {
+  .nbc-input-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+.nbc-from-group,
+.nbc-value-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.nbc-label {
+  font-weight: 600;
+  color: #e8e8e8;
+  font-size: 0.95rem;
+}
+
+.nbc-input-full {
+  width: 100%;
+  font-family: monospace;
+  font-size: 1rem;
+}
+
+.nbc-error {
+  background-color: #2a1515;
+  border: 1px solid #ff6b6b;
+  border-radius: 6px;
+  color: #ff9999;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1.5rem;
+  font-size: 0.9rem;
+}
+
+.nbc-results-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+@media (max-width: 900px) {
+  .nbc-results-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 500px) {
+  .nbc-results-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.nbc-result-card {
+  background-color: #1a1a1a;
+  border: 1px solid #3a3a3a;
+  border-radius: 10px;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  transition: border-color 0.2s;
+}
+
+.nbc-result-card--source {
+  border-color: #c0c0c0;
+  background-color: #222;
+}
+
+.nbc-result-label {
+  font-size: 0.8rem;
+  color: #a0a0a0;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.nbc-prefix-badge {
+  background-color: #2a2a2a;
+  border: 1px solid #444;
+  border-radius: 3px;
+  padding: 1px 5px;
+  font-family: monospace;
+  font-size: 0.75rem;
+  color: #c0c0c0;
+}
+
+.nbc-result-value {
+  font-family: monospace;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #a8d5ba;
+  word-break: break-all;
+  min-height: 1.5rem;
+}
+
+.nbc-result-placeholder {
+  color: #555;
+  font-weight: 400;
+}
+
+.nbc-copy-btn {
+  padding: 0.35rem 0.75rem;
+  background-color: #2a2a2a;
+  border: 1px solid #555;
+  border-radius: 5px;
+  color: #c0c0c0;
+  cursor: pointer;
+  font-size: 0.8rem;
+  transition: all 0.2s;
+  align-self: flex-start;
+}
+
+.nbc-copy-btn:hover {
+  background-color: #333;
+  border-color: #c0c0c0;
+}
+
+.nbc-copy-btn--copied {
+  background-color: #2a4a2e;
+  border-color: #4a7c4e;
+  color: #a8d5ba;
+}
+
+/* Examples */
+.nbc-examples-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.nbc-example-btn {
+  background-color: #1a1a1a;
+  border: 1px solid #3a3a3a;
+  border-radius: 8px;
+  padding: 0.75rem;
+  color: #e8e8e8;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.2s;
+}
+
+.nbc-example-btn:hover {
+  border-color: #c0c0c0;
+  background-color: #222;
+}
+
+.nbc-example-label {
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+  font-size: 0.9rem;
+}
+
+.nbc-example-values {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  font-family: monospace;
+  font-size: 0.8rem;
+  color: #a8d5ba;
+}
+
+/* Reference table */
+.nbc-reference-table {
+  overflow-x: auto;
+  margin: 1rem 0;
+}
+
+.nbc-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.nbc-table th,
+.nbc-table td {
+  padding: 0.6rem 0.8rem;
+  text-align: left;
+  border-bottom: 1px solid #3a3a3a;
+  color: #d0d0d0;
+}
+
+.nbc-table th {
+  color: #e8e8e8;
+  font-weight: 600;
+  background-color: #1a1a1a;
+}
+
+.nbc-table tr:hover td {
+  background-color: #1e1e1e;
+}
+
+.nbc-info-list {
+  color: #d0d0d0;
+}
