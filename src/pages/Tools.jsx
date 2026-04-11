@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useSEO } from '../hooks/useSEO';
 import ToolCard from '../components/ToolCard';
 import { Search01Icon, ArrowDataTransferHorizontalIcon, LockKeyIcon, BookOpen01Icon, SmileIcon, CheckmarkBadge01Icon, GlobeIcon } from 'hugeicons-react'
@@ -31,7 +31,8 @@ import {
   Folder01Icon,
   BinaryCodeIcon,
   CellularNetworkIcon,
-  DatabaseIcon
+  DatabaseIcon,
+  HtmlFiveIcon
 } from 'hugeicons-react'
 
 const iconMap = {
@@ -69,12 +70,13 @@ const iconMap = {
   Folder01Icon,
   BinaryCodeIcon,
   CellularNetworkIcon,
-  DatabaseIcon
+  DatabaseIcon,
+  HtmlFiveIcon
 }
 
 export default function Tools({ tools, onToolClick }) {
   const [searchQuery, setSearchQuery] = useState('')
-  const [selectedCategory, setSelectedCategory] = useState('General')
+  const [selectedCategory, setSelectedCategory] = useState('')
 
   useSEO({
     title: 'All Online Tools - Free Encoder, Decoder, Generator, Formatter',
@@ -85,15 +87,28 @@ export default function Tools({ tools, onToolClick }) {
   // Get unique categories
   const categories = [...new Set(tools.map(tool => tool.category))].sort();
 
+  useEffect(() => {
+    if (!categories.includes(selectedCategory)) {
+      setSelectedCategory(categories[0] ?? '')
+    }
+  }, [categories, selectedCategory])
+
+  const hasSearchQuery = searchQuery.trim() !== ''
+  const normalizedSearchQuery = searchQuery.toLowerCase()
+
   // Filter tools based on category and search query
   const filteredTools = tools.filter(tool => {
-    const matchesCategory = tool.category === selectedCategory;
-    const matchesSearch = searchQuery.trim() === '' 
-      ? true 
-      : tool.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        tool.description.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesCategory && matchesSearch;
-  });
+    const matchesCategory = hasSearchQuery ? true : tool.category === selectedCategory
+    const matchesSearch = hasSearchQuery
+      ? tool.title.toLowerCase().includes(normalizedSearchQuery) ||
+        tool.description.toLowerCase().includes(normalizedSearchQuery) ||
+        tool.category.toLowerCase().includes(normalizedSearchQuery)
+      : true
+    return matchesCategory && matchesSearch
+  })
+  const activeCategory = hasSearchQuery && filteredTools.length > 0
+    ? filteredTools[0].category
+    : selectedCategory
 
   return (
     <div className="tool-page">
@@ -104,24 +119,6 @@ export default function Tools({ tools, onToolClick }) {
 
       <div className="tool-container">
         <section className="tools-grid">
-          {/* Category Tabs */}
-          <div className="tools-category-tabs">
-            <div className="tools-category-list">
-              {categories.map(category => (
-                <button
-                  key={category}
-                  onClick={() => {
-                    setSelectedCategory(category);
-                    setSearchQuery('');
-                  }}
-                  className={selectedCategory === category ? 'tools-category-btn tools-category-btn--active' : 'tools-category-btn'}
-                >
-                  {category}
-                </button>
-              ))}
-            </div>
-          </div>
-
           {/* Search Bar */}
           <div className="tools-search-wrapper">
             <div className="tools-search-container">
@@ -132,7 +129,7 @@ export default function Tools({ tools, onToolClick }) {
               />
               <input
                 type="text"
-                placeholder="Search tools by name or function..."
+                placeholder="Search tools across all categories..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="tools-search-input"
@@ -140,23 +137,46 @@ export default function Tools({ tools, onToolClick }) {
             </div>
             {filteredTools.length > 0 && (
               <p className="tools-search-results">
-                Found {filteredTools.length} tool{filteredTools.length !== 1 ? 's' : ''}
+                {hasSearchQuery
+                  ? `Found ${filteredTools.length} tool${filteredTools.length !== 1 ? 's' : ''} across all categories`
+                  : `Found ${filteredTools.length} tool${filteredTools.length !== 1 ? 's' : ''}`}
               </p>
             )}
-            {filteredTools.length === 0 && searchQuery.trim() !== '' && (
+            {filteredTools.length === 0 && hasSearchQuery && (
               <p className="tools-search-no-results">
                 No tools match your search. Try different keywords.
               </p>
             )}
           </div>
 
+          {/* Category Tabs */}
+          <div className="tools-category-tabs">
+            <div className="tools-category-list">
+              {categories.map(category => (
+                <button
+                  key={category}
+                  onClick={() => {
+                    setSelectedCategory(category)
+                  }}
+                  className={activeCategory === category ? 'tools-category-btn tools-category-btn--active' : 'tools-category-btn'}
+                >
+                  {category}
+                </button>
+              ))}
+            </div>
+          </div>
+
           <div className="tools-intro">
-            <p>{filteredTools.length} tool{filteredTools.length !== 1 ? 's' : ''} available in {selectedCategory}:</p>
+            <p>
+              {hasSearchQuery
+                ? `${filteredTools.length} matching tool${filteredTools.length !== 1 ? 's' : ''} across all categories, starting with ${activeCategory}:`
+                : `${filteredTools.length} tool${filteredTools.length !== 1 ? 's' : ''} available in ${selectedCategory}:`}
+            </p>
           </div>
 
           <div className="cards-container">
             {filteredTools.map((tool, idx) => {
-              const IconComponent = iconMap[tool.iconName]
+              const IconComponent = iconMap[tool.iconName] ?? Search01Icon
               return (
                 <div
                   key={idx}
@@ -228,9 +248,7 @@ export default function Tools({ tools, onToolClick }) {
               <p>Instant results with no waiting. All computations run locally in your web browser.</p>
             </div>
             <div className="feature-card">
-              <div className="icon-wrapper"><BookOpen01I
-62
-con size={32} color="#c0c0c0" /></div>
+              <div className="icon-wrapper"><BookOpen01Icon size={32} color="#c0c0c0" /></div>
               <h3>Educational</h3>
               <p>Learn about encoding, hashing, formatting, and pattern matching with built-in explanations.</p>
             </div>

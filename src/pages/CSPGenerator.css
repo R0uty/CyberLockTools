@@ -1,0 +1,161 @@
+.csp-tab-row {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.csp-tab {
+  padding: 0.65rem 1.4rem;
+  background: #1a1a1a;
+  border: 1px solid #3a3a3a;
+  border-radius: 6px;
+  color: #a0a0a0;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.csp-tab:hover,
+.csp-preset-btn:hover {
+  border-color: #808080;
+  color: #e8e8e8;
+}
+
+.csp-tab--active,
+.csp-preset-btn--active {
+  background: #2a2a2a;
+  border-color: #c0c0c0;
+  color: #f0f0f0;
+  font-weight: 600;
+}
+
+.section-title {
+  margin: 0 0 1rem;
+  color: #f0f0f0;
+}
+
+.csp-preset-grid,
+.csp-flag-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 0.75rem;
+}
+
+.csp-preset-btn {
+  padding: 0.8rem 1rem;
+  background: #1a1a1a;
+  border: 1px solid #3a3a3a;
+  border-radius: 6px;
+  color: #c0c0c0;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.csp-field-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1rem;
+}
+
+.csp-report-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.csp-field-card,
+.csp-checkbox-card,
+.csp-summary-card {
+  background: #111111;
+  border: 1px solid #2a2a2a;
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+.csp-field-help {
+  margin: 0.6rem 0 0;
+  color: #9a9a9a;
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+.csp-checkbox-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  cursor: pointer;
+}
+
+.csp-checkbox-card input {
+  margin-top: 0.2rem;
+}
+
+.csp-checkbox-card span {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  color: #d8d8d8;
+}
+
+.csp-checkbox-card small {
+  color: #9a9a9a;
+  line-height: 1.4;
+}
+
+.csp-textarea,
+.csp-analyzer-input {
+  min-height: 140px;
+  resize: vertical;
+}
+
+.csp-secondary-label {
+  margin-top: 1rem;
+}
+
+.csp-action-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+}
+
+.csp-summary-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.csp-summary-row--compact {
+  margin-bottom: 0;
+}
+
+.csp-summary-label {
+  display: block;
+  color: #9a9a9a;
+  font-size: 0.8rem;
+  margin-bottom: 0.4rem;
+}
+
+.csp-summary-card strong {
+  color: #f0f0f0;
+  font-size: 1.2rem;
+}
+
+.csp-analysis-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+}
+
+@media (max-width: 768px) {
+  .csp-tab-row,
+  .csp-action-row {
+    flex-direction: column;
+  }
+
+  .csp-tab,
+  .csp-preset-btn,
+  .csp-action-row .action-btn {
+    width: 100%;
+  }
+}

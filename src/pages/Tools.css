@@ -36,7 +36,7 @@
 }
 
 .tools-search-wrapper {
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
   width: 100%;
 }
 
@@ -84,6 +84,15 @@
   color: #c0c0c0;
   margin-top: 0.5rem;
   font-size: 0.9rem;
+}
+
+.tool-card-wrapper {
+  display: flex;
+  height: 100%;
+}
+
+.tool-card-wrapper .tool-card {
+  width: 100%;
 }
 
 .icon-wrapper {

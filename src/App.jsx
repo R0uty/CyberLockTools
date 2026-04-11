@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useSEO } from './hooks/useSEO'
 import Header from './components/Header'
 import ROT from './pages/ROT'
@@ -58,6 +58,8 @@ import {
 import QRCodeGenerator from './pages/QRCodeGenerator'
 import ColorConverter from './pages/ColorConverter'
 import CSSBeautifier from './pages/CSSBeautifier'
+import HTMLEncoder from './pages/HTMLEncoder'
+import CSPGenerator from './pages/CSPGenerator'
 import ReverseShellGenerator from './pages/ReverseShellGenerator'
 import XXEGenerator from './pages/XXEGenerator'
 import XSSGenerator from './pages/XSSGenerator'
@@ -85,158 +87,201 @@ export default function App() {
     keywords: 'online tools, encoder decoder, hash generator, base64, rot13, url encoder, cron parser, free tools, r0uty'
   })
 
-  const handlePageChange = (page) => {
-    setCurrentPage(page)
-    if (page === 'tools') {
-      setCurrentTool(null)
-    } else if (page === 'home') {
-      setCurrentTool(null)
+  const applyNavigationState = useCallback((state) => {
+    setCurrentPage(state?.page ?? 'home')
+    setCurrentTool(state?.tool ?? null)
+  }, [])
+
+  const navigateTo = useCallback((page, tool = null, options = {}) => {
+    const nextState = { page, tool }
+    const currentState = window.history.state
+
+    applyNavigationState(nextState)
+
+    if (currentState?.page === nextState.page && currentState?.tool === nextState.tool) {
+      return
     }
+
+    const historyMethod = options.replace ? 'replaceState' : 'pushState'
+    window.history[historyMethod](nextState, '')
+    window.scrollTo(0, 0)
+  }, [applyNavigationState])
+
+  useEffect(() => {
+    const initialState = window.history.state?.page
+      ? window.history.state
+      : { page: 'home', tool: null }
+
+    window.history.replaceState(initialState, '')
+    applyNavigationState(initialState)
+
+    const handlePopState = (event) => {
+      applyNavigationState(event.state ?? { page: 'home', tool: null })
+      window.scrollTo(0, 0)
+    }
+
+    window.addEventListener('popstate', handlePopState)
+
+    return () => {
+      window.removeEventListener('popstate', handlePopState)
+    }
+  }, [applyNavigationState])
+
+  const handlePageChange = (page) => {
+    navigateTo(page, null)
   }
 
   const handleToolClick = (title) => {
-    setCurrentTool(title)
-    setCurrentPage('tools')
+    navigateTo('tools', title)
   }
 
   const handleLogoClick = () => {
-    setCurrentTool(null)
-    setCurrentPage('home')
+    navigateTo('home', null)
   }
 
   const tools = [
-    // General Utility Tools
+    // Encoding & Decoding
     {
-      category: 'General',
+      category: 'Encoding & Decoding',
       iconName: 'RotateClockwiseIcon',
       title: 'ROT',
       description: 'Encode and decode ROT13 and ROT47 cipher text.'
     },
     {
-      category: 'General',
+      category: 'Encoding & Decoding',
       iconName: 'File01Icon',
       title: 'Base64',
       description: 'Encode and decode Base64 strings.'
     },
     {
-      category: 'General',
+      category: 'Encoding & Decoding',
       iconName: 'Link01Icon',
       title: 'URL Encoder',
       description: 'Encode and decode URLs for safe web transmission.'
     },
     {
-      category: 'General',
+      category: 'Encoding & Decoding',
+      iconName: 'HtmlFiveIcon',
+      title: 'HTML Encoder',
+      description: 'Encode text to HTML entities and decode HTML entities back to plain text.'
+    },
+    // Hashing & Tokens
+    {
+      category: 'Hashing & Tokens',
       iconName: 'HashtagIcon',
       title: 'Hash Generator',
       description: 'Generate MD5, SHA1, SHA256, and more hash algorithms.'
     },
     {
-      category: 'General',
-      iconName: 'Clock01Icon',
-      title: 'Cron Parser',
-      description: 'Parse and understand cron expressions easily.'
-    },
-    {
-      category: 'General',
+      category: 'Hashing & Tokens',
       iconName: 'LockIcon',
       title: 'JWT Debugger',
       description: 'Decode and debug JWT tokens to see their content.'
     },
     {
-      category: 'General',
+      category: 'Hashing & Tokens',
+      iconName: 'Ticket01Icon',
+      title: 'JWT Encoder',
+      description: 'Create and verify JWT tokens with custom payload and signature.'
+    },
+    // Formatters & Converters
+    {
+      category: 'Formatters & Converters',
       iconName: 'FileScriptIcon',
       title: 'JSON Formatter',
       description: 'Format and validate JSON with proper indentation.'
     },
     {
-      category: 'General',
+      category: 'Formatters & Converters',
       iconName: 'File01Icon',
       title: 'YAML Formatter',
       description: 'Format YAML files and convert to JSON.'
     },
     {
-      category: 'General',
+      category: 'Formatters & Converters',
       iconName: 'DocumentCodeIcon',
       title: 'Markdown Preview',
       description: 'Convert and preview markdown with live rendering.'
     },
     {
-      category: 'General',
-      iconName: 'Search01Icon',
-      title: 'Regex Tester',
-      description: 'Test regex patterns with live matching and highlighting.'
-    },
-    {
-      category: 'General',
+      category: 'Formatters & Converters',
       iconName: 'Xml01Icon',
       title: 'XML Formatter',
       description: 'Format and validate XML with proper indentation.'
     },
     {
-      category: 'General',
+      category: 'Formatters & Converters',
       iconName: 'Database01Icon',
       title: 'SQL Formatter',
       description: 'Format and validate SQL queries with proper indentation.'
     },
     {
-      category: 'General',
+      category: 'Formatters & Converters',
       iconName: 'GridIcon',
       title: 'CSV Formatter',
       description: 'Parse, format, and convert CSV to/from JSON.'
     },
     {
-      category: 'General',
-      iconName: 'IdentityCardIcon',
-      title: 'UUID Generator',
-      description: 'Generate and validate UUID v1 and v4 identifiers.'
-    },
-    {
-      category: 'General',
-      iconName: 'Calendar01Icon',
-      title: 'Timestamp Converter',
-      description: 'Convert between Unix timestamps and human-readable dates.'
-    },
-    {
-      category: 'General',
-      iconName: 'PasswordValidationIcon',
-      title: 'Password Generator',
-      description: 'Generate secure passwords with customizable options and strength analysis.'
-    },
-    {
-      category: 'General',
-      iconName: 'Ticket01Icon',
-      title: 'JWT Encoder',
-      description: 'Create and verify JWT tokens with custom payload and signature.'
-    },
-    {
-      category: 'General',
-      iconName: 'MobileNavigator02Icon',
-      title: 'QR Code Generator',
-      description: 'Generate QR codes from text, URLs, and contact information.'
-    },
-    {
-      category: 'General',
+      category: 'Formatters & Converters',
       iconName: 'IdeaIcon',
       title: 'Color Converter',
       description: 'Convert between HEX, RGB, HSL, and HSV color formats with live preview.'
     },
     {
-      category: 'General',
+      category: 'Formatters & Converters',
       iconName: 'CssFile02Icon',
       title: 'CSS Beautifier',
       description: 'Format, minify, and validate CSS with file size optimization analysis.'
     },
     {
-      category: 'General',
+      category: 'Formatters & Converters',
       iconName: 'BinaryCodeIcon',
       title: 'Number Base Converter',
       description: 'Convert numbers between binary, octal, decimal, and hexadecimal with prefix and bit-length output.'
     },
+    // Generators
     {
-      category: 'General',
-      iconName: 'HtmlFiveIcon',
-      title: 'HTML Encoder',
-      description: 'Encode text to HTML entities and decode HTML entities back to plain text.'
+      category: 'Generators',
+      iconName: 'IdentityCardIcon',
+      title: 'UUID Generator',
+      description: 'Generate and validate UUID v1 and v4 identifiers.'
+    },
+    {
+      category: 'Generators',
+      iconName: 'PasswordValidationIcon',
+      title: 'Password Generator',
+      description: 'Generate secure passwords with customizable options and strength analysis.'
+    },
+    {
+      category: 'Generators',
+      iconName: 'MobileNavigator02Icon',
+      title: 'QR Code Generator',
+      description: 'Generate QR codes from text, URLs, and contact information.'
+    },
+    // Analyzers & Parsers
+    {
+      category: 'Analyzers & Parsers',
+      iconName: 'Clock01Icon',
+      title: 'Cron Parser',
+      description: 'Parse and understand cron expressions easily.'
+    },
+    {
+      category: 'Analyzers & Parsers',
+      iconName: 'Search01Icon',
+      title: 'Regex Tester',
+      description: 'Test regex patterns with live matching and highlighting.'
+    },
+    {
+      category: 'Analyzers & Parsers',
+      iconName: 'Calendar01Icon',
+      title: 'Timestamp Converter',
+      description: 'Convert between Unix timestamps and human-readable dates.'
+    },
+    {
+      category: 'Analyzers & Parsers',
+      iconName: 'LockKeyIcon',
+      title: 'CSP Generator & Analyzer',
+      description: 'Build Content-Security-Policy headers, generate meta tags, and analyze pasted CSP strings for risky directives.'
     },
     // Penetration Testing Tools
     {
@@ -293,15 +338,8 @@ export default function App() {
       title: 'Path Traversal Generator',
       description: 'Generate path traversal (directory traversal / LFI) payloads for authorized security testing. Includes basic, encoded, filter-bypass, Windows, Linux, and null-byte techniques.'
     },
-    // Additional General Utility Tools
     {
-      category: 'General',
-      iconName: 'BinaryCodeIcon',
-      title: 'Number Base Converter',
-      description: 'Convert numbers between binary (base 2), octal (base 8), decimal (base 10), and hexadecimal (base 16).'
-    },
-    {
-      category: 'General',
+      category: 'Analyzers & Parsers',
       iconName: 'CellularNetworkIcon',
       title: 'IP Subnet Calculator',
       description: 'Calculate subnet details from CIDR notation: network address, broadcast, subnet mask, usable hosts, and more.'
@@ -523,6 +561,28 @@ export default function App() {
         <Header onLogoClick={handleLogoClick} currentPage={currentPage} onPageChange={handlePageChange} />
         <div className="main-content">
           <CSSBeautifier />
+        </div>
+      </div>
+    )
+  }
+
+  if (currentTool === 'HTML Encoder') {
+    return (
+      <div className="app">
+        <Header onLogoClick={handleLogoClick} currentPage={currentPage} onPageChange={handlePageChange} />
+        <div className="main-content">
+          <HTMLEncoder />
+        </div>
+      </div>
+    )
+  }
+
+  if (currentTool === 'CSP Generator & Analyzer') {
+    return (
+      <div className="app">
+        <Header onLogoClick={handleLogoClick} currentPage={currentPage} onPageChange={handlePageChange} />
+        <div className="main-content">
+          <CSPGenerator />
         </div>
       </div>
     )
