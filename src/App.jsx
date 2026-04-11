@@ -52,7 +52,6 @@ import {
   ComputerTerminal01Icon,
   Folder01Icon,
   BinaryCodeIcon,
-  Calculator01Icon,
   CellularNetworkIcon,
   DatabaseIcon
 } from 'hugeicons-react'
@@ -677,7 +676,7 @@ export default function App() {
       <main className="main-content">
         <section className="hero">
           <h1>Welcome to My Cyber Lab</h1>
-          <p>Hey there! I'm R0uty, and this is my personal collection of 26+ powerful online utilities for encoding, decoding, hashing, formatting, and generation. All my tools are secure, private, and run completely in your browser—no data ever touches my servers.</p>
+          <p>Hey there! I'm R0uty, and this is my personal collection of {tools.length}+ powerful online utilities for encoding, decoding, hashing, formatting, and generation. All my tools are secure, private, and run completely in your browser—no data ever touches my servers.</p>
         </section>
 
         <section className="features">
@@ -708,7 +707,7 @@ export default function App() {
 
         <section className="cta">
           <h2>Explore My Lab</h2>
-          <p>Pick from my collection of 26 specialized tools for all your encoding, hashing, formatting, and generation needs.</p>
+          <p>Pick from my collection of {tools.length} specialized tools for all your encoding, hashing, formatting, and generation needs.</p>
           <button className="cta-button" onClick={() => handlePageChange('tools')}>Browse My Tools</button>
         </section>
       </main>

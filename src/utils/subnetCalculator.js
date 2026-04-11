@@ -51,7 +51,7 @@ export function calculateSubnet(cidr) {
     totalHosts,
     usableHosts,
     ipClass: getIPClass(octetValues[0]),
-    isPrivate: isPrivateIP(networkInt, prefix),
+    isPrivate: isPrivateIP(networkInt),
     binaryMask: intToBinaryOctets(maskInt),
     binaryIP: intToBinaryOctets(ipInt),
   }
