@@ -74,7 +74,7 @@ const iconMap = {
   HtmlFiveIcon
 }
 
-export default function Tools({ tools, onToolClick }) {
+export default function Tools({ tools, onToolClick, initialCategory = null }) {
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedCategory, setSelectedCategory] = useState('')
 
@@ -93,6 +93,12 @@ export default function Tools({ tools, onToolClick }) {
     }
   }, [categories, selectedCategory])
 
+  useEffect(() => {
+    if (initialCategory && categories.includes(initialCategory)) {
+      setSelectedCategory(initialCategory)
+    }
+  }, [categories, initialCategory])
+
   const hasSearchQuery = searchQuery.trim() !== ''
   const normalizedSearchQuery = searchQuery.toLowerCase()
 
@@ -109,60 +115,78 @@ export default function Tools({ tools, onToolClick }) {
   const activeCategory = hasSearchQuery && filteredTools.length > 0
     ? filteredTools[0].category
     : selectedCategory
+  const categoryCount = categories.length
 
   return (
-    <div className="tool-page">
+    <div className="tool-page tools-page">
       <div className="tool-header">
+        <span className="tools-kicker">Tool index</span>
         <h1>My Online Tools</h1>
         <p>Browse my complete collection of free online utilities for developers, security professionals, and students. All tools are secure, private, and run entirely in your browser.</p>
+        <div className="tools-header-meta">
+          <div className="tools-header-pill">
+            <span>Tools</span>
+            <strong>{tools.length}</strong>
+          </div>
+          <div className="tools-header-pill">
+            <span>Categories</span>
+            <strong>{categoryCount}</strong>
+          </div>
+          <div className="tools-header-pill">
+            <span>Processing</span>
+            <strong>Local</strong>
+          </div>
+        </div>
       </div>
 
       <div className="tool-container">
-        <section className="tools-grid">
-          {/* Search Bar */}
-          <div className="tools-search-wrapper">
-            <div className="tools-search-container">
-              <Search01Icon 
-                size={20} 
-                color="#c0c0c0" 
-                className="tools-search-icon"
-              />
-              <input
-                type="text"
-                placeholder="Search tools across all categories..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="tools-search-input"
-              />
+        <section className="tools-grid tools-panel">
+          <div className="tools-controls">
+            {/* Search Bar */}
+            <div className="tools-search-wrapper">
+              <div className="tools-search-container">
+                <Search01Icon 
+                  size={20} 
+                  color="#c0c0c0" 
+                  className="tools-search-icon"
+                />
+                <input
+                  type="text"
+                  placeholder="Search tools across all categories..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="tools-search-input"
+                />
+              </div>
+              {filteredTools.length > 0 && (
+                <p className="tools-search-results">
+                  {hasSearchQuery
+                    ? `Found ${filteredTools.length} tool${filteredTools.length !== 1 ? 's' : ''} across all categories`
+                    : `Found ${filteredTools.length} tool${filteredTools.length !== 1 ? 's' : ''}`}
+                </p>
+              )}
+              {filteredTools.length === 0 && hasSearchQuery && (
+                <p className="tools-search-no-results">
+                  No tools match your search. Try different keywords.
+                </p>
+              )}
             </div>
-            {filteredTools.length > 0 && (
-              <p className="tools-search-results">
-                {hasSearchQuery
-                  ? `Found ${filteredTools.length} tool${filteredTools.length !== 1 ? 's' : ''} across all categories`
-                  : `Found ${filteredTools.length} tool${filteredTools.length !== 1 ? 's' : ''}`}
-              </p>
-            )}
-            {filteredTools.length === 0 && hasSearchQuery && (
-              <p className="tools-search-no-results">
-                No tools match your search. Try different keywords.
-              </p>
-            )}
-          </div>
 
-          {/* Category Tabs */}
-          <div className="tools-category-tabs">
-            <div className="tools-category-list">
-              {categories.map(category => (
-                <button
-                  key={category}
-                  onClick={() => {
-                    setSelectedCategory(category)
-                  }}
-                  className={activeCategory === category ? 'tools-category-btn tools-category-btn--active' : 'tools-category-btn'}
-                >
-                  {category}
-                </button>
-              ))}
+            {/* Category Tabs */}
+            <div className="tools-category-tabs">
+              <div className="tools-category-list">
+                {categories.map(category => (
+                  <button
+                    key={category}
+                    onClick={() => {
+                      setSelectedCategory(category)
+                    }}
+                    className={activeCategory === category ? 'tools-category-btn tools-category-btn--active' : 'tools-category-btn'}
+                  >
+                    {category}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
 
@@ -194,7 +218,8 @@ export default function Tools({ tools, onToolClick }) {
           </div>
         </section>
 
-        <section className="tools-benefits">
+        <section className="tools-benefits tools-panel">
+          <span className="tools-section-kicker">Browse by focus</span>
           <h2>Tool Categories</h2>
           <div className="category-grid">
             <div className="category-item">
@@ -234,7 +259,8 @@ export default function Tools({ tools, onToolClick }) {
           </div>
         </section>
 
-        <section className="tools-features">
+        <section className="tools-features tools-panel">
+          <span className="tools-section-kicker">Why it works</span>
           <h2>Why These Tools?</h2>
           <div className="features-grid">
             <div className="feature-card">

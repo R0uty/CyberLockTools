@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 import { useSEO } from './hooks/useSEO'
 import Header from './components/Header'
+import HomeToolMap from './components/HomeToolMap'
 import ROT from './pages/ROT'
 import Base64 from './pages/Base64'
 import URLEncoder from './pages/URLEncoder'
@@ -80,6 +81,7 @@ import './App.extra.css'
 export default function App() {
   const [currentTool, setCurrentTool] = useState(null)
   const [currentPage, setCurrentPage] = useState('home')
+  const [currentCategory, setCurrentCategory] = useState(null)
 
   useSEO({
     title: "R0uty's Cyber Lab - My Free Online Tools Suite",
@@ -90,15 +92,20 @@ export default function App() {
   const applyNavigationState = useCallback((state) => {
     setCurrentPage(state?.page ?? 'home')
     setCurrentTool(state?.tool ?? null)
+    setCurrentCategory(state?.category ?? null)
   }, [])
 
-  const navigateTo = useCallback((page, tool = null, options = {}) => {
-    const nextState = { page, tool }
+  const navigateTo = useCallback((page, tool = null, category = null, options = {}) => {
+    const nextState = { page, tool, category }
     const currentState = window.history.state
 
     applyNavigationState(nextState)
 
-    if (currentState?.page === nextState.page && currentState?.tool === nextState.tool) {
+    if (
+      currentState?.page === nextState.page &&
+      currentState?.tool === nextState.tool &&
+      currentState?.category === nextState.category
+    ) {
       return
     }
 
@@ -110,13 +117,13 @@ export default function App() {
   useEffect(() => {
     const initialState = window.history.state?.page
       ? window.history.state
-      : { page: 'home', tool: null }
+      : { page: 'home', tool: null, category: null }
 
     window.history.replaceState(initialState, '')
     applyNavigationState(initialState)
 
     const handlePopState = (event) => {
-      applyNavigationState(event.state ?? { page: 'home', tool: null })
+      applyNavigationState(event.state ?? { page: 'home', tool: null, category: null })
       window.scrollTo(0, 0)
     }
 
@@ -128,15 +135,19 @@ export default function App() {
   }, [applyNavigationState])
 
   const handlePageChange = (page) => {
-    navigateTo(page, null)
+    navigateTo(page, null, null)
   }
 
   const handleToolClick = (title) => {
-    navigateTo('tools', title)
+    navigateTo('tools', title, null)
+  }
+
+  const handleCategoryClick = (category) => {
+    navigateTo('tools', null, category)
   }
 
   const handleLogoClick = () => {
-    navigateTo('home', null)
+    navigateTo('home', null, null)
   }
 
   const tools = [
@@ -345,444 +356,177 @@ export default function App() {
       description: 'Calculate subnet details from CIDR notation: network address, broadcast, subnet mask, usable hosts, and more.'
     }
   ]
+  const toolCategoryCount = [...new Set(tools.map((tool) => tool.category))].length
 
-  if (currentTool === 'ROT') {
+  const toolComponents = {
+    ROT,
+    Base64,
+    'URL Encoder': URLEncoder,
+    'Hash Generator': HashGenerator,
+    'Cron Parser': CronParser,
+    'JWT Debugger': JWTDebugger,
+    'JSON Formatter': JSONFormatter,
+    'YAML Formatter': YAMLFormatter,
+    'Markdown Preview': MarkdownPreview,
+    'Regex Tester': RegexTester,
+    'XML Formatter': XMLFormatter,
+    'SQL Formatter': SQLFormatter,
+    'CSV Formatter': CSVFormatter,
+    'UUID Generator': UUIDGenerator,
+    'Timestamp Converter': TimestampConverter,
+    'Password Generator': PasswordGenerator,
+    'JWT Encoder': JWTEncoder,
+    'QR Code Generator': QRCodeGenerator,
+    'Color Converter': ColorConverter,
+    'CSS Beautifier': CSSBeautifier,
+    'HTML Encoder': HTMLEncoder,
+    'CSP Generator & Analyzer': CSPGenerator,
+    'Reverse Shell Generator': ReverseShellGenerator,
+    'XXE Generator': XXEGenerator,
+    'XSS Generator': XSSGenerator,
+    'SQL Injection Generator': SQLInjectionGenerator,
+    'GraphQL Injection Generator': GraphQLInjectionGenerator,
+    'HTTP Parameter Pollution Generator': HTTPParameterPollutionGenerator,
+    'Command Injection Generator': CommandInjectionGenerator,
+    'LDAP Injection Generator': LDAPInjectionGenerator,
+    'Path Traversal Generator': PathTraversalGenerator,
+    'Number Base Converter': NumberBaseConverter,
+    'IP Subnet Calculator': SubnetCalculator
+  }
+
+  const renderFooter = () => (
+    <footer className="site-footer">
+      <div className="site-footer-inner">
+        <div>
+          <strong>R0uty&apos;s Cyber Lab</strong>
+          <p>{tools.length}+ browser-based tools for encoding, analysis, formatting, generation, and security workflows.</p>
+        </div>
+        <div className="site-footer-links">
+          <button className="site-footer-link" onClick={() => handlePageChange('tools')}>Tools</button>
+          <button className="site-footer-link" onClick={() => handlePageChange('about')}>About</button>
+          <button className="site-footer-link" onClick={() => handlePageChange('contact')}>Contact</button>
+        </div>
+        <p className="site-footer-note">All processing happens locally in your browser.</p>
+      </div>
+    </footer>
+  )
+
+  const renderAppShell = (content, options = {}) => {
+    const { showMap = false } = options
+
     return (
       <div className="app">
         <Header onLogoClick={handleLogoClick} currentPage={currentPage} onPageChange={handlePageChange} />
+        {showMap && (
+          <HomeToolMap
+            tools={tools}
+            onToolClick={handleToolClick}
+            onCategoryClick={handleCategoryClick}
+          />
+        )}
         <div className="main-content">
-          <ROT />
+          {content}
         </div>
+        {renderFooter()}
       </div>
     )
   }
 
-  if (currentTool === 'Base64') {
-    return (
-      <div className="app">
-        <Header onLogoClick={handleLogoClick} currentPage={currentPage} onPageChange={handlePageChange} />
-        <div className="main-content">
-          <Base64 />
-        </div>
-      </div>
-    )
-  }
+  const ActiveToolComponent = currentTool ? toolComponents[currentTool] : null
 
-  if (currentTool === 'URL Encoder') {
-    return (
-      <div className="app">
-        <Header onLogoClick={handleLogoClick} currentPage={currentPage} onPageChange={handlePageChange} />
-        <div className="main-content">
-          <URLEncoder />
-        </div>
-      </div>
-    )
-  }
-
-  if (currentTool === 'Hash Generator') {
-    return (
-      <div className="app">
-        <Header onLogoClick={handleLogoClick} currentPage={currentPage} onPageChange={handlePageChange} />
-        <div className="main-content">
-          <HashGenerator />
-        </div>
-      </div>
-    )
-  }
-
-  if (currentTool === 'Cron Parser') {
-    return (
-      <div className="app">
-        <Header onLogoClick={handleLogoClick} currentPage={currentPage} onPageChange={handlePageChange} />
-        <div className="main-content">
-          <CronParser />
-        </div>
-      </div>
-    )
-  }
-
-  if (currentTool === 'JWT Debugger') {
-    return (
-      <div className="app">
-        <Header onLogoClick={handleLogoClick} currentPage={currentPage} onPageChange={handlePageChange} />
-        <div className="main-content">
-          <JWTDebugger />
-        </div>
-      </div>
-    )
-  }
-
-  if (currentTool === 'JSON Formatter') {
-    return (
-      <div className="app">
-        <Header onLogoClick={handleLogoClick} currentPage={currentPage} onPageChange={handlePageChange} />
-        <div className="main-content">
-          <JSONFormatter />
-        </div>
-      </div>
-    )
-  }
-
-  if (currentTool === 'YAML Formatter') {
-    return (
-      <div className="app">
-        <Header onLogoClick={handleLogoClick} currentPage={currentPage} onPageChange={handlePageChange} />
-        <div className="main-content">
-          <YAMLFormatter />
-        </div>
-      </div>
-    )
-  }
-
-  if (currentTool === 'Markdown Preview') {
-    return (
-      <div className="app">
-        <Header onLogoClick={handleLogoClick} currentPage={currentPage} onPageChange={handlePageChange} />
-        <div className="main-content">
-          <MarkdownPreview />
-        </div>
-      </div>
-    )
-  }
-
-  if (currentTool === 'Regex Tester') {
-    return (
-      <div className="app">
-        <Header onLogoClick={handleLogoClick} currentPage={currentPage} onPageChange={handlePageChange} />
-        <div className="main-content">
-          <RegexTester />
-        </div>
-      </div>
-    )
-  }
-
-  if (currentTool === 'XML Formatter') {
-    return (
-      <div className="app">
-        <Header onLogoClick={handleLogoClick} currentPage={currentPage} onPageChange={handlePageChange} />
-        <div className="main-content">
-          <XMLFormatter />
-        </div>
-      </div>
-    )
-  }
-
-  if (currentTool === 'SQL Formatter') {
-    return (
-      <div className="app">
-        <Header onLogoClick={handleLogoClick} currentPage={currentPage} onPageChange={handlePageChange} />
-        <div className="main-content">
-          <SQLFormatter />
-        </div>
-      </div>
-    )
-  }
-
-  if (currentTool === 'CSV Formatter') {
-    return (
-      <div className="app">
-        <Header onLogoClick={handleLogoClick} currentPage={currentPage} onPageChange={handlePageChange} />
-        <div className="main-content">
-          <CSVFormatter />
-        </div>
-      </div>
-    )
-  }
-
-  if (currentTool === 'UUID Generator') {
-    return (
-      <div className="app">
-        <Header onLogoClick={handleLogoClick} currentPage={currentPage} onPageChange={handlePageChange} />
-        <div className="main-content">
-          <UUIDGenerator />
-        </div>
-      </div>
-    )
-  }
-
-  if (currentTool === 'Timestamp Converter') {
-    return (
-      <div className="app">
-        <Header onLogoClick={handleLogoClick} currentPage={currentPage} onPageChange={handlePageChange} />
-        <div className="main-content">
-          <TimestampConverter />
-        </div>
-      </div>
-    )
-  }
-
-  if (currentTool === 'Password Generator') {
-    return (
-      <div className="app">
-        <Header onLogoClick={handleLogoClick} currentPage={currentPage} onPageChange={handlePageChange} />
-        <div className="main-content">
-          <PasswordGenerator />
-        </div>
-      </div>
-    )
-  }
-
-  if (currentTool === 'JWT Encoder') {
-    return (
-      <div className="app">
-        <Header onLogoClick={handleLogoClick} currentPage={currentPage} onPageChange={handlePageChange} />
-        <div className="main-content">
-          <JWTEncoder />
-        </div>
-      </div>
-    )
-  }
-
-  if (currentTool === 'QR Code Generator') {
-    return (
-      <div className="app">
-        <Header onLogoClick={handleLogoClick} currentPage={currentPage} onPageChange={handlePageChange} />
-        <div className="main-content">
-          <QRCodeGenerator />
-        </div>
-      </div>
-    )
-  }
-
-  if (currentTool === 'Color Converter') {
-    return (
-      <div className="app">
-        <Header onLogoClick={handleLogoClick} currentPage={currentPage} onPageChange={handlePageChange} />
-        <div className="main-content">
-          <ColorConverter />
-        </div>
-      </div>
-    )
-  }
-
-  if (currentTool === 'CSS Beautifier') {
-    return (
-      <div className="app">
-        <Header onLogoClick={handleLogoClick} currentPage={currentPage} onPageChange={handlePageChange} />
-        <div className="main-content">
-          <CSSBeautifier />
-        </div>
-      </div>
-    )
-  }
-
-  if (currentTool === 'HTML Encoder') {
-    return (
-      <div className="app">
-        <Header onLogoClick={handleLogoClick} currentPage={currentPage} onPageChange={handlePageChange} />
-        <div className="main-content">
-          <HTMLEncoder />
-        </div>
-      </div>
-    )
-  }
-
-  if (currentTool === 'CSP Generator & Analyzer') {
-    return (
-      <div className="app">
-        <Header onLogoClick={handleLogoClick} currentPage={currentPage} onPageChange={handlePageChange} />
-        <div className="main-content">
-          <CSPGenerator />
-        </div>
-      </div>
-    )
-  }
-
-  if (currentTool === 'Reverse Shell Generator') {
-    return (
-      <div className="app">
-        <Header onLogoClick={handleLogoClick} currentPage={currentPage} onPageChange={handlePageChange} />
-        <div className="main-content">
-          <ReverseShellGenerator />
-        </div>
-      </div>
-    )
-  }
-
-  if (currentTool === 'XXE Generator') {
-    return (
-      <div className="app">
-        <Header onLogoClick={handleLogoClick} currentPage={currentPage} onPageChange={handlePageChange} />
-        <div className="main-content">
-          <XXEGenerator />
-        </div>
-      </div>
-    )
-  }
-
-  if (currentTool === 'XSS Generator') {
-    return (
-      <div className="app">
-        <Header onLogoClick={handleLogoClick} currentPage={currentPage} onPageChange={handlePageChange} />
-        <div className="main-content">
-          <XSSGenerator />
-        </div>
-      </div>
-    )
-  }
-
-  if (currentTool === 'SQL Injection Generator') {
-    return (
-      <div className="app">
-        <Header onLogoClick={handleLogoClick} currentPage={currentPage} onPageChange={handlePageChange} />
-        <div className="main-content">
-          <SQLInjectionGenerator />
-        </div>
-      </div>
-    )
-  }
-
-  if (currentTool === 'GraphQL Injection Generator') {
-    return (
-      <div className="app">
-        <Header onLogoClick={handleLogoClick} currentPage={currentPage} onPageChange={handlePageChange} />
-        <div className="main-content">
-          <GraphQLInjectionGenerator />
-        </div>
-      </div>
-    )
-  }
-
-  if (currentTool === 'HTTP Parameter Pollution Generator') {
-    return (
-      <div className="app">
-        <Header onLogoClick={handleLogoClick} currentPage={currentPage} onPageChange={handlePageChange} />
-        <div className="main-content">
-          <HTTPParameterPollutionGenerator />
-        </div>
-      </div>
-    )
-  }
-
-  if (currentTool === 'Command Injection Generator') {
-    return (
-      <div className="app">
-        <Header onLogoClick={handleLogoClick} currentPage={currentPage} onPageChange={handlePageChange} />
-        <div className="main-content">
-          <CommandInjectionGenerator />
-        </div>
-      </div>
-    )
-  }
-
-  if (currentTool === 'LDAP Injection Generator') {
-    return (
-      <div className="app">
-        <Header onLogoClick={handleLogoClick} currentPage={currentPage} onPageChange={handlePageChange} />
-        <div className="main-content">
-          <LDAPInjectionGenerator />
-        </div>
-      </div>
-    )
-  }
-
-  if (currentTool === 'Path Traversal Generator') {
-    return (
-      <div className="app">
-        <Header onLogoClick={handleLogoClick} currentPage={currentPage} onPageChange={handlePageChange} />
-        <div className="main-content">
-          <PathTraversalGenerator />
-        </div>
-      </div>
-    )
-  }
-
-  if (currentTool === 'Number Base Converter') {
-    return (
-      <div className="app">
-        <Header onLogoClick={handleLogoClick} currentPage={currentPage} onPageChange={handlePageChange} />
-        <div className="main-content">
-          <NumberBaseConverter />
-        </div>
-      </div>
-    )
-  }
-
-  if (currentTool === 'IP Subnet Calculator') {
-    return (
-      <div className="app">
-        <Header onLogoClick={handleLogoClick} currentPage={currentPage} onPageChange={handlePageChange} />
-        <div className="main-content">
-          <SubnetCalculator />
-        </div>
-      </div>
-    )
+  if (ActiveToolComponent) {
+    return renderAppShell(<ActiveToolComponent />)
   }
 
   if (currentPage === 'tools' && !currentTool) {
-    return (
-      <div className="app">
-        <Header onLogoClick={handleLogoClick} currentPage={currentPage} onPageChange={handlePageChange} />
-        <div className="main-content">
-          <Tools tools={tools} onToolClick={handleToolClick} />
-        </div>
-      </div>
+    return renderAppShell(
+      <Tools
+        tools={tools}
+        onToolClick={handleToolClick}
+        initialCategory={currentCategory}
+      />
     )
   }
 
   if (currentPage === 'about') {
-    return (
-      <div className="app">
-        <Header onLogoClick={handleLogoClick} currentPage={currentPage} onPageChange={handlePageChange} />
-        <div className="main-content">
-          <About />
-        </div>
-      </div>
-    )
+    return renderAppShell(<About />)
   }
 
   if (currentPage === 'contact') {
-    return (
-      <div className="app">
-        <Header onLogoClick={handleLogoClick} currentPage={currentPage} onPageChange={handlePageChange} />
-        <div className="main-content">
-          <Contact />
-        </div>
-      </div>
-    )
+    return renderAppShell(<Contact />)
   }
 
-  return (
-    <div className="app">
-      <Header onLogoClick={handleLogoClick} currentPage={currentPage} onPageChange={handlePageChange} />
-      <main className="main-content">
-        <section className="hero">
-          <h1>Welcome to My Cyber Lab</h1>
-          <p>Hey there! I'm R0uty, and this is my personal collection of {tools.length}+ powerful online utilities for encoding, decoding, hashing, formatting, and generation. All my tools are secure, private, and run completely in your browser—no data ever touches my servers.</p>
-        </section>
+  return renderAppShell(
+    <>
+      <section className="hero">
+          <div className="hero-copy">
+            <span className="hero-kicker">Browser-first cyber lab</span>
+            <h1>Welcome to My Cyber Lab</h1>
+            <p>Hey there! I&apos;m R0uty, and this is my collection of {tools.length}+ browser-based utilities for encoding, analysis, formatting, generation, and security testing workflows. Everything runs locally in your browser, so your data stays on your device.</p>
+            <div className="hero-actions">
+              <button className="cta-button" onClick={() => handlePageChange('tools')}>Browse My Tools</button>
+              <button className="hero-secondary-button" onClick={() => handlePageChange('about')}>About the Lab</button>
+            </div>
+          </div>
 
-        <section className="features">
-          <h2>Why I Built This Lab</h2>
-          <div className="features-grid">
-            <div className="feature-item">
-              <div className="feature-icon-wrapper"><LockKeyIcon size={32} color="#c0c0c0" /></div>
-              <h3>100% Private & Secure</h3>
-              <p>My tools run entirely in your browser. Your data never leaves your device or reaches my servers.</p>
+          <div className="hero-summary">
+            <div className="hero-summary-card">
+              <span className="hero-summary-label">Tools</span>
+              <strong>{tools.length}+</strong>
+              <p>Utilities for daily dev work and security workflows.</p>
             </div>
-            <div className="feature-item">
-              <div className="feature-icon-wrapper"><CheckmarkBadge01Icon size={32} color="#c0c0c0" /></div>
-              <h3>Lightning Fast</h3>
-              <p>No waiting for uploads or downloads. Process your data instantly with browser-based computation.</p>
+            <div className="hero-summary-card">
+              <span className="hero-summary-label">Categories</span>
+              <strong>{toolCategoryCount}</strong>
+              <p>Structured into focused sections so the lab stays easy to browse.</p>
             </div>
-            <div className="feature-item">
-              <div className="feature-icon-wrapper"><BookOpen01Icon size={32} color="#c0c0c0" /></div>
-              <h3>Educational</h3>
-              <p>Learn about cryptography, encoding schemes, and scheduling with built-in explanations and examples.</p>
-            </div>
-            <div className="feature-item">
-              <div className="feature-icon-wrapper"><SmileIcon size={32} color="#c0c0c0" /></div>
-              <h3>User-Friendly</h3>
-              <p>Intuitive interfaces with clear inputs, outputs, and helpful documentation for each tool.</p>
+            <div className="hero-summary-card">
+              <span className="hero-summary-label">Privacy</span>
+              <strong>100%</strong>
+              <p>Browser-side processing keeps payloads, text, and tokens off the server.</p>
             </div>
           </div>
         </section>
 
-        <section className="cta">
-          <h2>Explore My Lab</h2>
-          <p>Pick from my collection of {tools.length} specialized tools for all your encoding, hashing, formatting, and generation needs.</p>
-          <button className="cta-button" onClick={() => handlePageChange('tools')}>Browse My Tools</button>
+        <section className="features">
+          <div className="features-intro">
+            <span className="features-kicker">Why this lab exists</span>
+            <h2>Built to feel fast, private, and useful every time you open it</h2>
+            <p>I wanted one place for the kinds of tools I keep reaching for during development, debugging, studying, and security work — without uploads, clutter, or unnecessary friction.</p>
+          </div>
+
+          <div className="features-grid">
+            <article className="feature-item">
+              <div className="feature-icon-wrapper"><LockKeyIcon size={28} color="#c0c0c0" /></div>
+              <div className="feature-copy">
+                <h3>Privacy first</h3>
+                <p>Everything runs in the browser so sensitive text, payloads, tokens, and samples stay on your machine.</p>
+              </div>
+            </article>
+            <article className="feature-item">
+              <div className="feature-icon-wrapper"><CheckmarkBadge01Icon size={28} color="#c0c0c0" /></div>
+              <div className="feature-copy">
+                <h3>Fast by default</h3>
+                <p>No uploads, queues, or back-and-forth. Paste input, get the result immediately, move on.</p>
+              </div>
+            </article>
+            <article className="feature-item">
+              <div className="feature-icon-wrapper"><BookOpen01Icon size={28} color="#c0c0c0" /></div>
+              <div className="feature-copy">
+                <h3>Made to teach</h3>
+                <p>Many tools include context and examples so the lab is useful both for work and for learning.</p>
+              </div>
+            </article>
+            <article className="feature-item">
+              <div className="feature-icon-wrapper"><SmileIcon size={28} color="#c0c0c0" /></div>
+              <div className="feature-copy">
+                <h3>Low-friction UX</h3>
+                <p>Simple inputs, clear outputs, and focused flows keep the experience lightweight instead of noisy.</p>
+              </div>
+            </article>
+          </div>
         </section>
-      </main>
-    </div>
+    </>,
+    { showMap: true }
   )
 }

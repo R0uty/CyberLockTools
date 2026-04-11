@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import cronstrue from 'cronstrue'
 import { useSEO } from '../hooks/useSEO'
+import './CronParser.css'
 
 export default function CronParser() {
   useSEO({
@@ -88,7 +89,7 @@ export default function CronParser() {
   const weekdayOptions = ['*', '0 (Sunday)', '1 (Monday)', '2 (Tuesday)', '3 (Wednesday)', '4 (Thursday)', '5 (Friday)', '6 (Saturday)']
 
   return (
-    <div className="tool-page">
+    <div className="tool-page cron-page">
       <div className="privacy-badge">
         All processing happens in your browser • No data is sent to server
       </div>
@@ -209,9 +210,11 @@ export default function CronParser() {
             </div>
           </div>
 
-          <button onClick={handleGenerateCron} className="action-btn encode-btn">
-            🔧 Generate Cron Expression
-          </button>
+          <div className="cron-actions">
+            <button onClick={handleGenerateCron} className="cron-button cron-button--primary">
+              Generate Cron Expression
+            </button>
+          </div>
         </div>
 
         <div className="divider">OR</div>
@@ -233,16 +236,18 @@ export default function CronParser() {
               rows="3"
             />
           </div>
-          <button onClick={handleParseCron} className="action-btn decode-btn">
-            📖 Parse Cron Expression
-          </button>
+          <div className="cron-actions">
+            <button onClick={handleParseCron} className="cron-button cron-button--secondary">
+              Parse Cron Expression
+            </button>
+          </div>
         </div>
 
-        <div className="button-group">
-          <button onClick={handleCopy} className="action-btn encode-btn">
+        <div className="button-group cron-footer-actions">
+          <button onClick={handleCopy} className="cron-button cron-button--primary">
             Copy Expression
           </button>
-          <button onClick={handleClear} className="action-btn clear-btn">
+          <button onClick={handleClear} className="cron-button cron-button--ghost">
             Clear All
           </button>
         </div>

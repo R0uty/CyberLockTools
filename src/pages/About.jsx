@@ -1,4 +1,5 @@
 import { useSEO } from '../hooks/useSEO'
+import './About.css'
 
 export default function About() {
   useSEO({
@@ -8,17 +9,23 @@ export default function About() {
   })
 
   return (
-    <div className="tool-page">
+    <div className="tool-page about-page">
       <div className="privacy-badge">
         All processing happens in your browser • No data is sent to server
       </div>
       <div className="tool-header">
+        <span className="about-kicker">About the lab</span>
         <h1>About R0uty's Cyber Lab</h1>
         <p>My personal collection of secure, private online utilities</p>
+        <div className="about-header-meta">
+          <div className="about-header-pill"><span>Privacy</span><strong>Browser-first</strong></div>
+          <div className="about-header-pill"><span>Cost</span><strong>Free</strong></div>
+          <div className="about-header-pill"><span>Focus</span><strong>Useful tools</strong></div>
+        </div>
       </div>
 
-      <div className="tool-container">
-        <section className="info-box">
+      <div className="tool-container about-layout">
+        <section className="info-box about-intro-panel">
           <h2>My Mission</h2>
           <p>
             R0uty's Cyber Lab exists to provide developers, security professionals, students, and anyone interested in cryptography with a collection of free, secure online utilities. I believe in privacy-first tools that run entirely in your browser.
@@ -37,7 +44,7 @@ export default function About() {
           <p>
             Each tool in my collection is designed with a specific purpose:
           </p>
-          <ul>
+          <ul className="about-list">
             <li><strong>ROT13 & Caesar Cipher:</strong> Learn about letter substitution ciphers and text rotation</li>
             <li><strong>Base64 Encoder/Decoder:</strong> Encode and decode data in Base64 format for web transmission</li>
             <li><strong>URL Encoder/Decoder:</strong> Safely encode special characters in URLs and query parameters</li>
@@ -51,7 +58,7 @@ export default function About() {
           <p>
             <strong>I take privacy seriously:</strong>
           </p>
-          <ul>
+          <ul className="about-list">
             <li>All processing happens in your browser using JavaScript</li>
             <li>No data is sent to my servers or any third parties</li>
             <li>No cookies or tracking of any kind</li>
@@ -75,7 +82,7 @@ export default function About() {
           <p>
             R0uty's Cyber Lab is built with:
           </p>
-          <ul>
+          <ul className="about-list">
             <li><strong>React:</strong> Modern JavaScript library for building user interfaces</li>
             <li><strong>Vite:</strong> Fast, next-generation build tool</li>
             <li><strong>Browser APIs:</strong> Native web APIs for cryptography and utilities</li>
@@ -84,7 +91,7 @@ export default function About() {
           </ul>
         </section>
 
-        <section className="info-box">
+        <section className="info-box about-wide-panel">
           <h2>Free & Open Source Philosophy</h2>
           <p>
             These tools are provided completely free. I believe technology tools should be accessible to everyone, regardless of their budget. If you find R0uty's Cyber Lab useful, feel free to share it with others!
