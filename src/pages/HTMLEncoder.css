@@ -1,0 +1,99 @@
+/* HTMLEncoder.css */
+
+.html-mode-tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.html-tab {
+  padding: 0.5rem 1.5rem;
+  background-color: #1a1a1a;
+  border: 1px solid #3a3a3a;
+  border-radius: 6px;
+  color: #a0a0a0;
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: all 0.2s;
+}
+
+.html-tab:hover {
+  border-color: #808080;
+  color: #e8e8e8;
+}
+
+.html-tab--active {
+  background-color: #2a2a2a;
+  border-color: #c0c0c0;
+  color: #e8e8e8;
+  font-weight: 600;
+}
+
+.html-encode-options {
+  margin-bottom: 1rem;
+}
+
+.html-radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.html-radio-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #d0d0d0;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.html-textarea {
+  width: 100%;
+  min-height: 180px;
+  resize: vertical;
+}
+
+.html-example-row {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.html-process-row {
+  display: flex;
+  justify-content: center;
+  margin-top: 1.5rem;
+}
+
+.html-process-btn {
+  padding: 0.75rem 2.5rem;
+  font-size: 1rem;
+}
+
+.html-process-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.html-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 1rem;
+  padding: 0.75rem 1rem;
+  background-color: #1a1a1a;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  color: #a0a0a0;
+}
+
+.html-stats strong {
+  color: #e8e8e8;
+}
+
+.html-copied {
+  background-color: #4a7c4e;
+  color: #e8e8e8;
+}

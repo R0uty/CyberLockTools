@@ -226,6 +226,18 @@ export default function App() {
       title: 'CSS Beautifier',
       description: 'Format, minify, and validate CSS with file size optimization analysis.'
     },
+    {
+      category: 'General',
+      iconName: 'BinaryCodeIcon',
+      title: 'Number Base Converter',
+      description: 'Convert numbers between binary, octal, decimal, and hexadecimal with prefix and bit-length output.'
+    },
+    {
+      category: 'General',
+      iconName: 'HtmlFiveIcon',
+      title: 'HTML Encoder',
+      description: 'Encode text to HTML entities and decode HTML entities back to plain text.'
+    },
     // Penetration Testing Tools
     {
       category: 'Penetration Testing',

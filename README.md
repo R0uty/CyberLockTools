@@ -338,6 +338,26 @@ MIT License - see the LICENSE file for details
 - ✅ Markdown Preview with live rendering
 - ✅ Regex Tester with pattern matching
 - ✅ XML Formatter & Validator
+- ✅ SQL Formatter & Validator
+- ✅ CSV Formatter & JSON converter
+- ✅ UUID Generator (v1, v4)
+- ✅ Unix Timestamp Converter
+- ✅ Secure Password Generator
+- ✅ JWT Encoder (create & verify)
+- ✅ QR Code Generator
+- ✅ Color Converter (HEX/RGB/HSL/HSV)
+- ✅ CSS Beautifier & Minifier
+- ✅ **Number Base Converter** (binary/octal/decimal/hex)
+- ✅ **HTML Encoder & Decoder** (HTML entities)
+- ✅ Reverse Shell Generator *(Pentest)*
+- ✅ XXE Generator *(Pentest)*
+- ✅ XSS Generator *(Pentest)*
+- ✅ SQL Injection Generator *(Pentest)*
+- ✅ GraphQL Injection Generator *(Pentest)*
+- ✅ HTTP Parameter Pollution Generator *(Pentest)*
+- ✅ **SSRF Generator** *(Pentest)*
+- ✅ **Command Injection Generator** *(Pentest)*
+- ✅ **Path Traversal Generator** *(Pentest)*
 - ✅ Tools Browsing Page
 - ✅ About Page
 - ✅ Contact Page

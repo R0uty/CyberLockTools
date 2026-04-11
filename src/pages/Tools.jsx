@@ -228,7 +228,9 @@ export default function Tools({ tools, onToolClick }) {
               <p>Instant results with no waiting. All computations run locally in your web browser.</p>
             </div>
             <div className="feature-card">
-              <div className="icon-wrapper"><BookOpen01Icon size={32} color="#c0c0c0" /></div>
+              <div className="icon-wrapper"><BookOpen01I
+62
+con size={32} color="#c0c0c0" /></div>
               <h3>Educational</h3>
               <p>Learn about encoding, hashing, formatting, and pattern matching with built-in explanations.</p>
             </div>
