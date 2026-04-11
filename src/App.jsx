@@ -706,7 +706,7 @@ export default function App() {
 
         <section className="cta">
           <h2>Explore My Lab</h2>
-          <p>Pick from my collection of 20 specialized tools for all your encoding, hashing, formatting, and generation needs.</p>
+          <p>Pick from my collection of 25 specialized tools for all your encoding, hashing, formatting, and generation needs.</p>
           <button className="cta-button" onClick={() => handlePageChange('tools')}>Browse My Tools</button>
         </section>
       </main>
