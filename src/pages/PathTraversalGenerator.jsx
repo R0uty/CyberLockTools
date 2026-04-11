@@ -1,35 +1,31 @@
 import { useState } from 'react'
 import { useSEO } from '../hooks/useSEO'
-import { getAllCategories, getPayloadsByCategory } from '../utils/pathTraversalGenerator'
-import './ReverseShellGenerator.css'
+import {
+  getAllCategories,
+  getPayloadsByCategory,
+  QUICK_TEST_PAYLOADS,
+} from '../utils/pathTraversalGenerator'
 import './PathTraversalGenerator.css'
 
 export default function PathTraversalGenerator() {
   useSEO({
     title: 'Online Path Traversal Generator - Directory Traversal Testing Tool',
-    description: 'Free path traversal (directory traversal) payload generator for authorized penetration testing. Generate Unix and Windows file targets, URL-encoded bypasses, null byte bypasses, and web app config targets.',
-    keywords: 'path traversal generator, directory traversal, LFI, local file inclusion, penetration testing, authorized testing, security tool'
+    description: 'Free path traversal (directory traversal) payload generator for authorized penetration testing. Generate LFI, encoded bypass, Windows, and Linux traversal payloads. Educational security tool.',
+    keywords: 'path traversal generator, directory traversal, LFI, local file inclusion, penetration testing, authorized testing, web security',
   })
 
-  const [selectedGroup, setSelectedGroup] = useState(null)
-  const [selectedCategory, setSelectedCategory] = useState('Unix Targets')
-  const [selectedPayload, setSelectedPayload] = useState('')
+  const [selectedCategory, setSelectedCategory] = useState('BASIC')
+  const [selectedPayload, setSelectedPayload] = useState(null)
   const [copiedIndex, setCopiedIndex] = useState(null)
   const [searchQuery, setSearchQuery] = useState('')
 
   const categories = getAllCategories()
-  const groupsInCategory = getPayloadsByCategory(selectedCategory)
+  const payloadsInCategory = getPayloadsByCategory(selectedCategory)
 
-  const handleGroupSelect = (key, group) => {
-    setSelectedGroup({ key, ...group })
-    setSelectedPayload('')
-    setCopiedIndex(null)
-  }
-
-  const handlePayloadSelect = (payloadObj) => {
-    setSelectedPayload(payloadObj.code)
-    setCopiedIndex(null)
-  }
+  const filteredPayloads = payloadsInCategory.filter(p =>
+    p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    p.description.toLowerCase().includes(searchQuery.toLowerCase())
+  )
 
   const handleCopy = (text, index) => {
     navigator.clipboard.writeText(text)
@@ -37,30 +33,26 @@ export default function PathTraversalGenerator() {
     setTimeout(() => setCopiedIndex(null), 2000)
   }
 
-  const filteredGroups = groupsInCategory.filter(([, group]) =>
-    group.name.toLowerCase().includes(searchQuery.toLowerCase())
-  )
-
   return (
     <div className="tool-page">
       <div className="tool-header">
         <h1>Path Traversal Generator</h1>
-        <p>Generate path traversal (directory traversal) payloads for authorized penetration testing and security research. Includes Unix and Windows file targets, URL and double-encoded bypasses, null-byte techniques, overlong UTF-8, and web application config targets. All generation happens locally in your browser.</p>
+        <p>Generate path traversal (directory traversal / LFI) payloads for authorized penetration testing and security research. Supports basic, encoded, filter-bypass, Windows, Linux, and null-byte techniques. All generation happens locally in your browser.</p>
       </div>
 
-      {/* Disclaimer Box */}
+      {/* Disclaimer */}
       <div className="tool-container">
         <section className="tool-section">
-          <div className="shell-disclaimer">
-            <h3 className="shell-disclaimer-title">⚠️ LEGAL & ETHICAL DISCLAIMER</h3>
-            <p className="shell-disclaimer-text">
+          <div className="pt-disclaimer">
+            <h3 className="pt-disclaimer-title">⚠️ LEGAL & ETHICAL DISCLAIMER</h3>
+            <p className="pt-disclaimer-text">
               This tool is for AUTHORIZED SECURITY TESTING & EDUCATIONAL PURPOSES ONLY.
             </p>
-            <ul className="shell-disclaimer-text">
+            <ul className="pt-disclaimer-text">
               <li>✓ Only use with explicit written authorization from system owner</li>
               <li>✓ Only test systems you own or have permission to test</li>
-              <li>✓ Path traversal can expose sensitive system and application files</li>
-              <li>✓ Unauthorized use is ILLEGAL and may result in criminal prosecution</li>
+              <li>✓ Path traversal can expose sensitive files and configuration data</li>
+              <li>✓ Unauthorized attacks are ILLEGAL and may result in prosecution</li>
             </ul>
           </div>
         </section>
@@ -68,118 +60,146 @@ export default function PathTraversalGenerator() {
 
       <div className="tool-container">
         <section className="tool-section">
-          <div className="two-column-layout">
-            <div className="column">
-              <h2>Payload Library</h2>
+          <div className="tool-content">
+            <div className="two-column-layout">
+              {/* Left column */}
+              <div className="column">
+                <h2>Payload Library</h2>
 
-              {/* Category Filter */}
-              <div className="shell-form-group">
-                <label className="shell-form-label">Category</label>
-                <select
-                  value={selectedCategory}
-                  onChange={(e) => {
-                    setSelectedCategory(e.target.value)
-                    setSelectedGroup(null)
-                    setSelectedPayload('')
-                    setSearchQuery('')
-                  }}
-                  className="select"
-                >
-                  {categories.map(cat => (
-                    <option key={cat} value={cat}>{cat}</option>
-                  ))}
-                </select>
-              </div>
-
-              {/* Search */}
-              <div className="shell-form-group">
-                <input
-                  type="text"
-                  placeholder="Search payload groups..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="input shell-input-full"
-                />
-              </div>
-
-              {/* Group List */}
-              <div className="shell-payload-list">
-                {filteredGroups.map(([key, group]) => (
-                  <button
-                    key={key}
-                    onClick={() => handleGroupSelect(key, group)}
-                    className={`shell-payload-item${selectedGroup?.key === key ? ' shell-payload-item--selected' : ''}`}
+                <div className="pt-form-group">
+                  <label className="pt-form-label">Attack Category</label>
+                  <select
+                    value={selectedCategory}
+                    onChange={(e) => {
+                      setSelectedCategory(e.target.value)
+                      setSelectedPayload(null)
+                      setSearchQuery('')
+                    }}
+                    className="select"
                   >
-                    <div className="shell-payload-item__name">{group.name}</div>
-                    <div className="shell-payload-item__desc">{group.description}</div>
-                  </button>
-                ))}
-                {filteredGroups.length === 0 && (
-                  <p className="shell-no-results">No groups match your search</p>
-                )}
+                    {categories.map(cat => (
+                      <option key={cat.key} value={cat.key}>{cat.label}</option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className="pt-form-group">
+                  <input
+                    type="text"
+                    placeholder="Search payloads..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="input pt-input-full"
+                  />
+                </div>
+
+                <div className="pt-payload-list">
+                  {filteredPayloads.map((payload, idx) => (
+                    <button
+                      key={idx}
+                      onClick={() => setSelectedPayload(payload)}
+                      className={`pt-payload-item${selectedPayload === payload ? ' pt-payload-item--selected' : ''}`}
+                    >
+                      <div className="pt-payload-item__name">{payload.name}</div>
+                      <div className="pt-payload-item__desc">{payload.description}</div>
+                    </button>
+                  ))}
+                  {filteredPayloads.length === 0 && (
+                    <p className="pt-no-results">No payloads match your search.</p>
+                  )}
+                </div>
               </div>
-            </div>
 
-            {/* Right Column */}
-            <div className="column">
-              {selectedGroup ? (
-                <>
-                  <h2>{selectedGroup.name}</h2>
-                  <div className="shell-form-group">
-                    <label className="shell-form-label">Select Payload</label>
-                    <div className="shell-variant-list">
-                      {selectedGroup.payloads.map((p, idx) => (
-                        <button
-                          key={idx}
-                          onClick={() => handlePayloadSelect(p)}
-                          className="shell-variant-btn"
-                        >
-                          {p.name}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-
-                  {selectedPayload && (
-                    <div className="shell-form-group">
-                      <label className="shell-form-label">Generated Payload</label>
-                      <div className="textarea output shell-code-output">
-                        {selectedPayload}
+              {/* Right column */}
+              <div className="column">
+                {selectedPayload ? (
+                  <>
+                    <h2>{selectedPayload.name}</h2>
+                    <div className="pt-form-group">
+                      <label className="pt-form-label">Payload</label>
+                      <div className="textarea output pt-code-output">
+                        {selectedPayload.payload}
                       </div>
                       <button
-                        onClick={() => handleCopy(selectedPayload, -1)}
-                        className={`shell-copy-btn${copiedIndex === -1 ? ' shell-copy-btn--copied' : ''}`}
+                        onClick={() => handleCopy(selectedPayload.payload, -1)}
+                        className={`pt-copy-btn${copiedIndex === -1 ? ' pt-copy-btn--copied' : ''}`}
                       >
                         {copiedIndex === -1 ? '✓ Copied!' : 'Copy Payload'}
                       </button>
                     </div>
-                  )}
-                </>
-              ) : (
-                <div className="shell-empty-state">
-                  <p>Select a category, then choose a payload group and individual payload to view.</p>
+                    <div className="pt-form-group">
+                      <label className="pt-form-label">How It Works</label>
+                      <div className="pt-explanation">
+                        {selectedPayload.explanation}
+                      </div>
+                    </div>
+                  </>
+                ) : (
+                  <div className="pt-empty-state">
+                    <p>Select a category and then choose a payload to view details.</p>
+                  </div>
+                )}
+
+                {/* Quick test payloads */}
+                <div className="pt-quick-section">
+                  <h3 className="pt-quick-section-title">Quick Detection Payloads</h3>
+                  <p className="pt-quick-section-desc">Common payloads for initial traversal detection:</p>
+                  <div className="pt-quick-list">
+                    {QUICK_TEST_PAYLOADS.map((payload, idx) => (
+                      <div key={idx} className="pt-quick-item">
+                        <code className="pt-quick-code">{payload}</code>
+                        <button
+                          onClick={() => handleCopy(payload, idx)}
+                          className={`pt-quick-copy-btn${copiedIndex === idx ? ' pt-quick-copy-btn--copied' : ''}`}
+                        >
+                          {copiedIndex === idx ? '✓' : 'Copy'}
+                        </button>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-              )}
+              </div>
             </div>
           </div>
         </section>
 
-        {/* Info Section */}
+        {/* Info section */}
         <section className="tool-section">
           <div className="info-box">
-            <h3>About Path Traversal Vulnerabilities</h3>
-            <ul className="shell-info-list-plain">
-              <li><strong>Unix / Linux Targets:</strong> Classic files like <code>/etc/passwd</code>, <code>/proc/self/environ</code>, and SSH keys.</li>
-              <li><strong>Windows Targets:</strong> System files including <code>win.ini</code>, <code>SAM</code> database, and IIS configuration.</li>
-              <li><strong>URL Encoding:</strong> Single and double URL-encoding of <code>../</code> to bypass input filters.</li>
-              <li><strong>Null Byte:</strong> Appending <code>%00.jpg</code> to terminate file extension checks in older languages (PHP &lt;5.3).</li>
-              <li><strong>Web App Configs:</strong> Target application-specific files like <code>.env</code>, <code>wp-config.php</code>, and <code>WEB-INF/web.xml</code>.</li>
-              <li><strong>Depth Variations:</strong> Try different traversal depths to reach the root depending on the web root location.</li>
+            <h3>Understanding Path Traversal</h3>
+            <p>
+              Path traversal (also known as directory traversal or Local File Inclusion/LFI) occurs when an application uses user-controlled input to construct a file path without proper validation. Attackers can use <code>../</code> sequences or absolute paths to read arbitrary files outside the intended directory.
+            </p>
+            <h4>Common Vulnerable Parameters:</h4>
+            <ul className="pt-info-list">
+              <li><code>?file=</code>, <code>?page=</code>, <code>?template=</code></li>
+              <li><code>?path=</code>, <code>?dir=</code>, <code>?folder=</code></li>
+              <li><code>?document=</code>, <code>?include=</code>, <code>?load=</code></li>
+              <li>File download endpoints, image loading, and PDF generation parameters</li>
             </ul>
-            <div className="shell-legal-note">
-              <ul className="shell-legal-note-list">
+            <h4>High-Value Target Files:</h4>
+            <ul className="pt-info-list">
+              <li><strong>Linux:</strong> <code>/etc/passwd</code>, <code>/etc/shadow</code>, <code>/proc/self/environ</code>, <code>~/.ssh/id_rsa</code></li>
+              <li><strong>Windows:</strong> <code>win.ini</code>, <code>boot.ini</code>, <code>web.config</code>, SAM database</li>
+              <li><strong>Web configs:</strong> <code>config.php</code>, <code>.env</code>, <code>database.yml</code>, <code>settings.py</code></li>
+              <li><strong>Logs (for log poisoning):</strong> Apache/Nginx access logs, PHP error logs</li>
+            </ul>
+            <h4>Prevention:</h4>
+            <ul className="pt-info-list">
+              <li>Use a whitelist of allowed file names or paths</li>
+              <li>Resolve the canonical path and verify it starts with the intended base directory</li>
+              <li>Avoid passing user input to file system APIs where possible</li>
+              <li>Strip or reject <code>../</code>, <code>..\</code>, and URL-encoded variants</li>
+              <li>Chroot or use sandboxed file system access</li>
+              <li>Apply the principle of least privilege to the web server process</li>
+            </ul>
+            <h4>Legal & Ethical Requirements:</h4>
+            <div className="pt-legal-note">
+              <ul className="pt-legal-note-list">
                 <li>⚠️ Use ONLY in authorized penetration testing engagements</li>
-                <li>✓ Always get written permission before testing</li>
+                <li>✓ Always get explicit written permission before testing</li>
+                <li>✓ Test only on systems you own or have authorization for</li>
+                <li>✓ Understand and comply with your local laws</li>
                 <li>✓ Document all testing activities</li>
               </ul>
             </div>

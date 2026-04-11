@@ -1,6 +1,6 @@
 # 🔒 CyberLock Tools
 
-A comprehensive, privacy-first suite of **free online tools** for developers, security professionals, and students. Featuring encoding/decoding utilities, cryptographic hash generators, and automation tools. **All processing happens in your browser** — no data is sent to any server, completely private and secure.
+A comprehensive, privacy-first suite of **free online tools** for developers, security professionals, and students. Featuring encoding/decoding utilities, cryptographic hash generators, penetration testing payload generators, and automation tools. **All processing happens in your browser** — no data is sent to any server, completely private and secure.
 
 **🌐 Live Demo:** https://cyberlocktools.com (or your deployment URL)
 
@@ -83,41 +83,37 @@ A comprehensive, privacy-first suite of **free online tools** for developers, se
 - Example XML documents for testing
 - Perfect for API responses and configuration files
 
+### 💉 Command Injection Generator
+- Generate OS command injection payloads for authorized penetration testing
+- Categories: Basic, Blind, Filter Bypass, Windows, Linux, Data Exfiltration, OOB
+- Shell metacharacter reference and quick detection payloads
+- Educational explanations for each technique
+
+### 🗂️ LDAP Injection Generator
+- Generate LDAP injection payloads for authorized security testing
+- Categories: Authentication Bypass, Information Disclosure, Blind Injection, Search Filter Injection, Special Characters
+- LDAP filter syntax reference
+- Quick detection payloads for initial assessment
+
+### 📂 Path Traversal Generator
+- Generate path traversal (LFI/directory traversal) payloads for authorized testing
+- Categories: Basic, Encoded, Filter Bypass, Windows Targets, Linux Targets, Null Byte
+- High-value target file reference
+- Encoded variants to bypass WAFs and input filters
+
 ### 🔢 Number Base Converter
-- Convert numbers between binary (base 2), octal (base 8), decimal (base 10), and hexadecimal (base 16)
-- Select the source base and enter a value for instant conversion to all other bases
-- Copy output with or without prefix (`0b`, `0o`, `0x`)
-- Shows bit length and quick-example buttons
-- Handles large numbers with BigInt precision
+- Convert between binary (base 2), octal (base 8), decimal (base 10), and hexadecimal (base 16)
+- Simultaneous conversion to all bases at once
+- Quick examples with common values (ports, ASCII, IP octets)
+- Reference table for each base system
 
-### 🌐 HTML Encoder & Decoder
-- Standard mode: encode critical characters (`& < > " ' / = \``) to HTML entities
-- Full mode: encode all non-ASCII characters as `&#NNN;` decimal entities
-- Decode named entities (`&amp;`), decimal (`&#38;`), and hex (`&#x26;`) numeric entities
-- Shows encoding statistics (length, ratio, entity count)
-- Essential for preventing XSS and safely embedding dynamic content in HTML
-
-### 🔴 SSRF Generator *(Penetration Testing)*
-- Generate Server-Side Request Forgery payloads for authorized security testing
-- Cloud metadata: AWS IMDSv1/v2, GCP, Azure credential endpoints
-- Internal services: Redis, Elasticsearch, Docker API, Kubernetes
-- File read via `file://`, IP encoding bypasses (decimal/hex/octal/IPv6)
-- Protocol schemes: Gopher, DICT, LDAP; DNS/OOB probe templates
-
-### 💉 Command Injection Generator *(Penetration Testing)*
-- Generate OS command injection payloads for authorized security testing
-- Unix operators (`;`, `&&`, `||`, `|`, backtick, `$()`) and Windows operators (`&`, `^`)
-- File read, network enumeration, and filter bypass techniques
-- IFS substitution, quote insertion, hex/base64 encoding, newline bypasses
-- OOB exfiltration via DNS and HTTP callbacks
-
-### 📂 Path Traversal Generator *(Penetration Testing)*
-- Generate directory traversal payloads for authorized security testing
-- Unix and Windows sensitive file targets (`/etc/passwd`, SAM, win.ini)
-- URL-encoded, double-encoded, and overlong UTF-8 bypass sequences
-- Null-byte injection for file extension check bypass
-- Web app config targets (`.env`, `wp-config.php`, `WEB-INF/web.xml`)
-- Variable depth from 1 to 10+ traversal levels
+### 🌐 IP Subnet Calculator
+- Calculate subnet details from CIDR notation
+- Network address, broadcast address, subnet mask, wildcard mask
+- First/last usable host, total and usable host count
+- Binary representation of IP and mask
+- IP class detection and private range identification
+- Common subnet quick-load examples and CIDR reference table
 
 ## 🎯 Use Cases
 
@@ -368,11 +364,26 @@ MIT License - see the LICENSE file for details
 - ✅ SEO Optimization
 - ✅ Navigation System
 - ✅ Responsive Design
-- ✅ Number Base Converter (Binary/Octal/Decimal/Hex)
-- ✅ HTML Encoder & Decoder
-- ✅ SSRF Generator (Penetration Testing)
-- ✅ Command Injection Generator (Penetration Testing)
-- ✅ Path Traversal Generator (Penetration Testing)
+- ✅ SQL Formatter & Validator
+- ✅ CSV Parser & Formatter
+- ✅ UUID Generator
+- ✅ Timestamp Converter
+- ✅ Password Generator
+- ✅ JWT Encoder
+- ✅ QR Code Generator
+- ✅ Color Converter
+- ✅ CSS Beautifier
+- ✅ Reverse Shell Generator
+- ✅ XXE Generator
+- ✅ XSS Generator
+- ✅ SQL Injection Generator
+- ✅ GraphQL Injection Generator
+- ✅ HTTP Parameter Pollution Generator
+- ✅ Command Injection Generator
+- ✅ LDAP Injection Generator
+- ✅ Path Traversal Generator
+- ✅ Number Base Converter
+- ✅ IP Subnet Calculator
 
 ### Planned Features 🔜
 - [ ] Dark Mode Toggle
@@ -380,8 +391,6 @@ MIT License - see the LICENSE file for details
 - [ ] Settings/Preferences Panel
 - [ ] History of Recent Operations
 - [ ] More Hash Algorithms (BLAKE2, Argon2)
-- [ ] LDAP Injection Generator
-- [ ] Open Redirect Generator
 - [ ] API Documentation
 - [ ] Unit Tests
 
