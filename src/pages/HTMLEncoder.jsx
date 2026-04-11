@@ -1,65 +1,47 @@
 import { useState } from 'react'
 import { useSEO } from '../hooks/useSEO'
-import { encodeHTML, encodeHTMLFull, decodeHTML, EXAMPLES } from '../utils/htmlEncoder'
+import { encodeHTMLStandard, encodeHTMLFull, decodeHTML, getEncodingStats } from '../utils/htmlEncoder'
 import './HTMLEncoder.css'
+
+const EXAMPLE_PLAIN = '<script>alert("Hello & Welcome!");</script>\n© 2024 R0uty\'s Lab — Free Tools'
+const EXAMPLE_ENCODED = '&lt;div class=&quot;test&quot;&gt;Hello &amp; World&lt;/div&gt;'
 
 export default function HTMLEncoder() {
   useSEO({
-    title: 'Online HTML Encoder & Decoder Tool',
-    description: 'Free online HTML encoder and decoder. Encode special characters to HTML entities and decode HTML entities back to plain text. Essential for web development and XSS prevention. All processing in your browser.',
-    keywords: 'html encoder, html decoder, html entities, encode html, decode html, html escape, html unescape online'
+    title: 'Online HTML Encoder & Decoder - HTML Entity Converter',
+    description: 'Free online HTML encoder and decoder. Encode text to HTML entities and decode HTML entities back to plain text. Supports named, decimal, and hex numeric entities.',
+    keywords: 'html encoder, html decoder, html entities, html escape, html unescape, entity converter'
   })
 
-  const [input, setInput] = useState('')
   const [mode, setMode] = useState('encode')
   const [encodeMode, setEncodeMode] = useState('standard')
-  const [result, setResult] = useState(null)
-  const [error, setError] = useState('')
+  const [input, setInput] = useState('')
+  const [output, setOutput] = useState('')
   const [copied, setCopied] = useState(false)
 
   const handleProcess = () => {
-    setError('')
-    setResult(null)
-
-    if (!input.trim()) {
-      setError('Please enter text to ' + mode)
-      return
-    }
-
-    let res
     if (mode === 'encode') {
-      res = encodeMode === 'full' ? encodeHTMLFull(input) : encodeHTML(input)
+      const result = encodeMode === 'standard'
+        ? encodeHTMLStandard(input)
+        : encodeHTMLFull(input)
+      setOutput(result)
     } else {
-      res = decodeHTML(input)
-    }
-
-    if (res.success) {
-      setResult(res)
-    } else {
-      setError(res.error)
+      setOutput(decodeHTML(input))
     }
   }
 
   const handleCopy = () => {
-    if (!result) return
-    navigator.clipboard.writeText(result.result)
+    navigator.clipboard.writeText(output)
     setCopied(true)
     setTimeout(() => setCopied(false), 2000)
   }
 
   const handleClear = () => {
     setInput('')
-    setResult(null)
-    setError('')
-    setCopied(false)
+    setOutput('')
   }
 
-  const loadExample = (ex) => {
-    setInput(ex.input)
-    setMode('encode')
-    setResult(null)
-    setError('')
-  }
+  const stats = output ? getEncodingStats(input, output) : null
 
   return (
     <div className="tool-page">
@@ -68,165 +50,134 @@ export default function HTMLEncoder() {
       </div>
       <div className="tool-header">
         <h1>HTML Encoder &amp; Decoder</h1>
-        <p>Encode special characters to HTML entities to prevent XSS attacks and ensure safe HTML rendering. Decode HTML entities back to readable text. Essential for web developers and security professionals. All processing happens locally in your browser.</p>
+        <p>Encode plain text to HTML entities and decode HTML entities back to readable text. Supports standard encoding (critical chars), full encoding (all non-ASCII), and decoding of named, decimal, and hex numeric entities.</p>
       </div>
 
       <div className="tool-container">
-        <div className="html-mode-selector">
-          <label className="radio-label">
-            <input
-              type="radio"
-              value="encode"
-              checked={mode === 'encode'}
-              onChange={(e) => { setMode(e.target.value); setResult(null); setError('') }}
-              className="radio-input"
-            />
-            Encode (Text → HTML Entities)
-          </label>
-          <label className="radio-label--last">
-            <input
-              type="radio"
-              value="decode"
-              checked={mode === 'decode'}
-              onChange={(e) => { setMode(e.target.value); setResult(null); setError('') }}
-              className="radio-input"
-            />
-            Decode (HTML Entities → Text)
-          </label>
-        </div>
-
-        {mode === 'encode' && (
-          <div className="html-encode-mode-selector">
-            <label className="radio-label">
-              <input
-                type="radio"
-                value="standard"
-                checked={encodeMode === 'standard'}
-                onChange={(e) => setEncodeMode(e.target.value)}
-                className="radio-input"
-              />
-              Standard (encode &amp; &lt; &gt; &quot; &apos; / ` =)
-            </label>
-            <label className="radio-label--last">
-              <input
-                type="radio"
-                value="full"
-                checked={encodeMode === 'full'}
-                onChange={(e) => setEncodeMode(e.target.value)}
-                className="radio-input"
-              />
-              Full (encode all non-ASCII characters too)
-            </label>
-          </div>
-        )}
-
-        <div className="form-field">
-          <label className="field-label">
-            {mode === 'encode' ? 'Text to Encode:' : 'HTML Entities to Decode:'}
-          </label>
-          <textarea
-            value={input}
-            onChange={(e) => { setInput(e.target.value); setResult(null); setError('') }}
-            placeholder={mode === 'encode'
-              ? 'Enter text with special characters, e.g.: <script>alert("XSS")</script>'
-              : 'Enter HTML entities, e.g.: &lt;script&gt;alert(&quot;XSS&quot;)&lt;/script&gt;'
-            }
-            className="field-textarea"
-            rows={5}
-          />
-        </div>
-
-        <div className="button-group">
-          <button onClick={handleProcess} className="action-btn encode-btn">
-            {mode === 'encode' ? '🔒 Encode' : '🔓 Decode'}
-          </button>
-          <button onClick={handleClear} className="action-btn clear-btn">
-            Clear
-          </button>
-        </div>
-
-        {error && (
-          <div className="error-message">{error}</div>
-        )}
-
-        {result && (
-          <div className="html-result-box">
-            <div className="html-result-header">
-              <h3 className="html-result-title">
-                {mode === 'encode' ? 'Encoded Output' : 'Decoded Output'}
-              </h3>
-              <div className="html-result-stats">
-                {mode === 'encode'
-                  ? `${result.charCount} → ${result.encodedCount} chars`
-                  : `${result.charCount} → ${result.decodedCount} chars`
-                }
-              </div>
-            </div>
-            <textarea
-              readOnly
-              value={result.result}
-              className="field-textarea html-result-textarea"
-              rows={5}
-            />
+        {/* Mode Selection */}
+        <section className="tool-section">
+          <div className="html-mode-tabs">
             <button
-              onClick={handleCopy}
-              className={`action-btn encode-btn${copied ? ' html-btn-copied' : ''}`}
+              onClick={() => { setMode('encode'); setInput(''); setOutput('') }}
+              className={mode === 'encode' ? 'html-tab html-tab--active' : 'html-tab'}
             >
-              {copied ? '✓ Copied!' : 'Copy Result'}
+              Encode
+            </button>
+            <button
+              onClick={() => { setMode('decode'); setInput(''); setOutput('') }}
+              className={mode === 'decode' ? 'html-tab html-tab--active' : 'html-tab'}
+            >
+              Decode
             </button>
           </div>
-        )}
 
-        <div className="info-box info-box--spaced">
-          <h4>🧪 Quick Examples</h4>
-          <div className="html-examples">
-            {EXAMPLES.map((ex, idx) => (
-              <button
-                key={idx}
-                onClick={() => loadExample(ex)}
-                className="html-example-btn"
-              >
-                {ex.label}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        <div className="info-box">
-          <h4>HTML Entity Reference</h4>
-          <div className="html-entity-table">
-            {[
-              ['&', '&amp;'],
-              ['<', '&lt;'],
-              ['>', '&gt;'],
-              ['"', '&quot;'],
-              ["'", '&#39;'],
-              ['/', '&#x2F;'],
-              ['©', '&copy;'],
-              ['®', '&reg;'],
-              ['™', '&trade;'],
-              ['€', '&euro;'],
-              ['…', '&hellip;'],
-              ['—', '&mdash;']
-            ].map(([char, entity]) => (
-              <div key={entity} className="html-entity-row">
-                <code className="html-entity-char">{char}</code>
-                <span className="html-entity-arrow">→</span>
-                <code className="html-entity-code">{entity}</code>
+          {mode === 'encode' && (
+            <div className="html-encode-options">
+              <label className="field-label">Encoding Mode:</label>
+              <div className="html-radio-group">
+                <label className="html-radio-label">
+                  <input
+                    type="radio"
+                    value="standard"
+                    checked={encodeMode === 'standard'}
+                    onChange={() => setEncodeMode('standard')}
+                  />
+                  Standard — encode critical chars only (<code>&amp; &lt; &gt; &quot; &#39; / = `</code>)
+                </label>
+                <label className="html-radio-label">
+                  <input
+                    type="radio"
+                    value="full"
+                    checked={encodeMode === 'full'}
+                    onChange={() => setEncodeMode('full')}
+                  />
+                  Full — encode all non-ASCII characters as <code>&amp;#NNN;</code>
+                </label>
               </div>
-            ))}
-          </div>
-        </div>
+            </div>
+          )}
+        </section>
 
-        <div className="info-box info-box--alt">
-          <h4>Why HTML Encoding Matters</h4>
-          <ul className="tips-list">
-            <li><strong>XSS Prevention:</strong> Encoding user input prevents Cross-Site Scripting attacks by neutralising script tags and event handlers.</li>
-            <li><strong>Safe Rendering:</strong> HTML entities ensure special characters like &lt; and &gt; render as text, not HTML markup.</li>
-            <li><strong>Data Integrity:</strong> Preserves the exact content of user input when stored or displayed in HTML contexts.</li>
-            <li><strong>Standard Compliance:</strong> Ensures your HTML is valid and parses correctly across all browsers.</li>
-          </ul>
-        </div>
+        {/* Input / Output */}
+        <section className="tool-section">
+          <div className="two-column-layout">
+            <div className="column">
+              <label className="field-label">
+                {mode === 'encode' ? 'Plain Text Input' : 'HTML-Encoded Input'}
+              </label>
+              <textarea
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                placeholder={mode === 'encode'
+                  ? 'Enter plain text to encode...'
+                  : 'Enter HTML entities to decode...'}
+                className="textarea html-textarea"
+                rows={8}
+                spellCheck={false}
+              />
+              <div className="html-example-row">
+                <button
+                  onClick={() => { setInput(mode === 'encode' ? EXAMPLE_PLAIN : EXAMPLE_ENCODED); setOutput('') }}
+                  className="action-btn"
+                >
+                  Load Example
+                </button>
+                <button onClick={handleClear} className="action-btn">Clear</button>
+              </div>
+            </div>
+
+            <div className="column">
+              <label className="field-label">
+                {mode === 'encode' ? 'HTML-Encoded Output' : 'Decoded Plain Text'}
+              </label>
+              <textarea
+                value={output}
+                readOnly
+                placeholder="Result will appear here..."
+                className="textarea output html-textarea"
+                rows={8}
+                spellCheck={false}
+              />
+              {output && (
+                <button onClick={handleCopy} className={`action-btn encode-btn${copied ? ' html-copied' : ''}`}>
+                  {copied ? '✓ Copied!' : 'Copy to Clipboard'}
+                </button>
+              )}
+            </div>
+          </div>
+
+          <div className="html-process-row">
+            <button
+              onClick={handleProcess}
+              className="action-btn encode-btn html-process-btn"
+              disabled={!input.trim()}
+            >
+              {mode === 'encode' ? '→ Encode' : '→ Decode'}
+            </button>
+          </div>
+
+          {stats && (
+            <div className="html-stats">
+              <span>Original: <strong>{stats.originalLength}</strong> chars</span>
+              <span>Result: <strong>{stats.encodedLength}</strong> chars</span>
+              <span>Ratio: <strong>{stats.expansionRatio}×</strong></span>
+              <span>Entities: <strong>{stats.entitiesCount}</strong></span>
+            </div>
+          )}
+        </section>
+
+        {/* About */}
+        <section className="tool-section">
+          <div className="info-box">
+            <h3>About HTML Encoding</h3>
+            <ul className="about-list">
+              <li><strong>Standard Encoding:</strong> Encodes the 8 critical characters (<code>&amp;</code>, <code>&lt;</code>, <code>&gt;</code>, <code>&quot;</code>, <code>&#39;</code>, <code>/</code>, <code>=</code>, <code>`</code>) that could allow XSS or HTML injection.</li>
+              <li><strong>Full Encoding:</strong> Encodes all non-ASCII characters as decimal numeric entities (<code>&amp;#NNN;</code>) — safe for any charset context.</li>
+              <li><strong>Decoding:</strong> Supports named entities (<code>&amp;amp;</code>), decimal numeric (<code>&amp;#38;</code>), and hex numeric (<code>&amp;#x26;</code>) entities.</li>
+              <li><strong>Use Cases:</strong> Preventing XSS, safely inserting dynamic content in HTML, email templates, and XML documents.</li>
+            </ul>
+          </div>
+        </section>
       </div>
     </div>
   )

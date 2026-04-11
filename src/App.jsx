@@ -50,9 +50,9 @@ import {
   CodeIcon,
   GitPullRequestIcon,
   BinaryCodeIcon,
-  CodeCircleIcon,
+  HtmlFiveIcon,
   InternetIcon,
-  ComputerTerminal01Icon,
+  AiComputerIcon,
   FolderSecurityIcon
 } from 'hugeicons-react'
 import QRCodeGenerator from './pages/QRCodeGenerator'
@@ -230,13 +230,13 @@ export default function App() {
       category: 'General',
       iconName: 'BinaryCodeIcon',
       title: 'Number Base Converter',
-      description: 'Convert numbers between binary, octal, decimal, and hexadecimal instantly.'
+      description: 'Convert numbers between binary, octal, decimal, and hexadecimal with prefix and bit-length output.'
     },
     {
       category: 'General',
-      iconName: 'CodeCircleIcon',
+      iconName: 'HtmlFiveIcon',
       title: 'HTML Encoder',
-      description: 'Encode special characters to HTML entities and decode HTML entities back to text.'
+      description: 'Encode text to HTML entities and decode HTML entities back to plain text.'
     },
     // Penetration Testing Tools
     {
@@ -279,19 +279,19 @@ export default function App() {
       category: 'Penetration Testing',
       iconName: 'InternetIcon',
       title: 'SSRF Generator',
-      description: 'Generate Server-Side Request Forgery payloads for authorized security testing. Includes cloud metadata, internal services, file read, and bypass techniques.'
+      description: 'Generate SSRF payloads for authorized security testing. Includes cloud metadata, internal service probes, IP bypasses, and protocol schemes.'
     },
     {
       category: 'Penetration Testing',
-      iconName: 'ComputerTerminal01Icon',
+      iconName: 'AiComputerIcon',
       title: 'Command Injection Generator',
-      description: 'Generate OS command injection payloads for authorized security testing. Includes Unix, Windows, filter bypass, and out-of-band exfiltration techniques.'
+      description: 'Generate OS command injection payloads for authorized security testing. Includes Unix and Windows operators, filter bypasses, and OOB exfiltration.'
     },
     {
       category: 'Penetration Testing',
       iconName: 'FolderSecurityIcon',
       title: 'Path Traversal Generator',
-      description: 'Generate path traversal and directory traversal payloads for authorized security testing. Includes Unix, Windows, encoded, and bypass techniques.'
+      description: 'Generate path traversal payloads for authorized security testing. Includes URL-encoded bypasses, null-byte techniques, and web app config targets.'
     }
   ]
 

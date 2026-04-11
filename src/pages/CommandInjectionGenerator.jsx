@@ -1,65 +1,68 @@
 import { useState } from 'react'
 import { useSEO } from '../hooks/useSEO'
-import { commandInjectionPayloads as _commandInjectionPayloads, quickProbes, getAllCategories, getPayloadsByCategory } from '../utils/commandInjectionGenerator'
+import { getAllCategories, getPayloadsByCategory } from '../utils/commandInjectionGenerator'
+import './ReverseShellGenerator.css'
 import './CommandInjectionGenerator.css'
 
 export default function CommandInjectionGenerator() {
   useSEO({
-    title: 'Online Command Injection Payload Generator - OS Command Testing Tool',
-    description: 'Free command injection payload generator for authorized penetration testing. Generate Unix, Windows, filter bypass, and OOB exfiltration command injection payloads. Educational security testing tool.',
-    keywords: 'command injection generator, OS command injection, RCE payload, penetration testing, command injection bypass, authorized testing'
+    title: 'Online Command Injection Generator - OS Command Injection Testing',
+    description: 'Free command injection payload generator for authorized penetration testing. Generate Unix and Windows command injection payloads, filter bypasses, and OOB exfiltration techniques.',
+    keywords: 'command injection generator, OS command injection, penetration testing, authorized testing, security tool, bash injection'
   })
 
-  const [selectedPayload, setSelectedPayload] = useState(null)
-  const [selectedCategory, setSelectedCategory] = useState('Unix Basic')
-  const [generatedPayload, setGeneratedPayload] = useState('')
+  const [selectedGroup, setSelectedGroup] = useState(null)
+  const [selectedCategory, setSelectedCategory] = useState('Unix Operators')
+  const [selectedPayload, setSelectedPayload] = useState('')
   const [copiedIndex, setCopiedIndex] = useState(null)
+  const [callbackHost, setCallbackHost] = useState('attacker.com')
   const [searchQuery, setSearchQuery] = useState('')
 
   const categories = getAllCategories()
-  const payloadsInCategory = getPayloadsByCategory(selectedCategory)
+  const groupsInCategory = getPayloadsByCategory(selectedCategory)
 
-  const handlePayloadSelect = (key, payload) => {
-    setSelectedPayload({ key, ...payload })
-    setGeneratedPayload('')
+  const handleGroupSelect = (key, group) => {
+    setSelectedGroup({ key, ...group })
+    setSelectedPayload('')
     setCopiedIndex(null)
   }
 
-  const handleGeneratePayload = (payloadObj) => {
-    setGeneratedPayload(payloadObj.code)
+  const handlePayloadSelect = (payloadObj) => {
+    const code = payloadObj.code.replace(/\{CALLBACK_HOST\}/g, callbackHost)
+    setSelectedPayload(code)
     setCopiedIndex(null)
   }
 
-  const handleCopyCommand = (text, index) => {
+  const handleCopy = (text, index) => {
     navigator.clipboard.writeText(text)
     setCopiedIndex(index)
     setTimeout(() => setCopiedIndex(null), 2000)
   }
 
-  const filteredPayloads = payloadsInCategory.filter(([, payload]) =>
-    payload.name.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredGroups = groupsInCategory.filter(([, group]) =>
+    group.name.toLowerCase().includes(searchQuery.toLowerCase())
   )
 
   return (
     <div className="tool-page">
       <div className="tool-header">
         <h1>Command Injection Generator</h1>
-        <p>Generate OS command injection payloads for authorized penetration testing and security research. Supports Unix/Linux, Windows, filter bypass, and out-of-band exfiltration techniques. All generation happens locally in your browser.</p>
+        <p>Generate OS command injection payloads for authorized penetration testing and security research. Includes Unix and Windows operators, file read payloads, network enumeration, filter bypass techniques, and OOB exfiltration. All generation happens locally in your browser.</p>
       </div>
 
       {/* Disclaimer Box */}
       <div className="tool-container">
         <section className="tool-section">
-          <div className="cmdi-disclaimer">
-            <h3 className="cmdi-disclaimer-title">⚠️ LEGAL &amp; ETHICAL DISCLAIMER</h3>
-            <p className="cmdi-disclaimer-text">
-              This tool is for AUTHORIZED SECURITY TESTING &amp; EDUCATIONAL PURPOSES ONLY.
+          <div className="shell-disclaimer">
+            <h3 className="shell-disclaimer-title">⚠️ LEGAL & ETHICAL DISCLAIMER</h3>
+            <p className="shell-disclaimer-text">
+              This tool is for AUTHORIZED SECURITY TESTING & EDUCATIONAL PURPOSES ONLY.
             </p>
-            <ul className="cmdi-disclaimer-text">
+            <ul className="shell-disclaimer-text">
               <li>✓ Only use with explicit written authorization from system owner</li>
               <li>✓ Only test systems you own or have permission to test</li>
-              <li>✓ Command injection can lead to full server compromise and data destruction</li>
-              <li>✓ Unauthorized command injection attacks are ILLEGAL</li>
+              <li>✓ Command injection gives full OS-level control of the vulnerable server</li>
+              <li>✓ Unauthorized use is ILLEGAL and may result in criminal prosecution</li>
             </ul>
           </div>
         </section>
@@ -67,157 +70,129 @@ export default function CommandInjectionGenerator() {
 
       <div className="tool-container">
         <section className="tool-section">
-          <div className="tool-content">
-            <div className="two-column-layout">
-              <div className="column">
-                <h2>Command Injection Library</h2>
+          <div className="two-column-layout">
+            <div className="column">
+              <h2>Payload Library</h2>
 
-                <div className="cmdi-form-group">
-                  <label className="cmdi-form-label">Injection Type</label>
-                  <select
-                    value={selectedCategory}
-                    onChange={(e) => {
-                      setSelectedCategory(e.target.value)
-                      setSelectedPayload(null)
-                      setSearchQuery('')
-                    }}
-                    className="select"
-                  >
-                    {categories.map(cat => (
-                      <option key={cat} value={cat}>{cat}</option>
-                    ))}
-                  </select>
-                </div>
+              {/* OOB Callback Host */}
+              <div className="shell-form-group">
+                <label className="shell-form-label">OOB Callback Host (for exfiltration payloads)</label>
+                <input
+                  type="text"
+                  value={callbackHost}
+                  onChange={(e) => setCallbackHost(e.target.value)}
+                  placeholder="yourburpcollaborator.com"
+                  className="input shell-input-full"
+                />
+              </div>
 
-                <div className="cmdi-form-group">
-                  <input
-                    type="text"
-                    placeholder="Search payloads..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="input cmdi-input-full"
-                  />
-                </div>
-
-                <div className="cmdi-payload-list">
-                  {filteredPayloads.map(([key, payload]) => (
-                    <button
-                      key={key}
-                      onClick={() => handlePayloadSelect(key, payload)}
-                      className={`cmdi-payload-item${selectedPayload?.key === key ? ' cmdi-payload-item--selected' : ''}`}
-                    >
-                      <div className="cmdi-payload-item__name">{payload.name}</div>
-                      <div className="cmdi-payload-item__desc">{payload.description}</div>
-                    </button>
+              {/* Category Filter */}
+              <div className="shell-form-group">
+                <label className="shell-form-label">Category</label>
+                <select
+                  value={selectedCategory}
+                  onChange={(e) => {
+                    setSelectedCategory(e.target.value)
+                    setSelectedGroup(null)
+                    setSelectedPayload('')
+                    setSearchQuery('')
+                  }}
+                  className="select"
+                >
+                  {categories.map(cat => (
+                    <option key={cat} value={cat}>{cat}</option>
                   ))}
-                  {filteredPayloads.length === 0 && (
-                    <p className="cmdi-no-results">No payloads match your search</p>
-                  )}
-                </div>
+                </select>
               </div>
 
-              <div className="column">
-                {selectedPayload ? (
-                  <>
-                    <h2>{selectedPayload.name}</h2>
+              {/* Search */}
+              <div className="shell-form-group">
+                <input
+                  type="text"
+                  placeholder="Search payload groups..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="input shell-input-full"
+                />
+              </div>
 
-                    <div className="cmdi-form-group">
-                      <label className="cmdi-form-label">Available Payloads</label>
-                      <div className="cmdi-variant-list">
-                        {selectedPayload.payloads.map((payload, idx) => (
-                          <button
-                            key={idx}
-                            onClick={() => handleGeneratePayload(payload)}
-                            className="cmdi-variant-btn"
-                          >
-                            {payload.name}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-
-                    {generatedPayload && (
-                      <div className="cmdi-form-group">
-                        <label className="cmdi-form-label">Generated Payload</label>
-                        <div className="textarea output cmdi-code-output">
-                          {generatedPayload}
-                        </div>
-                        <button
-                          onClick={() => handleCopyCommand(generatedPayload, -1)}
-                          className={`cmdi-copy-btn${copiedIndex === -1 ? ' cmdi-copy-btn--copied' : ''}`}
-                        >
-                          {copiedIndex === -1 ? '✓ Copied!' : 'Copy Payload'}
-                        </button>
-                      </div>
-                    )}
-                  </>
-                ) : (
-                  <div className="cmdi-empty-state">
-                    <p>Select an injection type and then choose a specific payload</p>
-                  </div>
+              {/* Group List */}
+              <div className="shell-payload-list">
+                {filteredGroups.map(([key, group]) => (
+                  <button
+                    key={key}
+                    onClick={() => handleGroupSelect(key, group)}
+                    className={`shell-payload-item${selectedGroup?.key === key ? ' shell-payload-item--selected' : ''}`}
+                  >
+                    <div className="shell-payload-item__name">{group.name}</div>
+                    <div className="shell-payload-item__desc">{group.description}</div>
+                  </button>
+                ))}
+                {filteredGroups.length === 0 && (
+                  <p className="shell-no-results">No groups match your search</p>
                 )}
-
-                {/* Quick Probes */}
-                <div className="cmdi-quick-section">
-                  <h3 className="cmdi-quick-section-title">Quick Detection Probes</h3>
-                  <p className="cmdi-quick-section-desc">Common payloads for initial command injection detection:</p>
-                  <div className="cmdi-quick-list">
-                    {quickProbes.map((payload, idx) => (
-                      <div key={idx} className="cmdi-quick-item">
-                        <code className="cmdi-quick-code">{payload}</code>
-                        <button
-                          onClick={() => handleCopyCommand(payload, idx)}
-                          className={`cmdi-quick-copy-btn${copiedIndex === idx ? ' cmdi-quick-copy-btn--copied' : ''}`}
-                        >
-                          {copiedIndex === idx ? '✓' : 'Copy'}
-                        </button>
-                      </div>
-                    ))}
-                  </div>
-                </div>
               </div>
+            </div>
+
+            {/* Right Column */}
+            <div className="column">
+              {selectedGroup ? (
+                <>
+                  <h2>{selectedGroup.name}</h2>
+                  <div className="shell-form-group">
+                    <label className="shell-form-label">Select Payload</label>
+                    <div className="shell-variant-list">
+                      {selectedGroup.payloads.map((p, idx) => (
+                        <button
+                          key={idx}
+                          onClick={() => handlePayloadSelect(p)}
+                          className="shell-variant-btn"
+                        >
+                          {p.name}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {selectedPayload && (
+                    <div className="shell-form-group">
+                      <label className="shell-form-label">Generated Payload</label>
+                      <div className="textarea output shell-code-output">
+                        {selectedPayload}
+                      </div>
+                      <button
+                        onClick={() => handleCopy(selectedPayload, -1)}
+                        className={`shell-copy-btn${copiedIndex === -1 ? ' shell-copy-btn--copied' : ''}`}
+                      >
+                        {copiedIndex === -1 ? '✓ Copied!' : 'Copy Payload'}
+                      </button>
+                    </div>
+                  )}
+                </>
+              ) : (
+                <div className="shell-empty-state">
+                  <p>Select a category, then choose a payload group and individual payload to view.</p>
+                </div>
+              )}
             </div>
           </div>
         </section>
 
+        {/* Info Section */}
         <section className="tool-section">
           <div className="info-box">
-            <h3>Understanding Command Injection</h3>
-            <p>
-              Command injection occurs when an attacker can inject and execute arbitrary OS commands through a vulnerable application. It typically results in complete server compromise.
-            </p>
-            <ul className="cmdi-info-list">
-              <li><strong>Unix Operators:</strong> <code>;</code> <code>|</code> <code>&amp;&amp;</code> <code>||</code> <code>&amp;</code> chain commands together</li>
-              <li><strong>Windows Operators:</strong> <code>&amp;</code> <code>&amp;&amp;</code> <code>|</code> <code>||</code> work similarly on Windows</li>
-              <li><strong>Command Substitution:</strong> <code>$(cmd)</code> and backtick `` `cmd` `` execute and substitute command output</li>
-              <li><strong>Filter Bypass:</strong> Quote insertion, environment variables, and encoding evade naive input filters</li>
-              <li><strong>OOB Exfiltration:</strong> DNS/HTTP callbacks confirm blind command injection where output isn't reflected</li>
+            <h3>About Command Injection</h3>
+            <ul className="shell-info-list-plain">
+              <li><strong>Unix Operators:</strong> Chaining operators like <code>;</code>, <code>&amp;&amp;</code>, <code>||</code>, <code>|</code>, and backticks to inject additional commands.</li>
+              <li><strong>Windows Operators:</strong> <code>&amp;</code>, <code>&amp;&amp;</code>, <code>||</code>, and <code>|</code> for cmd.exe / PowerShell injection.</li>
+              <li><strong>Filter Bypasses:</strong> IFS substitution, quote insertion, hex encoding, base64 execution, and newline injections to evade WAFs.</li>
+              <li><strong>OOB Exfiltration:</strong> DNS or HTTP callbacks to confirm blind injection when no output is returned.</li>
             </ul>
-
-            <h4>Common Vulnerable Patterns:</h4>
-            <ul className="cmdi-info-list">
-              <li>Ping/nslookup utilities that accept user-supplied hostnames</li>
-              <li>File conversion/processing tools passing filenames to shell</li>
-              <li>Image/PDF processing using system() or exec() calls</li>
-              <li>Log analysis scripts, backup utilities, server-side templating</li>
-            </ul>
-
-            <h4>Prevention &amp; Mitigation:</h4>
-            <ul className="cmdi-info-list">
-              <li>Avoid system(), exec(), shell_exec() with user input entirely</li>
-              <li>Use parameterized APIs (e.g., subprocess with list args in Python)</li>
-              <li>Strictly validate and whitelist allowed input characters</li>
-              <li>Apply principle of least privilege to application processes</li>
-              <li>Use Web Application Firewalls (WAF) to detect injection patterns</li>
-            </ul>
-
-            <h4>Legal &amp; Ethical Requirements:</h4>
-            <div className="cmdi-legal-note">
-              <ul className="cmdi-legal-note-list">
+            <div className="shell-legal-note">
+              <ul className="shell-legal-note-list">
                 <li>⚠️ Use ONLY in authorized penetration testing engagements</li>
-                <li>✓ Always get explicit written permission before testing</li>
-                <li>✓ Test only on systems you own or have authorization for</li>
-                <li>✓ Understand and comply with your local laws</li>
+                <li>✓ Always get written permission before testing</li>
+                <li>✓ Document all testing activities</li>
               </ul>
             </div>
           </div>

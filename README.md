@@ -86,44 +86,40 @@ A comprehensive, privacy-first suite of **free online tools** for developers, se
 ### 🔢 Number Base Converter
 - Convert numbers between binary (base 2), octal (base 8), decimal (base 10), and hexadecimal (base 16)
 - Select the source base and enter a value for instant conversion to all other bases
-- Displays bit length and all common representations
-- Copy individual result with prefix (e.g. 0x, 0b)
-- Quick examples for common values
+- Copy output with or without prefix (`0b`, `0o`, `0x`)
+- Shows bit length and quick-example buttons
+- Handles large numbers with BigInt precision
 
-### 🏷️ HTML Encoder & Decoder
-- Encode special characters to HTML entities (& < > " ' / ` =)
-- Optional full mode encodes all non-ASCII characters as numeric entities
-- Decode HTML entities including named, decimal, and hex numeric entities
-- Built-in entity reference table
-- Essential for preventing XSS and ensuring safe HTML rendering
+### 🌐 HTML Encoder & Decoder
+- Standard mode: encode critical characters (`& < > " ' / = \``) to HTML entities
+- Full mode: encode all non-ASCII characters as `&#NNN;` decimal entities
+- Decode named entities (`&amp;`), decimal (`&#38;`), and hex (`&#x26;`) numeric entities
+- Shows encoding statistics (length, ratio, entity count)
+- Essential for preventing XSS and safely embedding dynamic content in HTML
 
-### 🌐 SSRF Generator *(Penetration Testing)*
-- Generate Server-Side Request Forgery (SSRF) payloads for authorized security testing
-- Cloud metadata endpoints: AWS IMDSv1/v2, GCP, Azure, DigitalOcean
-- Internal service payloads: Redis, Elasticsearch, Docker API, Kubernetes
-- File read via file:// URI scheme (Linux and Windows targets)
-- IP encoding bypass techniques (decimal, hex, octal, IPv6)
-- Protocol scheme payloads: Gopher, DICT, LDAP, FTP
-- DNS rebinding and out-of-band detection probes
-- Quick detection probes for initial SSRF testing
+### 🔴 SSRF Generator *(Penetration Testing)*
+- Generate Server-Side Request Forgery payloads for authorized security testing
+- Cloud metadata: AWS IMDSv1/v2, GCP, Azure credential endpoints
+- Internal services: Redis, Elasticsearch, Docker API, Kubernetes
+- File read via `file://`, IP encoding bypasses (decimal/hex/octal/IPv6)
+- Protocol schemes: Gopher, DICT, LDAP; DNS/OOB probe templates
 
 ### 💉 Command Injection Generator *(Penetration Testing)*
 - Generate OS command injection payloads for authorized security testing
-- Unix/Linux injection operators: ; | && || & $() backtick
-- Windows injection operators: & && | || cmd /c, PowerShell
-- File read payloads: /etc/passwd, SSH keys, env vars, cron jobs
-- Network enumeration: ping, ifconfig, netstat, curl, wget
-- Filter bypass: IFS substitution, quotes, backslashes, base64, hex encoding
-- Out-of-band exfiltration via DNS and HTTP callbacks
+- Unix operators (`;`, `&&`, `||`, `|`, backtick, `$()`) and Windows operators (`&`, `^`)
+- File read, network enumeration, and filter bypass techniques
+- IFS substitution, quote insertion, hex/base64 encoding, newline bypasses
+- OOB exfiltration via DNS and HTTP callbacks
 
-### 📁 Path Traversal Generator *(Penetration Testing)*
-- Generate path traversal and directory traversal payloads for authorized testing
-- Unix targets: /etc/passwd, /etc/shadow, SSH keys, web configs
-- Windows targets: win.ini, SAM, boot.ini, web.config
-- URL/percent-encoded traversal sequences to bypass input filters
-- Double encoding, null byte, overlong UTF-8, and Unicode bypass techniques
-- Web application config file targets: .env, wp-config.php, WEB-INF/web.xml
-- Quick detection probes for initial traversal testing
+### 📂 Path Traversal Generator *(Penetration Testing)*
+- Generate directory traversal payloads for authorized security testing
+- Unix and Windows sensitive file targets (`/etc/passwd`, SAM, win.ini)
+- URL-encoded, double-encoded, and overlong UTF-8 bypass sequences
+- Null-byte injection for file extension check bypass
+- Web app config targets (`.env`, `wp-config.php`, `WEB-INF/web.xml`)
+- Variable depth from 1 to 10+ traversal levels
+
+## 🎯 Use Cases
 
 **For Developers:**
 - Quick URL encoding/decoding for APIs
@@ -372,6 +368,11 @@ MIT License - see the LICENSE file for details
 - ✅ SEO Optimization
 - ✅ Navigation System
 - ✅ Responsive Design
+- ✅ Number Base Converter (Binary/Octal/Decimal/Hex)
+- ✅ HTML Encoder & Decoder
+- ✅ SSRF Generator (Penetration Testing)
+- ✅ Command Injection Generator (Penetration Testing)
+- ✅ Path Traversal Generator (Penetration Testing)
 
 ### Planned Features 🔜
 - [ ] Dark Mode Toggle

