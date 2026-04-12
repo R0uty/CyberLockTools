@@ -86,9 +86,9 @@ import './App.css'
 import './App.extra.css'
 
 export default function App() {
-  const [currentTool, setCurrentTool] = useState(null)
-  const [currentPage, setCurrentPage] = useState('home')
-  const [currentCategory, setCurrentCategory] = useState(null)
+  const [currentTool, setCurrentTool] = useState(() => window.history.state?.tool ?? null)
+  const [currentPage, setCurrentPage] = useState(() => window.history.state?.page ?? 'home')
+  const [currentCategory, setCurrentCategory] = useState(() => window.history.state?.category ?? null)
 
   useSEO({
     title: "R0uty's Cyber Lab - My Free Online Tools Suite",
@@ -127,7 +127,6 @@ export default function App() {
       : { page: 'home', tool: null, category: null }
 
     window.history.replaceState(initialState, '')
-    applyNavigationState(initialState)
 
     const handlePopState = (event) => {
       applyNavigationState(event.state ?? { page: 'home', tool: null, category: null })
@@ -393,7 +392,7 @@ export default function App() {
       description: 'Calculate subnet details from CIDR notation: network address, broadcast, subnet mask, usable hosts, and more.'
     }
   ]
-  const toolCategoryCount = [...new Set(tools.map((tool) => tool.category))].length
+
 
   const toolComponents = {
     ROT,

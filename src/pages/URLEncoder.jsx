@@ -38,7 +38,7 @@ export default function URLEncoder() {
 
       const decoded = decodeURIComponent(input)
       setOutput(decoded)
-    } catch (err) {
+    } catch {
       setError('Invalid URL-encoded input. Please check your input and try again.')
       setOutput('')
     }

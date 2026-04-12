@@ -31,16 +31,20 @@ export default function NoSQLInjectionGenerator() {
   const [sampleValue, setSampleValue] = useState('admin')
   const [collection, setCollection] = useState('users')
   const [regexPrefix, setRegexPrefix] = useState('adm')
-  const [iterations, setIterations] = useState('5000000')
+  const [iterations] = useState('5000000')
   const [copied, setCopied] = useState(false)
 
   const categories = getAllCategories()
   const backendDetails = BACKEND_INFO[backend]
-  const currentPayloads = searchQuery
-    ? searchPayloads(searchQuery, backend)
-    : getPayloadsByCategory(selectedCategory, backend)
+  const currentPayloads = useMemo(
+    () => searchQuery ? searchPayloads(searchQuery, backend) : getPayloadsByCategory(selectedCategory, backend),
+    [searchQuery, backend, selectedCategory]
+  )
 
-  const currentPayload = currentPayloads[selectedPayloadIndex] ?? null
+  const currentPayload = useMemo(
+    () => currentPayloads[selectedPayloadIndex] ?? null,
+    [currentPayloads, selectedPayloadIndex]
+  )
 
   const renderedPayload = useMemo(() => {
     if (!currentPayload) return ''

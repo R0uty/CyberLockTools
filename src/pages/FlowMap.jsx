@@ -194,8 +194,22 @@ export default function FlowMap({ onToolClick }) {
   })
 
   const [selectedFlow, setSelectedFlow] = useState(getStoredFlowKey)
-  const [currentStage, setCurrentStage] = useState(() => getStoredValue(STORAGE_STAGE_KEY, 'start'))
-  const [revealedStageIndex, setRevealedStageIndex] = useState(getStoredRevealedStage)
+  const [currentStage, setCurrentStage] = useState(() => {
+    const storedFlow = getStoredFlowKey()
+    const storedStage = getStoredValue(STORAGE_STAGE_KEY, 'start')
+    if (!storedFlow) return storedStage
+    const flow = FLOWS[storedFlow]
+    return flow && !flow.stages.includes(storedStage) ? 'start' : storedStage
+  })
+  const [revealedStageIndex, setRevealedStageIndex] = useState(() => {
+    const storedFlow = getStoredFlowKey()
+    const storedStage = getStoredValue(STORAGE_STAGE_KEY, 'start')
+    if (storedFlow) {
+      const flow = FLOWS[storedFlow]
+      if (flow && !flow.stages.includes(storedStage)) return 0
+    }
+    return getStoredRevealedStage()
+  })
   const [selectedTool, setSelectedTool] = useState(() => getStoredValue(STORAGE_TOOL_KEY))
   const [feedback, setFeedback] = useState(() => getStoredValue(STORAGE_FEEDBACK_KEY))
   const [selectedAction, setSelectedAction] = useState(() => getStoredValue(STORAGE_ACTION_KEY))
@@ -245,16 +259,6 @@ export default function FlowMap({ onToolClick }) {
     window.sessionStorage.setItem(STORAGE_OUTCOME_KEY, selectedOutcome)
   }, [selectedOutcome])
 
-  useEffect(() => {
-    if (!currentFlow) {
-      return
-    }
-
-    if (!(currentStage in stageIndex)) {
-      setCurrentStage('start')
-      setRevealedStageIndex(0)
-    }
-  }, [currentFlow, currentStage, stageIndex])
 
   useEffect(() => {
     const viewport = viewportRef.current

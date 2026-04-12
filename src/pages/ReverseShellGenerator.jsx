@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useSEO } from '../hooks/useSEO'
-import { reverseShellPayloads, listenerCommands, getAllCategories, getPayloadsByCategory, generatePayload, disclaimer } from '../utils/reverseShellGenerator'
+import { listenerCommands, getAllCategories, getPayloadsByCategory, generatePayload } from '../utils/reverseShellGenerator'
 import './ReverseShellGenerator.css'
 
 export default function ReverseShellGenerator() {
@@ -49,7 +49,7 @@ export default function ReverseShellGenerator() {
     setTimeout(() => setCopiedIndex(null), 2000)
   }
 
-  const filteredPayloads = payloadsInCategory.filter(([_, payload]) =>
+  const filteredPayloads = payloadsInCategory.filter(([, payload]) =>
     payload.name.toLowerCase().includes(searchQuery.toLowerCase())
   )
 

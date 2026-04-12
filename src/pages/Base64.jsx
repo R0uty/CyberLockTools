@@ -38,7 +38,7 @@ export default function Base64() {
 
       const decoded = atob(input)
       setOutput(decoded)
-    } catch (err) {
+    } catch {
       setError('Invalid Base64 input. Please check your input and try again.')
       setOutput('')
     }
