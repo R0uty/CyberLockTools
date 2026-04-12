@@ -1,35 +1,25 @@
 import './HomeToolMap.css'
 
 const TOOL_MAP_NODES = [
-  { title: 'ROT', x: 8, y: 24, duration: '9s', delay: '0s' },
-  { title: 'Base64', x: 22, y: 56, duration: '11s', delay: '1s' },
-  { title: 'URL Encoder', x: 31, y: 18, duration: '10s', delay: '0.5s' },
-  { title: 'Hash Generator', x: 44, y: 42, duration: '12s', delay: '1.4s' },
-  { title: 'JSON Formatter', x: 57, y: 22, duration: '9.5s', delay: '0.8s' },
-  { title: 'Regex Tester', x: 67, y: 62, duration: '10.5s', delay: '1.8s' },
-  { title: 'UUID Generator', x: 78, y: 28, duration: '11.5s', delay: '0.3s' },
-  { title: 'QR Code Generator', x: 87, y: 54, duration: '9.8s', delay: '1.1s' },
-  { title: 'CSP Generator & Analyzer', x: 50, y: 74, duration: '12.5s', delay: '0.6s' },
-  { title: 'IP Subnet Calculator', x: 21, y: 78, duration: '10.8s', delay: '1.5s' }
+  { title: 'ROT', x: 14, y: 24, duration: '9s', delay: '0s' },
+  { title: 'Base64', x: 22, y: 62, duration: '11s', delay: '1s' },
+  { title: 'URL Encoder', x: 31, y: 16, duration: '10s', delay: '0.5s' },
+  { title: 'Hash Generator', x: 36, y: 78, duration: '12s', delay: '1.4s' },
+  { title: 'JSON Formatter', x: 64, y: 16, duration: '9.5s', delay: '0.8s' },
+  { title: 'Regex Tester', x: 72, y: 68, duration: '10.5s', delay: '1.8s' },
+  { title: 'UUID Generator', x: 82, y: 28, duration: '11.5s', delay: '0.3s' },
+  { title: 'QR Code Generator', x: 88, y: 58, duration: '9.8s', delay: '1.1s' },
+  { title: 'CSP Generator & Analyzer', x: 56, y: 82, duration: '12.5s', delay: '0.6s' },
+  { title: 'IP Subnet Calculator', x: 12, y: 80, duration: '10.8s', delay: '1.5s' }
 ]
 
-const TOOL_MAP_CONNECTIONS = [
-  [0, 1],
-  [0, 2],
-  [1, 3],
-  [1, 9],
-  [2, 3],
-  [2, 4],
-  [3, 4],
-  [3, 5],
-  [3, 8],
-  [4, 6],
-  [5, 6],
-  [5, 7],
-  [5, 8],
-  [6, 7],
-  [8, 9]
-]
+const FLOW_HUB_NODE = {
+  title: 'Flow Map',
+  x: 50,
+  y: 50,
+  duration: '12s',
+  delay: '0s'
+}
 
 const CATEGORY_MAP_NODES = {
   'Encoding & Decoding': { x: 12, y: 70, duration: '13s', delay: '0.4s' },
@@ -69,7 +59,7 @@ function resetMapPointerMove(event) {
   event.currentTarget.style.setProperty('--tool-map-hover-y', '0px')
 }
 
-export default function HomeToolMap({ tools, onToolClick, onCategoryClick }) {
+export default function HomeToolMap({ tools, onToolClick, onCategoryClick, onFlowMapClick }) {
   const availableTools = new Set(tools.map((tool) => tool.title))
   const availableCategories = [...new Set(tools.map((tool) => tool.category))]
   const visibleNodes = TOOL_MAP_NODES.filter((node) => availableTools.has(node.title))
@@ -98,25 +88,45 @@ export default function HomeToolMap({ tools, onToolClick, onCategoryClick }) {
         ))}
 
         <svg className="tool-map-lines" viewBox="0 0 100 100" preserveAspectRatio="none">
-          {TOOL_MAP_CONNECTIONS.map(([startIndex, endIndex]) => {
-            const startNode = TOOL_MAP_NODES[startIndex]
-            const endNode = TOOL_MAP_NODES[endIndex]
-
-            if (!availableTools.has(startNode.title) || !availableTools.has(endNode.title)) {
-              return null
-            }
-
-            return (
-              <line
-                key={`${startNode.title}-${endNode.title}`}
-                x1={startNode.x}
-                y1={startNode.y}
-                x2={endNode.x}
-                y2={endNode.y}
-              />
-            )
-          })}
+          {visibleNodes.map((node) => (
+            <line
+              key={`flow-hub-${node.title}`}
+              x1={FLOW_HUB_NODE.x}
+              y1={FLOW_HUB_NODE.y}
+              x2={node.x}
+              y2={node.y}
+            />
+          ))}
+          {visibleCategoryNodes.map((node) => (
+            <line
+              key={`flow-hub-category-${node.category}`}
+              x1={FLOW_HUB_NODE.x}
+              y1={FLOW_HUB_NODE.y}
+              x2={node.x}
+              y2={node.y}
+            />
+          ))}
         </svg>
+
+        <button
+          type="button"
+          className="tool-map-hub-node"
+          style={{
+            left: `${FLOW_HUB_NODE.x}%`,
+            top: `${FLOW_HUB_NODE.y}%`,
+            '--tool-map-hub-duration': FLOW_HUB_NODE.duration,
+            '--tool-map-hub-delay': FLOW_HUB_NODE.delay,
+          }}
+          onMouseMove={handleMapPointerMove}
+          onMouseLeave={resetMapPointerMove}
+          onClick={onFlowMapClick}
+          aria-label="Open Flow Map"
+        >
+          <span className="tool-map-hub-content">
+            <span className="tool-map-hub-dot" />
+            <span className="tool-map-hub-label">{FLOW_HUB_NODE.title}</span>
+          </span>
+        </button>
 
         {visibleNodes.map((node) => (
           <button

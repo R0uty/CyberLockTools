@@ -78,6 +78,7 @@ import SubnetCalculator from './pages/SubnetCalculator'
 import DiffViewer from './pages/DiffViewer'
 import HTTPHeadersParser from './pages/HTTPHeadersParser'
 import Tools from './pages/Tools'
+import FlowMap from './pages/FlowMap'
 import LabNotes from './pages/LabNotes'
 import About from './pages/About'
 import Contact from './pages/Contact'
@@ -444,6 +445,7 @@ export default function App() {
         </div>
         <div className="site-footer-links">
           <button className="site-footer-link" onClick={() => handlePageChange('tools')}>Tools</button>
+          <button className="site-footer-link" onClick={() => handlePageChange('flow-map')}>Flow Map</button>
           <button className="site-footer-link" onClick={() => handlePageChange('lab-notes')}>Lab Notes</button>
           <button className="site-footer-link" onClick={() => handlePageChange('about')}>About</button>
           <button className="site-footer-link" onClick={() => handlePageChange('contact')}>Contact</button>
@@ -464,6 +466,7 @@ export default function App() {
             tools={tools}
             onToolClick={handleToolClick}
             onCategoryClick={handleCategoryClick}
+            onFlowMapClick={() => handlePageChange('flow-map')}
           />
         )}
         <div className="main-content">
@@ -494,6 +497,15 @@ export default function App() {
     return renderAppShell(<About />)
   }
 
+  if (currentPage === 'flow-map') {
+    return renderAppShell(
+      <FlowMap
+        tools={tools}
+        onToolClick={handleToolClick}
+      />
+    )
+  }
+
   if (currentPage === 'lab-notes') {
     return renderAppShell(
       <LabNotes
@@ -511,28 +523,34 @@ export default function App() {
     <>
         <section className="hero">
           <div className="hero-copy">
-            <span className="hero-kicker">Browser-first cyber lab</span>
-            <h1>Welcome to My Cyber Lab</h1>
-            <p>Hey there! I&apos;m R0uty, and this is my collection of {tools.length}+ browser-based utilities for encoding, analysis, formatting, generation, and security testing workflows. Everything runs locally in your browser, so your data stays on your device.</p>
+            <span className="hero-kicker">Flow-first cyber lab</span>
+            <h1>Guided Flow Maps for Cyber Workflows</h1>
+            <p>Hey there! I&apos;m R0uty, and this lab is now centered around guided Flow Maps for stepping through decode paths, investigation ideas, and repeatable browser-based workflows. The tool collection supports those flows, and more flows are on the way.</p>
             <div className="privacy-badge hero-privacy-badge">
               All processing happens in your browser • No data is sent to server
             </div>
             <div className="hero-actions">
-              <button className="cta-button" onClick={() => handlePageChange('tools')}>Browse My Tools</button>
+              <button className="cta-button" onClick={() => handlePageChange('flow-map')}>Open Flow Map</button>
+              <button className="hero-secondary-button" onClick={() => handlePageChange('tools')}>Browse My Tools</button>
               <button className="hero-secondary-button" onClick={() => handlePageChange('about')}>About the Lab</button>
             </div>
           </div>
 
           <div className="hero-summary">
             <div className="hero-summary-card">
-              <span className="hero-summary-label">Tools</span>
-              <strong>{tools.length}+</strong>
-              <p>Utilities for daily dev work and security workflows.</p>
+              <span className="hero-summary-label">Main Feature</span>
+              <strong>Flow Map</strong>
+              <p>Guided, visual paths for decode and investigation work directly in the browser.</p>
             </div>
             <div className="hero-summary-card">
-              <span className="hero-summary-label">Categories</span>
-              <strong>{toolCategoryCount}</strong>
-              <p>Structured into focused sections so the lab stays easy to browse.</p>
+              <span className="hero-summary-label">More Flows</span>
+              <strong>Coming</strong>
+              <p>The map system is designed to grow beyond one workflow as more guided flows are added.</p>
+            </div>
+            <div className="hero-summary-card">
+              <span className="hero-summary-label">Tools</span>
+              <strong>{tools.length}+</strong>
+              <p>Utilities remain available to support each flow and standalone tasks.</p>
             </div>
             <div className="hero-summary-card">
               <span className="hero-summary-label">Privacy</span>
@@ -545,8 +563,8 @@ export default function App() {
         <section className="features">
           <div className="features-intro">
             <span className="features-kicker">Why this lab exists</span>
-            <h2>Built to feel fast, private, and useful every time you open it</h2>
-            <p>I wanted one place for the kinds of tools I keep reaching for during development, debugging, studying, and security work — without uploads, clutter, or unnecessary friction.</p>
+            <h2>Built around guided flows first, with tools ready underneath</h2>
+            <p>The goal is to make recurring cyber workflows easier to follow visually, then give each step the right in-browser tools so you can move without context switching.</p>
           </div>
 
           <div className="features-grid">
@@ -576,6 +594,13 @@ export default function App() {
               <div className="feature-copy">
                 <h3>Low-friction UX</h3>
                 <p>Simple inputs, clear outputs, and focused flows keep the experience lightweight instead of noisy.</p>
+              </div>
+            </article>
+            <article className="feature-item">
+              <div className="feature-icon-wrapper"><GitPullRequestIcon size={28} color="#c0c0c0" /></div>
+              <div className="feature-copy">
+                <h3>Guided flow maps</h3>
+                <p>Use the Flow Map to walk through decode decisions visually, open the right tools, and keep your next step clear as more flows are added.</p>
               </div>
             </article>
           </div>

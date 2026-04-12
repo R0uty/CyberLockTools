@@ -4,6 +4,10 @@
   box-sizing: border-box;
 }
 
+:root {
+  --app-shell-max-width: 1200px;
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -80,7 +84,7 @@ body {
 }
 
 .header-container {
-  max-width: 1200px;
+  max-width: var(--app-shell-max-width);
   margin: 0 auto;
   padding: 0 2rem;
   display: flex;
@@ -148,7 +152,7 @@ body {
 /* Main Content */
 .main-content {
   flex: 1;
-  max-width: 1200px;
+  max-width: var(--app-shell-max-width);
   margin: 0 auto;
   padding: 3rem 2rem;
   width: 100%;
@@ -596,13 +600,25 @@ p {
 }
 
 .site-footer-inner {
-  max-width: 1200px;
+  max-width: var(--app-shell-max-width);
   margin: 0 auto;
   padding: 1.5rem 2rem 2rem;
   display: grid;
   grid-template-columns: minmax(0, 1.4fr) auto auto;
   gap: 1.5rem;
   align-items: start;
+}
+
+@media (min-width: 1600px) {
+  :root {
+    --app-shell-max-width: 1520px;
+  }
+}
+
+@media (min-width: 2000px) {
+  :root {
+    --app-shell-max-width: 1760px;
+  }
 }
 
 .site-footer strong {
