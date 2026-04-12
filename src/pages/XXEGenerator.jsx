@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useSEO } from '../hooks/useSEO'
-import { xxePayloads, commonTargets, getAllCategories, getPayloadsByCategory, disclaimer } from '../utils/xxeGenerator'
+import { commonTargets, getAllCategories, getPayloadsByCategory } from '../utils/xxeGenerator'
 import './XXEGenerator.css'
 
 export default function XXEGenerator() {
@@ -43,7 +43,7 @@ export default function XXEGenerator() {
     setTimeout(() => setCopiedIndex(null), 2000)
   }
 
-  const filteredPayloads = payloadsInCategory.filter(([_, payload]) =>
+  const filteredPayloads = payloadsInCategory.filter(([, payload]) =>
     payload.name.toLowerCase().includes(searchQuery.toLowerCase())
   )
 

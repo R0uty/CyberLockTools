@@ -252,9 +252,9 @@ const payloads = {
       name: 'Query Batching Bomb',
       description: 'Send many queries in single request to cause resource exhaustion',
       payload: `[
-  {query: "{user(id:\"1\") {id name}}"},
-  {query: "{user(id:\"2\") {id name}}"},
-  {query: "{user(id:\"3\") {id name}}"},
+  {query: "{user(id:"1") {id name}}"},
+  {query: "{user(id:"2") {id name}}"},
+  {query: "{user(id:"3") {id name}}"},
   ...repeat 1000 times...
 ]`,
       explanation: 'GraphQL batch query support allows sending hundreds of queries in one HTTP request, exhausting server resources.'

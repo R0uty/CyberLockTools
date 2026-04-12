@@ -281,7 +281,7 @@ export const sstiEngines = {
       observed: '14\nLiquid error: undefined variable'
     },
     analyzer: {
-      templatePatterns: [/\|\s*plus:/i, /\{\%\s*assign/i, /\{\%\s*for/i, /\{\%\s*if/i],
+      templatePatterns: [/\|\s*plus:/i, /\{%\s*assign/i, /\{%\s*for/i, /\{%\s*if/i],
       observedPatterns: [/\bliquid\b/i, /unknown tag/i, /variable .* was not properly terminated/i, /liquid error/i]
     },
     payloadGroups: [

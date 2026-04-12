@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useSEO } from '../hooks/useSEO'
-import { xssPayloads, testingPayloads, getAllCategories, getPayloadsByCategory } from '../utils/xssGenerator'
+import { testingPayloads, getAllCategories, getPayloadsByCategory } from '../utils/xssGenerator'
 import './XSSGenerator.css'
 
 export default function XSSGenerator() {
@@ -15,8 +15,6 @@ export default function XSSGenerator() {
   const [generatedPayload, setGeneratedPayload] = useState('')
   const [copiedIndex, setCopiedIndex] = useState(null)
   const [searchQuery, setSearchQuery] = useState('')
-  const [customPayload, setCustomPayload] = useState('')
-  const [previewMode, setPreviewMode] = useState(false)
 
   const categories = getAllCategories()
   const payloadsInCategory = getPayloadsByCategory(selectedCategory)
@@ -30,7 +28,6 @@ export default function XSSGenerator() {
   const handleGeneratePayload = (payloadObj) => {
     setGeneratedPayload(payloadObj.code)
     setCopiedIndex(null)
-    setPreviewMode(false)
   }
 
   const handleCopyCommand = (text, index) => {
@@ -39,7 +36,7 @@ export default function XSSGenerator() {
     setTimeout(() => setCopiedIndex(null), 2000)
   }
 
-  const filteredPayloads = payloadsInCategory.filter(([_, payload]) =>
+  const filteredPayloads = payloadsInCategory.filter(([, payload]) =>
     payload.name.toLowerCase().includes(searchQuery.toLowerCase())
   )
 

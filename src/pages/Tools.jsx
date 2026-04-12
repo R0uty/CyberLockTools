@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useSEO } from '../hooks/useSEO';
 import ToolCard from '../components/ToolCard';
 import { Search01Icon, ArrowDataTransferHorizontalIcon, LockKeyIcon, BookOpen01Icon, SmileIcon, CheckmarkBadge01Icon, GlobeIcon } from 'hugeicons-react'
@@ -76,28 +76,32 @@ const iconMap = {
 
 export default function Tools({ tools, onToolClick, initialCategory = null }) {
   const [searchQuery, setSearchQuery] = useState('')
-  const [selectedCategory, setSelectedCategory] = useState('')
 
   useSEO({
     title: 'All Online Tools - Free Encoder, Decoder, Generator, Formatter',
     description: 'Browse all free online tools - ROT13, Base64, URL Encoder, Hash Generator, Cron Parser, JWT Debugger, JSON/YAML Formatter, Markdown Preview, and Regex Tester. Everything runs in your browser.',
     keywords: 'online tools, encoder, decoder, formatter, generator, parser, free tools, browser tools, utilities',
-  });
+  })
 
   // Get unique categories
-  const categories = [...new Set(tools.map(tool => tool.category))].sort();
+  const categories = [...new Set(tools.map(tool => tool.category))].sort()
 
-  useEffect(() => {
-    if (!categories.includes(selectedCategory)) {
-      setSelectedCategory(categories[0] ?? '')
-    }
-  }, [categories, selectedCategory])
+  const getDefaultCategory = (catList, preferred) =>
+    preferred && catList.includes(preferred) ? preferred : catList[0] ?? ''
 
-  useEffect(() => {
-    if (initialCategory && categories.includes(initialCategory)) {
-      setSelectedCategory(initialCategory)
+  const [selectedCategory, setSelectedCategory] = useState(
+    () => getDefaultCategory(categories, initialCategory)
+  )
+
+  // Synchronize with initialCategory changes using previous-value tracking
+  const [prevInitialCategory, setPrevInitialCategory] = useState(initialCategory)
+  if (prevInitialCategory !== initialCategory) {
+    setPrevInitialCategory(initialCategory)
+    const next = getDefaultCategory(categories, initialCategory)
+    if (next !== selectedCategory) {
+      setSelectedCategory(next)
     }
-  }, [categories, initialCategory])
+  }
 
   const hasSearchQuery = searchQuery.trim() !== ''
   const normalizedSearchQuery = searchQuery.toLowerCase()

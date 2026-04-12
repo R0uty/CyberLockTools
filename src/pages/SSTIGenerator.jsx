@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { useSEO } from '../hooks/useSEO'
 import {
   analyzeSstiProbe,
@@ -36,11 +36,6 @@ export default function SSTIGenerator() {
     [selectedEngineId]
   )
 
-  useEffect(() => {
-    if (!payloadGroups.some((group) => group.key === selectedGroupKey)) {
-      setSelectedGroupKey(payloadGroups[0]?.key ?? '')
-    }
-  }, [payloadGroups, selectedGroupKey])
 
   const selectedGroup = payloadGroups.find((group) => group.key === selectedGroupKey) ?? payloadGroups[0]
 
@@ -57,11 +52,6 @@ export default function SSTIGenerator() {
     ))
   }, [searchQuery, selectedGroup])
 
-  useEffect(() => {
-    if (!filteredPayloads.some((payload) => payload.name === selectedPayloadName)) {
-      setSelectedPayloadName(filteredPayloads[0]?.name ?? '')
-    }
-  }, [filteredPayloads, selectedPayloadName])
 
   const selectedPayload = filteredPayloads.find((payload) => payload.name === selectedPayloadName) ?? filteredPayloads[0] ?? null
 
@@ -160,6 +150,8 @@ export default function SSTIGenerator() {
                 onChange={(event) => {
                   setSelectedEngineId(event.target.value)
                   setSearchQuery('')
+                  setSelectedGroupKey('')
+                  setSelectedPayloadName('')
                 }}
                 className="ssti-select"
               >
@@ -175,7 +167,10 @@ export default function SSTIGenerator() {
                 id="ssti-search"
                 type="text"
                 value={searchQuery}
-                onChange={(event) => setSearchQuery(event.target.value)}
+                onChange={(event) => {
+                  setSearchQuery(event.target.value)
+                  setSelectedPayloadName('')
+                }}
                 placeholder="Search the current engine payloads..."
               />
             </div>
@@ -227,7 +222,10 @@ export default function SSTIGenerator() {
                 {payloadGroups.map((group) => (
                   <button
                     key={group.key}
-                    onClick={() => setSelectedGroupKey(group.key)}
+                    onClick={() => {
+                      setSelectedGroupKey(group.key)
+                      setSelectedPayloadName('')
+                    }}
                     className={selectedGroup?.key === group.key ? 'ssti-group-btn ssti-group-btn--active' : 'ssti-group-btn'}
                   >
                     <strong>{group.name}</strong>

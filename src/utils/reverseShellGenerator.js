@@ -177,7 +177,7 @@ export const getAllCategories = () => {
 
 export const getPayloadsByCategory = (category) => {
   return Object.entries(reverseShellPayloads).filter(
-    ([_, payload]) => payload.category === category
+    ([, payload]) => payload.category === category
   )
 }
 
