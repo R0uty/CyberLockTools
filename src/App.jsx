@@ -1,24 +1,24 @@
-import { useCallback, useEffect, useState } from 'react'
+import { lazy, Suspense, useCallback, useEffect, useState } from 'react'
 import { useSEO } from './hooks/useSEO'
 import Header from './components/Header'
 import HomeToolMap from './components/HomeToolMap'
-import ROT from './pages/ROT'
-import Base64 from './pages/Base64'
-import URLEncoder from './pages/URLEncoder'
-import HashGenerator from './pages/HashGenerator'
-import CronParser from './pages/CronParser'
-import JWTDebugger from './pages/JWTDebugger'
-import JSONFormatter from './pages/JSONFormatter'
-import YAMLFormatter from './pages/YAMLFormatter'
-import MarkdownPreview from './pages/MarkdownPreview'
-import RegexTester from './pages/RegexTester'
-import XMLFormatter from './pages/XMLFormatter'
-import SQLFormatter from './pages/SQLFormatter'
-import CSVFormatter from './pages/CSVFormatter'
-import UUIDGenerator from './pages/UUIDGenerator'
-import TimestampConverter from './pages/TimestampConverter'
-import PasswordGenerator from './pages/PasswordGenerator'
-import JWTEncoder from './pages/JWTEncoder'
+const ROT = lazy(() => import('./pages/ROT'))
+const Base64 = lazy(() => import('./pages/Base64'))
+const URLEncoder = lazy(() => import('./pages/URLEncoder'))
+const HashGenerator = lazy(() => import('./pages/HashGenerator'))
+const CronParser = lazy(() => import('./pages/CronParser'))
+const JWTDebugger = lazy(() => import('./pages/JWTDebugger'))
+const JSONFormatter = lazy(() => import('./pages/JSONFormatter'))
+const YAMLFormatter = lazy(() => import('./pages/YAMLFormatter'))
+const MarkdownPreview = lazy(() => import('./pages/MarkdownPreview'))
+const RegexTester = lazy(() => import('./pages/RegexTester'))
+const XMLFormatter = lazy(() => import('./pages/XMLFormatter'))
+const SQLFormatter = lazy(() => import('./pages/SQLFormatter'))
+const CSVFormatter = lazy(() => import('./pages/CSVFormatter'))
+const UUIDGenerator = lazy(() => import('./pages/UUIDGenerator'))
+const TimestampConverter = lazy(() => import('./pages/TimestampConverter'))
+const PasswordGenerator = lazy(() => import('./pages/PasswordGenerator'))
+const JWTEncoder = lazy(() => import('./pages/JWTEncoder'))
 import {
   RotateClockwiseIcon,
   File01Icon,
@@ -56,32 +56,32 @@ import {
   CellularNetworkIcon,
   DatabaseIcon
 } from 'hugeicons-react'
-import QRCodeGenerator from './pages/QRCodeGenerator'
-import ColorConverter from './pages/ColorConverter'
-import CSSBeautifier from './pages/CSSBeautifier'
-import HTMLEncoder from './pages/HTMLEncoder'
-import CSPGenerator from './pages/CSPGenerator'
-import ReverseShellGenerator from './pages/ReverseShellGenerator'
-import XXEGenerator from './pages/XXEGenerator'
-import XSSGenerator from './pages/XSSGenerator'
-import SQLInjectionGenerator from './pages/SQLInjectionGenerator'
-import NoSQLInjectionGenerator from './pages/NoSQLInjectionGenerator'
-import GraphQLInjectionGenerator from './pages/GraphQLInjectionGenerator'
-import SSTIGenerator from './pages/SSTIGenerator'
-import HTTPParameterPollutionGenerator from './pages/HTTPParameterPollutionGenerator'
-import CommandInjectionGenerator from './pages/CommandInjectionGenerator'
-import LDAPInjectionGenerator from './pages/LDAPInjectionGenerator'
-import PathTraversalGenerator from './pages/PathTraversalGenerator'
-import SSRFGenerator from './pages/SSRFGenerator'
-import NumberBaseConverter from './pages/NumberBaseConverter'
-import SubnetCalculator from './pages/SubnetCalculator'
-import DiffViewer from './pages/DiffViewer'
-import HTTPHeadersParser from './pages/HTTPHeadersParser'
-import Tools from './pages/Tools'
-import FlowMap from './pages/FlowMap'
-import LabNotes from './pages/LabNotes'
-import About from './pages/About'
-import Contact from './pages/Contact'
+const QRCodeGenerator = lazy(() => import('./pages/QRCodeGenerator'))
+const ColorConverter = lazy(() => import('./pages/ColorConverter'))
+const CSSBeautifier = lazy(() => import('./pages/CSSBeautifier'))
+const HTMLEncoder = lazy(() => import('./pages/HTMLEncoder'))
+const CSPGenerator = lazy(() => import('./pages/CSPGenerator'))
+const ReverseShellGenerator = lazy(() => import('./pages/ReverseShellGenerator'))
+const XXEGenerator = lazy(() => import('./pages/XXEGenerator'))
+const XSSGenerator = lazy(() => import('./pages/XSSGenerator'))
+const SQLInjectionGenerator = lazy(() => import('./pages/SQLInjectionGenerator'))
+const NoSQLInjectionGenerator = lazy(() => import('./pages/NoSQLInjectionGenerator'))
+const GraphQLInjectionGenerator = lazy(() => import('./pages/GraphQLInjectionGenerator'))
+const SSTIGenerator = lazy(() => import('./pages/SSTIGenerator'))
+const HTTPParameterPollutionGenerator = lazy(() => import('./pages/HTTPParameterPollutionGenerator'))
+const CommandInjectionGenerator = lazy(() => import('./pages/CommandInjectionGenerator'))
+const LDAPInjectionGenerator = lazy(() => import('./pages/LDAPInjectionGenerator'))
+const PathTraversalGenerator = lazy(() => import('./pages/PathTraversalGenerator'))
+const SSRFGenerator = lazy(() => import('./pages/SSRFGenerator'))
+const NumberBaseConverter = lazy(() => import('./pages/NumberBaseConverter'))
+const SubnetCalculator = lazy(() => import('./pages/SubnetCalculator'))
+const DiffViewer = lazy(() => import('./pages/DiffViewer'))
+const HTTPHeadersParser = lazy(() => import('./pages/HTTPHeadersParser'))
+const Tools = lazy(() => import('./pages/Tools'))
+const FlowMap = lazy(() => import('./pages/FlowMap'))
+const LabNotes = lazy(() => import('./pages/LabNotes'))
+const About = lazy(() => import('./pages/About'))
+const Contact = lazy(() => import('./pages/Contact'))
 import './App.css'
 import './App.extra.css'
 
@@ -469,7 +469,9 @@ export default function App() {
           />
         )}
         <div className="main-content">
-          {content}
+          <Suspense fallback={<div className="page-loading" role="status" aria-live="polite">Loading…</div>}>
+            {content}
+          </Suspense>
         </div>
         {renderFooter()}
       </div>
