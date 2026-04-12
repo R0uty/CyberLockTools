@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useSEO } from '../hooks/useSEO'
+import { showFeedback } from '../utils/feedback'
 import { formatCSV, getCSVStats, validateCSV, csvToJSON, jsonToCSV } from '../utils/csvFormatter'
 import './CSVFormatter.css'
 
@@ -105,7 +106,7 @@ export default function CSVFormatter() {
       return
     }
     navigator.clipboard.writeText(output)
-    alert('Copied to clipboard!')
+    showFeedback('Copied to clipboard!')
   }
 
   const handleDownload = () => {

@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useSEO } from '../hooks/useSEO'
+import { showFeedback } from '../utils/feedback'
 
 export default function Base64() {
   useSEO({
@@ -50,7 +51,7 @@ export default function Base64() {
       return
     }
     navigator.clipboard.writeText(output)
-    alert('Copied to clipboard!')
+    showFeedback('Copied to clipboard!')
   }
 
   const handleClear = () => {

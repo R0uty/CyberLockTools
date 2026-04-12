@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useSEO } from '../hooks/useSEO'
+import { showFeedback } from '../utils/feedback'
 
 export default function ROT() {
   useSEO({
@@ -32,7 +33,7 @@ export default function ROT() {
 
   const handleCopy = () => {
     navigator.clipboard.writeText(output)
-    alert('Copied to clipboard!')
+    showFeedback('Copied to clipboard!')
   }
 
   return (

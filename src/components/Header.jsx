@@ -1,8 +1,22 @@
 import './Header.css'
 
 export default function Header({ onLogoClick, currentPage, onPageChange }) {
+  const navItems = [
+    ['home', 'Home'],
+    ['flow-map', 'Flow Map'],
+    ['tools', 'Tools'],
+    ['lab-notes', 'Lab Notes'],
+    ['about', 'About'],
+    ['contact', 'Contact']
+  ]
+
   const handleNavClick = (page) => {
     onPageChange(page)
+  }
+
+  const handleNavLinkClick = (event, page) => {
+    event.preventDefault()
+    handleNavClick(page)
   }
 
   const getLinkClass = (page) => {
@@ -13,18 +27,31 @@ export default function Header({ onLogoClick, currentPage, onPageChange }) {
     <header className="header">
       <div className="header-container">
         <div className="logo">
-          <h1 onClick={() => {
-            onLogoClick()
-            handleNavClick('home')
-          }} className="logo-heading">R0uty's Cyber Lab</h1>
+          <a
+            href="#home"
+            className="logo-heading"
+            aria-label="Go to home page"
+            onClick={(event) => {
+              event.preventDefault()
+              onLogoClick()
+              handleNavClick('home')
+            }}
+          >
+            <h1>R0uty's Cyber Lab</h1>
+          </a>
         </div>
-        <nav className="nav">
-          <a className={getLinkClass('home')} onClick={() => handleNavClick('home')}>Home</a>
-          <a className={getLinkClass('flow-map')} onClick={() => handleNavClick('flow-map')}>Flow Map</a>
-          <a className={getLinkClass('tools')} onClick={() => handleNavClick('tools')}>Tools</a>
-          <a className={getLinkClass('lab-notes')} onClick={() => handleNavClick('lab-notes')}>Lab Notes</a>
-          <a className={getLinkClass('about')} onClick={() => handleNavClick('about')}>About</a>
-          <a className={getLinkClass('contact')} onClick={() => handleNavClick('contact')}>Contact</a>
+        <nav className="nav" aria-label="Primary navigation">
+          {navItems.map(([page, label]) => (
+            <a
+              key={page}
+              href={`#${page}`}
+              className={getLinkClass(page)}
+              aria-current={currentPage === page ? 'page' : undefined}
+              onClick={(event) => handleNavLinkClick(event, page)}
+            >
+              {label}
+            </a>
+          ))}
         </nav>
       </div>
     </header>

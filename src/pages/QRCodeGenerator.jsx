@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react'
 import { QRCodeCanvas } from 'qrcode.react'
 import { useSEO } from '../hooks/useSEO'
+import { showFeedback } from '../utils/feedback'
 import './QRCodeGenerator.css'
 
 export default function QRCodeGenerator() {
@@ -50,10 +51,10 @@ export default function QRCodeGenerator() {
     try {
       canvas.toBlob((blob) => {
         navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })])
-        alert('QR code copied to clipboard!')
+        showFeedback('QR code copied to clipboard!')
       })
     } catch (err) {
-      alert('Failed to copy: ' + err.message)
+      showFeedback('Failed to copy: ' + err.message, 'error')
     }
   }
 

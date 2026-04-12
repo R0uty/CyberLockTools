@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useSEO } from '../hooks/useSEO'
+import { showFeedback } from '../utils/feedback'
 import { timestampToDate, dateToTimestamp, getCurrentTimestamp, dateDifference } from '../utils/timestampConverter'
 import './TimestampConverter.css'
 
@@ -83,7 +84,7 @@ export default function TimestampConverter() {
 
   const handleCopy = (text) => {
     navigator.clipboard.writeText(text)
-    alert('Copied to clipboard!')
+    showFeedback('Copied to clipboard!')
   }
 
   const handleClear = () => {

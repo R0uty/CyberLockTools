@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useSEO } from '../hooks/useSEO'
+import { showFeedback } from '../utils/feedback'
 import { formatYAML, getYAMLStats, yamlToJSON } from '../utils/yamlFormatter'
 import './YAMLFormatter.css'
 
@@ -74,7 +75,7 @@ export default function YAMLFormatter() {
       return
     }
     navigator.clipboard.writeText(output)
-    alert('Copied to clipboard!')
+    showFeedback('Copied to clipboard!')
   }
 
   const handleClear = () => {

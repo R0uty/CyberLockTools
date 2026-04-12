@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useSEO } from '../hooks/useSEO'
+import { showFeedback } from '../utils/feedback'
 
 export default function URLEncoder() {
   useSEO({
@@ -50,7 +51,7 @@ export default function URLEncoder() {
       return
     }
     navigator.clipboard.writeText(output)
-    alert('Copied to clipboard!')
+    showFeedback('Copied to clipboard!')
   }
 
   const handleClear = () => {

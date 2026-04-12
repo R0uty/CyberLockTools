@@ -1,5 +1,6 @@
-import { useState, useRef } from 'react'
+import { useRef, useState } from 'react'
 import { useSEO } from '../hooks/useSEO'
+import { showFeedback } from '../utils/feedback'
 import {
   hexToRgb, rgbToHex, rgbToHsl, hslToRgb, rgbToHsv, hsvToRgb,
   formatRgb, formatHsl, formatHsv, getColorInfo
@@ -118,7 +119,7 @@ export default function ColorConverter() {
 
   const handleCopy = (text) => {
     navigator.clipboard.writeText(text)
-    alert('Copied to clipboard!')
+    showFeedback('Copied to clipboard!')
   }
 
   const handleRandom = () => {

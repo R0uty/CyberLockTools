@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useSEO } from '../hooks/useSEO';
+import { showFeedback } from '../utils/feedback';
 import { Copy01Icon } from 'hugeicons-react';
 import {
   getAllCategories,
@@ -12,10 +13,11 @@ import {
 import './GraphQLInjectionGenerator.css';
 
 export default function GraphQLInjectionGenerator() {
-  useSEO(
-    'GraphQL Injection Generator - R0uty\'s Cyber Lab',
-    'Educational GraphQL injection and introspection payload generator. Learn about GraphQL API vulnerabilities with tutorials and examples.'
-  );
+  useSEO({
+    title: 'GraphQL Injection Generator - R0uty\'s Cyber Lab',
+    description: 'Educational GraphQL injection and introspection payload generator. Learn about GraphQL API vulnerabilities with tutorials and examples.',
+    keywords: 'graphql injection, graphql security, introspection, api security, payload generator, cybersecurity education'
+  });
 
   const [selectedCategory, setSelectedCategory] = useState('INTROSPECTION');
   const [selectedPayload, setSelectedPayload] = useState(0);
@@ -32,7 +34,7 @@ export default function GraphQLInjectionGenerator() {
 
   const copyToClipboard = (text) => {
     navigator.clipboard.writeText(text);
-    alert('Copied to clipboard!');
+    showFeedback('Copied to clipboard!');
   };
 
   if (showLegalWarning) {

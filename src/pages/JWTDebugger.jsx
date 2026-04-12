@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useSEO } from '../hooks/useSEO'
+import { showFeedback } from '../utils/feedback'
 import { decodeJWT, formatJSON } from '../utils/jwtDecoder'
 import './JWTDebugger.css'
 
@@ -33,7 +34,7 @@ export default function JWTDebugger() {
 
   const handleCopy = (text) => {
     navigator.clipboard.writeText(text)
-    alert('Copied to clipboard!')
+    showFeedback('Copied to clipboard!')
   }
 
   const handleClear = () => {

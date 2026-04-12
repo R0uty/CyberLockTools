@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useSEO } from '../hooks/useSEO'
+import { showFeedback } from '../utils/feedback'
 import { formatXML, getXMLStats, minifyXML } from '../utils/xmlFormatter'
 import './XMLFormatter.css'
 
@@ -97,7 +98,7 @@ export default function XMLFormatter() {
       return
     }
     navigator.clipboard.writeText(output)
-    alert('Copied to clipboard!')
+    showFeedback('Copied to clipboard!')
   }
 
   const handleDownload = () => {

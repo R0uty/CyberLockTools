@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useSEO } from '../hooks/useSEO';
+import { showFeedback } from '../utils/feedback';
 import { Copy01Icon } from 'hugeicons-react';
 import {
   getAllCategories,
@@ -11,10 +12,11 @@ import {
 import './HTTPParameterPollutionGenerator.css';
 
 export default function HTTPParameterPollutionGenerator() {
-  useSEO(
-    'HTTP Parameter Pollution Generator - R0uty\'s Cyber Lab',
-    'Educational HTTP parameter pollution payload generator. Learn about web server security vulnerabilities with tutorials and examples.'
-  );
+  useSEO({
+    title: 'HTTP Parameter Pollution Generator - R0uty\'s Cyber Lab',
+    description: 'Educational HTTP parameter pollution payload generator. Learn about web server security vulnerabilities with tutorials and examples.',
+    keywords: 'http parameter pollution, hpp, web security, payload generator, request pollution, cybersecurity education'
+  });
 
   const [selectedCategory, setSelectedCategory] = useState('GET_POLLUTION');
   const [selectedPayload, setSelectedPayload] = useState(0);
@@ -31,7 +33,7 @@ export default function HTTPParameterPollutionGenerator() {
 
   const copyToClipboard = (text) => {
     navigator.clipboard.writeText(text);
-    alert('Copied to clipboard!');
+    showFeedback('Copied to clipboard!');
   };
 
   if (showLegalWarning) {

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import CryptoJS from 'crypto-js'
 import { useSEO } from '../hooks/useSEO'
+import { showFeedback } from '../utils/feedback'
 
 export default function HashGenerator() {
   useSEO({
@@ -69,7 +70,7 @@ export default function HashGenerator() {
       return
     }
     navigator.clipboard.writeText(output)
-    alert('Hash copied to clipboard!')
+    showFeedback('Hash copied to clipboard!')
   }
 
   const handleClear = () => {

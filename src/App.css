@@ -149,6 +149,34 @@ body {
   width: 100%;
 }
 
+.app-feedback-region {
+  position: fixed;
+  top: 1.25rem;
+  right: 1.25rem;
+  z-index: 1200;
+  pointer-events: none;
+}
+
+.app-feedback-toast {
+  min-width: 220px;
+  max-width: min(420px, 85vw);
+  padding: 0.8rem 1rem;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: rgba(8, 12, 18, 0.92);
+  color: #ecf2ff;
+  box-shadow: 0 8px 26px rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(8px);
+  font-size: 0.92rem;
+  line-height: 1.45;
+  animation: fadeIn 0.18s ease-out;
+}
+
+.app-feedback-toast--error {
+  border-color: rgba(255, 120, 120, 0.5);
+  color: #ffd9d9;
+}
+
 /* Main Content */
 .main-content {
   flex: 1;
@@ -680,6 +708,16 @@ p {
 
   .nav a::after {
     bottom: -8px;
+  }
+
+  .app-feedback-region {
+    top: 0.85rem;
+    right: 0.85rem;
+    left: 0.85rem;
+  }
+
+  .app-feedback-toast {
+    max-width: 100%;
   }
 
   .hero {

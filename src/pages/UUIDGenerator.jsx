@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useSEO } from '../hooks/useSEO'
+import { showFeedback } from '../utils/feedback'
 import { generateUUIDv4, generateUUIDv1, generateMultipleUUIDs, isValidUUID, getUUIDVersion } from '../utils/uuidGenerator'
 import './UUIDGenerator.css'
 
@@ -87,7 +88,7 @@ export default function UUIDGenerator() {
       return
     }
     navigator.clipboard.writeText(uuids.join('\n'))
-    alert('Copied all UUIDs to clipboard!')
+    showFeedback('Copied all UUIDs to clipboard!')
   }
 
   const handleDownload = () => {
@@ -106,7 +107,7 @@ export default function UUIDGenerator() {
 
   const handleCopyOne = (uuid) => {
     navigator.clipboard.writeText(uuid)
-    alert('Copied to clipboard!')
+    showFeedback('Copied to clipboard!')
   }
 
   const handleClear = () => {

@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useSEO } from '../hooks/useSEO'
+import { showFeedback } from '../utils/feedback'
 import { formatSQL, getSQLStats, minifySQL, validateSQL } from '../utils/sqlFormatter'
 import './SQLFormatter.css'
 
@@ -97,7 +98,7 @@ export default function SQLFormatter() {
       return
     }
     navigator.clipboard.writeText(output)
-    alert('Copied to clipboard!')
+    showFeedback('Copied to clipboard!')
   }
 
   const handleDownload = () => {

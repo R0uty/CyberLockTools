@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useSEO } from '../hooks/useSEO'
+import { showFeedback } from '../utils/feedback'
 import { generatePassword, calculatePasswordStrength, generateMultiplePasswords } from '../utils/passwordGenerator'
 import './PasswordGenerator.css'
 
@@ -72,7 +73,7 @@ export default function PasswordGenerator() {
 
   const handleCopy = (text) => {
     navigator.clipboard.writeText(text)
-    alert('Copied to clipboard!')
+    showFeedback('Copied to clipboard!')
   }
 
   const handleCopyAll = () => {
@@ -81,7 +82,7 @@ export default function PasswordGenerator() {
       return
     }
     navigator.clipboard.writeText(passwords.join('\n'))
-    alert('Copied all passwords!')
+    showFeedback('Copied all passwords!')
   }
 
   const handleDownload = () => {
