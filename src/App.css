@@ -1948,3 +1948,12 @@ p {
     gap: 2rem;
   }
 }
+
+.page-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+  color: var(--text-muted, #666);
+  font-size: 0.95rem;
+}
