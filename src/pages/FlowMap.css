@@ -33,6 +33,17 @@
   text-transform: uppercase;
 }
 
+.flow-map-header-copy {
+  margin: 0;
+  max-width: 72ch;
+  color: #c9c9c9;
+  line-height: 1.7;
+}
+
+.flow-map-header-copy strong {
+  color: #f2f2f2;
+}
+
 .flow-map-categories {
   display: flex;
   flex-wrap: wrap;
@@ -101,6 +112,218 @@
   padding: 1rem 0 1.5rem;
 }
 
+.flow-map-progress-panel {
+  display: grid;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  padding: 1.1rem 1.15rem;
+  border-radius: 22px;
+  border: 1px solid rgba(192, 192, 192, 0.12);
+  background: linear-gradient(180deg, rgba(20, 20, 20, 0.96), rgba(10, 10, 10, 0.94));
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.22);
+}
+
+.flow-map-progress-copy {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.flow-map-progress-kicker {
+  display: inline-flex;
+  width: fit-content;
+  margin-bottom: 0.5rem;
+  padding: 0.35rem 0.7rem;
+  border-radius: 999px;
+  border: 1px solid rgba(192, 192, 192, 0.14);
+  background: rgba(255, 255, 255, 0.03);
+  color: #b4b4b4;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.flow-map-progress-copy h2,
+.flow-map-progress-copy p {
+  margin: 0;
+}
+
+.flow-map-progress-copy h2 {
+  color: #f4f4f4;
+  font-size: 1.1rem;
+}
+
+.flow-map-progress-copy p {
+  margin-top: 0.35rem;
+  color: #c5c5c5;
+  line-height: 1.6;
+}
+
+.flow-map-progress-actions {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.7rem;
+  flex-wrap: wrap;
+}
+
+.flow-map-utility-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  padding: 0.65rem 0.95rem;
+  border-radius: 12px;
+  border: 1px solid rgba(192, 192, 192, 0.14);
+  background: rgba(255, 255, 255, 0.03);
+  color: #efefef;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 700;
+  transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+}
+
+.flow-map-utility-button:hover:not(:disabled) {
+  transform: translateY(-1px);
+  border-color: rgba(192, 192, 192, 0.24);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.flow-map-utility-button:disabled,
+.flow-map-stage-tab:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.flow-map-progress-bar {
+  height: 7px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.05);
+  overflow: hidden;
+}
+
+.flow-map-progress-bar-fill {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, rgba(192, 192, 192, 0.48), rgba(255, 255, 255, 0.92));
+}
+
+.flow-map-stage-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+}
+
+.flow-map-tools-panel {
+  display: grid;
+  gap: 0.9rem;
+  margin-bottom: 1rem;
+  padding: 1rem 1.05rem;
+  border-radius: 20px;
+  border: 1px solid rgba(192, 192, 192, 0.1);
+  background: rgba(255, 255, 255, 0.025);
+}
+
+.flow-map-tools-header p,
+.flow-map-tool-card h3,
+.flow-map-tool-card p {
+  margin: 0;
+}
+
+.flow-map-tools-kicker {
+  display: inline-flex;
+  width: fit-content;
+  margin-bottom: 0.45rem;
+  padding: 0.3rem 0.65rem;
+  border-radius: 999px;
+  border: 1px solid rgba(192, 192, 192, 0.14);
+  background: rgba(255, 255, 255, 0.03);
+  color: #b9b9b9;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.flow-map-tools-header p {
+  color: #c9c9c9;
+  line-height: 1.6;
+}
+
+.flow-map-tools-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 0.8rem;
+}
+
+.flow-map-tool-card {
+  display: grid;
+  gap: 0.45rem;
+  padding: 0.9rem 0.95rem;
+  border-radius: 16px;
+  border: 1px solid rgba(192, 192, 192, 0.12);
+  background: linear-gradient(180deg, rgba(24, 24, 24, 0.9), rgba(12, 12, 12, 0.94));
+}
+
+.flow-map-tool-card h3 {
+  color: #f2f2f2;
+  font-size: 1rem;
+}
+
+.flow-map-tool-card p {
+  color: #c6c6c6;
+  line-height: 1.6;
+}
+
+.flow-map-stage-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  min-height: 42px;
+  padding: 0.65rem 0.9rem;
+  border-radius: 14px;
+  border: 1px solid rgba(192, 192, 192, 0.14);
+  background: rgba(255, 255, 255, 0.03);
+  color: #ececec;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.88rem;
+  font-weight: 700;
+  transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+}
+
+.flow-map-stage-tab:hover:not(:disabled) {
+  transform: translateY(-1px);
+  border-color: rgba(192, 192, 192, 0.24);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.flow-map-stage-tab--active {
+  border-color: rgba(192, 192, 192, 0.3);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.flow-map-stage-tab--locked {
+  color: #9a9a9a;
+}
+
+.flow-map-stage-tab-index {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+  font-size: 0.76rem;
+  flex-shrink: 0;
+}
+
 .flow-map-toolbar {
   display: flex;
   align-items: center;
@@ -163,27 +386,22 @@
 .flow-map-viewport {
   overflow: auto;
   max-width: 100%;
-  min-height: clamp(560px, 76vh, 980px);
-  height: clamp(560px, 76vh, 980px);
+  min-height: clamp(640px, 82vh, 1120px);
+  height: clamp(640px, 82vh, 1120px);
   padding-bottom: 0.35rem;
   border-radius: 24px;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(192, 192, 192, 0.28) rgba(255, 255, 255, 0.04);
+  cursor: grab;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
 .flow-map-viewport::-webkit-scrollbar {
-  width: 11px;
-  height: 11px;
+  display: none;
 }
 
-.flow-map-viewport::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.04);
-  border-radius: 999px;
-}
-
-.flow-map-viewport::-webkit-scrollbar-thumb {
-  background: rgba(192, 192, 192, 0.28);
-  border-radius: 999px;
+.flow-map-viewport--dragging {
+  cursor: grabbing;
+  user-select: none;
 }
 
 .flow-map-scene {
@@ -518,6 +736,14 @@
     padding: 0.75rem 0 1rem;
   }
 
+  .flow-map-progress-copy {
+    flex-direction: column;
+  }
+
+  .flow-map-progress-actions {
+    justify-content: flex-start;
+  }
+
   .flow-map-toolbar {
     flex-direction: column;
     align-items: flex-start;
@@ -540,8 +766,8 @@
   }
 
   .flow-map-viewport {
-    min-height: clamp(460px, 68vh, 760px);
-    height: clamp(460px, 68vh, 760px);
+    min-height: clamp(520px, 74vh, 860px);
+    height: clamp(520px, 74vh, 860px);
     border-radius: 18px;
   }
 
@@ -590,8 +816,8 @@
   }
 
   .flow-map-viewport {
-    min-height: clamp(400px, 62vh, 640px);
-    height: clamp(400px, 62vh, 640px);
+    min-height: clamp(440px, 68vh, 720px);
+    height: clamp(440px, 68vh, 720px);
     border-radius: 16px;
   }
 

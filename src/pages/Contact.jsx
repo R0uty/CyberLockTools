@@ -5,8 +5,8 @@ import './Contact.css'
 export default function Contact() {
   useSEO({
     title: 'Contact R0uty - Cyber Lab',
-    description: 'Get in touch with R0uty. Send me feedback, feature requests, bug reports, or general inquiries. I\'d love to hear from you!',
-    keywords: 'contact, feedback, support, bug report, feature request'
+    description: 'Send feedback about flows, tools, bugs, and workflow ideas for R0uty\'s Cyber Lab.',
+    keywords: 'contact, feedback, workflow ideas, bug report, feature request'
   })
 
   const [formData, setFormData] = useState({
@@ -57,11 +57,11 @@ export default function Contact() {
       <div className="tool-header">
         <span className="contact-kicker">Get in touch</span>
         <h1>Get In Touch</h1>
-        <p>I'd love to hear from you. Send me your feedback, feature requests, or bug reports!</p>
+        <p>Send feedback on the Flow Map, the browser tools, or the overall workflow experience you want this suite to support.</p>
         <div className="contact-header-meta">
           <div className="contact-header-pill"><span>Channel</span><strong>Demo inbox</strong></div>
           <div className="contact-header-pill"><span>Validation</span><strong>Browser-side</strong></div>
-          <div className="contact-header-pill"><span>Best for</span><strong>Ideas, bugs, feedback</strong></div>
+          <div className="contact-header-pill"><span>Best for</span><strong>Flows, bugs, ideas</strong></div>
         </div>
       </div>
 
@@ -69,7 +69,7 @@ export default function Contact() {
         <section className="contact-form-panel">
           {submitted && (
             <div className="contact-success">
-              Thank you for your message! I appreciate your feedback and will review it soon.
+              Thank you for your message! Feedback on the suite, flows, and tools is always helpful.
             </div>
           )}
 
@@ -114,7 +114,7 @@ export default function Contact() {
                 name="subject"
                 value={formData.subject}
                 onChange={handleChange}
-                placeholder="e.g., Feature Request, Bug Report"
+                placeholder="e.g., New Flow Idea, Tool Feedback, Bug Report"
                 className="contact-input"
               />
             </div>
@@ -126,7 +126,7 @@ export default function Contact() {
                 name="message"
                 value={formData.message}
                 onChange={handleChange}
-                placeholder="Tell me what you think, request a feature, or report a bug..."
+                placeholder="Tell me what flow is missing, what tool needs work, or what feels unclear..."
                 className="textarea contact-input"
                 rows="6"
               />
@@ -145,27 +145,27 @@ export default function Contact() {
           <section className="info-box contact-info-box">
             <h2>What to send</h2>
             <p>
-              Share bug reports, tool ideas, workflow pain points, design feedback, or anything that would make the lab more useful.
+              Share bug reports, new flow ideas, missing tool suggestions, workflow pain points, copy issues, or anything that would make the suite easier to use.
             </p>
           </section>
 
           <section className="info-box contact-info-box">
             <h2>How this page works</h2>
             <p>
-              The form validates locally in your browser. It is a demo surface, so nothing is actually delivered anywhere.
+              The form validates locally in your browser. It is still a demo surface, so nothing is actually delivered anywhere, but the intent is to model a feedback channel for the suite.
             </p>
           </section>
 
           <section className="info-box contact-info-box">
-            <h2>Other Ways to Connect</h2>
+            <h2>Good Feedback Topics</h2>
             <ul className="contact-list">
-              <li><strong>Report a Bug:</strong> Let me know if you find issues with the tools</li>
-              <li><strong>Request a Feature:</strong> Suggest new additions or workflow improvements</li>
-              <li><strong>Share Feedback:</strong> Tell me what feels good and what feels off</li>
-              <li><strong>Ask Questions:</strong> Reach out if something is unclear</li>
+              <li><strong>Report a Bug:</strong> Let me know if a flow, page, or utility behaves incorrectly</li>
+              <li><strong>Request a Flow:</strong> Suggest a missing recon, testing, or validation path</li>
+              <li><strong>Request a Tool:</strong> Point out a browser-side helper that would support the workflows better</li>
+              <li><strong>Share UX Feedback:</strong> Tell me where the suite feels clear, confusing, too big, or too thin</li>
             </ul>
             <p className="contact-note">
-              In a production setup, this would connect to a real inbox or backend service.
+              In a production setup, this would connect to a real inbox or issue intake flow for the project.
             </p>
           </section>
         </aside>

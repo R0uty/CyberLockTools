@@ -91,9 +91,9 @@ export default function App() {
   const [currentCategory, setCurrentCategory] = useState(() => window.history.state?.category ?? null)
 
   useSEO({
-    title: "R0uty's Cyber Lab - My Free Online Tools Suite",
-    description: "R0uty's Cyber Lab - My collection of powerful online utilities for encoding, hashing, formatting, and generation. All tools run securely in your browser with zero server uploads.",
-    keywords: 'online tools, encoder decoder, hash generator, base64, rot13, url encoder, cron parser, free tools, r0uty'
+    title: "R0uty's Cyber Lab - Flow-Driven Security Toolkit",
+    description: "R0uty's Cyber Lab is a browser-first suite for guided recon, enumeration, entry-point, testing, vulnerability, and validation workflows.",
+    keywords: 'security workflow tools, recon flow, enumeration flow, browser tools, cyber lab, r0uty'
   })
 
   const applyNavigationState = useCallback((state) => {
@@ -525,8 +525,8 @@ export default function App() {
         <section className="hero">
           <div className="hero-copy">
             <span className="hero-kicker">Flow-first cyber lab</span>
-            <h1>Guided Flow Maps for Cyber Workflows</h1>
-            <p>Hey there! I&apos;m R0uty, and this lab is now centered around guided Flow Maps for stepping through decode paths, investigation ideas, and repeatable browser-based workflows. The tool collection supports those flows, and more flows are on the way.</p>
+            <h1>Guided Security Workflows With the Right Tools Underneath</h1>
+            <p>R0uty&apos;s Cyber Lab is a browser-first suite for walking through recon, enumeration, entry-point analysis, testing, vulnerability validation, and controlled proof workflows. The Flow Map gives you the path, and the toolset supports the work at each step.</p>
             <div className="privacy-badge hero-privacy-badge">
               All processing happens in your browser • No data is sent to server
             </div>
@@ -541,17 +541,17 @@ export default function App() {
             <div className="hero-summary-card">
               <span className="hero-summary-label">Main Feature</span>
               <strong>Flow Map</strong>
-              <p>Guided, visual paths for decode and investigation work directly in the browser.</p>
+              <p>Guided, visual paths for authorized security workflows directly in the browser.</p>
             </div>
             <div className="hero-summary-card">
-              <span className="hero-summary-label">More Flows</span>
-              <strong>Coming</strong>
-              <p>The map system is designed to grow beyond one workflow as more guided flows are added.</p>
+              <span className="hero-summary-label">Categories</span>
+              <strong>6 live</strong>
+              <p>Recon, enumeration, entry point, testing, vulnerability, and exploitation flows now anchor the suite.</p>
             </div>
             <div className="hero-summary-card">
               <span className="hero-summary-label">Tools</span>
               <strong>{tools.length}+</strong>
-              <p>Utilities remain available to support each flow and standalone tasks.</p>
+              <p>Browser utilities stay available for decoding, formatting, inspection, and standalone tasks.</p>
             </div>
             <div className="hero-summary-card">
               <span className="hero-summary-label">Privacy</span>
@@ -564,8 +564,8 @@ export default function App() {
         <section className="features">
           <div className="features-intro">
             <span className="features-kicker">Why this lab exists</span>
-            <h2>Built around guided flows first, with tools ready underneath</h2>
-            <p>The goal is to make recurring cyber workflows easier to follow visually, then give each step the right in-browser tools so you can move without context switching.</p>
+            <h2>Built for repeatable security workflows, not just isolated utilities</h2>
+            <p>The goal is to make common assessment paths easier to follow visually, then back them with fast browser tools so you can inspect, compare, decode, and document without losing context.</p>
           </div>
 
           <div className="features-grid">
@@ -587,7 +587,7 @@ export default function App() {
               <div className="feature-icon-wrapper"><BookOpen01Icon size={28} color="#c0c0c0" /></div>
               <div className="feature-copy">
                 <h3>Made to teach</h3>
-                <p>Many tools include context and examples so the lab is useful both for work and for learning.</p>
+                <p>Flows and tools are written to help both working practitioners and people learning how structured assessments unfold.</p>
               </div>
             </article>
             <article className="feature-item">
@@ -601,7 +601,7 @@ export default function App() {
               <div className="feature-icon-wrapper"><GitPullRequestIcon size={28} color="#c0c0c0" /></div>
               <div className="feature-copy">
                 <h3>Guided flow maps</h3>
-                <p>Use the Flow Map to walk through decode decisions visually, open the right tools, and keep your next step clear as more flows are added.</p>
+                <p>Use the Flow Map to move through recon, enumeration, testing, and validation decisions with clear next steps and recommended tooling.</p>
               </div>
             </article>
           </div>
