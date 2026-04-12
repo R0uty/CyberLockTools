@@ -90,11 +90,12 @@ export default function YAMLFormatter() {
   }
 
   return (
-    <div className="tool-page">
+    <div className="tool-page yaml-page">
       <div className="privacy-badge">
         All processing happens in your browser • No data is sent to server
       </div>
       <div className="tool-header">
+        <span className="yaml-kicker">Config formatting</span>
         <h1> Online YAML Formatter and Converter</h1>
         <p>Paste raw YAML and instantly format it with proper indentation for readability. You can also convert YAML to JSON format. All processing happens locally in your browser with no data transmission to any server.</p>
       </div>
@@ -183,7 +184,7 @@ export default function YAMLFormatter() {
         </div>
 
         <div className="info-box info-box--alt">
-          <h4>🧪 Test YAML Examples</h4>
+          <h4>Test YAML Examples</h4>
           
           <div className="example-block">
             <strong>Simple Configuration:</strong>

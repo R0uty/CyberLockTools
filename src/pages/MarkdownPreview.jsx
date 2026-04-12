@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { marked } from 'marked';
 import { useSEO } from '../hooks/useSEO';
+import './MarkdownPreview.css';
 
 export default function MarkdownPreview() {
   useSEO({
@@ -133,119 +134,130 @@ ${html}
   };
 
   return (
-    <div className="tool-container">
-      <h1>Online Markdown Preview Tool</h1>
-      <p className="tool-intro">
-        Write or paste markdown on the left to see a live HTML preview on the right. Copy the HTML output, rendered text, or download as a complete HTML file.
-      </p>
-
-      <div className="markdown-preview-container">
-        {/* Input Section */}
-        <div className="markdown-input-section">
-          <h3>Markdown Input</h3>
-          <textarea
-            value={markdown}
-            onChange={(e) => setMarkdown(e.target.value)}
-            placeholder="Enter your markdown here..."
-            className="markdown-textarea"
-          />
-          <div className="button-group">
-            <button
-              onClick={() => setMarkdown('')}
-              className="btn btn-secondary"
-            >
-              Clear
-            </button>
-            <button
-              onClick={() => copyToClipboard(markdown, 'markdown')}
-              className="btn btn-secondary"
-            >
-              {copied === 'markdown' ? '✓ Copied' : 'Copy Markdown'}
-            </button>
-          </div>
-        </div>
-
-        {/* Preview Section */}
-        <div className="markdown-preview-section">
-          <h3>Live Preview</h3>
-          <div
-            className="markdown-preview-box"
-            dangerouslySetInnerHTML={{ __html: html }}
-          />
-          <div className="button-group">
-            <button
-              onClick={() => copyToClipboard(html, 'html')}
-              className="btn btn-secondary"
-            >
-              {copied === 'html' ? '✓ Copied HTML' : 'Copy HTML'}
-            </button>
-            <button
-              onClick={() => copyToClipboard(markdown.replace(/#+\s+/g, '').replace(/[*_]/g, ''), 'text')}
-              className="btn btn-secondary"
-            >
-              {copied === 'text' ? '✓ Copied Text' : 'Copy Text'}
-            </button>
-            <button
-              onClick={downloadAsHTML}
-              className="btn btn-primary"
-            >
-              Download HTML
-            </button>
-          </div>
-        </div>
+    <div className="tool-page markdown-page">
+      <div className="privacy-badge">
+        All processing happens in your browser • No data is sent to server
       </div>
 
-      {/* Features & Info Section */}
-      <div className="info-section">
-        <div className="feature-item">
-          <h4>Supported Markdown</h4>
-          <ul>
-            <li><strong>Headings:</strong> # H1, ## H2, ### H3, etc.</li>
-            <li><strong>Bold/Italic:</strong> **bold**, *italic*, ***both***</li>
-            <li><strong>Lists:</strong> Ordered and unordered lists with nesting</li>
-            <li><strong>Code:</strong> Inline `code` and code blocks with ```</li>
-            <li><strong>Links:</strong> [Link text](url)</li>
-            <li><strong>Images:</strong> ![Alt text](image-url)</li>
-            <li><strong>Blockquotes:</strong> &gt; Start line with greater than symbol</li>
-            <li><strong>Horizontal Rule:</strong> ---, ***, or ___</li>
-          </ul>
-        </div>
+      <div className="tool-header">
+        <span className="markdown-kicker">Live rendering</span>
+        <h1>Online Markdown Preview Tool</h1>
+        <p>
+          Write or paste markdown on the left to see a live HTML preview on the right.
+          Copy the markdown source, rendered HTML, plain text, or export a complete HTML file.
+        </p>
+      </div>
 
-        <div className="feature-item">
-          <h4>✨ Features</h4>
-          <ul>
-            <li>Real-time live preview as you type</li>
-            <li>Copy markdown source or rendered HTML</li>
-            <li>💾 Download as complete HTML file with styling</li>
-            <li>Professional markdown styling</li>
-            <li>Responsive split-pane design</li>
-            <li>100% client-side - no data sent to servers</li>
-          </ul>
-        </div>
+      <div className="tool-container">
+        <section className="tool-section markdown-preview-shell">
+          <div className="markdown-preview-container">
+            <div className="markdown-input-section">
+              <div className="markdown-section-heading">
+                <span className="markdown-section-label">Editor</span>
+                <h3>Markdown input</h3>
+              </div>
+              <textarea
+                value={markdown}
+                onChange={(e) => setMarkdown(e.target.value)}
+                placeholder="Enter your markdown here..."
+                className="markdown-textarea"
+                spellCheck={false}
+              />
+              <div className="button-group markdown-button-group">
+                <button
+                  onClick={() => setMarkdown('')}
+                  className="action-btn clear-btn"
+                >
+                  Clear
+                </button>
+                <button
+                  onClick={() => copyToClipboard(markdown, 'markdown')}
+                  className="action-btn decode-btn"
+                >
+                  {copied === 'markdown' ? 'Copied Markdown' : 'Copy Markdown'}
+                </button>
+              </div>
+            </div>
 
-        <div className="feature-item">
-          <h4>💡 Use Cases</h4>
-          <ul>
-            <li>Writing blog posts or articles in markdown</li>
-            <li>Creating documentation for projects</li>
-            <li>Converting README files to HTML</li>
-            <li>Testing markdown syntax and formatting</li>
-            <li>Learning markdown with immediate visual feedback</li>
-            <li>Exporting markdown content as standalone HTML pages</li>
-          </ul>
-        </div>
+            <div className="markdown-preview-section">
+              <div className="markdown-section-heading">
+                <span className="markdown-section-label">Preview</span>
+                <h3>Live output</h3>
+              </div>
+              <div
+                className="markdown-preview-box"
+                dangerouslySetInnerHTML={{ __html: html }}
+              />
+              <div className="button-group markdown-button-group">
+                <button
+                  onClick={() => copyToClipboard(html, 'html')}
+                  className="action-btn decode-btn"
+                >
+                  {copied === 'html' ? 'Copied HTML' : 'Copy HTML'}
+                </button>
+                <button
+                  onClick={() => copyToClipboard(markdown.replace(/#+\s+/g, '').replace(/[*_]/g, ''), 'text')}
+                  className="action-btn clear-btn"
+                >
+                  {copied === 'text' ? 'Copied Text' : 'Copy Text'}
+                </button>
+                <button
+                  onClick={downloadAsHTML}
+                  className="action-btn encode-btn"
+                >
+                  Download HTML
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
 
-        <div className="feature-item">
-          <h4>🚀 Quick Tips</h4>
-          <ul>
-            <li>Start with # for headings (# H1, ## H2, etc.)</li>
-            <li>Use - or * for unordered lists, numbers for ordered lists</li>
-            <li>Wrap code in backticks: `code here`</li>
-            <li>Use ``` for multi-line code blocks</li>
-            <li>&gt; creates blockquotes for emphasis</li>
-            <li>Double space at end of line creates line break</li>
-          </ul>
-        </div>
+        <section className="markdown-info-grid">
+          <div className="info-box markdown-info-box">
+            <h4>Supported Markdown</h4>
+            <ul>
+              <li><strong>Headings:</strong> # H1, ## H2, ### H3, and more</li>
+              <li><strong>Bold and italic:</strong> **bold**, *italic*, and combined emphasis</li>
+              <li><strong>Lists:</strong> Ordered, unordered, and nested lists</li>
+              <li><strong>Code:</strong> Inline `code` and fenced code blocks</li>
+              <li><strong>Links and images:</strong> Standard markdown link and image syntax</li>
+              <li><strong>Quotes and rules:</strong> Blockquotes and horizontal dividers</li>
+            </ul>
+          </div>
+
+          <div className="info-box markdown-info-box">
+            <h4>Features</h4>
+            <ul>
+              <li>Real-time preview as you type or paste</li>
+              <li>Copy markdown source, rendered HTML, or simplified plain text</li>
+              <li>Download a standalone HTML export with built-in styling</li>
+              <li>Split-pane layout for writing and reviewing side by side</li>
+              <li>Browser-only processing for private drafts and notes</li>
+            </ul>
+          </div>
+
+          <div className="info-box markdown-info-box">
+            <h4>Use Cases</h4>
+            <ul>
+              <li>Drafting README files and project documentation</li>
+              <li>Testing markdown syntax before publishing</li>
+              <li>Converting markdown notes into shareable HTML</li>
+              <li>Learning markdown with immediate visual feedback</li>
+              <li>Reviewing how code blocks, links, and lists will render</li>
+            </ul>
+          </div>
+
+          <div className="info-box markdown-info-box">
+            <h4>Quick Tips</h4>
+            <ul>
+              <li>Use #, ##, and ### for heading hierarchy</li>
+              <li>Use -, *, or numbered lines for lists</li>
+              <li>Wrap inline code with backticks and blocks with triple backticks</li>
+              <li>Start a line with &gt; to create a blockquote</li>
+              <li>Add a blank line between sections to keep rendering predictable</li>
+            </ul>
+          </div>
+        </section>
       </div>
     </div>
   );

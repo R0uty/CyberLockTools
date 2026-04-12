@@ -1,0 +1,255 @@
+.markdown-page .tool-header {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  gap: 0.9rem;
+}
+
+.markdown-kicker,
+.markdown-section-label {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  padding: 0.35rem 0.75rem;
+  border-radius: 999px;
+  background: rgba(192, 192, 192, 0.08);
+  border: 1px solid rgba(192, 192, 192, 0.16);
+  color: #cfcfcf;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.markdown-page .tool-header p {
+  margin: 0;
+  max-width: 760px;
+}
+
+.markdown-preview-shell {
+  padding: 1.3rem;
+}
+
+.markdown-preview-container {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 1.25rem;
+}
+
+.markdown-input-section,
+.markdown-preview-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.markdown-section-heading {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.markdown-section-heading h3 {
+  margin: 0;
+  color: #f1f1f1;
+  font-size: 1.18rem;
+}
+
+.markdown-textarea,
+.markdown-preview-box {
+  border-radius: 16px;
+  background: rgba(10, 10, 10, 0.72);
+  border: 1px solid rgba(192, 192, 192, 0.12);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.02);
+}
+
+.markdown-textarea {
+  width: 100%;
+  min-height: 420px;
+  padding: 1rem 1.05rem;
+  color: #ececec;
+  font-family: 'Courier New', monospace;
+  font-size: 0.95rem;
+  line-height: 1.65;
+  resize: vertical;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.markdown-textarea:focus {
+  outline: none;
+  border-color: rgba(192, 192, 192, 0.28);
+  box-shadow: 0 0 0 3px rgba(192, 192, 192, 0.08);
+}
+
+.markdown-preview-box {
+  min-height: 420px;
+  padding: 1.15rem 1.2rem;
+  overflow-y: auto;
+  color: #e8e8e8;
+  line-height: 1.7;
+}
+
+.markdown-preview-box h1,
+.markdown-preview-box h2,
+.markdown-preview-box h3,
+.markdown-preview-box h4,
+.markdown-preview-box h5,
+.markdown-preview-box h6 {
+  color: #f0f0f0;
+  margin: 1.4rem 0 0.8rem;
+  line-height: 1.3;
+}
+
+.markdown-preview-box h1 {
+  font-size: 2rem;
+}
+
+.markdown-preview-box h2 {
+  font-size: 1.65rem;
+}
+
+.markdown-preview-box h3 {
+  font-size: 1.35rem;
+}
+
+.markdown-preview-box p,
+.markdown-preview-box ul,
+.markdown-preview-box ol,
+.markdown-preview-box table,
+.markdown-preview-box blockquote {
+  margin: 0.9rem 0;
+}
+
+.markdown-preview-box code {
+  display: inline-block;
+  padding: 0.15rem 0.45rem;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(192, 192, 192, 0.08);
+  color: #f1f1f1;
+  font-family: 'Courier New', monospace;
+  font-size: 0.9em;
+}
+
+.markdown-preview-box pre {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(192, 192, 192, 0.08);
+  border-radius: 14px;
+  padding: 1rem;
+  overflow-x: auto;
+}
+
+.markdown-preview-box pre code {
+  display: block;
+  padding: 0;
+  background: transparent;
+  border: 0;
+}
+
+.markdown-preview-box ul,
+.markdown-preview-box ol {
+  padding-left: 1.4rem;
+}
+
+.markdown-preview-box li {
+  margin-bottom: 0.45rem;
+}
+
+.markdown-preview-box blockquote {
+  padding: 0.95rem 1rem;
+  border-left: 3px solid rgba(0, 163, 255, 0.55);
+  background: rgba(0, 163, 255, 0.08);
+  border-radius: 0 14px 14px 0;
+  color: #d7e8f1;
+}
+
+.markdown-preview-box a {
+  color: #8fd8ff;
+  text-decoration: none;
+}
+
+.markdown-preview-box a:hover {
+  text-decoration: underline;
+}
+
+.markdown-preview-box strong {
+  color: #f3f3f3;
+}
+
+.markdown-preview-box em {
+  color: #d7d7d7;
+}
+
+.markdown-preview-box table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.markdown-preview-box th,
+.markdown-preview-box td {
+  border: 1px solid rgba(192, 192, 192, 0.12);
+  padding: 0.8rem 0.9rem;
+  text-align: left;
+}
+
+.markdown-preview-box th {
+  background: rgba(255, 255, 255, 0.05);
+  color: #f2f2f2;
+}
+
+.markdown-preview-box img {
+  max-width: 100%;
+  border-radius: 12px;
+}
+
+.markdown-preview-box hr {
+  border: none;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(192, 192, 192, 0.26), transparent);
+  margin: 1.4rem 0;
+}
+
+.markdown-button-group {
+  margin-top: 0;
+}
+
+.markdown-info-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.markdown-info-box {
+  margin-top: 0;
+}
+
+.markdown-info-box h4 {
+  color: #f1f1f1;
+}
+
+@media (max-width: 960px) {
+  .markdown-preview-container,
+  .markdown-info-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .markdown-page .tool-header {
+    padding-bottom: 1.5rem;
+  }
+
+  .markdown-button-group {
+    flex-direction: column;
+  }
+
+  .markdown-button-group .action-btn {
+    width: 100%;
+  }
+
+  .markdown-textarea,
+  .markdown-preview-box {
+    min-height: 320px;
+  }
+}

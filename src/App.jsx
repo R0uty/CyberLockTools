@@ -65,14 +65,20 @@ import ReverseShellGenerator from './pages/ReverseShellGenerator'
 import XXEGenerator from './pages/XXEGenerator'
 import XSSGenerator from './pages/XSSGenerator'
 import SQLInjectionGenerator from './pages/SQLInjectionGenerator'
+import NoSQLInjectionGenerator from './pages/NoSQLInjectionGenerator'
 import GraphQLInjectionGenerator from './pages/GraphQLInjectionGenerator'
+import SSTIGenerator from './pages/SSTIGenerator'
 import HTTPParameterPollutionGenerator from './pages/HTTPParameterPollutionGenerator'
 import CommandInjectionGenerator from './pages/CommandInjectionGenerator'
 import LDAPInjectionGenerator from './pages/LDAPInjectionGenerator'
 import PathTraversalGenerator from './pages/PathTraversalGenerator'
+import SSRFGenerator from './pages/SSRFGenerator'
 import NumberBaseConverter from './pages/NumberBaseConverter'
 import SubnetCalculator from './pages/SubnetCalculator'
+import DiffViewer from './pages/DiffViewer'
+import HTTPHeadersParser from './pages/HTTPHeadersParser'
 import Tools from './pages/Tools'
+import LabNotes from './pages/LabNotes'
 import About from './pages/About'
 import Contact from './pages/Contact'
 import './App.css'
@@ -284,6 +290,18 @@ export default function App() {
     },
     {
       category: 'Analyzers & Parsers',
+      iconName: 'ArrowDataTransferHorizontalIcon',
+      title: 'Text / JSON Diff Viewer',
+      description: 'Compare two versions of text or JSON side by side with normalized JSON formatting and line-by-line changes.'
+    },
+    {
+      category: 'Analyzers & Parsers',
+      iconName: 'GlobeIcon',
+      title: 'HTTP Headers Parser',
+      description: 'Parse raw HTTP request or response headers, detect duplicates, and review common security headers.'
+    },
+    {
+      category: 'Analyzers & Parsers',
       iconName: 'Calendar01Icon',
       title: 'Timestamp Converter',
       description: 'Convert between Unix timestamps and human-readable dates.'
@@ -321,15 +339,33 @@ export default function App() {
     },
     {
       category: 'Penetration Testing',
+      iconName: 'DatabaseIcon',
+      title: 'NoSQL Injection Generator',
+      description: 'Generate NoSQL injection payloads for authorized security testing across MongoDB, CouchDB, Elasticsearch, and unsafe JSON-filter APIs.'
+    },
+    {
+      category: 'Penetration Testing',
       iconName: 'CodeIcon',
       title: 'GraphQL Injection Generator',
       description: 'Generate GraphQL injection and introspection payloads for authorized security testing. Includes schema enumeration, authentication bypass, and DoS techniques.'
     },
     {
       category: 'Penetration Testing',
+      iconName: 'DocumentCodeIcon',
+      title: 'SSTI Generator & Analyzer',
+      description: 'Generate SSTI probes and analyze pasted outputs or error traces for Jinja2, Twig, Freemarker, Velocity, Smarty, Handlebars, and Liquid.'
+    },
+    {
+      category: 'Penetration Testing',
       iconName: 'GitPullRequestIcon',
       title: 'HTTP Parameter Pollution Generator',
       description: 'Generate HTTP parameter pollution payloads for authorized security testing. Includes WAF bypass, cache poisoning, and backend confusion techniques.'
+    },
+    {
+      category: 'Penetration Testing',
+      iconName: 'GlobeIcon',
+      title: 'SSRF Generator',
+      description: 'Generate SSRF payloads for authorized security testing, including cloud metadata, internal service, file read, IP bypass, protocol, and DNS/OOB probes.'
     },
     {
       category: 'Penetration Testing',
@@ -369,6 +405,8 @@ export default function App() {
     'YAML Formatter': YAMLFormatter,
     'Markdown Preview': MarkdownPreview,
     'Regex Tester': RegexTester,
+    'Text / JSON Diff Viewer': DiffViewer,
+    'HTTP Headers Parser': HTTPHeadersParser,
     'XML Formatter': XMLFormatter,
     'SQL Formatter': SQLFormatter,
     'CSV Formatter': CSVFormatter,
@@ -385,8 +423,11 @@ export default function App() {
     'XXE Generator': XXEGenerator,
     'XSS Generator': XSSGenerator,
     'SQL Injection Generator': SQLInjectionGenerator,
+    'NoSQL Injection Generator': NoSQLInjectionGenerator,
     'GraphQL Injection Generator': GraphQLInjectionGenerator,
+    'SSTI Generator & Analyzer': SSTIGenerator,
     'HTTP Parameter Pollution Generator': HTTPParameterPollutionGenerator,
+    'SSRF Generator': SSRFGenerator,
     'Command Injection Generator': CommandInjectionGenerator,
     'LDAP Injection Generator': LDAPInjectionGenerator,
     'Path Traversal Generator': PathTraversalGenerator,
@@ -403,6 +444,7 @@ export default function App() {
         </div>
         <div className="site-footer-links">
           <button className="site-footer-link" onClick={() => handlePageChange('tools')}>Tools</button>
+          <button className="site-footer-link" onClick={() => handlePageChange('lab-notes')}>Lab Notes</button>
           <button className="site-footer-link" onClick={() => handlePageChange('about')}>About</button>
           <button className="site-footer-link" onClick={() => handlePageChange('contact')}>Contact</button>
         </div>
@@ -452,17 +494,29 @@ export default function App() {
     return renderAppShell(<About />)
   }
 
+  if (currentPage === 'lab-notes') {
+    return renderAppShell(
+      <LabNotes
+        tools={tools}
+        onToolClick={handleToolClick}
+      />
+    )
+  }
+
   if (currentPage === 'contact') {
     return renderAppShell(<Contact />)
   }
 
   return renderAppShell(
     <>
-      <section className="hero">
+        <section className="hero">
           <div className="hero-copy">
             <span className="hero-kicker">Browser-first cyber lab</span>
             <h1>Welcome to My Cyber Lab</h1>
             <p>Hey there! I&apos;m R0uty, and this is my collection of {tools.length}+ browser-based utilities for encoding, analysis, formatting, generation, and security testing workflows. Everything runs locally in your browser, so your data stays on your device.</p>
+            <div className="privacy-badge hero-privacy-badge">
+              All processing happens in your browser • No data is sent to server
+            </div>
             <div className="hero-actions">
               <button className="cta-button" onClick={() => handlePageChange('tools')}>Browse My Tools</button>
               <button className="hero-secondary-button" onClick={() => handlePageChange('about')}>About the Lab</button>

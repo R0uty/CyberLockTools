@@ -117,11 +117,12 @@ export default function PasswordGenerator() {
   }
 
   return (
-    <div className="tool-page">
+    <div className="tool-page password-page">
       <div className="privacy-badge">
         All processing happens in your browser • No data is sent to server
       </div>
       <div className="tool-header">
+        <span className="password-kicker">Password security</span>
         <h1> Secure Password Generator</h1>
         <p>Generate strong, random passwords instantly with customizable options. Includes real-time password strength analysis, bulk generation, and security recommendations. All passwords are generated locally in your browser - no data is sent to any server.</p>
       </div>
@@ -130,7 +131,7 @@ export default function PasswordGenerator() {
         <div className="options-grid">
           {/* Settings */}
           <div className="panel">
-            <h3 className="panel-title">⚙️ Settings</h3>
+            <h3 className="panel-title">Settings</h3>
 
             <div className="form-field">
               <label className="field-label">
@@ -195,7 +196,7 @@ export default function PasswordGenerator() {
             </div>
 
             <button onClick={handleGenerate} className="action-btn encode-btn btn-full-width">
-              ✨ Generate Password
+              Generate Password
             </button>
           </div>
 
@@ -291,7 +292,7 @@ export default function PasswordGenerator() {
                   Copy All
                 </button>
                 <button onClick={handleDownload} className="copy-btn">
-                  ⬇️ Download
+                  Download
                 </button>
               </div>
             </div>

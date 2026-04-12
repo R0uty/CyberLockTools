@@ -36,36 +36,51 @@ export default function HTTPParameterPollutionGenerator() {
 
   if (showLegalWarning) {
     return (
-      <div className="hpp-disclaimer-page">
-        <h1>HTTP Parameter Pollution Generator</h1>
+      <div className="tool-page hpp-page hpp-disclaimer-page">
+        <div className="privacy-badge">
+          Authorized testing only • Review the notice before continuing
+        </div>
+        <div className="tool-header">
+          <span className="hpp-kicker">Request pollution</span>
+          <h1>HTTP Parameter Pollution Generator</h1>
+          <p>Review the legal and ethical notice before using this payload library for authorized security testing and educational work.</p>
+        </div>
         <div className="hpp-legal-box">
           {LEGAL_DISCLAIMER}
         </div>
-        <button
-          onClick={() => setShowLegalWarning(false)}
-          className="hpp-accept-btn"
-        >
-          I Understand & Accept
-        </button>
-        <button
-          onClick={() => window.history.back()}
-          className="hpp-back-btn"
-        >
-          Go Back
-        </button>
+        <div className="button-group hpp-disclaimer-actions">
+          <button
+            onClick={() => setShowLegalWarning(false)}
+            className="action-btn encode-btn"
+          >
+            I Understand & Accept
+          </button>
+          <button
+            onClick={() => window.history.back()}
+            className="action-btn clear-btn"
+          >
+            Go Back
+          </button>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="hpp-page">
-      <h1>HTTP Parameter Pollution Generator</h1>
-      <p className="hpp-page-desc">
-        Learn HTTP Parameter Pollution (HPP) techniques for authorized security testing and educational purposes.
-      </p>
+    <div className="tool-page hpp-page">
+      <div className="privacy-badge">
+        All processing happens in your browser • No data is sent to server
+      </div>
+      <div className="tool-header">
+        <span className="hpp-kicker">Request pollution</span>
+        <h1>HTTP Parameter Pollution Generator</h1>
+        <p className="hpp-page-desc">
+          Learn HTTP Parameter Pollution (HPP) techniques for authorized security testing and educational purposes.
+        </p>
+      </div>
 
       {/* Backend Selection */}
-      <div className="hpp-section-mb">
+      <div className="hpp-section-mb hpp-toolbar-card">
         <label className="hpp-field-label">
           Target Backend Type:
         </label>
@@ -174,7 +189,7 @@ export default function HTTPParameterPollutionGenerator() {
               {/* Copy Button */}
               <button
                 onClick={() => copyToClipboard(currentPayload.payload)}
-                className="hpp-copy-btn"
+                className="hpp-copy-btn action-btn encode-btn"
               >
                 <Copy01Icon size={18} />
                 Copy Payload

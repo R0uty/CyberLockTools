@@ -93,11 +93,12 @@ export default function TimestampConverter() {
   }
 
   return (
-    <div className="tool-page">
+    <div className="tool-page timestamp-page">
       <div className="privacy-badge">
         All processing happens in your browser • No data is sent to server
       </div>
       <div className="tool-header">
+        <span className="timestamp-kicker">Time conversion</span>
         <h1>Unix Timestamp Converter</h1>
         <p>Convert between Unix timestamps and human-readable dates instantly. Support for both seconds and milliseconds. Calculate differences between dates, get current timestamp, and work with timezones. All processing happens locally in your browser with no data transmission to any server.</p>
       </div>
@@ -157,7 +158,7 @@ export default function TimestampConverter() {
         <div className="button-group">
           {mode === 'difference' ? (
             <button onClick={handleDateDifference} className="action-btn encode-btn">
-              🔢 Calculate
+              Calculate
             </button>
           ) : (
             <button onClick={handleConvert} className="action-btn encode-btn">
@@ -166,7 +167,7 @@ export default function TimestampConverter() {
           )}
           {mode === 'ts-to-date' && (
             <button onClick={handleGetCurrent} className="action-btn encode-btn">
-              ⏱️ Current Time
+              Current Time
             </button>
           )}
           <button onClick={handleClear} className="action-btn clear-btn">
@@ -296,7 +297,7 @@ export default function TimestampConverter() {
         </div>
 
         <div className="info-box info-box--alt">
-          <h4>🧪 Examples</h4>
+          <h4>Examples</h4>
           <p className="examples-text">
             <code>1704067200</code> → January 1, 2024<br/>
             <code>1704067200000</code> → January 1, 2024 (milliseconds)<br/>

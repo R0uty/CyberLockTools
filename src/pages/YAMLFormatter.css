@@ -1,44 +1,103 @@
-.info-box--alt {
-  background-color: #f0f0f0;
-  margin-top: 20px;
+.yaml-page .tool-header {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  gap: 0.9rem;
 }
 
-.stats-grid {
+.yaml-kicker {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.35rem 0.75rem;
+  border-radius: 999px;
+  background: rgba(192, 192, 192, 0.08);
+  border: 1px solid rgba(192, 192, 192, 0.16);
+  color: #cfcfcf;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.yaml-page .tool-header p {
+  margin: 0;
+  max-width: 760px;
+}
+
+.yaml-page .button-group {
+  margin-top: 0;
+}
+
+.yaml-page .info-small,
+.yaml-page .example-note {
+  color: #a8a8a8;
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+
+.yaml-page .stats-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 15px;
-  font-size: 14px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
 }
 
-.stats-grid__full {
+.yaml-page .stats-grid > div {
+  padding: 1rem;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(192, 192, 192, 0.08);
+}
+
+.yaml-page .stats-grid__full {
   grid-column: 1 / -1;
 }
 
-.info-note {
-  margin-top: 10px;
+.yaml-page .info-note {
+  margin-top: 0.85rem;
 }
 
-.example-block {
-  margin-top: 10px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid #ddd;
+.yaml-page .example-block,
+.yaml-page .example-block--last {
+  margin-top: 0.95rem;
 }
 
-.example-block--last {
-  margin-top: 10px;
+.yaml-page .example-block {
+  padding-bottom: 0.95rem;
+  border-bottom: 1px solid rgba(192, 192, 192, 0.08);
 }
 
-.code-snippet {
-  font-size: 12px;
-  word-break: break-all;
-  font-family: monospace;
-  background-color: #fff;
-  padding: 8px;
-  border-radius: 4px;
-  margin: 5px 0;
+.yaml-page .code-snippet {
+  font-size: 0.84rem;
+  line-height: 1.75;
+  word-break: break-word;
+  font-family: 'Courier New', monospace;
+  background: rgba(10, 10, 10, 0.72);
+  color: #ececec;
+  padding: 0.85rem 0.95rem;
+  border-radius: 12px;
+  margin: 0.55rem 0 0;
+  border: 1px solid rgba(192, 192, 192, 0.08);
+  white-space: pre-wrap;
 }
 
-.example-note {
-  font-size: 12px;
-  margin-top: 10px;
+@media (max-width: 768px) {
+  .yaml-page .stats-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .yaml-page .tool-header {
+    padding-bottom: 1.5rem;
+  }
+
+  .yaml-page .button-group {
+    flex-direction: column;
+  }
+
+  .yaml-page .action-btn,
+  .yaml-page .copy-btn {
+    width: 100%;
+  }
 }

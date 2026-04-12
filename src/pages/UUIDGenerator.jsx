@@ -117,11 +117,12 @@ export default function UUIDGenerator() {
   }
 
   return (
-    <div className="tool-page">
+    <div className="tool-page uuid-page">
       <div className="privacy-badge">
         All processing happens in your browser • No data is sent to server
       </div>
       <div className="tool-header">
+        <span className="uuid-kicker">Identifiers</span>
         <h1>UUID/GUID Generator</h1>
         <p>Generate unique identifiers instantly. Create single or bulk UUIDs (v1 and v4), validate existing UUIDs, and choose from multiple format options including braces. Perfect for developers, database design, and system integration. All processing happens locally in your browser with no data transmission to any server.</p>
       </div>
@@ -211,7 +212,7 @@ export default function UUIDGenerator() {
                   Copy All
                 </button>
                 <button onClick={handleDownload} className="copy-btn">
-                  ⬇️ Download
+                  Download
                 </button>
               </div>
             </div>

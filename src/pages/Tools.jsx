@@ -119,6 +119,9 @@ export default function Tools({ tools, onToolClick, initialCategory = null }) {
 
   return (
     <div className="tool-page tools-page">
+      <div className="privacy-badge">
+        All processing happens in your browser • No data is sent to server
+      </div>
       <div className="tool-header">
         <span className="tools-kicker">Tool index</span>
         <h1>My Online Tools</h1>

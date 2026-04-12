@@ -819,9 +819,9 @@ p {
   max-width: 100%;
   padding: 0.7rem 1.1rem;
   border-radius: 999px;
-  background: rgba(192, 192, 192, 0.08);
-  border: 1px solid rgba(192, 192, 192, 0.18);
-  color: #d6d6d6;
+  background: rgba(0, 163, 255, 0.12);
+  border: 1px solid rgba(0, 163, 255, 0.28);
+  color: #57c7ff;
   font-size: 0.78rem;
   font-weight: 700;
   letter-spacing: 0.08em;
@@ -833,6 +833,11 @@ p {
   justify-content: center;
   gap: 0.5rem;
   animation: fadeIn 0.6s ease-out;
+}
+
+.hero-privacy-badge {
+  margin-top: 1.15rem;
+  margin-bottom: 0;
 }
 
 .tool-header {
