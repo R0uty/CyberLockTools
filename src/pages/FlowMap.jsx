@@ -518,9 +518,6 @@ export default function FlowMap({ onToolClick }) {
   }
 
   const currentStageIndex = stageIndex[currentStage] ?? 0
-  const visibleNodes = currentFlow
-    ? currentFlow.nodes.filter((node) => (stageIndex[node.id] ?? Infinity) <= currentStageIndex)
-    : []
   const currentStageNumber = currentFlow ? currentStageIndex + 1 : 0
   const totalStages = currentFlow?.stages.length ?? 0
   const currentStageLabel = currentFlow ? getStageLabel(currentFlow, currentStage) : ''
@@ -803,14 +800,15 @@ export default function FlowMap({ onToolClick }) {
             </div>
           )}
 
-              {visibleNodes.map((node) => {
+              {(currentFlow?.nodes ?? []).map((node) => {
+                const isRevealed = (stageIndex[node.id] ?? Infinity) <= currentStageIndex
                 const isCurrent = currentStage === node.id
 
                 return (
                   <button
                     key={`${selectedFlow}-${node.id}`}
                     type="button"
-                    className={`flow-map-node flow-map-node--active-path${isCurrent ? ' flow-map-node--current' : ''}`}
+                    className={`flow-map-node${isRevealed ? ' flow-map-node--active-path' : ''}${isCurrent ? ' flow-map-node--current' : ''}`}
                     style={{ left: `${node.x}%`, top: `${node.y}%` }}
                     onMouseMove={handleMapPointerMove}
                     onMouseLeave={resetMapPointerMove}
