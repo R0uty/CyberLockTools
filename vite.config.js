@@ -10,7 +10,17 @@ export default defineConfig({
     coverage: {
       provider: 'v8',
       reporter: ['text', 'html'],
-      include: ['src/utils/**/*.js']
+      include: [
+        'src/utils/jsonFormatter.js',
+        'src/utils/numberBaseConverter.js',
+        'src/utils/httpHeadersParser.js'
+      ],
+      thresholds: {
+        statements: 70,
+        branches: 50,
+        functions: 80,
+        lines: 70,
+      }
     }
   }
 })

@@ -800,6 +800,11 @@ export default function FlowMap({ onToolClick }) {
                   const startNode = currentFlow.nodes.find((node) => node.id === startId)
                   const endNode = currentFlow.nodes.find((node) => node.id === endId)
 
+                  // Defensive guard: skip malformed connections if config changes accidentally.
+                  if (!startNode || !endNode) {
+                    return null
+                  }
+
                   if ((stageIndex[startId] ?? 0) > revealedStageIndex || (stageIndex[endId] ?? 0) > revealedStageIndex) {
                     return null
                   }

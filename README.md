@@ -277,7 +277,7 @@ index.html                  # HTML template with SEO meta tags
 
 ## 🎨 Design & UX
 
-- **Modern Design:** Purple/blue gradient theme
+- **Modern Design:** Dark, high-contrast visual style with consistent tool-page patterns
 - **Smooth Animations:** Professional transitions and hover effects
 - **Fully Responsive:** Works perfectly on desktop, tablet, and mobile
 - **Accessible:** Semantic HTML and keyboard-friendly
@@ -333,7 +333,6 @@ npm run test && npm run lint && npm run build
 
 ## 📊 SEO Implementation
 
-### SEO Implementation
 All pages are optimized for search engines:
 
 - **Homepage:** Targets "online tools" and general keywords
@@ -565,13 +564,13 @@ Found a bug or have a feature suggestion?
 
 ## 📊 Performance
 
-- **Build Size:** ~451 KB JavaScript + 20 KB CSS
-- **Gzipped:** ~137.75 KB JavaScript + 4.14 KB CSS (~142 KB total)
+- **Build Output:** Optimized by Vite with code splitting and production minification
+- **Bundle Footprint:** Varies by release; use `npm run build` for current artifact sizes
 - **Load Time:** < 2 seconds on modern connections
 - **Runtime:** No external server calls, instant processing
 - **Caching:** All dependencies cached in dist/
-- **11 Tools:** All integrated in a single optimized bundle
-- **Module Count:** 77 modules bundled efficiently
+- **Tool Coverage:** Dozens of browser-based tools across encoding, parsing, generation, and security workflows
+- **Module Count:** Generated per build and available in Vite output logs
 
 ## 🔐 Security Considerations
 
