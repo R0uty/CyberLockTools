@@ -307,10 +307,6 @@
   background: rgba(255, 255, 255, 0.08);
 }
 
-.flow-map-stage-tab--locked {
-  color: #9a9a9a;
-}
-
 .flow-map-stage-tab-index {
   display: inline-flex;
   align-items: center;
@@ -395,6 +391,16 @@
   -ms-overflow-style: none;
 }
 
+.flow-map-stage--active .flow-map-viewport {
+  min-height: clamp(260px, 34vh, 460px);
+  height: clamp(260px, 34vh, 460px);
+}
+
+.flow-map-stage--active .flow-map-canvas {
+  opacity: 0.68;
+  transition: opacity 0.3s ease;
+}
+
 .flow-map-viewport::-webkit-scrollbar {
   display: none;
 }
@@ -470,11 +476,24 @@
 }
 
 .flow-map-lines line {
-  stroke: rgba(192, 192, 192, 0.22);
+  stroke: rgba(192, 192, 192, 0.18);
   stroke-width: 0.24;
   stroke-linecap: round;
   stroke-dasharray: 1.4 1.7;
-  animation: flow-map-line-pulse 7s ease-in-out infinite;
+  transition: stroke 0.2s ease, opacity 0.2s ease;
+}
+
+.flow-map-path--current {
+  stroke: rgba(244, 244, 244, 0.9);
+  stroke-width: 0.34;
+  stroke-dasharray: none;
+  opacity: 1;
+}
+
+.flow-map-path--passed {
+  stroke: rgba(220, 220, 220, 0.44);
+  stroke-dasharray: none;
+  opacity: 0.62;
 }
 
 .flow-map-empty-state {
@@ -517,16 +536,9 @@
   padding: 0;
   border: 0;
   background: transparent;
+  cursor: pointer;
   color: inherit;
   font: inherit;
-}
-
-.flow-map-node--clickable {
-  cursor: pointer;
-}
-
-.flow-map-node--active {
-  z-index: 3;
 }
 
 .flow-map-node-content {
@@ -553,48 +565,48 @@
   padding: 0.4rem 0.8rem;
   border-radius: 999px;
   background: rgba(8, 8, 8, 0.46);
-  color: rgba(244, 244, 244, 0.74);
+  color: rgba(244, 244, 244, 0.7);
   font-size: 0.9rem;
   font-weight: 700;
   white-space: nowrap;
-  transition: color 0.24s ease, background 0.24s ease, transform 0.24s ease;
+  transition: color 0.24s ease, background 0.24s ease;
 }
 
-.flow-map-node--active .flow-map-node-dot {
+.flow-map-node--current {
+  z-index: 3;
+}
+
+.flow-map-node--current .flow-map-node-dot {
   background: #ffffff;
   box-shadow:
-    0 0 0 7px rgba(192, 192, 192, 0.1),
-    0 0 28px rgba(232, 232, 232, 0.58);
-  transform: scale(1.15);
+    0 0 0 6px rgba(192, 192, 192, 0.1),
+    0 0 24px rgba(232, 232, 232, 0.5);
 }
 
-.flow-map-node--active .flow-map-node-label {
+.flow-map-node--current .flow-map-node-label {
   color: #ffffff;
-  background: rgba(14, 14, 14, 0.78);
-  transform: translateY(-1px);
+  background: rgba(14, 14, 14, 0.72);
 }
 
-.flow-map-node--complete .flow-map-node-dot {
-  background: rgba(232, 232, 232, 0.96);
+.flow-map-node--active-path .flow-map-node-dot {
+  background: rgba(220, 220, 220, 0.72);
   box-shadow:
-    0 0 0 5px rgba(192, 192, 192, 0.08),
-    0 0 18px rgba(232, 232, 232, 0.4);
+    0 0 0 4px rgba(192, 192, 192, 0.06),
+    0 0 14px rgba(220, 220, 220, 0.22);
 }
 
-.flow-map-node--complete .flow-map-node-label {
-  color: rgba(244, 244, 244, 0.9);
+.flow-map-node--active-path .flow-map-node-label {
+  color: rgba(244, 244, 244, 0.72);
+  background: rgba(8, 8, 8, 0.42);
 }
 
-.flow-map-node--clickable:hover .flow-map-node-dot {
+.flow-map-node:hover .flow-map-node-dot {
   transform: scale(1.2);
 }
 
-.flow-map-story-overlay {
-  position: absolute;
-  z-index: 4;
-  width: min(520px, calc(100% - 2rem));
-  max-width: calc(100% - 2rem);
-  transform: translateX(-50%);
+.flow-map-story-panel {
+  width: 100%;
+  margin-bottom: 1rem;
 }
 
 .flow-map-story {
@@ -606,12 +618,10 @@
   border-radius: 22px;
   background:
     linear-gradient(180deg, rgba(20, 20, 20, 0.96) 0%, rgba(10, 10, 10, 0.94) 100%);
-  border: 1px solid rgba(192, 192, 192, 0.14);
+  border: 1px solid rgba(192, 192, 192, 0.18);
   box-shadow:
-    0 18px 42px rgba(0, 0, 0, 0.32),
+    0 4px 18px rgba(0, 0, 0, 0.22),
     inset 0 1px 0 rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(10px);
-  overflow: hidden;
   display: flex;
   flex-direction: column;
   gap: 0.85rem;
@@ -719,15 +729,6 @@
   max-width: 68ch;
 }
 
-@keyframes flow-map-line-pulse {
-  0%, 100% {
-    opacity: 0.3;
-  }
-  50% {
-    opacity: 0.7;
-  }
-}
-
 @media (max-width: 768px) {
   .flow-map-stage {
     width: 100%;
@@ -771,15 +772,14 @@
     border-radius: 18px;
   }
 
-  .flow-map-story {
-    width: 100%;
-    padding: 1.2rem 1.1rem;
-    border-radius: 18px;
+  .flow-map-stage--active .flow-map-viewport {
+    min-height: clamp(200px, 26vh, 360px);
+    height: clamp(200px, 26vh, 360px);
   }
 
-  .flow-map-story-overlay {
-    width: min(420px, calc(100% - 1rem));
-    max-width: calc(100% - 1rem);
+  .flow-map-story {
+    padding: 1.2rem 1.1rem;
+    border-radius: 18px;
   }
 
   .flow-map-story::before {
@@ -821,14 +821,14 @@
     border-radius: 16px;
   }
 
+  .flow-map-stage--active .flow-map-viewport {
+    min-height: clamp(180px, 22vh, 300px);
+    height: clamp(180px, 22vh, 300px);
+  }
+
   .flow-map-story {
     padding: 1rem 0.95rem;
     border-radius: 16px;
-  }
-
-  .flow-map-story-overlay {
-    width: calc(100% - 0.75rem);
-    max-width: calc(100% - 0.75rem);
   }
 
   .flow-map-story::before {

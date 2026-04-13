@@ -2,7 +2,6 @@ import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { useSEO } from '../hooks/useSEO'
 import {
   STORAGE_STAGE_KEY,
-  STORAGE_REVEALED_KEY,
   STORAGE_TOOL_KEY,
   STORAGE_FEEDBACK_KEY,
   STORAGE_FLOW_KEY,
@@ -19,7 +18,7 @@ import {
   FLOWS,
   ACTIVE_FLOW_GROUP_KEYS
 } from '../data/flowMapConfig'
-import { readSessionNumber, readSessionValue, writeSessionValue } from '../utils/sessionStorage'
+import { readSessionValue, writeSessionValue } from '../utils/sessionStorage'
 import { renderFlowStoryContent, renderStartStoryContent } from './flowMapStoryContent'
 import './FlowMap.css'
 
@@ -54,19 +53,6 @@ function getValidStage(flow, stageId) {
   return flow?.stages.includes(stageId) ? stageId : DEFAULT_STAGE
 }
 
-function clampStageIndex(flow, stageIndex) {
-  if (!flow) {
-    return DEFAULT_REVEALED_STAGE_INDEX
-  }
-
-  const maxIndex = Math.max(flow.stages.length - 1, 0)
-  return Math.min(Math.max(stageIndex, 0), maxIndex)
-}
-
-function getStoredRevealedStage() {
-  return readSessionNumber(STORAGE_REVEALED_KEY, DEFAULT_REVEALED_STAGE_INDEX, { min: 0 })
-}
-
 function getStoredFlowKey() {
   const storedFlow = readSessionValue(STORAGE_FLOW_KEY)
   return getFlowByKey(storedFlow) ? storedFlow : ''
@@ -79,22 +65,13 @@ function getInitialFlowState() {
   if (!flow) {
     return {
       selectedFlow: '',
-      currentStage: DEFAULT_STAGE,
-      revealedStageIndex: DEFAULT_REVEALED_STAGE_INDEX
+      currentStage: DEFAULT_STAGE
     }
   }
 
-  const currentStage = getValidStage(flow, getStoredValue(STORAGE_STAGE_KEY, DEFAULT_STAGE))
-  const currentStageIndex = flow.stages.indexOf(currentStage)
-  const revealedStageIndex = clampStageIndex(
-    flow,
-    Math.max(getStoredRevealedStage(), currentStageIndex)
-  )
-
   return {
     selectedFlow,
-    currentStage,
-    revealedStageIndex
+    currentStage: getValidStage(flow, getStoredValue(STORAGE_STAGE_KEY, DEFAULT_STAGE))
   }
 }
 
@@ -123,7 +100,6 @@ export default function FlowMap({ onToolClick }) {
 
   const [selectedFlow, setSelectedFlow] = useState(() => initialFlowState.selectedFlow)
   const [currentStage, setCurrentStage] = useState(() => initialFlowState.currentStage)
-  const [revealedStageIndex, setRevealedStageIndex] = useState(() => initialFlowState.revealedStageIndex)
   const [selectedTool, setSelectedTool] = useState(() => getStoredValue(STORAGE_TOOL_KEY))
   const [feedback, setFeedback] = useState(() => getStoredValue(STORAGE_FEEDBACK_KEY))
   const [selectedAction, setSelectedAction] = useState(() => getStoredValue(STORAGE_ACTION_KEY))
@@ -166,10 +142,6 @@ export default function FlowMap({ onToolClick }) {
   }, [currentStage])
 
   useEffect(() => {
-    writeSessionValue(STORAGE_REVEALED_KEY, revealedStageIndex)
-  }, [revealedStageIndex])
-
-  useEffect(() => {
     writeSessionValue(STORAGE_TOOL_KEY, selectedTool)
   }, [selectedTool])
 
@@ -203,7 +175,6 @@ export default function FlowMap({ onToolClick }) {
 
   const resetFlowState = () => {
     setCurrentStage(DEFAULT_STAGE)
-    setRevealedStageIndex(DEFAULT_REVEALED_STAGE_INDEX)
     setSelectedTool('')
     setFeedback('')
     setSelectedAction('')
@@ -300,26 +271,18 @@ export default function FlowMap({ onToolClick }) {
     stopViewportDrag()
   }
 
-  const transitionToStage = (nextStage, options = {}) => {
+  const transitionToStage = (nextStage) => {
     if (!currentFlow || !currentFlow.stages.includes(nextStage)) {
       return false
     }
 
-    const nextIndex = currentFlow.stages.indexOf(nextStage)
-    const preserveReveal = options.preserveReveal ?? true
-
     setCurrentStage(nextStage)
-    setRevealedStageIndex((previousIndex) => clampStageIndex(
-      currentFlow,
-      preserveReveal ? Math.max(previousIndex, nextIndex) : nextIndex
-    ))
-
     return true
   }
 
-  const clearFeedbackAndTransition = (nextStage, options) => {
+  const clearFeedbackAndTransition = (nextStage) => {
     setFeedback('')
-    return transitionToStage(nextStage, options)
+    return transitionToStage(nextStage)
   }
 
   const handleStartClick = () => {
@@ -554,23 +517,17 @@ export default function FlowMap({ onToolClick }) {
     transitionToStage('next-step')
   }
 
+  const currentStageIndex = stageIndex[currentStage] ?? 0
   const visibleNodes = currentFlow
-    ? currentFlow.nodes.filter((node) => (stageIndex[node.id] ?? 0) <= revealedStageIndex)
+    ? currentFlow.nodes.filter((node) => (stageIndex[node.id] ?? Infinity) <= currentStageIndex)
     : []
-  const activeNode = currentFlow?.nodes.find((node) => node.id === currentStage) ?? null
-  const currentStageNumber = currentFlow ? (stageIndex[currentStage] ?? 0) + 1 : 0
+  const currentStageNumber = currentFlow ? currentStageIndex + 1 : 0
   const totalStages = currentFlow?.stages.length ?? 0
   const currentStageLabel = currentFlow ? getStageLabel(currentFlow, currentStage) : ''
-  const nextStageId = currentFlow ? currentFlow.stages[Math.min((stageIndex[currentStage] ?? 0) + 1, totalStages - 1)] : ''
+  const nextStageId = currentFlow ? currentFlow.stages[Math.min(currentStageIndex + 1, totalStages - 1)] : ''
   const nextStageLabel = currentFlow && currentStage !== 'start' && currentStageNumber < totalStages
     ? getStageLabel(currentFlow, nextStageId)
     : ''
-  const storyPosition = activeNode
-    ? {
-        left: `${Math.min(Math.max(activeNode.x, 24), 76)}%`,
-        top: `${Math.min(activeNode.y + 9, 62)}%`
-      }
-    : null
   const sceneWidth = Math.round(BASE_SCENE_WIDTH * zoomLevel)
   const sceneHeight = Math.round(BASE_SCENE_HEIGHT * zoomLevel)
 
@@ -677,7 +634,7 @@ export default function FlowMap({ onToolClick }) {
         </div>
       </div>
 
-      <section className="flow-map-stage" aria-label="Flow map canvas">
+      <section className={`flow-map-stage${currentFlow ? ' flow-map-stage--active' : ''}`} aria-label="Flow map canvas">
         {currentFlow ? (
           <div className="flow-map-progress-panel" aria-label="Flow progress">
             <div className="flow-map-progress-copy">
@@ -703,21 +660,20 @@ export default function FlowMap({ onToolClick }) {
             <div className="flow-map-progress-bar" aria-hidden="true">
               <span
                 className="flow-map-progress-bar-fill"
-                style={{ width: `${totalStages ? (revealedStageIndex / (totalStages - 1)) * 100 : 0}%` }}
+                style={{ width: `${totalStages ? (currentStageIndex / (totalStages - 1)) * 100 : 0}%` }}
               />
             </div>
             <div className="flow-map-stage-tabs" aria-label="Flow steps">
               {currentFlow.stages.map((stageId, index) => {
-                const isUnlocked = index <= revealedStageIndex
                 const isActive = stageId === currentStage
 
                 return (
                   <button
                     key={`${selectedFlow}-${stageId}-tab`}
                     type="button"
-                    className={`flow-map-stage-tab${isActive ? ' flow-map-stage-tab--active' : ''}${isUnlocked ? '' : ' flow-map-stage-tab--locked'}`}
+                    className={`flow-map-stage-tab${isActive ? ' flow-map-stage-tab--active' : ''}`}
                     onClick={() => handleStageSelect(stageId)}
-                    disabled={!isUnlocked}
+                    disabled={index > currentStageIndex}
                     aria-current={isActive ? 'step' : undefined}
                   >
                     <span className="flow-map-stage-tab-index">{index + 1}</span>
@@ -728,6 +684,16 @@ export default function FlowMap({ onToolClick }) {
             </div>
           </div>
         ) : null}
+
+        {currentFlow && (
+          <div className="flow-map-story-panel">
+            <div className={`flow-map-story${currentStage === 'success' || currentStage === 'next-step' ? ' flow-map-story--success' : ''}`}>
+              {currentStage === 'start'
+                ? renderStartStoryContent(storyProps)
+                : renderFlowStoryContent({ selectedFlow, storyProps })}
+            </div>
+          </div>
+        )}
 
         {currentFlow?.tools?.length ? (
           <div className="flow-map-tools-panel" aria-label="Recommended tools">
@@ -799,19 +765,28 @@ export default function FlowMap({ onToolClick }) {
                 {currentFlow?.connections.map(([startId, endId]) => {
                   const startNode = currentFlow.nodes.find((node) => node.id === startId)
                   const endNode = currentFlow.nodes.find((node) => node.id === endId)
+                  const startIndex = stageIndex[startId] ?? 0
+                  const endIndex = stageIndex[endId] ?? 0
 
                   // Defensive guard: skip malformed connections if config changes accidentally.
                   if (!startNode || !endNode) {
                     return null
                   }
 
-                  if ((stageIndex[startId] ?? 0) > revealedStageIndex || (stageIndex[endId] ?? 0) > revealedStageIndex) {
+                  // Only render edges where both ends have been reached.
+                  if (startIndex > currentStageIndex || endIndex > currentStageIndex) {
                     return null
                   }
+
+                  // Highlight the edge that leads into the active node; all others are passed.
+                  const pathClassName = endId === currentStage
+                    ? 'flow-map-path--current'
+                    : 'flow-map-path--passed'
 
                   return (
                     <line
                       key={`${selectedFlow}-${startId}-${endId}`}
+                      className={pathClassName}
                       x1={startNode.x}
                       y1={startNode.y}
                       x2={endNode.x}
@@ -829,20 +804,18 @@ export default function FlowMap({ onToolClick }) {
           )}
 
               {visibleNodes.map((node) => {
-                const isActive = currentStage === node.id
-                const isComplete = (stageIndex[node.id] ?? 0) < (stageIndex[currentStage] ?? 0)
-                const isClickable = (stageIndex[node.id] ?? 0) <= revealedStageIndex
+                const isCurrent = currentStage === node.id
 
                 return (
                   <button
                     key={`${selectedFlow}-${node.id}`}
                     type="button"
-                    className={`flow-map-node${isActive ? ' flow-map-node--active' : ''}${isComplete ? ' flow-map-node--complete' : ''}${isClickable ? ' flow-map-node--clickable' : ''}`}
+                    className={`flow-map-node flow-map-node--active-path${isCurrent ? ' flow-map-node--current' : ''}`}
                     style={{ left: `${node.x}%`, top: `${node.y}%` }}
                     onMouseMove={handleMapPointerMove}
                     onMouseLeave={resetMapPointerMove}
-                    onClick={isClickable ? () => handleStageSelect(node.id) : undefined}
-                    aria-current={isActive ? 'step' : undefined}
+                    onClick={() => handleStageSelect(node.id)}
+                    aria-current={isCurrent ? 'step' : undefined}
                     aria-label={node.label}
                   >
                     <span className="flow-map-node-content">
@@ -853,15 +826,7 @@ export default function FlowMap({ onToolClick }) {
                 )
               })}
 
-              {currentFlow && storyPosition && (
-                <div className="flow-map-story-overlay" style={storyPosition}>
-                  <div className={`flow-map-story${currentStage === 'success' || currentStage === 'next-step' ? ' flow-map-story--success' : ''}`}>
-                    {currentStage === 'start'
-                      ? renderStartStoryContent(storyProps)
-                      : renderFlowStoryContent({ selectedFlow, storyProps })}
-                  </div>
-                </div>
-              )}
+
             </div>
           </div>
         </div>
