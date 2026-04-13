@@ -1,3 +1,5 @@
+import React from 'react'
+
 const DECODE_TOOLS = ['ROT', 'Base64', 'URL Encoder']
 
 export function renderStartStoryContent({ currentFlow, handleStartClick, clearFlow }) {
@@ -11,7 +13,7 @@ export function renderStartStoryContent({ currentFlow, handleStartClick, clearFl
       </p>
       <div className="flow-map-actions">
         <button type="button" className="flow-map-button" onClick={handleStartClick}>
-          Begin flow
+          Start flow
         </button>
         <button type="button" className="flow-map-button flow-map-button--ghost" onClick={clearFlow}>
           Choose another flow
@@ -41,7 +43,7 @@ export function renderDecodeStoryContent({
             Try decoding
           </button>
           <button type="button" className="flow-map-button flow-map-button--ghost" onClick={resetFlowState}>
-            Reset flow
+            Restart
           </button>
         </div>
       </>
@@ -75,7 +77,7 @@ export function renderDecodeStoryContent({
     return (
       <>
         <span className="flow-map-story-step">Step 4</span>
-        <h2>Result?</h2>
+        <h2>Result</h2>
         <p>
           {selectedTool
             ? `After trying ${selectedTool}, choose the result that matches what you saw.`
@@ -101,10 +103,10 @@ export function renderDecodeStoryContent({
     <>
       <span className="flow-map-story-step">Step 5</span>
       <h2>Success</h2>
-      <p>You decoded the string (<strong>hello</strong>) — this could be a flag, password, or key; next step is to use it in input fields or validation points.</p>
+      <p>You decoded the string (<strong>hello</strong>) and now have a useful value. Next step: test it in input fields or validation points.</p>
       <div className="flow-map-actions">
         <button type="button" className="flow-map-button" onClick={resetFlowState}>
-          Restart flow
+          Restart
         </button>
       </div>
     </>
@@ -152,10 +154,10 @@ export function renderLoginStoryContent({
         <p>{description}</p>
         <div className="flow-map-actions">
           <button type="button" className="flow-map-button" onClick={handleLoginTestContinue}>
-            Continue to result
+            Continue to Result
           </button>
           <button type="button" className="flow-map-button flow-map-button--ghost" onClick={resetFlowState}>
-            Reset flow
+            Restart
           </button>
         </div>
       </>
@@ -166,7 +168,7 @@ export function renderLoginStoryContent({
     return (
       <>
         <span className="flow-map-story-step">Step 4</span>
-        <h2>Result?</h2>
+        <h2>Result</h2>
         <p>Choose what happened after testing the login form so the flow can guide the next branch.</p>
         <div className="flow-map-actions flow-map-actions--stacked">
           <button type="button" className="flow-map-button" onClick={() => handleLoginResultChoice('login-success')}>
@@ -191,7 +193,7 @@ export function renderLoginStoryContent({
         <p>Look for differences like wrong username versus wrong password responses. Even small wording or timing changes can reveal useful behavior in the login logic.</p>
         <div className="flow-map-actions">
           <button type="button" className="flow-map-button" onClick={handleLoginNextStep}>
-            Continue to next step
+            Continue to Next Step
           </button>
         </div>
       </>
@@ -212,7 +214,7 @@ export function renderLoginStoryContent({
       {feedback ? <p className="flow-map-feedback">{feedback}</p> : null}
       <div className="flow-map-actions">
         <button type="button" className="flow-map-button" onClick={resetFlowState}>
-          Restart flow
+          Restart
         </button>
       </div>
     </>
@@ -241,7 +243,7 @@ export function renderDiscoveryStoryContent({
             Look for hidden content
           </button>
           <button type="button" className="flow-map-button flow-map-button--ghost" onClick={resetFlowState}>
-            Reset flow
+            Restart
           </button>
         </div>
       </>
@@ -256,7 +258,7 @@ export function renderDiscoveryStoryContent({
         <p>Check common paths, hidden files, backup names, and likely directories. Tools like <strong>ffuf</strong> or <strong>dirb</strong> make this faster by applying wordlists against likely routes and filenames.</p>
         <div className="flow-map-actions">
           <button type="button" className="flow-map-button" onClick={handleDiscoveryEnumerate}>
-            Continue to enumerate
+            Continue to Enumerate
           </button>
         </div>
       </>
@@ -271,7 +273,7 @@ export function renderDiscoveryStoryContent({
         <p>Run directory or file discovery with <strong>ffuf</strong> or <strong>dirb</strong>, and use <strong>curl</strong> to confirm status codes, redirects, headers, and response differences for interesting hits.</p>
         <div className="flow-map-actions">
           <button type="button" className="flow-map-button" onClick={() => goToStage('result')}>
-            Continue to result
+            Continue to Result
           </button>
         </div>
       </>
@@ -282,7 +284,7 @@ export function renderDiscoveryStoryContent({
     return (
       <>
         <span className="flow-map-story-step">Step 5</span>
-        <h2>Result?</h2>
+        <h2>Result</h2>
         <p>Select the outcome that best matches what happened during discovery so the flow can guide the next move.</p>
         <div className="flow-map-actions flow-map-actions--stacked">
           <button type="button" className="flow-map-button" onClick={() => handleDiscoveryResultChoice('found-endpoint')}>
@@ -307,7 +309,7 @@ export function renderDiscoveryStoryContent({
         <p>Open the new endpoint, inspect the content, and look for clues such as parameters, downloadable files, references to hidden areas, or flag-like values.</p>
         <div className="flow-map-actions">
           <button type="button" className="flow-map-button" onClick={handleDiscoveryNextStep}>
-            Continue to next step
+            Continue to Next Step
           </button>
         </div>
       </>
@@ -328,7 +330,7 @@ export function renderDiscoveryStoryContent({
       {feedback ? <p className="flow-map-feedback">{feedback}</p> : null}
       <div className="flow-map-actions">
         <button type="button" className="flow-map-button" onClick={resetFlowState}>
-          Restart flow
+          Restart
         </button>
       </div>
     </>
@@ -382,10 +384,10 @@ export function renderEnumerationStoryContent({
         <p>{description}</p>
         <div className="flow-map-actions">
           <button type="button" className="flow-map-button" onClick={handleEnumerationContinue}>
-            Continue to enumeration
+            Continue to Enumeration
           </button>
           <button type="button" className="flow-map-button flow-map-button--ghost" onClick={resetFlowState}>
-            Reset flow
+            Restart
           </button>
         </div>
       </>
@@ -400,7 +402,7 @@ export function renderEnumerationStoryContent({
         <p>Pull concrete data now: usernames, shares, naming contexts, community strings, version details, or readable files that can become your next foothold.</p>
         <div className="flow-map-actions">
           <button type="button" className="flow-map-button" onClick={() => goToStage('result')}>
-            Continue to result
+            Continue to Result
           </button>
         </div>
       </>
@@ -411,7 +413,7 @@ export function renderEnumerationStoryContent({
     return (
       <>
         <span className="flow-map-story-step">Step 5</span>
-        <h2>Result?</h2>
+        <h2>Result</h2>
         <p>Select the strongest thing you uncovered during enumeration so the flow can steer the follow-up.</p>
         <div className="flow-map-actions flow-map-actions--stacked">
           <button type="button" className="flow-map-button" onClick={() => handleEnumerationResultChoice('found-users')}>
@@ -439,7 +441,7 @@ export function renderEnumerationStoryContent({
         <p>Validate what you found and decide how it can be reused. Usernames can feed login testing, shares can expose credentials or code, and config details can reveal the right vulnerability path.</p>
         <div className="flow-map-actions">
           <button type="button" className="flow-map-button" onClick={handleEnumerationNextStep}>
-            Continue to next step
+            Continue to Next Step
           </button>
         </div>
       </>
@@ -458,7 +460,7 @@ export function renderEnumerationStoryContent({
       {feedback ? <p className="flow-map-feedback">{feedback}</p> : null}
       <div className="flow-map-actions">
         <button type="button" className="flow-map-button" onClick={resetFlowState}>
-          Restart flow
+          Restart
         </button>
       </div>
     </>
@@ -486,7 +488,7 @@ export function renderInputStoryContent({
             Test how input is handled
           </button>
           <button type="button" className="flow-map-button flow-map-button--ghost" onClick={resetFlowState}>
-            Reset flow
+            Restart
           </button>
         </div>
       </>
@@ -501,7 +503,7 @@ export function renderInputStoryContent({
         <p>Enter simple values like normal text, special characters, or quotes such as <strong>&apos;</strong> or <strong>&quot;</strong> and watch how the page reacts.</p>
         <div className="flow-map-actions">
           <button type="button" className="flow-map-button" onClick={handleInputContinue}>
-            Continue to response check
+            Continue to Response Check
           </button>
         </div>
       </>
@@ -512,7 +514,7 @@ export function renderInputStoryContent({
     return (
       <>
         <span className="flow-map-story-step">Step 4</span>
-        <h2>Response Change?</h2>
+        <h2>Response Change</h2>
         <p>Select the outcome that best matches what happened after you tested the input field.</p>
         <div className="flow-map-actions flow-map-actions--stacked">
           <button type="button" className="flow-map-button" onClick={() => handleInputResultChoice('page-changed')}>
@@ -537,7 +539,7 @@ export function renderInputStoryContent({
         <p>A visible page change or error can indicate improper input handling. Compare responses carefully and consider trying structured inputs or encoded variations to learn how the field is processed.</p>
         <div className="flow-map-actions">
           <button type="button" className="flow-map-button" onClick={handleInputNextStep}>
-            Continue to next step
+            Continue to Next Step
           </button>
         </div>
       </>
@@ -556,7 +558,7 @@ export function renderInputStoryContent({
       {feedback ? <p className="flow-map-feedback">{feedback}</p> : null}
       <div className="flow-map-actions">
         <button type="button" className="flow-map-button" onClick={resetFlowState}>
-          Restart flow
+          Restart
         </button>
       </div>
     </>
@@ -584,7 +586,7 @@ export function renderResponseStoryContent({
             Inspect the response
           </button>
           <button type="button" className="flow-map-button flow-map-button--ghost" onClick={resetFlowState}>
-            Reset flow
+            Restart
           </button>
         </div>
       </>
@@ -599,7 +601,7 @@ export function renderResponseStoryContent({
         <p>Look for patterns such as JSON structures, tokens, encoded values, IDs, hidden fields, or anything that seems reusable in later requests.</p>
         <div className="flow-map-actions">
           <button type="button" className="flow-map-button" onClick={handleResponseContinue}>
-            Continue to data check
+            Continue to Data Check
           </button>
         </div>
       </>
@@ -610,7 +612,7 @@ export function renderResponseStoryContent({
     return (
       <>
         <span className="flow-map-story-step">Step 4</span>
-        <h2>Interesting Data?</h2>
+        <h2>Interesting Data</h2>
         <p>Select the outcome that best matches what you found in the response.</p>
         <div className="flow-map-actions flow-map-actions--stacked">
           <button type="button" className="flow-map-button" onClick={() => handleResponseResultChoice('found-token')}>
@@ -635,7 +637,7 @@ export function renderResponseStoryContent({
         <p>Try decoding, formatting, or identifying the value type. Check whether it looks like a JWT, Base64 blob, JSON object, token, or another reusable value with a clear purpose.</p>
         <div className="flow-map-actions">
           <button type="button" className="flow-map-button" onClick={handleResponseNextStep}>
-            Continue to next step
+            Continue to Next Step
           </button>
         </div>
       </>
@@ -654,7 +656,7 @@ export function renderResponseStoryContent({
       {feedback ? <p className="flow-map-feedback">{feedback}</p> : null}
       <div className="flow-map-actions">
         <button type="button" className="flow-map-button" onClick={resetFlowState}>
-          Restart flow
+          Restart
         </button>
       </div>
     </>
@@ -682,7 +684,7 @@ export function renderRequestStoryContent({
             Modify the request
           </button>
           <button type="button" className="flow-map-button flow-map-button--ghost" onClick={resetFlowState}>
-            Reset flow
+            Restart
           </button>
         </div>
       </>
@@ -697,7 +699,7 @@ export function renderRequestStoryContent({
         <p>Change one part of the request at a time. Try adjusting parameters, headers, IDs, or values such as <strong>id=1</strong> to <strong>id=2</strong>, or remove and alter fields to compare the server response.</p>
         <div className="flow-map-actions">
           <button type="button" className="flow-map-button" onClick={handleRequestContinue}>
-            Continue to response check
+            Continue to Response Check
           </button>
         </div>
       </>
@@ -733,7 +735,7 @@ export function renderRequestStoryContent({
         <p>A changed response or error can indicate weak validation, missing access control, or trust in client-controlled values. Keep testing careful variations to learn what the server is really checking.</p>
         <div className="flow-map-actions">
           <button type="button" className="flow-map-button" onClick={handleRequestNextStep}>
-            Continue to next step
+            Continue to Next Step
           </button>
         </div>
       </>
@@ -752,7 +754,7 @@ export function renderRequestStoryContent({
       {feedback ? <p className="flow-map-feedback">{feedback}</p> : null}
       <div className="flow-map-actions">
         <button type="button" className="flow-map-button" onClick={resetFlowState}>
-          Restart flow
+          Restart
         </button>
       </div>
     </>
@@ -801,10 +803,10 @@ export function renderExploitationStoryContent({
         <p>{description}</p>
         <div className="flow-map-actions">
           <button type="button" className="flow-map-button" onClick={handleExploitationContinue}>
-            Continue to execution
+            Continue to Execution
           </button>
           <button type="button" className="flow-map-button flow-map-button--ghost" onClick={resetFlowState}>
-            Reset flow
+            Restart
           </button>
         </div>
       </>
@@ -819,7 +821,7 @@ export function renderExploitationStoryContent({
         <p>Run the proof once in a controlled way, watch the exact response, and avoid broad or repeated actions that go beyond the approved validation plan.</p>
         <div className="flow-map-actions">
           <button type="button" className="flow-map-button" onClick={() => goToStage('impact-observed')}>
-            Continue to result
+            Continue to Result
           </button>
         </div>
       </>
@@ -830,7 +832,7 @@ export function renderExploitationStoryContent({
     return (
       <>
         <span className="flow-map-story-step">Step 5</span>
-        <h2>Impact Observed?</h2>
+        <h2>Impact Observed</h2>
         <p>Choose the outcome that best matches the controlled proof so the flow can guide the right wrap-up.</p>
         <div className="flow-map-actions flow-map-actions--stacked">
           <button type="button" className="flow-map-button" onClick={() => handleExploitationResultChoice('confirmed-impact')}>
@@ -855,7 +857,7 @@ export function renderExploitationStoryContent({
         <p>Capture the exact request, response, observed effect, scope, and cleanup details. A good record should let another reviewer understand the issue without recreating broad impact.</p>
         <div className="flow-map-actions">
           <button type="button" className="flow-map-button" onClick={handleExploitationNextStep}>
-            Continue to next step
+            Continue to Next Step
           </button>
         </div>
       </>
@@ -874,7 +876,7 @@ export function renderExploitationStoryContent({
       {feedback ? <p className="flow-map-feedback">{feedback}</p> : null}
       <div className="flow-map-actions">
         <button type="button" className="flow-map-button" onClick={resetFlowState}>
-          Restart flow
+          Restart
         </button>
       </div>
     </>

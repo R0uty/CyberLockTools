@@ -844,4 +844,12 @@
   .flow-map-node-label {
     font-size: 0.82rem;
   }
+
+  .flow-map-progress-panel {
+    padding: 0.85rem 0.9rem;
+  }
+
+  .flow-map-utility-button {
+    width: 100%;
+  }
 }

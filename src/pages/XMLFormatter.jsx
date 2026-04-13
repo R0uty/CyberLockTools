@@ -133,8 +133,8 @@ export default function XMLFormatter() {
         All processing happens in your browser • No data is sent to server
       </div>
       <div className="tool-header">
-        <h1> Online XML Formatter and Validator</h1>
-        <p>Paste raw XML and instantly format it with proper indentation for readability. The formatter also validates your XML structure, identifies errors, and provides helpful error messages. You can also minify XML to reduce file size. All processing happens locally in your browser with no data transmission to any server.</p>
+        <h1>Online XML Formatter and Validator</h1>
+        <p>Paste XML to format, validate, and minify it with clear output and error messages. All processing happens locally in your browser with no data transmission to any server.</p>
       </div>
 
       <div className="tool-container">
@@ -143,10 +143,10 @@ export default function XMLFormatter() {
             Format XML
           </button>
           <button onClick={handleValidate} className="action-btn encode-btn">
-            ✓ Validate
+            Validate
           </button>
           <button onClick={handleMinify} className="action-btn encode-btn">
-            ⚙️ Minify
+            Minify
           </button>
           <button onClick={handleClear} className="action-btn clear-btn">
             Clear
@@ -161,19 +161,19 @@ export default function XMLFormatter() {
 
         <div className="tool-row">
           <div className="textarea-group">
-            <label>Raw XML Input</label>
+            <label>XML Input</label>
             <textarea
               value={input}
               onChange={handleInputChange}
-              placeholder="Paste your XML here... (document structure with elements, attributes, etc.)"
+              placeholder="Paste XML input here (elements, attributes, and nested nodes)."
               className="textarea"
               rows="10"
             />
-            <div className="info-small">💡 Accepts any valid XML format with proper UTF-8 encoding</div>
+            <div className="info-small">Accepts valid XML with UTF-8 encoding.</div>
           </div>
 
           <div className="textarea-group">
-            <label>Formatted Output</label>
+            <label>Output</label>
             <textarea
               value={output}
               readOnly
@@ -186,7 +186,7 @@ export default function XMLFormatter() {
                   Copy XML
                 </button>
                 <button onClick={handleDownload} className="copy-btn">
-                  ⬇️ Download
+                  Download
                 </button>
               </div>
             )}
@@ -230,7 +230,7 @@ export default function XMLFormatter() {
         </div>
 
         <div className="info-box info-box--alt">
-          <h4>🧪 Test XML Examples</h4>
+          <h4>Test XML Examples</h4>
           
           <div className="example-block">
             <strong>Simple Document:</strong>
@@ -254,7 +254,7 @@ export default function XMLFormatter() {
           </div>
 
           <p className="example-note">
-            Copy any example above and paste it to see formatting in action!
+            Copy any example and paste it into the input to test formatting.
           </p>
         </div>
       </div>

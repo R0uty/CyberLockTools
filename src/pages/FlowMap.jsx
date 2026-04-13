@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { useSEO } from '../hooks/useSEO'
 import {
   STORAGE_STAGE_KEY,

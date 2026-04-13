@@ -94,8 +94,8 @@ export default function JSONFormatter() {
         All processing happens in your browser • No data is sent to server
       </div>
       <div className="tool-header">
-        <h1> Online JSON Formatter and Validator</h1>
-        <p>Paste raw JSON and instantly format it with proper indentation for readability. The formatter also validates your JSON structure and provides helpful error messages if there are syntax errors. All processing happens locally in your browser with no data transmission to any server.</p>
+        <h1>Online JSON Formatter and Validator</h1>
+        <p>Paste JSON to format and validate it with clear output and error messages. All processing happens locally in your browser with no data transmission to any server.</p>
       </div>
 
       <div className="tool-container">
@@ -104,7 +104,7 @@ export default function JSONFormatter() {
             Format JSON
           </button>
           <button onClick={handleValidate} className="action-btn encode-btn">
-            ✓ Validate
+            Validate
           </button>
           <button onClick={handleClear} className="action-btn clear-btn">
             Clear
@@ -119,19 +119,19 @@ export default function JSONFormatter() {
 
         <div className="tool-row">
           <div className="textarea-group">
-            <label>Raw JSON Input</label>
+            <label>JSON Input</label>
             <textarea
               value={input}
               onChange={handleInputChange}
-              placeholder="Paste your JSON here... (objects, arrays, strings, numbers, etc.)"
+              placeholder="Paste JSON input here (objects, arrays, strings, or numbers)."
               className="textarea"
               rows="10"
             />
-            <div className="info-small">💡 Accepts any valid JSON format</div>
+            <div className="info-small">Accepts any valid JSON format.</div>
           </div>
 
           <div className="textarea-group">
-            <label>Formatted Output</label>
+            <label>Output</label>
             <textarea
               value={output}
               readOnly
@@ -180,7 +180,7 @@ export default function JSONFormatter() {
         </div>
 
         <div className="info-box info-box--alt">
-          <h4>🧪 Test JSON Examples</h4>
+          <h4>Test JSON Examples</h4>
           
           <div className="example-block">
             <strong>Simple Object:</strong>
@@ -204,7 +204,7 @@ export default function JSONFormatter() {
           </div>
 
           <p className="example-note">
-            Copy any example above and paste it to see formatting in action!
+            Copy any example and paste it into the input to test formatting.
           </p>
         </div>
       </div>

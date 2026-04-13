@@ -95,7 +95,7 @@ export default function HTTPHeadersParser() {
 
         <section className="tool-row headers-input-row">
           <div className="textarea-group">
-            <label htmlFor="headers-parser-input">Raw HTTP Headers</label>
+            <label htmlFor="headers-parser-input">HTTP Headers Input</label>
             <textarea
               id="headers-parser-input"
               value={input}
@@ -112,7 +112,7 @@ export default function HTTPHeadersParser() {
           </div>
 
           <div className="textarea-group">
-            <label htmlFor="headers-parser-json">Structured JSON Output</label>
+            <label htmlFor="headers-parser-json">JSON Output</label>
             <textarea
               id="headers-parser-json"
               value={jsonOutput}

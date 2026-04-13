@@ -133,8 +133,8 @@ export default function SQLFormatter() {
         All processing happens in your browser • No data is sent to server
       </div>
       <div className="tool-header">
-        <h1> Online SQL Formatter and Validator</h1>
-        <p>Paste raw SQL and instantly format it with proper indentation for readability. The formatter also validates your SQL structure, identifies syntax errors, and provides helpful error messages. You can also minify SQL to reduce file size. All processing happens locally in your browser with no data transmission to any server.</p>
+        <h1>Online SQL Formatter and Validator</h1>
+        <p>Paste SQL to format, validate, and minify it with clear output and error messages. All processing happens locally in your browser with no data transmission to any server.</p>
       </div>
 
       <div className="tool-container">
@@ -143,10 +143,10 @@ export default function SQLFormatter() {
             Format SQL
           </button>
           <button onClick={handleValidate} className="action-btn encode-btn">
-            ✓ Validate
+            Validate
           </button>
           <button onClick={handleMinify} className="action-btn encode-btn">
-            ⚙️ Minify
+            Minify
           </button>
           <button onClick={handleClear} className="action-btn clear-btn">
             Clear
@@ -161,19 +161,19 @@ export default function SQLFormatter() {
 
         <div className="tool-row">
           <div className="textarea-group">
-            <label>Raw SQL Input</label>
+            <label>SQL Input</label>
             <textarea
               value={input}
               onChange={handleInputChange}
-              placeholder="Paste your SQL here... (SELECT, INSERT, UPDATE, DELETE, CREATE, etc.)"
+              placeholder="Paste SQL input here (SELECT, INSERT, UPDATE, DELETE, or CREATE)."
               className="textarea"
               rows="10"
             />
-            <div className="info-small">💡 Supports all SQL dialects (MySQL, PostgreSQL, SQL Server, Oracle, etc.)</div>
+            <div className="info-small">Supports major SQL dialects such as MySQL, PostgreSQL, SQL Server, and Oracle.</div>
           </div>
 
           <div className="textarea-group">
-            <label>Formatted Output</label>
+            <label>Output</label>
             <textarea
               value={output}
               readOnly
@@ -186,7 +186,7 @@ export default function SQLFormatter() {
                   Copy SQL
                 </button>
                 <button onClick={handleDownload} className="copy-btn">
-                  ⬇️ Download
+                  Download
                 </button>
               </div>
             )}
@@ -230,7 +230,7 @@ export default function SQLFormatter() {
         </div>
 
         <div className="info-box info-box--alt">
-          <h4>🧪 Test SQL Examples</h4>
+          <h4>Test SQL Examples</h4>
           
           <div className="example-block">
             <strong>Simple SELECT:</strong>
@@ -254,7 +254,7 @@ export default function SQLFormatter() {
           </div>
 
           <p className="example-note">
-            Copy any example above and paste it to see formatting in action!
+            Copy any example and paste it into the input to test formatting.
           </p>
         </div>
       </div>

@@ -152,7 +152,7 @@ export default function CSVFormatter() {
             Format CSV
           </button>
           <button onClick={handleValidate} className="action-btn encode-btn">
-            ✓ Validate
+            Validate
           </button>
           <button onClick={handleConvert} className="action-btn encode-btn">
             {mode === 'csv' ? 'CSV → JSON' : 'JSON → CSV'}
@@ -193,7 +193,7 @@ export default function CSVFormatter() {
 
         <div className="tool-row">
           <div className="textarea-group">
-            <label>Raw {mode === 'csv' ? 'CSV' : 'JSON'} Input</label>
+            <label>{mode === 'csv' ? 'CSV Input' : 'JSON Input'}</label>
             <textarea
               value={input}
               onChange={handleInputChange}
@@ -204,14 +204,14 @@ export default function CSVFormatter() {
               className="textarea"
               rows="10"
             />
-            <div className="info-small">💡 {mode === 'csv' 
-              ? 'Supports quoted fields, commas, and special characters' 
-              : 'Must be an array of objects'
+            <div className="info-small">{mode === 'csv' 
+              ? 'Supports quoted fields, commas, and special characters.' 
+              : 'Input must be a JSON array of objects.'
             }</div>
           </div>
 
           <div className="textarea-group">
-            <label>Formatted Output</label>
+            <label>Output</label>
             <textarea
               value={output}
               readOnly
@@ -224,7 +224,7 @@ export default function CSVFormatter() {
                   Copy
                 </button>
                 <button onClick={handleDownload} className="copy-btn">
-                  ⬇️ Download
+                  Download
                 </button>
               </div>
             )}
@@ -271,7 +271,7 @@ export default function CSVFormatter() {
         </div>
 
         <div className="info-box info-box--alt">
-          <h4>🧪 Test CSV Examples</h4>
+          <h4>Test CSV Examples</h4>
           
           <div className="example-block">
             <strong>Simple CSV:</strong>
@@ -295,7 +295,7 @@ export default function CSVFormatter() {
           </div>
 
           <p className="example-note">
-            Copy any example above and paste it to see parsing/conversion in action!
+            Copy any example and paste it into the input to test parsing or conversion.
           </p>
         </div>
       </div>

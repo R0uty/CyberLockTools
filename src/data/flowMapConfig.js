@@ -47,7 +47,7 @@ export const FLOWS = {
       { id: 'start', label: 'Start', x: 50, y: 50 },
       { id: 'encoded', label: 'Encoded?', x: 34, y: 30 },
       { id: 'decode', label: 'Decode', x: 62, y: 30 },
-      { id: 'result', label: 'Result?', x: 76, y: 50 },
+      { id: 'result', label: 'Result', x: 76, y: 50 },
       { id: 'success', label: 'Success', x: 88, y: 50 }
     ],
     connections: [
@@ -71,7 +71,7 @@ export const FLOWS = {
       { id: 'start', label: 'Start', x: 50, y: 50 },
       { id: 'login-page', label: 'Login Page', x: 34, y: 30 },
       { id: 'test-login', label: 'Test Login', x: 58, y: 30 },
-      { id: 'result', label: 'Result?', x: 74, y: 50 },
+      { id: 'result', label: 'Result', x: 74, y: 50 },
       { id: 'analyze-error', label: 'Analyze Error', x: 84, y: 28 },
       { id: 'next-step', label: 'Next Step', x: 90, y: 58 }
     ],
@@ -99,7 +99,7 @@ export const FLOWS = {
       { id: 'web-page-found', label: 'Web Page Found', x: 30, y: 30 },
       { id: 'discovery', label: 'Discovery', x: 50, y: 26 },
       { id: 'enumerate', label: 'Enumerate', x: 68, y: 32 },
-      { id: 'result', label: 'Result?', x: 78, y: 50 },
+      { id: 'result', label: 'Result', x: 78, y: 50 },
       { id: 'investigate', label: 'Investigate', x: 86, y: 26 },
       { id: 'next-step', label: 'Next Step', x: 90, y: 60 }
     ],
@@ -129,7 +129,7 @@ export const FLOWS = {
       { id: 'service-found', label: 'Service Found', x: 28, y: 30 },
       { id: 'identify-service', label: 'Identify Service', x: 48, y: 26 },
       { id: 'enumerate-service', label: 'Enumerate Service', x: 68, y: 30 },
-      { id: 'result', label: 'Result?', x: 78, y: 50 },
+      { id: 'result', label: 'Result', x: 78, y: 50 },
       { id: 'inspect-findings', label: 'Inspect Findings', x: 88, y: 28 },
       { id: 'next-step', label: 'Next Step', x: 90, y: 62 }
     ],
@@ -156,7 +156,7 @@ export const FLOWS = {
       { id: 'start', label: 'Start', x: 50, y: 50 },
       { id: 'input-field-found', label: 'Input Field Found', x: 30, y: 30 },
       { id: 'test-input', label: 'Test Input', x: 54, y: 28 },
-      { id: 'response-change', label: 'Response Change?', x: 72, y: 46 },
+      { id: 'response-change', label: 'Response Change', x: 72, y: 46 },
       { id: 'analyze-behavior', label: 'Analyze Behavior', x: 84, y: 24 },
       { id: 'next-step', label: 'Next Step', x: 90, y: 60 }
     ],
@@ -177,7 +177,7 @@ export const FLOWS = {
       { id: 'start', label: 'Start', x: 50, y: 50 },
       { id: 'response-data-found', label: 'Response Data Found', x: 28, y: 30 },
       { id: 'analyze-data', label: 'Analyze Data', x: 50, y: 26 },
-      { id: 'interesting-data', label: 'Interesting Data?', x: 70, y: 42 },
+      { id: 'interesting-data', label: 'Interesting Data', x: 70, y: 42 },
       { id: 'investigate-value', label: 'Investigate Value', x: 84, y: 24 },
       { id: 'next-step', label: 'Next Step', x: 90, y: 60 }
     ],
@@ -230,7 +230,7 @@ export const FLOWS = {
       { id: 'confirmed-finding', label: 'Confirmed Finding', x: 28, y: 30 },
       { id: 'prepare-validation', label: 'Prepare Validation', x: 48, y: 26 },
       { id: 'execute-safely', label: 'Execute Safely', x: 68, y: 30 },
-      { id: 'impact-observed', label: 'Impact Observed?', x: 78, y: 50 },
+      { id: 'impact-observed', label: 'Impact Observed', x: 78, y: 50 },
       { id: 'document-impact', label: 'Document Impact', x: 88, y: 28 },
       { id: 'next-step', label: 'Next Step', x: 90, y: 62 }
     ],

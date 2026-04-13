@@ -4,6 +4,45 @@ A comprehensive, privacy-first suite of **free online tools** for developers, se
 
 **🌐 Live Demo:** https://cyberlocktools.com (or your deployment URL)
 
+## Release Notes - Sprint 9 to 14
+
+### Summary
+- Added a Flow Map testing baseline with deterministic interaction tests.
+- Added utility tests for JSON formatter, number base converter, and HTTP headers parser.
+- Introduced Vitest coverage wiring and test-specific ESLint globals.
+- Normalized Flow Map copy and major formatter/parser page copy for consistency.
+- Hardened responsive behavior for Flow Map and improved dark-theme consistency in formatter/JWT CSS.
+- Completed a release-candidate QA sweep (automated checks clean; manual browser-tooling check deferred to human pass).
+
+### Changed Areas (Changelog Style)
+- Testing infrastructure:
+  - Added `vitest`, `@testing-library/react`, `jsdom`, `@vitest/coverage-v8`.
+  - Added scripts for `test`, `test:watch`, and `test:coverage`.
+  - Added test lint globals in `eslint.config.js`.
+  - Added `test` config block in `vite.config.js`.
+- New tests:
+  - `src/pages/FlowMap.test.jsx`
+  - `src/utils/jsonFormatter.test.js`
+  - `src/utils/numberBaseConverter.test.js`
+  - `src/utils/httpHeadersParser.test.js`
+- Flow Map consistency:
+  - Standardized stage labels and action copy (`Start flow`, `Restart`, `Result`, `Continue to ...`).
+  - Synced flow node labels in `src/data/flowMapConfig.js` and tests.
+- Responsive and CSS hardening:
+  - FlowMap mobile control/panel behavior improved for narrow viewports.
+  - JSON/SQL/XML/CSV and JWT-related CSS updated to remove legacy light blocks and align with dark theme.
+
+## Architecture Entry Points
+
+- App shell and routing state: `src/App.jsx`
+- Tool registry and title-to-component mapping: `src/data/toolRegistry.js`
+- Flow engine configuration (stages/nodes/connections): `src/data/flowMapConfig.js`
+- Flow story content renderer: `src/pages/flowMapStoryContent.jsx`
+- Flow page orchestration + persisted flow state: `src/pages/FlowMap.jsx`
+- Session storage wrapper used by FlowMap: `src/utils/sessionStorage.js`
+- Shared SEO hook contract: `src/hooks/useSEO.js`
+- Core formatter/parser utilities under test: `src/utils/*.js`
+
 ## ✨ Features
 
 ### 🔄 ROT13 & Caesar Cipher Tool
@@ -252,6 +291,15 @@ npm run dev       # Start development server with HMR
 npm run build     # Build optimized production bundle
 npm run preview   # Preview production build locally
 npm run lint      # Run ESLint to check code quality
+npm run test       # Run Vitest test suite once
+npm run test:watch # Run Vitest in watch mode
+npm run test:coverage # Run tests with V8 coverage report
+```
+
+Recommended release gate:
+
+```bash
+npm run test && npm run lint && npm run build
 ```
 
 ## 🔧 Features & Implementation
@@ -392,7 +440,14 @@ MIT License - see the LICENSE file for details
 - [ ] History of Recent Operations
 - [ ] More Hash Algorithms (BLAKE2, Argon2)
 - [ ] API Documentation
-- [ ] Unit Tests
+
+## Deferred Backlog
+
+- Expand Flow Map interaction tests to cover additional flow families beyond current baseline scenarios.
+- Add CI workflow with required `test`, `lint`, and `build` gates.
+- Enforce minimum coverage thresholds in CI and publish coverage artifacts.
+- Add route-level smoke automation (Playwright/Cypress) for key pages and top-risk interactions.
+- Perform final manual cross-device visual QA pass in browser tooling before release sign-off.
 
 ## 💡 Usage Examples
 

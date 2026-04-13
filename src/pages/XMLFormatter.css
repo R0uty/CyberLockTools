@@ -5,8 +5,10 @@
 }
 
 .info-box--alt {
-  background-color: #f0f0f0;
-  margin-top: 20px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(192, 192, 192, 0.1);
+  border-radius: 12px;
+  margin-top: 1.25rem;
 }
 
 .stats-grid {
@@ -21,9 +23,9 @@
 }
 
 .example-block {
-  margin-top: 10px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid #ddd;
+  margin-top: 0.75rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid rgba(192, 192, 192, 0.08);
 }
 
 .example-block--last {
@@ -31,16 +33,25 @@
 }
 
 .code-snippet {
-  font-size: 12px;
-  word-break: break-all;
-  font-family: monospace;
-  background-color: #fff;
-  padding: 8px;
-  border-radius: 4px;
-  margin: 5px 0;
+  font-size: 0.82rem;
+  line-height: 1.7;
+  word-break: break-word;
+  font-family: 'Courier New', monospace;
+  background: rgba(10, 10, 10, 0.72);
+  color: #ececec;
+  padding: 0.75rem 0.9rem;
+  border-radius: 10px;
+  margin: 0.5rem 0;
+  border: 1px solid rgba(192, 192, 192, 0.08);
 }
 
 .example-note {
   font-size: 12px;
   margin-top: 10px;
+}
+
+@media (max-width: 640px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
 }

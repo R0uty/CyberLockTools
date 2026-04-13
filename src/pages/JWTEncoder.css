@@ -1,7 +1,7 @@
 .mode-selector {
   margin-bottom: 1.5rem;
   padding-bottom: 1rem;
-  border-bottom: 1px solid #e0e0e0;
+  border-bottom: 1px solid rgba(192, 192, 192, 0.12);
 }
 
 .mode-label {
@@ -29,19 +29,23 @@
 
 .algo-select {
   padding: 0.75rem;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  font-size: 14px;
+  border: 1px solid rgba(192, 192, 192, 0.14);
+  border-radius: 8px;
+  font-size: 0.875rem;
   min-width: 150px;
+  background: rgba(9, 9, 9, 0.75);
+  color: #ececec;
 }
 
 .secret-input {
   width: 100%;
   padding: 0.75rem;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  font-size: 14px;
+  border: 1px solid rgba(192, 192, 192, 0.14);
+  border-radius: 8px;
+  font-size: 0.875rem;
   box-sizing: border-box;
+  background: rgba(9, 9, 9, 0.75);
+  color: #ececec;
 }
 
 .jwt-input-grid {
@@ -54,11 +58,14 @@
 .jwt-textarea {
   width: 100%;
   padding: 0.75rem;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  font-size: 12px;
-  font-family: monospace;
+  border: 1px solid rgba(192, 192, 192, 0.14);
+  border-radius: 8px;
+  font-size: 0.82rem;
+  font-family: 'Courier New', monospace;
   box-sizing: border-box;
+  background: rgba(9, 9, 9, 0.75);
+  color: #ececec;
+  resize: vertical;
 }
 
 .jwt-textarea--header,
@@ -75,7 +82,9 @@
 }
 
 .info-box--gray {
-  background-color: #f0f0f0;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(192, 192, 192, 0.1);
+  border-radius: 12px;
 }
 
 .info-box--mt {
@@ -87,14 +96,16 @@
 }
 
 .jwt-token-display {
-  background-color: #fff;
-  padding: 1rem;
-  border-radius: 5px;
+  background: rgba(10, 10, 10, 0.72);
+  color: #ececec;
+  padding: 0.9rem 1rem;
+  border-radius: 10px;
   margin-top: 0.5rem;
-  font-family: monospace;
-  font-size: 11px;
+  font-family: 'Courier New', monospace;
+  font-size: 0.82rem;
+  line-height: 1.65;
   word-break: break-all;
-  border: 1px solid #ddd;
+  border: 1px solid rgba(192, 192, 192, 0.1);
 }
 
 .jwt-copy-btn {
@@ -111,11 +122,15 @@
 }
 
 .jwt-pre {
-  background-color: #fff;
-  padding: 0.75rem;
-  border-radius: 5px;
-  font-size: 11px;
-  border: 1px solid #ddd;
+  background: rgba(10, 10, 10, 0.72);
+  color: #ececec;
+  padding: 0.75rem 0.9rem;
+  border-radius: 10px;
+  font-size: 0.82rem;
+  font-family: 'Courier New', monospace;
+  border: 1px solid rgba(192, 192, 192, 0.1);
+  white-space: pre-wrap;
+  word-break: break-word;
 }
 
 .jwt-pre--scrollable {
@@ -130,15 +145,15 @@
 }
 
 .verify-status--valid {
-  background-color: #d4edda;
-  border: 1px solid #c3e6cb;
-  color: #155724;
+  background: rgba(103, 184, 130, 0.1);
+  border: 1px solid rgba(103, 184, 130, 0.2);
+  color: #8fd4a8;
 }
 
 .verify-status--error {
-  background-color: #f8d7da;
-  border: 1px solid #f5c6cb;
-  color: #721c24;
+  background: rgba(189, 86, 86, 0.1);
+  border: 1px solid rgba(189, 86, 86, 0.2);
+  color: #f0b0b0;
 }
 
 .jwt-verify-section {
@@ -147,4 +162,11 @@
 
 .jwt-expiration-info {
   font-size: 13px;
+}
+
+@media (max-width: 768px) {
+  .jwt-input-grid,
+  .jwt-result-grid {
+    grid-template-columns: 1fr;
+  }
 }
