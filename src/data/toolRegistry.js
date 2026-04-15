@@ -232,6 +232,12 @@ export const TOOL_CATALOG = [
     iconName: 'CellularNetworkIcon',
     title: 'IP Subnet Calculator',
     description: 'Calculate subnet details from CIDR notation: network address, broadcast, subnet mask, usable hosts, and more.'
+  },
+  {
+    category: 'Formatters & Converters',
+    iconName: 'Filter01Icon',
+    title: 'Text to DSL',
+    description: 'Convert plain text descriptions into DSL (Domain-Specific Language) output.'
   }
 ]
 
@@ -273,7 +279,8 @@ const TOOL_COMPONENT_KEYS = {
   'LDAP Injection Generator': 'LDAPInjectionGenerator',
   'Path Traversal Generator': 'PathTraversalGenerator',
   'Number Base Converter': 'NumberBaseConverter',
-  'IP Subnet Calculator': 'SubnetCalculator'
+  'IP Subnet Calculator': 'SubnetCalculator',
+  'Text to DSL': 'TextToDSL'
 }
 
 export function buildToolComponents(componentLibrary) {
