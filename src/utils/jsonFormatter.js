@@ -63,10 +63,10 @@ export function validateJSON(jsonString) {
       }
     }
 
-    JSON.parse(trimmed)
+    const parsed = JSON.parse(trimmed)
     return {
       valid: true,
-      type: getJSONType(JSON.parse(trimmed))
+      type: getJSONType(parsed)
     }
   } catch (err) {
     return {

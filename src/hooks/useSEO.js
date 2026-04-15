@@ -21,7 +21,5 @@ export function useSEO({ title, description, keywords = '' }) {
       }
       metaKeywords.content = keywords
     }
-
-    window.scrollTo(0, 0)
   }, [title, description, keywords])
 }

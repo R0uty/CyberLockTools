@@ -36,7 +36,10 @@ export default function Contact() {
       return
     }
 
-    if (!formData.email.includes('@')) {
+    // Require at least one character before @, a label with no dots at the
+    // start/end and no consecutive dots in the domain, and a TLD of 2+ chars.
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/
+    if (!emailRegex.test(formData.email) || /\.{2,}/.test(formData.email)) {
       setError('Please enter a valid email address')
       return
     }

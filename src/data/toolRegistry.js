@@ -4,7 +4,7 @@ export const TOOL_CATALOG = [
     category: 'Encoding & Decoding',
     iconName: 'RotateClockwiseIcon',
     title: 'ROT',
-    description: 'Encode and decode ROT13 and ROT47 cipher text.'
+    description: 'Encode and decode ROT13, ROT47, and Caesar cipher text.'
   },
   {
     category: 'Encoding & Decoding',

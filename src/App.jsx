@@ -1,9 +1,19 @@
 import { lazy, Suspense, useCallback, useEffect, useState } from 'react'
+import {
+  LockKeyIcon,
+  CheckmarkBadge01Icon,
+  BookOpen01Icon,
+  SmileIcon,
+  GitPullRequestIcon,
+} from 'hugeicons-react'
 import { useSEO } from './hooks/useSEO'
 import Header from './components/Header'
 import HomeToolMap from './components/HomeToolMap'
 import FeedbackToast from './components/FeedbackToast'
 import { TOOL_CATALOG, buildToolComponents } from './data/toolRegistry'
+import './App.css'
+import './App.extra.css'
+
 const ROT = lazy(() => import('./pages/ROT'))
 const Base64 = lazy(() => import('./pages/Base64'))
 const URLEncoder = lazy(() => import('./pages/URLEncoder'))
@@ -21,13 +31,6 @@ const UUIDGenerator = lazy(() => import('./pages/UUIDGenerator'))
 const TimestampConverter = lazy(() => import('./pages/TimestampConverter'))
 const PasswordGenerator = lazy(() => import('./pages/PasswordGenerator'))
 const JWTEncoder = lazy(() => import('./pages/JWTEncoder'))
-import {
-  LockKeyIcon,
-  CheckmarkBadge01Icon,
-  BookOpen01Icon,
-  SmileIcon,
-  GitPullRequestIcon,
-} from 'hugeicons-react'
 const QRCodeGenerator = lazy(() => import('./pages/QRCodeGenerator'))
 const ColorConverter = lazy(() => import('./pages/ColorConverter'))
 const CSSBeautifier = lazy(() => import('./pages/CSSBeautifier'))
@@ -55,8 +58,6 @@ const FlowMap = lazy(() => import('./pages/FlowMap'))
 const LabNotes = lazy(() => import('./pages/LabNotes'))
 const About = lazy(() => import('./pages/About'))
 const Contact = lazy(() => import('./pages/Contact'))
-import './App.css'
-import './App.extra.css'
 
 export default function App() {
   const [currentTool, setCurrentTool] = useState(() => window.history.state?.tool ?? null)
