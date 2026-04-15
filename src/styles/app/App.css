@@ -6,6 +6,27 @@
 
 :root {
   --app-shell-max-width: 1200px;
+
+  /* Colors */
+  --color-bg-base:       #0f0f0f;
+  --color-bg-surface:    #1a1a1a;
+  --color-bg-elevated:   #2a2a2a;
+  --color-border:        rgba(192, 192, 192, 0.14);
+  --color-border-hover:  rgba(192, 192, 192, 0.28);
+  --color-text-primary:  #e8e8e8;
+  --color-text-secondary: #d0d0d0;
+  --color-text-muted:    #a0a0a0;
+  --color-accent:        #c0c0c0;
+  --color-accent-bright: #e8e8e8;
+  --color-blue:          #22b8ff;
+  --color-blue-dim:      rgba(34, 184, 255, 0.12);
+  --color-blue-border:   rgba(34, 184, 255, 0.28);
+
+  /* Spacing */
+  --radius-sm:  8px;
+  --radius-md:  14px;
+  --radius-lg:  16px;
+  --radius-xl:  20px;
 }
 
 @keyframes fadeIn {
@@ -50,6 +71,20 @@
 
 html {
   scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
 
 body {
@@ -105,7 +140,9 @@ body {
 
 .nav {
   display: flex;
-  gap: 2.5rem;
+  flex-wrap: wrap;
+  gap: 1.8rem;
+  justify-content: flex-end;
 }
 
 .nav a,
@@ -113,10 +150,23 @@ body {
   color: #e8e8e8;
   text-decoration: none;
   font-weight: 500;
+  padding: 0.35rem 0.1rem;
+  min-height: 38px;
+  display: inline-flex;
+  align-items: center;
   transition: all 0.3s ease;
   position: relative;
   font-size: 1rem;
   cursor: pointer;
+}
+
+a:focus-visible,
+button:focus-visible,
+.nav a:focus-visible,
+.nav-link:focus-visible {
+  outline: 2px solid var(--color-blue, #22b8ff);
+  outline-offset: 3px;
+  border-radius: 8px;
 }
 
 .nav a::after,
@@ -138,6 +188,11 @@ body {
 
 .nav a:hover::after,
 .nav-link:hover::after {
+  width: 100%;
+}
+
+.nav a:focus-visible::after,
+.nav-link:focus-visible::after {
   width: 100%;
 }
 
@@ -186,7 +241,7 @@ body {
   width: 100%;
 }
 
-section {
+section:not(.tool-map-section) {
   background: #2a2a2a;
   border-radius: 15px;
   padding: 2.5rem;
@@ -199,10 +254,8 @@ section {
   color: #e8e8e8;
 }
 
-section:hover {
-  box-shadow: 0 12px 48px rgba(192, 192, 192, 0.15);
-  transform: translateY(-5px);
-  border-color: rgba(192, 192, 192, 0.4);
+section:not(.tool-map-section):hover {
+  border-color: rgba(192, 192, 192, 0.26);
 }
 
 .hero {
@@ -828,16 +881,77 @@ p {
   }
 }
 
+/* info-box used on About, Skills, and other pages */
+.info-box {
+  padding: 1.4rem;
+  border-radius: var(--radius-lg, 16px);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--color-border, rgba(192, 192, 192, 0.12));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.02);
+  margin-top: 1.5rem;
+}
+
+.info-box h2,
+.info-box h3 {
+  font-size: 1.15rem;
+  color: #d8d8d8;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+}
+
+.info-box p {
+  font-size: 0.92rem;
+  color: #b0b0b0;
+  line-height: 1.65;
+  margin-bottom: 0;
+}
+
+.about-list {
+  list-style: none;
+  padding: 0;
+  margin: 0.5rem 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.about-list li {
+  font-size: 0.9rem;
+  color: #b5b5b5;
+  line-height: 1.6;
+  padding-left: 1rem;
+  position: relative;
+}
+
+.about-list li::before {
+  content: '—';
+  position: absolute;
+  left: 0;
+  color: #606060;
+}
+
+.page-loading {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: var(--color-text-muted, #a0a0a0);
+  font-size: 0.9rem;
+  letter-spacing: 0.06em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+}
+
 /* Tool Page Styles */
 .tool-page {
   background:
     linear-gradient(180deg, rgba(18, 18, 18, 0.98) 0%, rgba(10, 10, 10, 0.98) 100%);
-  border-radius: 15px;
+  border-radius: var(--radius-xl, 20px);
   padding: 2.5rem;
   box-shadow: 0 20px 48px rgba(0, 0, 0, 0.34);
   animation: fadeIn 0.6s ease-out;
   color: #e8e8e8;
-  border: 1px solid rgba(192, 192, 192, 0.16);
+  border: 1px solid var(--color-border, rgba(192, 192, 192, 0.16));
   position: relative;
   overflow: hidden;
 }
@@ -1184,28 +1298,11 @@ p {
   animation: slideInRight 0.3s ease-out;
 }
 
-/* Info Box */
-.info-box {
-  background: rgba(255, 255, 255, 0.03);
-  padding: 1.5rem;
-  border-radius: 16px;
-  margin-top: 2rem;
-  border: 1px solid rgba(192, 192, 192, 0.12);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.02);
-  color: #e8e8e8;
-}
-
+/* Info Box — h4 variants for tool pages */
 .info-box h4 {
   color: #c0c0c0;
   margin-bottom: 0.75rem;
   font-size: 1.1rem;
-}
-
-.info-box p {
-  color: #d0d0d0;
-  font-size: 0.95rem;
-  line-height: 1.6;
-  margin-bottom: 0;
 }
 
 .info-box ul {
@@ -1987,11 +2084,4 @@ p {
   }
 }
 
-.page-loading {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 200px;
-  color: var(--text-muted, #666);
-  font-size: 0.95rem;
-}
+/* (page-loading defined earlier) */

@@ -565,6 +565,128 @@ export function renderInputStoryContent({
   )
 }
 
+export function renderApiStoryContent({
+  currentStage,
+  selectedAction,
+  selectedOutcome,
+  feedback,
+  handleApiActionSelect,
+  resetFlowState,
+  handleApiContinue,
+  goToStage,
+  handleApiResultChoice,
+  handleApiNextStep
+}) {
+  if (currentStage === 'api-endpoint-found') {
+    return (
+      <>
+        <span className="flow-map-story-step">Step 2</span>
+        <h2>API Endpoint Found</h2>
+        <p>You discovered an API endpoint. Choose the first check to understand how the endpoint defines expected inputs and access rules.</p>
+        <div className="flow-map-actions flow-map-actions--stacked">
+          <button type="button" className="flow-map-button" onClick={() => handleApiActionSelect('openapi-spec')}>
+            Check OpenAPI or docs
+          </button>
+          <button type="button" className="flow-map-button flow-map-button--ghost" onClick={() => handleApiActionSelect('traffic-baseline')}>
+            Baseline live request traffic
+          </button>
+        </div>
+      </>
+    )
+  }
+
+  if (currentStage === 'inspect-spec') {
+    const description = selectedAction === 'openapi-spec'
+      ? 'Review schema fields, required auth headers, and response models. Look for endpoints exposing debug, admin, or internal actions.'
+      : 'Capture a valid request/response pair first so you can compare auth and payload changes without extra noise.'
+
+    return (
+      <>
+        <span className="flow-map-story-step">Step 3</span>
+        <h2>Inspect Spec</h2>
+        <p>{description}</p>
+        <div className="flow-map-actions">
+          <button type="button" className="flow-map-button" onClick={handleApiContinue}>
+            Continue to Auth Testing
+          </button>
+          <button type="button" className="flow-map-button flow-map-button--ghost" onClick={resetFlowState}>
+            Restart
+          </button>
+        </div>
+      </>
+    )
+  }
+
+  if (currentStage === 'test-auth') {
+    return (
+      <>
+        <span className="flow-map-story-step">Step 4</span>
+        <h2>Test Auth</h2>
+        <p>Try missing token, expired token, role-swapped token, and method changes. Keep one variable per request so you can attribute behavior precisely.</p>
+        <div className="flow-map-actions">
+          <button type="button" className="flow-map-button" onClick={() => goToStage('response-review')}>
+            Continue to Response Review
+          </button>
+        </div>
+      </>
+    )
+  }
+
+  if (currentStage === 'response-review') {
+    return (
+      <>
+        <span className="flow-map-story-step">Step 5</span>
+        <h2>Response Review</h2>
+        <p>Choose the strongest signal from your auth and request variation checks.</p>
+        <div className="flow-map-actions flow-map-actions--stacked">
+          <button type="button" className="flow-map-button" onClick={() => handleApiResultChoice('auth-bypass-signals')}>
+            Auth bypass signals
+          </button>
+          <button type="button" className="flow-map-button flow-map-button--ghost" onClick={() => handleApiResultChoice('schema-leak')}>
+            Schema or debug leak
+          </button>
+          <button type="button" className="flow-map-button flow-map-button--ghost" onClick={() => handleApiResultChoice('stable-response')}>
+            Stable response only
+          </button>
+        </div>
+      </>
+    )
+  }
+
+  if (currentStage === 'classify-risk') {
+    return (
+      <>
+        <span className="flow-map-story-step">Step 6</span>
+        <h2>Classify Risk</h2>
+        <p>Map the behavior to likely issue classes such as broken auth, broken object-level authorization, excessive data exposure, or unsafe debug output.</p>
+        <div className="flow-map-actions">
+          <button type="button" className="flow-map-button" onClick={handleApiNextStep}>
+            Continue to Next Step
+          </button>
+        </div>
+      </>
+    )
+  }
+
+  const nextStepCopy = selectedOutcome === 'stable-response'
+    ? 'If behavior looked stable, expand coverage to related endpoints, methods, and object IDs before marking the path low-risk.'
+    : 'Preserve request/response evidence, then pivot into vulnerability validation with minimal reproducible API calls.'
+
+  return (
+    <>
+      <span className="flow-map-story-step">Step 7</span>
+      <h2>Next Step</h2>
+      <p>{nextStepCopy}</p>
+      {feedback ? <p className="flow-map-feedback">{feedback}</p> : null}
+      <div className="flow-map-actions">
+        <button type="button" className="flow-map-button" onClick={resetFlowState}>
+          Restart
+        </button>
+      </div>
+    </>
+  )
+}
+
 export function renderResponseStoryContent({
   currentStage,
   selectedOutcome,
@@ -761,6 +883,128 @@ export function renderRequestStoryContent({
   )
 }
 
+export function renderAuthzStoryContent({
+  currentStage,
+  selectedAction,
+  selectedOutcome,
+  feedback,
+  handleAuthzActionSelect,
+  resetFlowState,
+  handleAuthzContinue,
+  goToStage,
+  handleAuthzResultChoice,
+  handleAuthzNextStep
+}) {
+  if (currentStage === 'privileged-action-found') {
+    return (
+      <>
+        <span className="flow-map-story-step">Step 2</span>
+        <h2>Privileged Action Found</h2>
+        <p>You found an action that should be restricted. Start by choosing what privilege boundary you want to validate first.</p>
+        <div className="flow-map-actions flow-map-actions--stacked">
+          <button type="button" className="flow-map-button" onClick={() => handleAuthzActionSelect('role-boundary')}>
+            Test role boundary
+          </button>
+          <button type="button" className="flow-map-button flow-map-button--ghost" onClick={() => handleAuthzActionSelect('ownership-boundary')}>
+            Test ownership boundary
+          </button>
+        </div>
+      </>
+    )
+  }
+
+  if (currentStage === 'baseline-request') {
+    const description = selectedAction === 'ownership-boundary'
+      ? 'Capture a valid request for your own object first, then prepare the same request against another object ID.'
+      : 'Capture one allowed request from a privileged account and one denied request from a lower role if possible.'
+
+    return (
+      <>
+        <span className="flow-map-story-step">Step 3</span>
+        <h2>Baseline Request</h2>
+        <p>{description}</p>
+        <div className="flow-map-actions">
+          <button type="button" className="flow-map-button" onClick={handleAuthzContinue}>
+            Continue to Role Switch Test
+          </button>
+          <button type="button" className="flow-map-button flow-map-button--ghost" onClick={resetFlowState}>
+            Restart
+          </button>
+        </div>
+      </>
+    )
+  }
+
+  if (currentStage === 'role-switch-test') {
+    return (
+      <>
+        <span className="flow-map-story-step">Step 4</span>
+        <h2>Role Switch Test</h2>
+        <p>Replay the baseline request with lower-privileged tokens, altered object IDs, or removed role hints while keeping request structure constant.</p>
+        <div className="flow-map-actions">
+          <button type="button" className="flow-map-button" onClick={() => goToStage('access-result')}>
+            Continue to Access Result
+          </button>
+        </div>
+      </>
+    )
+  }
+
+  if (currentStage === 'access-result') {
+    return (
+      <>
+        <span className="flow-map-story-step">Step 5</span>
+        <h2>Access Result</h2>
+        <p>Select what happened after role and ownership changes.</p>
+        <div className="flow-map-actions flow-map-actions--stacked">
+          <button type="button" className="flow-map-button" onClick={() => handleAuthzResultChoice('unauthorized-access')}>
+            Unauthorized access granted
+          </button>
+          <button type="button" className="flow-map-button flow-map-button--ghost" onClick={() => handleAuthzResultChoice('partial-bypass')}>
+            Partial bypass behavior
+          </button>
+          <button type="button" className="flow-map-button flow-map-button--ghost" onClick={() => handleAuthzResultChoice('blocked-correctly')}>
+            Blocked correctly
+          </button>
+        </div>
+      </>
+    )
+  }
+
+  if (currentStage === 'confirm-impact') {
+    return (
+      <>
+        <span className="flow-map-story-step">Step 6</span>
+        <h2>Confirm Impact</h2>
+        <p>Verify exactly what unauthorized read or write scope is exposed, then capture minimal evidence that proves impact without broad data access.</p>
+        <div className="flow-map-actions">
+          <button type="button" className="flow-map-button" onClick={handleAuthzNextStep}>
+            Continue to Next Step
+          </button>
+        </div>
+      </>
+    )
+  }
+
+  const nextStepCopy = selectedOutcome === 'blocked-correctly'
+    ? 'Authorization controls look correct for this path, but keep sampling nearby endpoints and object types before closing.'
+    : 'Document the privilege context, request difference, and affected scope, then move to remediation guidance for server-side authorization enforcement.'
+
+  return (
+    <>
+      <span className="flow-map-story-step">Step 7</span>
+      <h2>Next Step</h2>
+      <p>{nextStepCopy}</p>
+      {feedback ? <p className="flow-map-feedback">{feedback}</p> : null}
+      <div className="flow-map-actions">
+        <button type="button" className="flow-map-button" onClick={resetFlowState}>
+          Restart
+        </button>
+      </div>
+    </>
+  )
+}
+
 export function renderExploitationStoryContent({
   currentStage,
   selectedAction,
@@ -900,12 +1144,20 @@ export function renderFlowStoryContent({ selectedFlow, storyProps }) {
     return renderInputStoryContent(storyProps)
   }
 
+  if (selectedFlow === 'api') {
+    return renderApiStoryContent(storyProps)
+  }
+
   if (selectedFlow === 'response') {
     return renderResponseStoryContent(storyProps)
   }
 
   if (selectedFlow === 'request') {
     return renderRequestStoryContent(storyProps)
+  }
+
+  if (selectedFlow === 'authz') {
+    return renderAuthzStoryContent(storyProps)
   }
 
   if (selectedFlow === 'exploitation') {

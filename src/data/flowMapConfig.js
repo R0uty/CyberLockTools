@@ -168,6 +168,34 @@ export const FLOWS = {
       ['analyze-behavior', 'next-step']
     ]
   },
+  api: {
+    label: 'API Testing Flow',
+    group: 'testing',
+    summary: 'Assess an API endpoint from first discovery to risk classification by validating auth, input handling, and response behavior.',
+    tools: [
+      { name: 'Burp Suite Repeater', purpose: 'Replay API requests with controlled changes and compare status, body, and headers quickly.' },
+      { name: 'Postman', purpose: 'Build repeatable request collections for endpoint, auth, and schema testing.' },
+      { name: 'curl', purpose: 'Run minimal reproducible API requests from the terminal for clean before/after comparisons.' }
+    ],
+    stages: ['start', 'api-endpoint-found', 'inspect-spec', 'test-auth', 'response-review', 'classify-risk', 'next-step'],
+    nodes: [
+      { id: 'start', label: 'Start', x: 50, y: 50 },
+      { id: 'api-endpoint-found', label: 'API Endpoint Found', x: 28, y: 30 },
+      { id: 'inspect-spec', label: 'Inspect Spec', x: 48, y: 26 },
+      { id: 'test-auth', label: 'Test Auth', x: 66, y: 30 },
+      { id: 'response-review', label: 'Response Review', x: 78, y: 50 },
+      { id: 'classify-risk', label: 'Classify Risk', x: 88, y: 28 },
+      { id: 'next-step', label: 'Next Step', x: 90, y: 62 }
+    ],
+    connections: [
+      ['start', 'api-endpoint-found'],
+      ['api-endpoint-found', 'inspect-spec'],
+      ['inspect-spec', 'test-auth'],
+      ['test-auth', 'response-review'],
+      ['response-review', 'classify-risk'],
+      ['classify-risk', 'next-step']
+    ]
+  },
   response: {
     label: 'Response Flow',
     group: 'niche',
@@ -213,6 +241,34 @@ export const FLOWS = {
       ['tamper-request', 'response-changed'],
       ['response-changed', 'analyze-impact'],
       ['analyze-impact', 'next-step']
+    ]
+  },
+  authz: {
+    label: 'Authorization Testing Flow',
+    group: 'vulnerability',
+    summary: 'Validate whether role and ownership checks are enforced by replaying privileged actions with lower-privileged contexts.',
+    tools: [
+      { name: 'Burp Suite Repeater', purpose: 'Swap tokens, IDs, and role-linked fields while preserving request shape.' },
+      { name: 'Browser DevTools', purpose: 'Track session state, role hints, and front-end restrictions that may not exist server-side.' },
+      { name: 'curl', purpose: 'Reproduce authorization checks as minimal requests for clean documentation.' }
+    ],
+    stages: ['start', 'privileged-action-found', 'baseline-request', 'role-switch-test', 'access-result', 'confirm-impact', 'next-step'],
+    nodes: [
+      { id: 'start', label: 'Start', x: 50, y: 50 },
+      { id: 'privileged-action-found', label: 'Privileged Action Found', x: 28, y: 30 },
+      { id: 'baseline-request', label: 'Baseline Request', x: 48, y: 26 },
+      { id: 'role-switch-test', label: 'Role Switch Test', x: 68, y: 30 },
+      { id: 'access-result', label: 'Access Result', x: 78, y: 50 },
+      { id: 'confirm-impact', label: 'Confirm Impact', x: 88, y: 28 },
+      { id: 'next-step', label: 'Next Step', x: 90, y: 62 }
+    ],
+    connections: [
+      ['start', 'privileged-action-found'],
+      ['privileged-action-found', 'baseline-request'],
+      ['baseline-request', 'role-switch-test'],
+      ['role-switch-test', 'access-result'],
+      ['access-result', 'confirm-impact'],
+      ['confirm-impact', 'next-step']
     ]
   },
   exploitation: {

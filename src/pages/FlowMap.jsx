@@ -31,6 +31,25 @@ import '../styles/pages/FlowMap.css'
 
 const DEFAULT_STAGE = 'start'
 
+const TOOL_USAGE_EXAMPLES = {
+  'Browser DevTools': 'Open DevTools (F12), go to Network, submit the form once, then click the request to inspect URL, headers, and response body.',
+  'Burp Suite': 'Turn on Intercept, submit one request from the browser, send it to Repeater, then change a single parameter and compare the response.',
+  'Burp Suite Repeater': 'Send one captured request to Repeater, change only one value (like id=1 to id=2), then compare status code and response body.',
+  curl: 'Run: curl -i "https://target.example/api/items?id=1" and compare output after changing one parameter value at a time.',
+  Nmap: 'Run: nmap -sV target.example to identify open ports and service versions before choosing deeper tests.',
+  ffuf: 'Run: ffuf -u https://target.example/FUZZ -w /path/to/wordlist.txt to discover hidden paths quickly.',
+  dirb: 'Run: dirb https://target.example/ to brute-force common directories and files as a first pass.',
+  'enum4linux-ng': 'Run: enum4linux-ng -A target.example to gather SMB users, shares, and policy details.',
+  smbclient: 'Run: smbclient -L //target.example -N to list shares, then test readable paths in accessible shares.',
+  snmpwalk: 'Run: snmpwalk -v2c -c public target.example to check for exposed SNMP data.',
+  ldapsearch: 'Run: ldapsearch -x -H ldap://target.example -b "dc=example,dc=local" to enumerate directory objects.',
+  Postman: 'Create one saved request, duplicate it, change auth or one field, then compare response status and body side by side.'
+}
+
+function getToolExample(toolName) {
+  return TOOL_USAGE_EXAMPLES[toolName] ?? 'Use one baseline request first, then change a single field to clearly compare behavior.'
+}
+
 function clampZoomLevel(nextZoomLevel) {
   return Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, nextZoomLevel))
 }
@@ -146,8 +165,10 @@ export default function FlowMap({ onToolClick }) {
         discovery: 'web-page-found',
         enumeration: 'service-found',
         input: 'input-field-found',
+        api: 'api-endpoint-found',
         response: 'response-data-found',
         request: 'http-request-observed',
+        authz: 'privileged-action-found',
         exploitation: 'confirmed-finding'
       }
     })
@@ -434,6 +455,10 @@ export default function FlowMap({ onToolClick }) {
     handleInputContinue: () => applyFlowEvent('input.continue'),
     handleInputResultChoice: (outcome) => applyFlowEvent('input.result', outcome),
     handleInputNextStep: () => applyFlowEvent('input.nextStep'),
+    handleApiActionSelect: (action) => applyFlowEvent('api.actionSelect', action),
+    handleApiContinue: () => applyFlowEvent('api.continue'),
+    handleApiResultChoice: (outcome) => applyFlowEvent('api.result', outcome),
+    handleApiNextStep: () => applyFlowEvent('api.nextStep'),
     handleResponseActionSelect: () => applyFlowEvent('response.actionSelect'),
     handleResponseContinue: () => applyFlowEvent('response.continue'),
     handleResponseResultChoice: (outcome) => applyFlowEvent('response.result', outcome),
@@ -442,6 +467,10 @@ export default function FlowMap({ onToolClick }) {
     handleRequestContinue: () => applyFlowEvent('request.continue'),
     handleRequestResultChoice: (outcome) => applyFlowEvent('request.result', outcome),
     handleRequestNextStep: () => applyFlowEvent('request.nextStep'),
+    handleAuthzActionSelect: (action) => applyFlowEvent('authz.actionSelect', action),
+    handleAuthzContinue: () => applyFlowEvent('authz.continue'),
+    handleAuthzResultChoice: (outcome) => applyFlowEvent('authz.result', outcome),
+    handleAuthzNextStep: () => applyFlowEvent('authz.nextStep'),
     handleExploitationActionSelect: (action) => applyFlowEvent('exploitation.actionSelect', action),
     handleExploitationContinue: () => applyFlowEvent('exploitation.continue'),
     handleExploitationResultChoice: (outcome) => applyFlowEvent('exploitation.result', outcome),
@@ -521,6 +550,9 @@ export default function FlowMap({ onToolClick }) {
                 <div key={`${selectedFlow}-${tool.name}`} className="flow-map-tool-card">
                   <h3>{tool.name}</h3>
                   <p>{tool.purpose}</p>
+                  <p className="flow-map-tool-example">
+                    <span>Example:</span> {getToolExample(tool.name)}
+                  </p>
                 </div>
               ))}
             </div>

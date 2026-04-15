@@ -118,10 +118,22 @@ describe('FlowMap interactions', () => {
       step3Heading: 'Test Input',
     },
     {
+      flowButton: 'API Testing Flow',
+      step2Heading: 'API Endpoint Found',
+      step2Action: 'Check OpenAPI or docs',
+      step3Heading: 'Inspect Spec',
+    },
+    {
       flowButton: 'Request Tampering Flow',
       step2Heading: 'HTTP Request Observed',
       step2Action: 'Modify the request',
       step3Heading: 'Tamper Request',
+    },
+    {
+      flowButton: 'Authorization Testing Flow',
+      step2Heading: 'Privileged Action Found',
+      step2Action: 'Test role boundary',
+      step3Heading: 'Baseline Request',
     },
     {
       flowButton: 'Controlled Exploitation Flow',

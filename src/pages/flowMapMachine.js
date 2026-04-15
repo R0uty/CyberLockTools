@@ -110,6 +110,23 @@ const TRANSITION_DEFINITIONS = {
     nextStage: 'next-step',
     feedback: 'The next step is to test for common input handling weaknesses, such as injection or filtering issues, or switch into a more specific flow based on what changed.'
   }),
+  'api.actionSelect': ({ payload }) => ({ nextStage: 'inspect-spec', selectedAction: payload, feedback: '' }),
+  'api.continue': () => ({ nextStage: 'test-auth', feedback: '' }),
+  'api.result': ({ payload }) => {
+    if (payload === 'auth-bypass-signals' || payload === 'schema-leak') {
+      return { nextStage: 'classify-risk', selectedOutcome: payload, feedback: '' }
+    }
+
+    return {
+      nextStage: 'next-step',
+      selectedOutcome: payload,
+      feedback: 'If the endpoint looks stable, keep testing method changes, missing-token behavior, and object-level access checks before closing the path.'
+    }
+  },
+  'api.nextStep': () => ({
+    nextStage: 'next-step',
+    feedback: 'Carry the strongest API finding into vulnerability validation and document exact request and response pairs for reproducibility.'
+  }),
   'response.actionSelect': () => ({ nextStage: 'analyze-data', selectedAction: 'inspect-response', feedback: '' }),
   'response.continue': () => ({ nextStage: 'interesting-data', feedback: '' }),
   'response.result': ({ payload }) => {
@@ -144,6 +161,23 @@ const TRANSITION_DEFINITIONS = {
     nextStage: 'next-step',
     feedback: 'Keep manipulating the request and combine this with input testing or enumeration flows when the behavior suggests deeper validation or access control issues.'
   }),
+  'authz.actionSelect': ({ payload }) => ({ nextStage: 'baseline-request', selectedAction: payload, feedback: '' }),
+  'authz.continue': () => ({ nextStage: 'role-switch-test', feedback: '' }),
+  'authz.result': ({ payload }) => {
+    if (payload === 'unauthorized-access' || payload === 'partial-bypass') {
+      return { nextStage: 'confirm-impact', selectedOutcome: payload, feedback: '' }
+    }
+
+    return {
+      nextStage: 'next-step',
+      selectedOutcome: payload,
+      feedback: 'No bypass yet. Keep varying resource ownership, role claims, and direct object references while changing one factor at a time.'
+    }
+  },
+  'authz.nextStep': () => ({
+    nextStage: 'next-step',
+    feedback: 'Document the exact privilege context, request delta, and impact scope so remediation can enforce server-side authorization checks.'
+  }),
   'exploitation.actionSelect': ({ payload }) => ({ nextStage: 'prepare-validation', selectedAction: payload, feedback: '' }),
   'exploitation.continue': () => ({ nextStage: 'execute-safely', feedback: '' }),
   'exploitation.result': ({ payload }) => {
@@ -169,8 +203,10 @@ export const FLOW_START_STAGE_BY_KEY = {
   discovery: 'web-page-found',
   enumeration: 'service-found',
   input: 'input-field-found',
+  api: 'api-endpoint-found',
   response: 'response-data-found',
   request: 'http-request-observed',
+  authz: 'privileged-action-found',
   exploitation: 'confirmed-finding'
 }
 

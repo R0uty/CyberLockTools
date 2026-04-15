@@ -1,37 +1,60 @@
 import '../styles/components/HomeToolMap.css'
 
-const TOOL_MAP_NODES = [
-  { title: 'ROT', x: 14, y: 24, duration: '9s', delay: '0s' },
-  { title: 'Base64', x: 22, y: 62, duration: '11s', delay: '1s' },
-  { title: 'URL Encoder', x: 31, y: 16, duration: '10s', delay: '0.5s' },
-  { title: 'Hash Generator', x: 36, y: 78, duration: '12s', delay: '1.4s' },
-  { title: 'JSON Formatter', x: 64, y: 16, duration: '9.5s', delay: '0.8s' },
-  { title: 'Regex Tester', x: 72, y: 68, duration: '10.5s', delay: '1.8s' },
-  { title: 'UUID Generator', x: 82, y: 28, duration: '11.5s', delay: '0.3s' },
-  { title: 'QR Code Generator', x: 88, y: 58, duration: '9.8s', delay: '1.1s' },
-  { title: 'CSP Generator & Analyzer', x: 56, y: 82, duration: '12.5s', delay: '0.6s' },
-  { title: 'IP Subnet Calculator', x: 12, y: 80, duration: '10.8s', delay: '1.5s' }
+// ─── Three hub nodes ──────────────────────────────────────────────────────────
+const HUBS = [
+  {
+    key: 'flow-map',
+    label: 'Flow Map',
+    x: 25,
+    y: 48,
+    color: 'silver',
+    duration: '12s',
+    delay: '0s',
+  },
+  {
+    key: 'tools',
+    label: 'Tools',
+    x: 57,
+    y: 28,
+    color: 'yellow',
+    duration: '14s',
+    delay: '0.6s',
+  },
+  {
+    key: 'skills',
+    label: 'Skills',
+    x: 73,
+    y: 66,
+    color: 'blue',
+    duration: '13s',
+    delay: '1.1s',
+  },
 ]
 
-const FLOW_HUB_NODE = {
-  title: 'Flow Map',
-  x: 50,
-  y: 50,
-  duration: '12s',
-  delay: '0s'
-}
+// ─── Satellite dots (small labeled orbiters per hub) ─────────────────────────
+const SATELLITES = [
+  // Flow Map (silver) satellites
+  { hub: 'flow-map', label: 'Recon',        angle:  30, radius: 14, duration: '18s', delay: '0s'    },
+  { hub: 'flow-map', label: 'Enumeration',  angle: 130, radius: 12, duration: '20s', delay: '2.1s'  },
+  { hub: 'flow-map', label: 'Exploitation', angle: 220, radius: 13, duration: '17s', delay: '1.2s'  },
+  { hub: 'flow-map', label: 'API Testing',  angle: 310, radius: 11, duration: '21s', delay: '0.7s'  },
 
-const CATEGORY_MAP_NODES = {
-  'Encoding & Decoding': { x: 12, y: 70, duration: '13s', delay: '0.4s' },
-  'Hashing & Tokens': { x: 34, y: 12, duration: '14s', delay: '1s' },
-  'Formatters & Converters': { x: 62, y: 14, duration: '12.5s', delay: '0.7s' },
-  'Generators': { x: 84, y: 36, duration: '13.5s', delay: '1.4s' },
-  'Analyzers & Parsers': { x: 70, y: 80, duration: '15s', delay: '0.9s' },
-  'Penetration Testing': { x: 28, y: 86, duration: '14.5s', delay: '1.2s' }
-}
+  // Tools (yellow) satellites
+  { hub: 'tools', label: 'JWT Debugger',     angle:  50, radius: 13, duration: '19s', delay: '1.5s'  },
+  { hub: 'tools', label: 'SQL Formatter',    angle: 155, radius: 12, duration: '16s', delay: '0.3s'  },
+  { hub: 'tools', label: 'Hash Generator',   angle: 245, radius: 14, duration: '22s', delay: '1.8s'  },
+  { hub: 'tools', label: 'CSP Generator',    angle: 340, radius: 11, duration: '18s', delay: '0.9s'  },
 
+  // Skills (blue) satellites
+  { hub: 'skills', label: 'XSS Detection',   angle:  20, radius: 13, duration: '20s', delay: '0.4s'  },
+  { hub: 'skills', label: 'IDOR Testing',     angle: 110, radius: 11, duration: '17s', delay: '1.6s'  },
+  { hub: 'skills', label: 'Priv Escalation',  angle: 200, radius: 14, duration: '19s', delay: '0.8s'  },
+  { hub: 'skills', label: 'OSINT',            angle: 295, radius: 12, duration: '22s', delay: '2.0s'  },
+]
+
+// ─── Background particles ─────────────────────────────────────────────────────
 const BACKGROUND_PARTICLES = [
-  { x: 6, y: 16, size: 2, duration: '16s', delay: '0s' },
+  { x:  6, y: 16, size: 2, duration: '16s', delay: '0s'   },
   { x: 14, y: 40, size: 3, duration: '18s', delay: '1.2s' },
   { x: 27, y: 72, size: 2, duration: '14s', delay: '0.7s' },
   { x: 35, y: 31, size: 2, duration: '19s', delay: '1.8s' },
@@ -42,14 +65,26 @@ const BACKGROUND_PARTICLES = [
   { x: 81, y: 72, size: 3, duration: '18s', delay: '0.3s' },
   { x: 90, y: 38, size: 2, duration: '16s', delay: '1.7s' },
   { x: 11, y: 84, size: 2, duration: '17s', delay: '1.1s' },
-  { x: 94, y: 14, size: 2, duration: '15s', delay: '0.6s' }
+  { x: 94, y: 14, size: 2, duration: '15s', delay: '0.6s' },
 ]
+
+// Convert polar (angle in degrees, radius in %-units) relative to a hub center
+// to absolute % coordinates inside the canvas
+function satellitePos(hub, angle, radius) {
+  const rad = (angle * Math.PI) / 180
+  // radius is in %-canvas-width units, but we need to compensate for aspect
+  // treat the canvas as 100×50 viewport ratio (canvas is ~900×420 ≈ 2.14:1)
+  const scaleY = 2.14
+  return {
+    x: hub.x + radius * Math.cos(rad),
+    y: hub.y + (radius / scaleY) * Math.sin(rad),
+  }
+}
 
 function handleMapPointerMove(event) {
   const rect = event.currentTarget.getBoundingClientRect()
   const offsetX = event.clientX - rect.left - rect.width / 2
   const offsetY = event.clientY - rect.top - rect.height / 2
-
   event.currentTarget.style.setProperty('--tool-map-hover-x', `${Math.max(Math.min(-offsetX * 0.18, 14), -14)}px`)
   event.currentTarget.style.setProperty('--tool-map-hover-y', `${Math.max(Math.min(-offsetY * 0.18, 12), -12)}px`)
 }
@@ -59,119 +94,107 @@ function resetMapPointerMove(event) {
   event.currentTarget.style.setProperty('--tool-map-hover-y', '0px')
 }
 
-export default function HomeToolMap({ tools, onToolClick, onCategoryClick, onFlowMapClick }) {
-  const availableTools = new Set(tools.map((tool) => tool.title))
-  const availableCategories = [...new Set(tools.map((tool) => tool.category))]
-  const visibleNodes = TOOL_MAP_NODES.filter((node) => availableTools.has(node.title))
-  const visibleCategoryNodes = availableCategories
-    .map((category) => CATEGORY_MAP_NODES[category] ? { category, ...CATEGORY_MAP_NODES[category] } : null)
-    .filter(Boolean)
+export default function HomeToolMap({ onCategoryClick, onFlowMapClick }) {
+  // Resolve satellite positions
+  const resolvedSatellites = SATELLITES.map((sat) => {
+    const hub = HUBS.find((h) => h.key === sat.hub)
+    const pos = satellitePos(hub, sat.angle, sat.radius)
+    return { ...sat, ...pos, hubColor: hub.color }
+  })
+
+  const handleHubClick = (hub) => {
+    if (hub.key === 'flow-map') onFlowMapClick()
+    else if (hub.key === 'tools') onCategoryClick && onCategoryClick(null)
+    else if (hub.key === 'skills') onCategoryClick && onCategoryClick('skills')
+  }
 
   return (
-    <section className="tool-map-section">
+    <section className="tool-map-section" role="region" aria-label="Homepage navigation map">
       <div className="tool-map-canvas">
         <div className="tool-map-grid" />
 
-        {BACKGROUND_PARTICLES.map((particle, index) => (
+        {BACKGROUND_PARTICLES.map((p, i) => (
           <span
-            key={index}
+            key={i}
             className="tool-map-particle"
+            aria-hidden="true"
             style={{
-              left: `${particle.x}%`,
-              top: `${particle.y}%`,
-              width: `${particle.size}px`,
-              height: `${particle.size}px`,
-              '--tool-map-particle-duration': particle.duration,
-              '--tool-map-particle-delay': particle.delay,
+              left: `${p.x}%`,
+              top: `${p.y}%`,
+              width: `${p.size}px`,
+              height: `${p.size}px`,
+              '--tool-map-particle-duration': p.duration,
+              '--tool-map-particle-delay': p.delay,
             }}
           />
         ))}
 
-        <svg className="tool-map-lines" viewBox="0 0 100 100" preserveAspectRatio="none">
-          {visibleNodes.map((node) => (
-            <line
-              key={`flow-hub-${node.title}`}
-              x1={FLOW_HUB_NODE.x}
-              y1={FLOW_HUB_NODE.y}
-              x2={node.x}
-              y2={node.y}
-            />
-          ))}
-          {visibleCategoryNodes.map((node) => (
-            <line
-              key={`flow-hub-category-${node.category}`}
-              x1={FLOW_HUB_NODE.x}
-              y1={FLOW_HUB_NODE.y}
-              x2={node.x}
-              y2={node.y}
-            />
-          ))}
+        {/* Connection lines: hub-to-hub */}
+        <svg className="tool-map-lines" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+          {/* Hub ↔ hub lines */}
+          {HUBS.map((hubA, i) =>
+            HUBS.slice(i + 1).map((hubB) => (
+              <line
+                key={`${hubA.key}-${hubB.key}`}
+                x1={hubA.x} y1={hubA.y}
+                x2={hubB.x} y2={hubB.y}
+              />
+            ))
+          )}
+          {/* Hub → satellite lines */}
+          {resolvedSatellites.map((sat) => {
+            const hub = HUBS.find((h) => h.key === sat.hub)
+            return (
+              <line
+                key={`${sat.hub}-${sat.label}`}
+                className={`tool-map-sat-line tool-map-sat-line--${sat.hubColor}`}
+                x1={hub.x} y1={hub.y}
+                x2={sat.x} y2={sat.y}
+              />
+            )
+          })}
         </svg>
 
-        <button
-          type="button"
-          className="tool-map-hub-node"
-          style={{
-            left: `${FLOW_HUB_NODE.x}%`,
-            top: `${FLOW_HUB_NODE.y}%`,
-            '--tool-map-hub-duration': FLOW_HUB_NODE.duration,
-            '--tool-map-hub-delay': FLOW_HUB_NODE.delay,
-          }}
-          onMouseMove={handleMapPointerMove}
-          onMouseLeave={resetMapPointerMove}
-          onClick={onFlowMapClick}
-          aria-label="Open Flow Map"
-        >
-          <span className="tool-map-hub-content">
-            <span className="tool-map-hub-dot" />
-            <span className="tool-map-hub-label">{FLOW_HUB_NODE.title}</span>
-          </span>
-        </button>
-
-        {visibleNodes.map((node) => (
+        {/* Hub nodes */}
+        {HUBS.map((hub) => (
           <button
-            key={node.title}
+            key={hub.key}
             type="button"
-            className="tool-map-node"
+            className={`tool-map-hub-node tool-map-hub-node--${hub.color}`}
             style={{
-              left: `${node.x}%`,
-              top: `${node.y}%`,
-              '--tool-map-node-duration': node.duration,
-              '--tool-map-node-delay': node.delay,
+              left: `${hub.x}%`,
+              top: `${hub.y}%`,
+              '--tool-map-hub-duration': hub.duration,
+              '--tool-map-hub-delay': hub.delay,
             }}
             onMouseMove={handleMapPointerMove}
             onMouseLeave={resetMapPointerMove}
-            onClick={() => onToolClick(node.title)}
-            aria-label={`Open ${node.title}`}
+            onClick={() => handleHubClick(hub)}
+            aria-label={`Open ${hub.label}`}
           >
-            <span className="tool-map-node-content">
-              <span className="tool-map-node-dot" />
-              <span className="tool-map-node-label">{node.title}</span>
+            <span className="tool-map-hub-content">
+              <span className="tool-map-hub-dot" />
+              <span className="tool-map-hub-label">{hub.label}</span>
             </span>
           </button>
         ))}
 
-        {visibleCategoryNodes.map((node) => (
-          <button
-            key={node.category}
-            type="button"
-            className="tool-map-category-node"
+        {/* Satellite dots */}
+        {resolvedSatellites.map((sat) => (
+          <span
+            key={`${sat.hub}-${sat.label}`}
+            className={`tool-map-satellite tool-map-satellite--${sat.hubColor}`}
+            aria-hidden="true"
             style={{
-              left: `${node.x}%`,
-              top: `${node.y}%`,
-              '--tool-map-category-duration': node.duration,
-              '--tool-map-category-delay': node.delay,
+              left: `${sat.x}%`,
+              top: `${sat.y}%`,
+              '--sat-duration': sat.duration,
+              '--sat-delay': sat.delay,
             }}
-            onMouseMove={handleMapPointerMove}
-            onMouseLeave={resetMapPointerMove}
-            onClick={() => onCategoryClick(node.category)}
-            aria-label={`Browse ${node.category} tools`}
           >
-            <span className="tool-map-category-content">
-              <span className="tool-map-category-dot" />
-              <span className="tool-map-category-label">{node.category}</span>
-            </span>
-          </button>
+            <span className="tool-map-satellite-dot" />
+            <span className="tool-map-satellite-label">{sat.label}</span>
+          </span>
         ))}
       </div>
     </section>
