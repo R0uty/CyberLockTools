@@ -47,6 +47,7 @@ const PathTraversalGenerator = lazy(() => import('./pages/PathTraversalGenerator
 const SSRFGenerator = lazy(() => import('./pages/SSRFGenerator'))
 const NumberBaseConverter = lazy(() => import('./pages/NumberBaseConverter'))
 const SubnetCalculator = lazy(() => import('./pages/SubnetCalculator'))
+const TextToDSL = lazy(() => import('./pages/TextToDSL'))
 const DiffViewer = lazy(() => import('./pages/DiffViewer'))
 const HTTPHeadersParser = lazy(() => import('./pages/HTTPHeadersParser'))
 const Tools = lazy(() => import('./pages/Tools'))
@@ -168,7 +169,8 @@ export default function App() {
     LDAPInjectionGenerator,
     PathTraversalGenerator,
     NumberBaseConverter,
-    SubnetCalculator
+    SubnetCalculator,
+    TextToDSL
   })
 
   const renderFooter = () => (
