@@ -37,10 +37,19 @@ export function generatePassword(options = {}) {
     throw new Error('At least one character type must be selected')
   }
 
+  // Use rejection sampling to eliminate modulo bias: discard any random value
+  // that falls in the incomplete tail of the distribution so every character
+  // in `chars` has an exactly equal probability of being chosen.
+  const charsLen = chars.length
+  const limit = Math.floor(0x100000000 / charsLen) * charsLen
+  const buf = new Uint32Array(1)
+
   let password = ''
-  for (let i = 0; i < length; i++) {
-    const randomIndex = Math.floor(Math.random() * chars.length)
-    password += chars[randomIndex]
+  while (password.length < length) {
+    crypto.getRandomValues(buf)
+    if (buf[0] < limit) {
+      password += chars[buf[0] % charsLen]
+    }
   }
 
   return password

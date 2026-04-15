@@ -206,11 +206,11 @@ export default function Tools({ tools, onToolClick, initialCategory = null }) {
           </div>
 
           <div className="cards-container">
-            {filteredTools.map((tool, idx) => {
+            {filteredTools.map((tool) => {
               const IconComponent = iconMap[tool.iconName] ?? Search01Icon
               return (
                 <div
-                  key={idx}
+                  key={tool.title}
                   onClick={() => onToolClick(tool.title)}
                   className="tool-card-wrapper"
                 >
