@@ -30,10 +30,21 @@ export default function TextToDSL() {
       </div>
       <div className="tool-header">
         <h1>Text to DSL Converter</h1>
-        <p>Enter plain text below and click Convert to see the DSL output.</p>
+        <p>Write one command per line using supported syntax, then click Convert to generate formatted DSL blocks.</p>
       </div>
 
       <div className="tool-container">
+        <div className="info-box">
+          <h4>Supported commands</h4>
+          <p>Each line must match one of the patterns below:</p>
+          <pre className="output-block"><code>{`scan target <value>
+ping host <value>
+connect host <value> [port <value>]
+block ip <value>
+auth user <value>
+fuzz url <value>`}</code></pre>
+        </div>
+
         <div className="tool-row">
           <div className="textarea-group">
             <label htmlFor="text-to-dsl-input">Input Text</label>
@@ -71,6 +82,17 @@ export default function TextToDSL() {
             </div>
           </div>
         )}
+
+        <div className="info-box">
+          <h4>How conversion works</h4>
+          <p>The converter processes your text in three steps: tokenize each non-empty line, parse command structure, then format each parsed command as a DSL block.</p>
+          <p>Commands are case-insensitive (for example, <code>SCAN</code> and <code>scan</code> are treated the same), and blank lines are ignored.</p>
+        </div>
+
+        <div className="info-box">
+          <h4>Why errors happen</h4>
+          <p>If a line does not match a supported pattern exactly, conversion stops and the first parsing error is shown. This helps you fix input line-by-line quickly.</p>
+        </div>
       </div>
     </div>
   )
