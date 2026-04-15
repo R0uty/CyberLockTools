@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react'
 import { useSEO } from '../hooks/useSEO'
 import { getLabNote } from '../data/labNotes'
-import './LabNotes.css'
+import '../styles/pages/LabNotes.css'
 
 const CATEGORY_NOTES = {
   'Penetration Testing': 'These notes are for authorized testing, education, and lab work only.'

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useSEO } from '../hooks/useSEO'
-import './Contact.css'
+import '../styles/pages/Contact.css'
 
 export default function Contact() {
   useSEO({

@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useSEO } from '../hooks/useSEO';
 import ToolCard from '../components/ToolCard';
 import { Search01Icon, ArrowDataTransferHorizontalIcon, LockKeyIcon, BookOpen01Icon, SmileIcon, CheckmarkBadge01Icon, GlobeIcon } from 'hugeicons-react'
-import './Tools.css'
+import '../styles/pages/Tools.css'
 import {
   RotateClockwiseIcon,
   File01Icon,

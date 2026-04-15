@@ -1,4 +1,4 @@
-import './HomeToolMap.css'
+import '../styles/components/HomeToolMap.css'
 
 const TOOL_MAP_NODES = [
   { title: 'ROT', x: 14, y: 24, duration: '9s', delay: '0s' },

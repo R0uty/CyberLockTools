@@ -27,7 +27,7 @@ import {
 } from './flowMapMachine'
 import FlowMapProgressPanel from '../components/flow-map/FlowMapProgressPanel'
 import FlowMapCanvas from '../components/flow-map/FlowMapCanvas'
-import './FlowMap.css'
+import '../styles/pages/FlowMap.css'
 
 const DEFAULT_STAGE = 'start'
 

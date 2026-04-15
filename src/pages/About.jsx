@@ -1,5 +1,5 @@
 import { useSEO } from '../hooks/useSEO'
-import './About.css'
+import '../styles/pages/About.css'
 
 export default function About() {
   useSEO({
