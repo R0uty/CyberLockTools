@@ -77,6 +77,68 @@
   padding: 1.35rem;
 }
 
+.lab-notes-updates-panel {
+  padding: 1.35rem;
+}
+
+.lab-notes-updates-header h2,
+.lab-notes-updates-header p,
+.lab-notes-update-card h3,
+.lab-notes-update-card p {
+  margin: 0;
+}
+
+.lab-notes-updates-header {
+  display: grid;
+  gap: 0.55rem;
+  margin-bottom: 1rem;
+}
+
+.lab-notes-updates-header h2 {
+  color: #f3f3f3;
+}
+
+.lab-notes-updates-header p {
+  color: #cfcfcf;
+  line-height: 1.7;
+}
+
+.lab-notes-updates-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.lab-notes-update-card {
+  padding: 1rem;
+  border-radius: 14px;
+  border: 1px solid rgba(192, 192, 192, 0.12);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.lab-notes-update-card h3 {
+  color: #f0f0f0;
+  margin-bottom: 0.55rem;
+}
+
+.lab-notes-update-card p {
+  color: #d0d0d0;
+  line-height: 1.65;
+  margin-bottom: 0.7rem;
+}
+
+.lab-notes-update-card ul {
+  margin: 0;
+  padding-left: 1rem;
+  display: grid;
+  gap: 0.45rem;
+}
+
+.lab-notes-update-card li {
+  color: #c8c8c8;
+  line-height: 1.6;
+}
+
 .lab-notes-search-copy {
   margin-top: 0.9rem;
   color: #b8b8b8;
@@ -165,7 +227,8 @@
 }
 
 @media (max-width: 900px) {
-  .lab-notes-grid {
+  .lab-notes-grid,
+  .lab-notes-updates-grid {
     grid-template-columns: 1fr;
   }
 }

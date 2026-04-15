@@ -61,6 +61,11 @@ export const FLOWS = {
     label: 'Login Entry Flow',
     group: 'entry-point',
     summary: 'Assess a discovered login page as a possible entry point and keep the next branch obvious as responses change.',
+    suggestedSkills: [
+      { name: 'User Enumeration', difficulty: 'beginner', reason: 'Helps confirm whether login behavior leaks valid usernames.' },
+      { name: 'Rate Limiting Bypass', difficulty: 'intermediate', reason: 'Useful when testing repeated auth attempts and lockout controls.' },
+      { name: 'Business Logic Testing', difficulty: 'advanced', reason: 'Supports deeper checks around login workflow assumptions and bypass paths.' }
+    ],
     tools: [
       { name: 'Browser DevTools', purpose: 'Inspect form behavior, requests, and front-end validation before deeper testing.' },
       { name: 'Burp Suite', purpose: 'Intercept and replay login requests so you can compare auth behavior carefully.' },
@@ -87,6 +92,11 @@ export const FLOWS = {
     label: 'Discovery Flow',
     group: 'recon',
     summary: 'Start from a newly found page or endpoint, enumerate hidden content, and branch into follow-up investigation with common recon tooling.',
+    suggestedSkills: [
+      { name: 'Port Scanning', difficulty: 'beginner', reason: 'Establishes exposed services before path/content probing.' },
+      { name: 'Subdomain Enumeration', difficulty: 'intermediate', reason: 'Expands reachable attack surface linked to the discovered target.' },
+      { name: 'Directory Bruteforcing', difficulty: 'beginner', reason: 'Directly supports hidden route and file discovery during recon.' }
+    ],
     tools: [
       { name: 'Nmap', purpose: 'Find open ports, services, and basic version details before you start guessing paths.' },
       { name: 'ffuf', purpose: 'Run fast wordlist-based discovery for directories, files, vhosts, and parameter fuzzing.' },
@@ -116,6 +126,11 @@ export const FLOWS = {
     label: 'Enumeration Flow',
     group: 'enumeration',
     summary: 'Identify exposed services, enumerate them with the right protocol-aware tools, and decide which finding becomes the next entry point.',
+    suggestedSkills: [
+      { name: 'Banner Grabbing', difficulty: 'beginner', reason: 'Improves service and version identification quality early.' },
+      { name: 'JavaScript Endpoint Analysis', difficulty: 'intermediate', reason: 'Adds hidden endpoint and token discovery to enumeration output.' },
+      { name: 'API Schema Discovery', difficulty: 'intermediate', reason: 'Useful when enumeration reveals API-capable services.' }
+    ],
     tools: [
       { name: 'Nmap', purpose: 'Identify exposed ports, service versions, and useful NSE script output before deeper enumeration.' },
       { name: 'enum4linux-ng', purpose: 'Pull users, shares, and policy details from SMB-heavy targets.' },
@@ -146,6 +161,11 @@ export const FLOWS = {
     label: 'Input Testing Flow',
     group: 'testing',
     summary: 'Test how a field handles normal and unusual values, compare responses, and decide which behavior is worth deeper follow-up.',
+    suggestedSkills: [
+      { name: 'XSS Detection', difficulty: 'beginner', reason: 'Natural follow-up when reflected input behavior changes.' },
+      { name: 'SQL Injection Testing', difficulty: 'intermediate', reason: 'Applies when input handling indicates backend query interaction.' },
+      { name: 'SSTI Detection', difficulty: 'intermediate', reason: 'Useful for templated render paths reacting to user input.' }
+    ],
     tools: [
       { name: 'Burp Suite Repeater', purpose: 'Replay parameter changes quickly and compare how the target handles each input.' },
       { name: 'Browser DevTools', purpose: 'Watch DOM, console, and network changes while the page processes your input.' },
@@ -172,6 +192,11 @@ export const FLOWS = {
     label: 'API Testing Flow',
     group: 'testing',
     summary: 'Assess an API endpoint from first discovery to risk classification by validating auth, input handling, and response behavior.',
+    suggestedSkills: [
+      { name: 'IDOR Testing', difficulty: 'intermediate', reason: 'Core API object-level authorization check during endpoint validation.' },
+      { name: 'Mass Assignment Testing', difficulty: 'intermediate', reason: 'Useful when request bodies contain mutable user-controlled fields.' },
+      { name: 'Broken Function Level Auth', difficulty: 'intermediate', reason: 'Supports role-based endpoint authorization validation.' }
+    ],
     tools: [
       { name: 'Burp Suite Repeater', purpose: 'Replay API requests with controlled changes and compare status, body, and headers quickly.' },
       { name: 'Postman', purpose: 'Build repeatable request collections for endpoint, auth, and schema testing.' },
@@ -221,6 +246,11 @@ export const FLOWS = {
     label: 'Request Tampering Flow',
     group: 'vulnerability',
     summary: 'Modify observed requests, compare server reactions, and decide whether the behavior points to a real vulnerability path.',
+    suggestedSkills: [
+      { name: 'HTTP Request Smuggling', difficulty: 'advanced', reason: 'Advanced option when request parsing behavior looks inconsistent.' },
+      { name: 'Open Redirect Testing', difficulty: 'beginner', reason: 'Fast follow-up for manipulated redirect-related parameters.' },
+      { name: 'Parameter Discovery', difficulty: 'intermediate', reason: 'Finds hidden request inputs worth tampering with next.' }
+    ],
     tools: [
       { name: 'Burp Suite Repeater', purpose: 'Modify one request component at a time and compare responses with minimal noise.' },
       { name: 'curl', purpose: 'Reproduce and script request changes once you know which fields matter.' },
@@ -247,6 +277,11 @@ export const FLOWS = {
     label: 'Authorization Testing Flow',
     group: 'vulnerability',
     summary: 'Validate whether role and ownership checks are enforced by replaying privileged actions with lower-privileged contexts.',
+    suggestedSkills: [
+      { name: 'IDOR Testing', difficulty: 'intermediate', reason: 'Primary ownership-boundary validation method for object access.' },
+      { name: 'Privilege Escalation', difficulty: 'advanced', reason: 'Helps reason about role boundary failures and impact scope.' },
+      { name: 'Broken Function Level Auth', difficulty: 'intermediate', reason: 'Maps directly to missing endpoint-level authorization checks.' }
+    ],
     tools: [
       { name: 'Burp Suite Repeater', purpose: 'Swap tokens, IDs, and role-linked fields while preserving request shape.' },
       { name: 'Browser DevTools', purpose: 'Track session state, role hints, and front-end restrictions that may not exist server-side.' },
@@ -275,6 +310,11 @@ export const FLOWS = {
     label: 'Controlled Exploitation Flow',
     group: 'exploitation',
     summary: 'Move from a confirmed finding to a controlled proof-of-impact in an authorized environment without losing containment or evidence.',
+    suggestedSkills: [
+      { name: 'PoC Writing', difficulty: 'intermediate', reason: 'Critical for proving impact with clear, reproducible evidence.' },
+      { name: 'Vulnerability Severity Rating', difficulty: 'beginner', reason: 'Helps classify impact accurately after controlled validation.' },
+      { name: 'Remediation Advice', difficulty: 'beginner', reason: 'Connects confirmed impact to actionable developer fixes.' }
+    ],
     tools: [
       { name: 'Burp Suite Repeater', purpose: 'Replay the exact proof request in a controlled way and confirm only the intended impact.' },
       { name: 'curl', purpose: 'Capture a minimal reproducible request that demonstrates the issue cleanly for verification.' },

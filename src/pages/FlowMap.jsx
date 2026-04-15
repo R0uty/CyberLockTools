@@ -559,6 +559,26 @@ export default function FlowMap({ onToolClick }) {
           </div>
         ) : null}
 
+        {currentFlow?.suggestedSkills?.length ? (
+          <div className="flow-map-skills-panel" aria-label="Suggested skills">
+            <div className="flow-map-skills-header">
+              <span className="flow-map-skills-kicker">Suggested skills</span>
+              <p>Use these skills as practical guidance while you move through this flow.</p>
+            </div>
+            <div className="flow-map-skills-grid">
+              {currentFlow.suggestedSkills.map((skill) => (
+                <article key={`${selectedFlow}-${skill.name}`} className="flow-map-skill-card">
+                  <h3>{skill.name}</h3>
+                  <span className={`flow-map-skill-difficulty flow-map-skill-difficulty--${skill.difficulty}`}>
+                    {skill.difficulty}
+                  </span>
+                  <p>{skill.reason}</p>
+                </article>
+              ))}
+            </div>
+          </div>
+        ) : null}
+
         <div className="flow-map-toolbar">
           <p className="flow-map-toolbar-copy">{toolbarCopy} Drag to explore the map. Hold Ctrl or Cmd while scrolling to zoom.</p>
           <div className="flow-map-zoom-controls" aria-label="Flow map zoom controls">

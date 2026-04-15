@@ -7,6 +7,27 @@ const CATEGORY_NOTES = {
   'Penetration Testing': 'These notes are for authorized testing, education, and lab work only.'
 }
 
+const FLOW_SKILL_NOTES = [
+  {
+    title: 'Flow Map Guidance',
+    summary: 'Flow Map now includes guided paths for recon, enumeration, entry-point, testing, vulnerability, and controlled exploitation.',
+    highlights: [
+      'Each flow has stage-by-stage story guidance so next actions stay clear.',
+      'Recommended tools are shown inline with concrete usage examples.',
+      'API and authorization testing paths are now part of the active flow set.'
+    ]
+  },
+  {
+    title: 'Skills Suggestions',
+    summary: 'Selected flows now surface skill suggestions that map directly to the current testing objective.',
+    highlights: [
+      'Skill cards include difficulty labels (beginner, intermediate, advanced).',
+      'Suggestions help bridge from “what tool to use” to “what capability to apply”.',
+      'Use this section as a quick checklist while walking through a flow.'
+    ]
+  }
+]
+
 export default function LabNotes({ tools, onToolClick }) {
   useSEO({
     title: 'Lab Notes - Tool Explanations and Use Cases',
@@ -63,6 +84,27 @@ export default function LabNotes({ tools, onToolClick }) {
       </div>
 
       <div className="tool-container">
+        <section className="tool-section lab-notes-updates-panel">
+          <div className="lab-notes-updates-header">
+            <span className="lab-notes-category-kicker">Platform updates</span>
+            <h2>Flow + Skills Notes</h2>
+            <p>Quick reference for recent workflow and skills integration updates across the lab.</p>
+          </div>
+          <div className="lab-notes-updates-grid">
+            {FLOW_SKILL_NOTES.map((note) => (
+              <article key={note.title} className="lab-notes-update-card">
+                <h3>{note.title}</h3>
+                <p>{note.summary}</p>
+                <ul>
+                  {note.highlights.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              </article>
+            ))}
+          </div>
+        </section>
+
         <section className="tool-section lab-notes-search-panel">
           <div className="textarea-group">
             <label htmlFor="lab-notes-search">Search the notes</label>
