@@ -11,9 +11,16 @@ export default function TextToDSL() {
 
   const [input, setInput] = useState('')
   const [output, setOutput] = useState('')
+  const [error, setError] = useState('')
 
   const handleConvert = () => {
-    setOutput(convertTextToDSL(input))
+    setError('')
+    try {
+      setOutput(convertTextToDSL(input))
+    } catch (e) {
+      setOutput('')
+      setError(e.message)
+    }
   }
 
   return (
@@ -34,7 +41,7 @@ export default function TextToDSL() {
               id="text-to-dsl-input"
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              placeholder="Enter text to convert to DSL..."
+              placeholder={"e.g. scan target 192.168.1.1\nping host 10.0.0.1\nconnect host example.com port 443\nblock ip 1.2.3.4\nauth user admin\nfuzz url https://example.com"}
               className="textarea"
               rows="8"
             />
@@ -46,6 +53,15 @@ export default function TextToDSL() {
             Convert
           </button>
         </div>
+
+        {error && (
+          <div className="tool-row">
+            <div className="textarea-group">
+              <label>Error</label>
+              <pre className="output-block error-block"><code>{error}</code></pre>
+            </div>
+          </div>
+        )}
 
         {output && (
           <div className="tool-row">
