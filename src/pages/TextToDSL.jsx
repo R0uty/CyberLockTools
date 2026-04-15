@@ -1,11 +1,6 @@
 import { useState } from 'react'
 import { useSEO } from '../hooks/useSEO'
-
-const MOCK_DSL_OUTPUT = `// DSL output will appear here
-rule "example-rule" {
-  match: input contains "keyword"
-  action: flag(severity=HIGH)
-}`
+import { convertTextToDSL } from '../utils/textToDSL'
 
 export default function TextToDSL() {
   useSEO({
@@ -18,7 +13,7 @@ export default function TextToDSL() {
   const [output, setOutput] = useState('')
 
   const handleConvert = () => {
-    setOutput(MOCK_DSL_OUTPUT)
+    setOutput(convertTextToDSL(input))
   }
 
   return (
