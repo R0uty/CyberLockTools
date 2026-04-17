@@ -60,6 +60,7 @@ const LabNotes = lazy(() => import('./pages/LabNotes'))
 const About = lazy(() => import('./pages/About'))
 const Contact = lazy(() => import('./pages/Contact'))
 const Skills = lazy(() => import('./pages/Skills'))
+const ToolGuides = lazy(() => import('./pages/ToolGuides'))
 
 export default function App() {
   const [currentTool, setCurrentTool] = useState(() => window.history.state?.tool ?? null)
@@ -136,6 +137,10 @@ export default function App() {
     navigateTo('home', null, null)
   }
 
+  const handleToolReferenceClick = (toolName) => {
+    navigateTo('tool-guides', null, toolName)
+  }
+
   const tools = TOOL_CATALOG
 
   const toolComponents = buildToolComponents({
@@ -190,6 +195,7 @@ export default function App() {
         <div className="site-footer-links">
           <button className="site-footer-link" onClick={() => handlePageChange('tools')}>Tools</button>
           <button className="site-footer-link" onClick={() => handlePageChange('flow-map')}>Flow Map</button>
+          <button className="site-footer-link" onClick={() => handlePageChange('tool-guides')}>Tool Guides</button>
           <button className="site-footer-link" onClick={() => handlePageChange('lab-notes')}>Lab Notes</button>
           <button className="site-footer-link" onClick={() => handlePageChange('about')}>About</button>
           <button className="site-footer-link" onClick={() => handlePageChange('contact')}>Contact</button>
@@ -245,11 +251,12 @@ export default function App() {
 
   if (currentPage === 'flow-map') {
     return renderAppShell(
-      <FlowMap
-        tools={tools}
-        onToolClick={handleToolClick}
-      />
-    )
+        <FlowMap
+          tools={tools}
+          onToolClick={handleToolClick}
+          onToolReferenceClick={handleToolReferenceClick}
+        />
+      )
   }
 
   if (currentPage === 'lab-notes') {
@@ -267,6 +274,10 @@ export default function App() {
 
   if (currentPage === 'skills') {
     return renderAppShell(<Skills />)
+  }
+
+  if (currentPage === 'tool-guides') {
+    return renderAppShell(<ToolGuides initialToolName={currentCategory} />)
   }
 
   return renderAppShell(

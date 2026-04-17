@@ -1,0 +1,60 @@
+.tool-guides-page {
+  background:
+    radial-gradient(circle at top right, rgba(34, 184, 255, 0.06), transparent 35%),
+    linear-gradient(180deg, rgba(20, 20, 20, 0.96), rgba(14, 14, 14, 0.98));
+}
+
+.tool-guides-card {
+  gap: 0.95rem;
+}
+
+.tool-guides-card--highlighted {
+  border-color: rgba(34, 184, 255, 0.5);
+  box-shadow: 0 0 0 1px rgba(34, 184, 255, 0.2), 0 10px 24px rgba(34, 184, 255, 0.12);
+}
+
+.tool-guides-examples {
+  display: grid;
+  gap: 0.45rem;
+  padding: 0.75rem;
+  border-radius: 10px;
+  border: 1px solid rgba(192, 192, 192, 0.16);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.tool-guides-examples-label {
+  color: #22b8ff;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.tool-guides-example-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.6rem;
+  align-items: start;
+}
+
+.tool-guides-example-row code {
+  margin: 0;
+  padding: 0.5rem 0.6rem;
+  border-radius: 8px;
+  border: 1px solid rgba(192, 192, 192, 0.14);
+  background: rgba(255, 255, 255, 0.03);
+  color: #d5d5d5;
+  font-size: 0.77rem;
+  line-height: 1.45;
+  word-break: break-word;
+}
+
+.tool-guides-description {
+  margin-top: auto;
+}
+
+@media (max-width: 700px) {
+  .tool-guides-example-row {
+    grid-template-columns: 1fr;
+  }
+}
