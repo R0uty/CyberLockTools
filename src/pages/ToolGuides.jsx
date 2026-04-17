@@ -25,6 +25,36 @@ const TOOL_GUIDES = [
     ]
   },
   {
+    id: 'gobuster',
+    name: 'Gobuster',
+    category: 'web recon',
+    description: 'Fast brute-force tool for discovering directories, files, DNS subdomains, and virtual hosts with wordlists.',
+    examples: [
+      'gobuster dir -u https://target.example -w /path/to/wordlist.txt',
+      'gobuster vhost -u https://target.example -w /path/to/subdomains.txt --append-domain'
+    ]
+  },
+  {
+    id: 'feroxbuster',
+    name: 'feroxbuster',
+    category: 'web recon',
+    description: 'Content discovery scanner for recursive enumeration of hidden paths and files across web applications.',
+    examples: [
+      'feroxbuster -u https://target.example -w /path/to/wordlist.txt',
+      'feroxbuster -u https://target.example --depth 2 -x php,txt,bak'
+    ]
+  },
+  {
+    id: 'wfuzz',
+    name: 'wfuzz',
+    category: 'web recon',
+    description: 'Flexible web fuzzer for parameter discovery, payload testing, and response-based filtering.',
+    examples: [
+      'wfuzz -c -w /path/to/wordlist.txt --hc 404 https://target.example/FUZZ',
+      'wfuzz -c -z file,/path/to/payloads.txt -d "id=FUZZ" https://target.example/item'
+    ]
+  },
+  {
     id: 'dirb',
     name: 'dirb',
     category: 'web recon',
@@ -62,6 +92,36 @@ const TOOL_GUIDES = [
     examples: [
       'Capture baseline request, send to Repeater, change id=1 to id=2',
       'Replay with different tokens and compare authorization responses'
+    ]
+  },
+  {
+    id: 'nikto',
+    name: 'Nikto',
+    category: 'web testing',
+    description: 'Web server scanner for identifying common misconfigurations, outdated software, and known risky files.',
+    examples: [
+      'nikto -h https://target.example',
+      'nikto -h target.example -p 80,443 -ssl'
+    ]
+  },
+  {
+    id: 'sqlmap',
+    name: 'sqlmap',
+    category: 'web testing',
+    description: 'Automated SQL injection testing tool for validating injectable parameters in authorized targets.',
+    examples: [
+      'sqlmap -u "https://target.example/item?id=1"',
+      'sqlmap -r request.txt --batch'
+    ]
+  },
+  {
+    id: 'nuclei',
+    name: 'Nuclei',
+    category: 'web testing',
+    description: 'Template-based scanner for detecting known exposures and misconfigurations using curated checks.',
+    examples: [
+      'nuclei -u https://target.example',
+      'nuclei -u https://target.example -tags cve,misconfig'
     ]
   },
   {
