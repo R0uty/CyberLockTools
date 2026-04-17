@@ -137,8 +137,8 @@ export default function App() {
     navigateTo('home', null, null)
   }
 
-  const handleToolReferenceClick = (toolName) => {
-    navigateTo('tool-guides', null, toolName)
+  const handleToolReferenceClick = (toolGuideName) => {
+    navigateTo('tool-guides', null, toolGuideName)
   }
 
   const tools = TOOL_CATALOG

@@ -109,7 +109,7 @@ function buildInitialMachineState() {
   }
 }
 
-export default function FlowMap({ onToolClick, onToolReferenceClick = () => {} }) {
+export default function FlowMap({ onToolClick, onToolReferenceClick }) {
   useSEO({
     title: 'Flow Map - Workflow Layout',
     description: 'Guided flow maps for recon, enumeration, entry-point, testing, vulnerability, and exploitation workflows.',
@@ -552,7 +552,7 @@ export default function FlowMap({ onToolClick, onToolReferenceClick = () => {} }
                     <button
                       type="button"
                       className="flow-map-tool-link"
-                      onClick={() => onToolReferenceClick(tool.name)}
+                      onClick={() => onToolReferenceClick?.(tool.name)}
                     >
                       {tool.name}
                     </button>
@@ -564,7 +564,7 @@ export default function FlowMap({ onToolClick, onToolReferenceClick = () => {} }
                   <button
                     type="button"
                     className="flow-map-tool-guide-button"
-                    onClick={() => onToolReferenceClick(tool.name)}
+                    onClick={() => onToolReferenceClick?.(tool.name)}
                   >
                     Open full guide
                   </button>
