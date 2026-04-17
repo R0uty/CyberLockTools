@@ -4,9 +4,9 @@ export default function Header({ onLogoClick, currentPage, onPageChange }) {
   const navItems = [
     ['home', 'Home'],
     ['flow-map', 'Flow Map'],
-    ['tool-guides', 'Tool Guides'],
-    ['skills', 'Skills'],
-    ['tools', 'Tools'],
+    ['tool-guides', 'Pentesting Tools'],
+    ['skills', 'Agent Skills'],
+    ['tools', 'General Tools & Payloads'],
     ['lab-notes', 'Lab Notes'],
     ['about', 'About'],
     ['contact', 'Contact']

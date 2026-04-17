@@ -78,9 +78,9 @@ export default function Tools({ tools, onToolClick, initialCategory = null }) {
   const [searchQuery, setSearchQuery] = useState('')
 
   useSEO({
-    title: 'All Online Tools - Free Encoder, Decoder, Generator, Formatter',
-    description: 'Browse all free online tools - ROT13, Base64, URL Encoder, Hash Generator, Cron Parser, JWT Debugger, JSON/YAML Formatter, Markdown Preview, and Regex Tester. Everything runs in your browser.',
-    keywords: 'online tools, encoder, decoder, formatter, generator, parser, free tools, browser tools, utilities',
+    title: 'General Tools & Payloads - Free Encoder, Decoder, Generator, Formatter',
+    description: 'Browse general tools and payload generators for encoding, analysis, formatting, and security workflows. Everything runs in your browser.',
+    keywords: 'general tools, payload generators, encoder, decoder, formatter, generator, browser tools, utilities',
   })
 
   // Get unique categories
@@ -126,15 +126,15 @@ export default function Tools({ tools, onToolClick, initialCategory = null }) {
       <div className="privacy-badge">
         All processing happens in your browser • No data is sent to server
       </div>
-      <div className="tool-header">
-        <span className="tools-kicker">Tool index</span>
-        <h1>My Online Tools</h1>
-        <p>Browse my complete collection of free online utilities for developers, security professionals, and students. All tools are secure, private, and run entirely in your browser.</p>
-        <div className="tools-header-meta">
-          <div className="tools-header-pill">
-            <span>Tools</span>
-            <strong>{tools.length}</strong>
-          </div>
+        <div className="tool-header">
+          <span className="tools-kicker">Tool index</span>
+          <h1>General Tools &amp; Payloads</h1>
+          <p>Browse the lab&apos;s collection of browser-based utilities and payload generators for developers, security professionals, and students. Everything stays private and runs entirely in your browser.</p>
+          <div className="tools-header-meta">
+            <div className="tools-header-pill">
+              <span>Tools &amp; Payloads</span>
+              <strong>{tools.length}</strong>
+            </div>
           <div className="tools-header-pill">
             <span>Categories</span>
             <strong>{categoryCount}</strong>
@@ -159,7 +159,7 @@ export default function Tools({ tools, onToolClick, initialCategory = null }) {
                 />
                 <input
                   type="text"
-                  placeholder="Search tools across all categories..."
+                  placeholder="Search general tools and payloads across all categories..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="tools-search-input"
@@ -168,13 +168,13 @@ export default function Tools({ tools, onToolClick, initialCategory = null }) {
               {filteredTools.length > 0 && (
                 <p className="tools-search-results">
                   {hasSearchQuery
-                    ? `Found ${filteredTools.length} tool${filteredTools.length !== 1 ? 's' : ''} across all categories`
-                    : `Found ${filteredTools.length} tool${filteredTools.length !== 1 ? 's' : ''}`}
+                    ? `Found ${filteredTools.length} matching entr${filteredTools.length !== 1 ? 'ies' : 'y'} across all categories`
+                    : `Found ${filteredTools.length} entr${filteredTools.length !== 1 ? 'ies' : 'y'}`}
                 </p>
               )}
               {filteredTools.length === 0 && hasSearchQuery && (
                 <p className="tools-search-no-results">
-                  No tools match your search. Try different keywords.
+                  No tools or payloads match your search. Try different keywords.
                 </p>
               )}
             </div>
@@ -200,8 +200,8 @@ export default function Tools({ tools, onToolClick, initialCategory = null }) {
           <div className="tools-intro">
             <p>
               {hasSearchQuery
-                ? `${filteredTools.length} matching tool${filteredTools.length !== 1 ? 's' : ''} across all categories, starting with ${activeCategory}:`
-                : `${filteredTools.length} tool${filteredTools.length !== 1 ? 's' : ''} available in ${selectedCategory}:`}
+                ? `${filteredTools.length} matching entr${filteredTools.length !== 1 ? 'ies' : 'y'} across all categories, starting with ${activeCategory}:`
+                : `${filteredTools.length} entr${filteredTools.length !== 1 ? 'ies' : 'y'} available in ${selectedCategory}:`}
             </p>
           </div>
 
@@ -268,7 +268,7 @@ export default function Tools({ tools, onToolClick, initialCategory = null }) {
 
         <section className="tools-features tools-panel">
           <span className="tools-section-kicker">Why it works</span>
-          <h2>Why These Tools?</h2>
+          <h2>Why These General Tools &amp; Payloads?</h2>
           <div className="features-grid">
             <div className="feature-card">
               <div className="icon-wrapper"><LockKeyIcon size={32} color="#c0c0c0" /></div>

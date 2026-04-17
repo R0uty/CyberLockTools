@@ -566,7 +566,7 @@ export default function FlowMap({ onToolClick, onToolReferenceClick }) {
                     className="flow-map-tool-guide-button"
                     onClick={() => onToolReferenceClick?.(tool.name)}
                   >
-                    Open full guide
+                    Open pentesting tool
                   </button>
                 </div>
               ))}
@@ -575,10 +575,10 @@ export default function FlowMap({ onToolClick, onToolReferenceClick }) {
         ) : null}
 
         {currentFlow?.suggestedSkills?.length ? (
-          <div className="flow-map-skills-panel" aria-label="Suggested skills">
+          <div className="flow-map-skills-panel" aria-label="Suggested agent skills">
             <div className="flow-map-skills-header">
-              <span className="flow-map-skills-kicker">Suggested skills</span>
-              <p>Use these skills as practical guidance while you move through this flow.</p>
+              <span className="flow-map-skills-kicker">Suggested agent skills</span>
+              <p>Use these agent skills as practical guidance while you move through this flow.</p>
             </div>
             <div className="flow-map-skills-grid">
               {currentFlow.suggestedSkills.map((skill) => (

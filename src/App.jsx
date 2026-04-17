@@ -190,16 +190,16 @@ export default function App() {
       <div className="site-footer-inner">
         <div>
           <strong>R0uty&apos;s Cyber Lab</strong>
-          <p>{tools.length}+ browser-based tools for encoding, analysis, formatting, generation, and security workflows.</p>
+          <p>{tools.length}+ browser-based general tools and payload generators for encoding, analysis, formatting, and security workflows.</p>
         </div>
         <div className="site-footer-links">
-          <button className="site-footer-link" onClick={() => handlePageChange('tools')}>Tools</button>
+          <button className="site-footer-link" onClick={() => handlePageChange('tools')}>General Tools &amp; Payloads</button>
           <button className="site-footer-link" onClick={() => handlePageChange('flow-map')}>Flow Map</button>
-          <button className="site-footer-link" onClick={() => handlePageChange('tool-guides')}>Tool Guides</button>
+          <button className="site-footer-link" onClick={() => handlePageChange('tool-guides')}>Pentesting Tools</button>
           <button className="site-footer-link" onClick={() => handlePageChange('lab-notes')}>Lab Notes</button>
           <button className="site-footer-link" onClick={() => handlePageChange('about')}>About</button>
           <button className="site-footer-link" onClick={() => handlePageChange('contact')}>Contact</button>
-          <button className="site-footer-link" onClick={() => handlePageChange('skills')}>Skills</button>
+          <button className="site-footer-link" onClick={() => handlePageChange('skills')}>Agent Skills</button>
         </div>
         <p className="site-footer-note">All processing happens locally in your browser.</p>
       </div>
@@ -285,15 +285,15 @@ export default function App() {
         <section className="hero">
           <div className="hero-copy">
             <span className="hero-kicker">Flow-first cyber lab</span>
-            <h1>Guided Security Workflows, Tools, and Skills for Authorized Testing</h1>
-            <p>R0uty&apos;s Cyber Lab is a browser-first suite for walking through recon, enumeration, entry-point analysis, testing, and vulnerability validation. The Flow Map gives you the path, the toolset supports each step, and the Skills library arms AI agents with structured pentesting and bug bounty knowledge.</p>
+            <h1>Guided Security Workflows, General Tools &amp; Payloads, and Agent Skills for Authorized Testing</h1>
+            <p>R0uty&apos;s Cyber Lab is a browser-first suite for walking through recon, enumeration, entry-point analysis, testing, and vulnerability validation. The Flow Map gives you the path, the general tool and payload set supports each step, and the agent skill library arms AI agents with structured pentesting and bug bounty knowledge.</p>
             <div className="privacy-badge hero-privacy-badge">
               All processing happens in your browser • No data is sent to server
             </div>
             <div className="hero-actions">
               <button className="cta-button" onClick={() => handlePageChange('flow-map')}>Open Flow Map</button>
-              <button className="hero-secondary-button" onClick={() => handlePageChange('skills')}>Browse Skills</button>
-              <button className="hero-secondary-button" onClick={() => handlePageChange('tools')}>Browse Tools</button>
+              <button className="hero-secondary-button" onClick={() => handlePageChange('skills')}>Browse Agent Skills</button>
+              <button className="hero-secondary-button" onClick={() => handlePageChange('tools')}>Browse General Tools &amp; Payloads</button>
             </div>
           </div>
 
@@ -304,12 +304,12 @@ export default function App() {
               <p>Recon, enumeration, entry-point, testing, vulnerability, and exploitation paths with stage-by-stage guidance.</p>
             </div>
             <div className="hero-summary-card">
-              <span className="hero-summary-label">Tools</span>
+              <span className="hero-summary-label">General Tools &amp; Payloads</span>
               <strong>{tools.length}+</strong>
               <p>Browser utilities for decoding, formatting, inspection, generation, and payload crafting.</p>
             </div>
             <div className="hero-summary-card">
-              <span className="hero-summary-label">Skills</span>
+              <span className="hero-summary-label">Agent Skills</span>
               <strong>51 skills</strong>
               <p>Structured pentesting and bug bounty definitions with agent hints, ready to copy as JSON.</p>
             </div>
@@ -324,8 +324,8 @@ export default function App() {
         <section className="features">
           <div className="features-intro">
             <span className="features-kicker">What the lab gives you</span>
-            <h2>Workflows, tools, and skills in one place</h2>
-            <p>Common assessment paths made visual, backed by fast browser tools, and paired with a structured skill library you can feed directly to AI agents.</p>
+            <h2>Workflows, general tools, payloads, and agent skills in one place</h2>
+            <p>Common assessment paths made visual, backed by fast browser tools and payload generators, and paired with a structured skill library you can feed directly to AI agents.</p>
           </div>
 
           <div className="features-grid">
@@ -339,7 +339,7 @@ export default function App() {
             <article className="feature-item">
               <div className="feature-icon-wrapper"><AiBrain01Icon size={28} color="#22b8ff" /></div>
               <div className="feature-copy">
-                <h3>Skills for AI agents</h3>
+                <h3>Agent skills for AI workflows</h3>
                 <p>51 structured pentesting and bug bounty skills with agent hints. Filter by category or difficulty, then copy any skill as JSON to paste into a prompt.</p>
               </div>
             </article>

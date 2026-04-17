@@ -18,8 +18,8 @@ const FLOW_SKILL_NOTES = [
     ]
   },
   {
-    title: 'Skills Suggestions',
-    summary: 'Selected flows now surface skill suggestions that map directly to the current testing objective.',
+    title: 'Agent Skills Suggestions',
+    summary: 'Selected flows now surface agent skill suggestions that map directly to the current testing objective.',
     highlights: [
       'Skill cards include difficulty labels (beginner, intermediate, advanced).',
       'Suggestions help bridge from “what tool to use” to “what capability to apply”.',
@@ -87,8 +87,8 @@ export default function LabNotes({ tools, onToolClick }) {
         <section className="tool-section lab-notes-updates-panel">
           <div className="lab-notes-updates-header">
             <span className="lab-notes-category-kicker">Platform updates</span>
-            <h2>Flow + Skills Notes</h2>
-            <p>Quick reference for recent workflow and skills integration updates across the lab.</p>
+            <h2>Flow + Agent Skills Notes</h2>
+            <p>Quick reference for recent workflow and agent skill integration updates across the lab.</p>
           </div>
           <div className="lab-notes-updates-grid">
             {FLOW_SKILL_NOTES.map((note) => (

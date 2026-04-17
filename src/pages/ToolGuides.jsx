@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { useSEO } from '../hooks/useSEO'
 import '../styles/pages/Skills.css'
 import '../styles/pages/ToolGuides.css'
@@ -79,6 +79,7 @@ const TOOL_GUIDES = [
     name: 'Burp Suite',
     category: 'web testing',
     description: 'Web security proxy for intercepting traffic, repeating requests, and validating behavior changes in controlled tests.',
+    copyEnabled: false,
     examples: [
       'Proxy browser traffic through Burp and send one request to Repeater',
       'Modify one parameter per request in Repeater and compare status/body changes'
@@ -89,6 +90,7 @@ const TOOL_GUIDES = [
     name: 'Burp Suite Repeater',
     category: 'web testing',
     description: 'Burp module focused on replaying and modifying captured requests one variable at a time.',
+    copyEnabled: false,
     examples: [
       'Capture baseline request, send to Repeater, change id=1 to id=2',
       'Replay with different tokens and compare authorization responses'
@@ -199,12 +201,16 @@ const TOOL_GUIDES = [
 const CATEGORY_ORDER = ['all', ...new Set(TOOL_GUIDES.map((tool) => tool.category))]
 
 function slugify(value) {
+  if (typeof value !== 'string') {
+    return ''
+  }
+
   return value.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')
 }
 
 export default function ToolGuides({ initialToolName = '' }) {
   useSEO({
-    title: 'Tool Guides — R0uty\'s Cyber Lab',
+    title: 'Pentesting Tools — R0uty\'s Cyber Lab',
     description: 'Recon and testing tool quick-reference with copyable usage examples and short explanations.',
     keywords: 'nmap, dirbuster, ffuf, burp suite, recon tools, security tool examples'
   })
@@ -247,13 +253,13 @@ export default function ToolGuides({ initialToolName = '' }) {
       </div>
 
       <div className="tool-header">
-        <span className="skills-kicker">Tool reference</span>
-        <h1>Recon &amp; Testing Tool Guides</h1>
-        <p>Examples are at the top of each card and are copyable. Short tool explanations are shown at the bottom.</p>
+        <span className="skills-kicker">Pentesting reference</span>
+        <h1>Pentesting Tools for Recon &amp; Testing</h1>
+        <p>Examples are shown at the top of each card. Copy is available for command-style entries, while GUI workflow notes stay as quick reference.</p>
         <div className="skills-header-meta">
-          <div className="skills-header-pill"><span>Tools</span><strong>{TOOL_GUIDES.length}</strong></div>
+          <div className="skills-header-pill"><span>Pentesting Tools</span><strong>{TOOL_GUIDES.length}</strong></div>
           <div className="skills-header-pill"><span>Categories</span><strong>{CATEGORY_ORDER.length - 1}</strong></div>
-          <div className="skills-header-pill"><span>Format</span><strong>Copy-ready</strong></div>
+          <div className="skills-header-pill"><span>Format</span><strong>Examples + notes</strong></div>
         </div>
       </div>
 
@@ -297,13 +303,15 @@ export default function ToolGuides({ initialToolName = '' }) {
                 return (
                   <div key={copyKey} className="tool-guides-example-row">
                     <code>{example}</code>
-                    <button
-                      type="button"
-                      className="skills-copy-btn"
-                      onClick={() => copyExample(example, copyKey)}
-                    >
-                      {copiedExampleKey === copyKey ? 'Copied!' : 'Copy'}
-                    </button>
+                    {tool.copyEnabled !== false && (
+                      <button
+                        type="button"
+                        className="skills-copy-btn"
+                        onClick={() => copyExample(example, copyKey)}
+                      >
+                        {copiedExampleKey === copyKey ? 'Copied!' : 'Copy'}
+                      </button>
+                    )}
                   </div>
                 )
               })}

@@ -13,7 +13,7 @@ const HUBS = [
   },
   {
     key: 'tools',
-    label: 'Tools',
+    label: 'General Tools & Payloads',
     x: 57,
     y: 28,
     color: 'yellow',
@@ -22,7 +22,7 @@ const HUBS = [
   },
   {
     key: 'skills',
-    label: 'Skills',
+    label: 'Agent Skills',
     x: 73,
     y: 66,
     color: 'blue',
