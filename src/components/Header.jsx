@@ -8,8 +8,7 @@ export default function Header({ onLogoClick, currentPage, onPageChange }) {
     ['skills', 'Agent Skills'],
     ['tools', 'General Tools & Payloads'],
     ['lab-notes', 'Lab Notes'],
-    ['about', 'About'],
-    ['contact', 'Contact']
+    ['about', 'About']
   ]
 
   const handleNavClick = (page) => {

@@ -531,7 +531,7 @@ function SkillCard({ skill, onCopy }) {
 export default function Skills() {
   useSEO({
     title: 'Agent Skills — R0uty\'s Cyber Lab',
-    description: 'Pentesting and bug bounty agent skill library for AI agents. Browse, filter, and export structured skill definitions for recon, exploitation, reporting, and more.',
+    description: 'My pentesting and bug bounty skill library for agent-assisted workflows. Browse, filter, and export structured skill definitions.',
     keywords: 'agent skills, pentesting skills, bug bounty skills, ai agents, security skill library, recon, exploitation, reporting',
   })
 
@@ -569,9 +569,9 @@ export default function Skills() {
         All processing happens in your browser • No data is sent to server
       </div>
       <div className="tool-header">
-        <span className="skills-kicker">AI agent skill library</span>
+        <span className="skills-kicker">Personal skill library</span>
         <h1>Pentesting &amp; Bug Bounty Agent Skills</h1>
-        <p>Structured agent skill definitions for AI agents. Each skill includes an agent hint you can paste directly into a prompt or tool call.</p>
+        <p>This is my structured skill collection for agent-assisted testing. Each skill includes a practical hint you can paste into a prompt or tool call.</p>
         <div className="skills-header-meta">
           <div className="skills-header-pill"><span>Agent Skills</span><strong>{SKILLS.length}</strong></div>
           <div className="skills-header-pill"><span>Categories</span><strong>{Object.keys(SKILL_CATEGORIES).length}</strong></div>
