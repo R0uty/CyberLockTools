@@ -78,8 +78,8 @@ export default function Tools({ tools, onToolClick, initialCategory = null }) {
   const [searchQuery, setSearchQuery] = useState('')
 
   useSEO({
-    title: 'General Tools & Payloads - Free Encoder, Decoder, Generator, Formatter',
-    description: 'Browse general tools and payload generators for encoding, analysis, formatting, and security workflows. Everything runs in your browser.',
+    title: 'General Tools & Payloads - Personal Lab Collection',
+    description: 'Browse my browser-based tool and payload collection for encoding, analysis, formatting, and practical security workflows.',
     keywords: 'general tools, payload generators, encoder, decoder, formatter, generator, browser tools, utilities',
   })
 
@@ -129,7 +129,7 @@ export default function Tools({ tools, onToolClick, initialCategory = null }) {
         <div className="tool-header">
           <span className="tools-kicker">Tool index</span>
           <h1>General Tools &amp; Payloads</h1>
-          <p>Browse the lab&apos;s collection of browser-based utilities and payload generators for developers, security professionals, and students. Everything stays private and runs entirely in your browser.</p>
+          <p>This is my working collection of browser-based utilities and payload helpers for practical analysis. Everything runs locally in your browser.</p>
           <div className="tools-header-meta">
             <div className="tools-header-pill">
               <span>Tools &amp; Payloads</span>
@@ -273,27 +273,27 @@ export default function Tools({ tools, onToolClick, initialCategory = null }) {
             <div className="feature-card">
               <div className="icon-wrapper"><LockKeyIcon size={32} color="#c0c0c0" /></div>
               <h3>100% Private & Secure</h3>
-              <p>All processing happens in your browser. Your data never reaches our servers or leaves your device.</p>
+              <p>All processing happens in your browser. Your data never leaves your device.</p>
             </div>
             <div className="feature-card">
               <div className="icon-wrapper"><CheckmarkBadge01Icon size={32} color="#c0c0c0" /></div>
               <h3>Lightning Fast</h3>
-              <p>Instant results with no waiting. All computations run locally in your web browser.</p>
+              <p>Instant results with no queue or upload delay. Computation runs locally in your browser.</p>
             </div>
             <div className="feature-card">
               <div className="icon-wrapper"><BookOpen01Icon size={32} color="#c0c0c0" /></div>
               <h3>Educational</h3>
-              <p>Learn about encoding, hashing, formatting, and pattern matching with built-in explanations.</p>
+              <p>Use these tools to understand encoding, hashing, formatting, and pattern-matching behavior step by step.</p>
             </div>
             <div className="feature-card">
               <div className="icon-wrapper"><SmileIcon size={32} color="#c0c0c0" /></div>
               <h3>User-Friendly</h3>
-              <p>Intuitive interfaces with clear inputs, live previews, and helpful tips for each tool.</p>
+              <p>Simple interfaces with clear input fields, readable output, and practical hints.</p>
             </div>
             <div className="feature-card">
               <div className="icon-wrapper"><CheckmarkBadge01Icon size={32} color="#c0c0c0" /></div>
-              <h3>Free & Open</h3>
-              <p>Completely free with no ads, registrations, or subscriptions required.</p>
+              <h3>Built for Utility</h3>
+              <p>This collection is maintained to be useful in real workflows, not to sell access.</p>
             </div>
             <div className="feature-card">
               <div className="icon-wrapper"><GlobeIcon size={32} color="#c0c0c0" /></div>

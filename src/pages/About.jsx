@@ -4,7 +4,7 @@ import '../styles/pages/About.css'
 export default function About() {
   useSEO({
     title: 'About R0uty\'s Cyber Lab',
-    description: 'Learn about R0uty\'s Cyber Lab - a browser-first suite for guided security workflows, recon support, and privacy-friendly utility tools.',
+    description: 'Why I built this personal cyber lab, how I use it, and what you can expect from the flows, tools, and skill references.',
     keywords: 'about r0utys cyber lab, security workflow tools, browser-first lab, recon tools'
   })
 
@@ -16,11 +16,11 @@ export default function About() {
       <div className="tool-header">
         <span className="about-kicker">About the lab</span>
         <h1>About R0uty's Cyber Lab</h1>
-        <p>A flow-driven browser suite for guided security work, learning, and fast local analysis.</p>
+        <p>This is my personal cyber lab: a practical workspace I keep refining for authorized security testing and learning.</p>
         <div className="about-header-meta">
           <div className="about-header-pill"><span>Privacy</span><strong>Browser-first</strong></div>
           <div className="about-header-pill"><span>Cost</span><strong>Free</strong></div>
-          <div className="about-header-pill"><span>Focus</span><strong>Workflows + tools</strong></div>
+          <div className="about-header-pill"><span>Focus</span><strong>Usefulness</strong></div>
         </div>
       </div>
 
@@ -28,34 +28,34 @@ export default function About() {
         <section className="info-box about-intro-panel">
           <h2>My Mission</h2>
           <p>
-            R0uty's Cyber Lab exists to make repeatable security workflows easier to follow. Instead of offering only disconnected utilities, the lab combines guided Flow Maps with browser-first tools that support recon, enumeration, entry-point review, testing, vulnerability validation, and controlled proof work.
+            I built this lab to make repeatable security workflows easier to run. Instead of only collecting isolated utilities, I combine guided Flow Maps with browser-first tools so each step has practical support.
           </p>
         </section>
 
         <section className="info-box">
           <h2>Why I Built This</h2>
           <p>
-            Too many online tools either ship your data to a server or help with only one tiny step in a larger process. I built this lab to give practitioners and learners a better alternative: clear workflow guidance paired with tools that run locally in the browser, so notes, tokens, payloads, and samples stay on your device.
+            Most online tools either send data to a server or solve only one tiny part of the process. This lab is my answer: a personal collection I actually use, where guidance and utilities live together and your working data stays local.
           </p>
         </section>
 
         <section className="info-box">
           <h2>How the Suite Works</h2>
           <p>
-            The lab is organized around two layers that work together:
+            The lab is organized as connected building blocks:
           </p>
           <ul className="about-list">
-            <li><strong>Flow Maps:</strong> Guided paths for recon, enumeration, entry-point analysis, testing, vulnerability review, and controlled validation</li>
-            <li><strong>Browser utilities:</strong> Decoders, formatters, generators, parsers, and helpers you can open while following a flow or working a standalone task</li>
-            <li><strong>Recommended external tools:</strong> Some flows call out tools like Nmap, ffuf, dirb, curl, or Burp Suite so users know what usually fits the step</li>
-            <li><strong>Lab notes and context:</strong> The suite is designed to keep the next step visible instead of leaving users to rebuild the process from memory</li>
+            <li><strong>Flow Maps:</strong> Guided paths for recon, enumeration, entry-point analysis, testing, and validation</li>
+            <li><strong>Browser utilities:</strong> Decoders, formatters, generators, parsers, and helpers for quick analysis</li>
+            <li><strong>Pentesting references:</strong> Practical notes for tools like Nmap, ffuf, dirb, curl, and Burp Suite</li>
+            <li><strong>Skill library:</strong> Structured skill cards for agent-assisted workflows and repeatable testing</li>
           </ul>
         </section>
 
         <section className="info-box">
           <h2>Privacy & Security</h2>
           <p>
-            <strong>I take privacy seriously:</strong>
+            <strong>Privacy is a core rule in this project:</strong>
           </p>
           <ul className="about-list">
             <li>All built-in processing happens in your browser using JavaScript</li>
@@ -69,17 +69,17 @@ export default function About() {
         <section className="info-box">
           <h2>Educational Purpose</h2>
           <p>
-            R0uty's Cyber Lab is designed to be useful in both practice and learning. The flows are meant to show how an authorized assessment can move from discovery to verification, while the supporting tools make it easy to inspect data and understand what you are seeing.
+            I designed this lab to be useful in both real practice and learning. The flows show how an authorized assessment can move from discovery to verification, while the tools help you inspect data quickly and clearly.
           </p>
           <p>
-            <strong>Important Note:</strong> This suite is intended for authorized security work, training, and local analysis. Some tools include legacy algorithms or simplified examples for learning, and flows should be used responsibly inside approved environments.
+            <strong>Important note:</strong> This suite is intended for authorized security work, training, and local analysis. Use it responsibly inside approved environments.
           </p>
         </section>
 
         <section className="info-box">
           <h2>Technologies</h2>
           <p>
-            R0uty's Cyber Lab is built with:
+            This lab is built with:
           </p>
           <ul className="about-list">
             <li><strong>React:</strong> Modern JavaScript library for building user interfaces</li>
@@ -93,7 +93,7 @@ export default function About() {
         <section className="info-box about-wide-panel">
           <h2>Why the Browser-First Model Matters</h2>
           <p>
-            The lab stays fast because there is no upload queue or remote processing layer between you and the result. That makes it easier to move through a workflow quickly while keeping sensitive inputs local. The goal is simple: clear paths, useful tools, and less friction.
+            Keeping the tools in the browser removes upload delays and keeps sensitive input local. The goal is simple: make this lab genuinely useful, not commercial noise.
           </p>
         </section>
       </div>

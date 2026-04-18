@@ -58,7 +58,6 @@ const Tools = lazy(() => import('./pages/Tools'))
 const FlowMap = lazy(() => import('./pages/FlowMap'))
 const LabNotes = lazy(() => import('./pages/LabNotes'))
 const About = lazy(() => import('./pages/About'))
-const Contact = lazy(() => import('./pages/Contact'))
 const Skills = lazy(() => import('./pages/Skills'))
 const ToolGuides = lazy(() => import('./pages/ToolGuides'))
 
@@ -69,7 +68,7 @@ export default function App() {
 
   useSEO({
     title: "R0uty's Cyber Lab - Flow-Driven Security Toolkit",
-    description: "R0uty's Cyber Lab is a browser-first suite for guided recon, enumeration, entry-point, testing, vulnerability, and validation workflows.",
+    description: "My personal cyber lab with practical flow maps, browser-based tools, and pentesting references for authorized testing.",
     keywords: 'security workflow tools, recon flow, enumeration flow, browser tools, cyber lab, r0uty'
   })
 
@@ -190,7 +189,7 @@ export default function App() {
       <div className="site-footer-inner">
         <div>
           <strong>R0uty&apos;s Cyber Lab</strong>
-          <p>{tools.length}+ browser-based general tools and payload generators for encoding, analysis, formatting, and security workflows.</p>
+          <p>This is my personal collection: {tools.length}+ browser-based tools and payload helpers I use for day-to-day testing and analysis.</p>
         </div>
         <div className="site-footer-links">
           <button className="site-footer-link" onClick={() => handlePageChange('tools')}>General Tools &amp; Payloads</button>
@@ -198,7 +197,6 @@ export default function App() {
           <button className="site-footer-link" onClick={() => handlePageChange('tool-guides')}>Pentesting Tools</button>
           <button className="site-footer-link" onClick={() => handlePageChange('lab-notes')}>Lab Notes</button>
           <button className="site-footer-link" onClick={() => handlePageChange('about')}>About</button>
-          <button className="site-footer-link" onClick={() => handlePageChange('contact')}>Contact</button>
           <button className="site-footer-link" onClick={() => handlePageChange('skills')}>Agent Skills</button>
         </div>
         <p className="site-footer-note">All processing happens locally in your browser.</p>
@@ -268,10 +266,6 @@ export default function App() {
     )
   }
 
-  if (currentPage === 'contact') {
-    return renderAppShell(<Contact />)
-  }
-
   if (currentPage === 'skills') {
     return renderAppShell(<Skills />)
   }
@@ -284,9 +278,9 @@ export default function App() {
     <>
         <section className="hero">
           <div className="hero-copy">
-            <span className="hero-kicker">Flow-first cyber lab</span>
-            <h1>Guided Security Workflows, General Tools &amp; Payloads, and Agent Skills for Authorized Testing</h1>
-            <p>R0uty&apos;s Cyber Lab is a browser-first suite for walking through recon, enumeration, entry-point analysis, testing, and vulnerability validation. The Flow Map gives you the path, the general tool and payload set supports each step, and the agent skill library arms AI agents with structured pentesting and bug bounty knowledge.</p>
+            <span className="hero-kicker">My personal lab</span>
+            <h1>A Practical Cyber Lab I Built for Real Testing Work</h1>
+            <p>This site is my personal collection of flow maps, browser tools, payload helpers, and agent skills. I built it to be useful first: quick references, clear next steps, and zero signup friction for authorized testing.</p>
             <div className="privacy-badge hero-privacy-badge">
               All processing happens in your browser • No data is sent to server
             </div>
@@ -301,17 +295,17 @@ export default function App() {
             <div className="hero-summary-card">
               <span className="hero-summary-label">Flow Map</span>
               <strong>10 flows</strong>
-              <p>Recon, enumeration, entry-point, testing, vulnerability, and exploitation paths with stage-by-stage guidance.</p>
+              <p>My stage-by-stage paths for recon, enumeration, entry points, testing, validation, and exploitation.</p>
             </div>
             <div className="hero-summary-card">
               <span className="hero-summary-label">General Tools &amp; Payloads</span>
               <strong>{tools.length}+</strong>
-              <p>Browser utilities for decoding, formatting, inspection, generation, and payload crafting.</p>
+              <p>The browser utilities and payload builders I rely on most during analysis.</p>
             </div>
             <div className="hero-summary-card">
               <span className="hero-summary-label">Agent Skills</span>
               <strong>51 skills</strong>
-              <p>Structured pentesting and bug bounty definitions with agent hints, ready to copy as JSON.</p>
+              <p>Structured pentesting and bug bounty skills with practical hints you can reuse in agent workflows.</p>
             </div>
             <div className="hero-summary-card">
               <span className="hero-summary-label">Privacy</span>
@@ -323,9 +317,9 @@ export default function App() {
 
         <section className="features">
           <div className="features-intro">
-            <span className="features-kicker">What the lab gives you</span>
-            <h2>Workflows, general tools, payloads, and agent skills in one place</h2>
-            <p>Common assessment paths made visual, backed by fast browser tools and payload generators, and paired with a structured skill library you can feed directly to AI agents.</p>
+            <span className="features-kicker">What you will find here</span>
+            <h2>Flows, tools, payloads, and skills in one practical workspace</h2>
+            <p>I keep this lab focused on utility: clear assessment paths, fast browser-side helpers, and reusable skill definitions you can apply immediately.</p>
           </div>
 
           <div className="features-grid">
@@ -333,42 +327,42 @@ export default function App() {
               <div className="feature-icon-wrapper"><GitPullRequestIcon size={28} color="#c0c0c0" /></div>
               <div className="feature-copy">
                 <h3>Guided flow maps</h3>
-                <p>10 flows covering recon, enumeration, entry-point, testing, vulnerability, and exploitation. Each stage links to relevant tools and gives you clear next steps.</p>
+                <p>Ten flows covering recon to exploitation, each with clear stage transitions and linked references.</p>
               </div>
             </article>
             <article className="feature-item">
               <div className="feature-icon-wrapper"><AiBrain01Icon size={28} color="#22b8ff" /></div>
               <div className="feature-copy">
                 <h3>Agent skills for AI workflows</h3>
-                <p>51 structured pentesting and bug bounty skills with agent hints. Filter by category or difficulty, then copy any skill as JSON to paste into a prompt.</p>
+                <p>A curated skill library with category and difficulty filters so you can quickly copy structured guidance.</p>
               </div>
             </article>
             <article className="feature-item">
               <div className="feature-icon-wrapper"><BookOpen01Icon size={28} color="#c0c0c0" /></div>
               <div className="feature-copy">
                 <h3>Made to teach</h3>
-                <p>Flows and skill definitions are written to help both working practitioners and people learning how structured assessments unfold step by step.</p>
+                <p>I wrote the flows and skill notes so both practitioners and learners can follow a full assessment process with less guesswork.</p>
               </div>
             </article>
             <article className="feature-item">
               <div className="feature-icon-wrapper"><LockKeyIcon size={28} color="#c0c0c0" /></div>
               <div className="feature-copy">
                 <h3>Privacy first</h3>
-                <p>Everything runs in the browser. Payloads, tokens, samples, and notes never leave your machine.</p>
+                <p>Everything runs in the browser, so payloads, tokens, and samples stay on your machine.</p>
               </div>
             </article>
             <article className="feature-item">
               <div className="feature-icon-wrapper"><CheckmarkBadge01Icon size={28} color="#c0c0c0" /></div>
               <div className="feature-copy">
                 <h3>Fast by default</h3>
-                <p>No uploads, queues, or back-and-forth. Paste input, get the result immediately, move on.</p>
+                <p>No uploads or queues. Paste input, inspect output, and move on.</p>
               </div>
             </article>
             <article className="feature-item">
               <div className="feature-icon-wrapper"><SmileIcon size={28} color="#c0c0c0" /></div>
               <div className="feature-copy">
                 <h3>Low-friction UX</h3>
-                <p>Simple inputs, clear outputs, and focused flows. No noise, no accounts, no tracking.</p>
+                <p>Simple inputs, readable outputs, and focused flows without accounts or tracking.</p>
               </div>
             </article>
           </div>

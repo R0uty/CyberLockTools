@@ -13,7 +13,7 @@ describe('ToolGuides', () => {
   it('renders when opened without a selected tool', () => {
     render(<ToolGuides initialToolName={null} />)
 
-    expect(screen.getByRole('heading', { name: 'Pentesting Tools for Recon & Testing' })).toBeTruthy()
+    expect(screen.getByRole('heading', { name: 'Pentesting Tools for Recon and Testing' })).toBeTruthy()
     expect(screen.getByRole('button', { name: 'All' })).toBeTruthy()
   })
 

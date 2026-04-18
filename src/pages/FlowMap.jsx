@@ -111,8 +111,8 @@ function buildInitialMachineState() {
 
 export default function FlowMap({ onToolClick, onToolReferenceClick }) {
   useSEO({
-    title: 'Flow Map - Workflow Layout',
-    description: 'Guided flow maps for recon, enumeration, entry-point, testing, vulnerability, and exploitation workflows.',
+    title: 'Flow Map - Guided Testing Paths',
+    description: 'Guided flow paths for recon, enumeration, entry-point analysis, testing, vulnerability validation, and exploitation in authorized environments.',
     keywords: 'flow map, recon flow, enumeration flow, entry point flow, testing flow, vulnerability flow, exploitation flow'
   })
 
@@ -543,7 +543,7 @@ export default function FlowMap({ onToolClick, onToolReferenceClick }) {
           <div className="flow-map-tools-panel" aria-label="Recommended tools">
             <div className="flow-map-tools-header">
               <span className="flow-map-tools-kicker">Recommended tools</span>
-              <p>These are the concrete tools this flow expects you to reach for while working through the recon steps.</p>
+              <p>These are the practical tools I recommend for this flow while you move through each stage.</p>
             </div>
             <div className="flow-map-tools-grid">
               {currentFlow.tools.map((tool) => (
@@ -566,7 +566,7 @@ export default function FlowMap({ onToolClick, onToolReferenceClick }) {
                     className="flow-map-tool-guide-button"
                     onClick={() => onToolReferenceClick?.(tool.name)}
                   >
-                    Open pentesting tool
+                    Open pentesting reference
                   </button>
                 </div>
               ))}
@@ -578,7 +578,7 @@ export default function FlowMap({ onToolClick, onToolReferenceClick }) {
           <div className="flow-map-skills-panel" aria-label="Suggested agent skills">
             <div className="flow-map-skills-header">
               <span className="flow-map-skills-kicker">Suggested agent skills</span>
-              <p>Use these agent skills as practical guidance while you move through this flow.</p>
+              <p>Use these skills as practical guidance while moving through the flow.</p>
             </div>
             <div className="flow-map-skills-grid">
               {currentFlow.suggestedSkills.map((skill) => (

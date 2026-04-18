@@ -211,7 +211,7 @@ function slugify(value) {
 export default function ToolGuides({ initialToolName = '' }) {
   useSEO({
     title: 'Pentesting Tools — R0uty\'s Cyber Lab',
-    description: 'Recon and testing tool quick-reference with copyable usage examples and short explanations.',
+    description: 'My pentesting tool quick-reference with concise usage examples and practical notes.',
     keywords: 'nmap, dirbuster, ffuf, burp suite, recon tools, security tool examples'
   })
 
@@ -254,8 +254,8 @@ export default function ToolGuides({ initialToolName = '' }) {
 
       <div className="tool-header">
         <span className="skills-kicker">Pentesting reference</span>
-        <h1>Pentesting Tools for Recon &amp; Testing</h1>
-        <p>Examples are shown at the top of each card. Copy is available for command-style entries, while GUI workflow notes stay as quick reference.</p>
+        <h1>Pentesting Tools for Recon and Testing</h1>
+        <p>This is my quick-reference list. Examples are shown at the top of each card; command-style entries can be copied directly.</p>
         <div className="skills-header-meta">
           <div className="skills-header-pill"><span>Pentesting Tools</span><strong>{TOOL_GUIDES.length}</strong></div>
           <div className="skills-header-pill"><span>Categories</span><strong>{CATEGORY_ORDER.length - 1}</strong></div>
