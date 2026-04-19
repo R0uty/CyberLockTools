@@ -33,8 +33,8 @@ describe('FlowMap interactions', () => {
     const startTab = within(stageTabs).getByRole('button', { name: /Start$/i })
     const loginPageTab = within(stageTabs).getByRole('button', { name: /Login Page/i })
 
-    expect(startTab.disabled).toBe(false)
-    expect(loginPageTab.disabled).toBe(true)
+    expect(startTab.getAttribute('aria-disabled')).not.toBe('true')
+    expect(loginPageTab.getAttribute('aria-disabled')).toBe('true')
 
     fireEvent.click(loginPageTab)
 
@@ -52,7 +52,7 @@ describe('FlowMap interactions', () => {
 
     const stageTabs = screen.getByLabelText('Flow steps')
     const loginPageTab = within(stageTabs).getByRole('button', { name: /Login Page/i })
-    expect(loginPageTab.disabled).toBe(false)
+    expect(loginPageTab.getAttribute('aria-disabled')).not.toBe('true')
 
     fireEvent.click(screen.getByRole('button', { name: 'Try common/default credentials' }))
     expect(within(progressPanel).getByRole('heading', { name: 'Test Login' })).toBeTruthy()
@@ -67,7 +67,7 @@ describe('FlowMap interactions', () => {
     expect(within(progressPanel).getByRole('heading', { name: 'Next Step' })).toBeTruthy()
 
     const nextStepTab = within(stageTabs).getByRole('button', { name: /Next Step/i })
-    expect(nextStepTab.disabled).toBe(false)
+    expect(nextStepTab.getAttribute('aria-disabled')).not.toBe('true')
   })
 
   it('restarts from progress panel and locks later stages again', () => {
@@ -88,8 +88,8 @@ describe('FlowMap interactions', () => {
     const loginPageTab = within(stageTabs).getByRole('button', { name: /Login Page/i })
     const testLoginTab = within(stageTabs).getByRole('button', { name: /Test Login/i })
 
-    expect(loginPageTab.disabled).toBe(true)
-    expect(testLoginTab.disabled).toBe(true)
+    expect(loginPageTab.getAttribute('aria-disabled')).toBe('true')
+    expect(testLoginTab.getAttribute('aria-disabled')).toBe('true')
   })
 
   it.each([

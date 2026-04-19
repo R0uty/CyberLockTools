@@ -15,10 +15,28 @@
   padding: 1.5rem 0 0.5rem;
 }
 
+.flow-map-selector-head {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
 .flow-map-selector-title {
   margin: 0 0 0.25rem;
   color: #f4f4f4;
   font-size: 1.35rem;
+}
+
+.flow-map-completed-counter {
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(192, 192, 192, 0.14);
+  color: #aaa;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
 }
 
 .flow-map-selector-copy {
@@ -75,10 +93,30 @@
   background: rgba(255, 255, 255, 0.05);
 }
 
+.flow-map-flow-button--done {
+  border-color: rgba(77, 217, 192, 0.22);
+}
+
 .flow-map-flow-name {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
   color: #f0f0f0;
   font-size: 0.92rem;
   font-weight: 700;
+}
+
+.flow-map-flow-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: rgba(77, 217, 192, 0.18);
+  color: #4dd9c0;
+  font-size: 0.6rem;
+  flex-shrink: 0;
 }
 
 .flow-map-flow-summary {
@@ -98,6 +136,7 @@
   flex-direction: column;
   gap: 0.75rem;
   padding: 1rem 0 1.5rem;
+  outline: none;
 }
 
 /* ── Stepper ── */
@@ -105,7 +144,7 @@
 .flow-map-stepper {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 0.6rem;
   padding: 1rem 1.1rem;
   border-radius: 16px;
   border: 1px solid rgba(192, 192, 192, 0.12);
@@ -125,11 +164,43 @@
   font-size: 1.1rem;
 }
 
-.flow-map-stepper-copy {
-  margin: 0.2rem 0 0;
-  color: #aaa;
-  font-size: 0.82rem;
+/* Terminal breadcrumb */
+
+.flow-map-breadcrumb {
+  margin: 0.3rem 0 0;
+  font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+  font-size: 0.72rem;
   line-height: 1.5;
+  color: #666;
+}
+
+.flow-map-breadcrumb-flow {
+  color: var(--flow-accent, #c0c0c0);
+  opacity: 0.7;
+}
+
+.flow-map-breadcrumb-sep {
+  color: #444;
+  margin: 0 0.05rem;
+}
+
+.flow-map-breadcrumb-done {
+  color: #666;
+}
+
+.flow-map-breadcrumb-current {
+  color: var(--flow-accent, #f0f0f0);
+}
+
+.flow-map-breadcrumb-cursor {
+  color: var(--flow-accent, #f0f0f0);
+  animation: cursor-blink 1s step-end infinite;
+  margin-left: 1px;
+}
+
+@keyframes cursor-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
 }
 
 .flow-map-stepper-actions {
@@ -170,110 +241,101 @@
   color: #ddd;
 }
 
-/* Pipeline (horizontal stepper dots) */
+/* ── SVG Node Graph ── */
 
-.flow-map-pipeline {
-  display: flex;
-  align-items: center;
-  gap: 0;
-  overflow-x: auto;
-  padding: 0.35rem 0;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
+.flow-map-node-graph {
+  width: 100%;
+  height: 160px;
+  display: block;
 }
 
-.flow-map-pipeline::-webkit-scrollbar {
-  display: none;
+.flow-map-edge {
+  stroke: rgba(255, 255, 255, 0.1);
+  stroke-width: 0.8;
+  stroke-dasharray: 3 3;
+  stroke-dashoffset: 0;
+  transition: stroke 0.3s ease, stroke-dasharray 0.3s ease;
 }
 
-.flow-map-pipeline-line {
-  flex: 1 1 0;
-  min-width: 16px;
-  max-width: 48px;
-  height: 2px;
-  background: rgba(255, 255, 255, 0.08);
-  transition: background 0.3s ease;
+.flow-map-edge--done {
+  stroke: var(--flow-accent, rgba(192, 192, 192, 0.4));
+  stroke-dasharray: none;
+  opacity: 0.6;
 }
 
-.flow-map-pipeline-line--active {
-  background: rgba(192, 192, 192, 0.4);
-}
-
-.flow-map-pipeline-step {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.3rem;
-  padding: 0.25rem 0.15rem;
-  border: 0;
-  background: transparent;
+.flow-map-node {
+  fill: rgba(255, 255, 255, 0.06);
+  stroke: rgba(255, 255, 255, 0.12);
+  stroke-width: 0.8;
   cursor: pointer;
-  font: inherit;
-  color: inherit;
-  flex-shrink: 0;
-  transition: opacity 0.2s ease;
+  transition: fill 0.25s ease, stroke 0.25s ease;
+  outline: none;
 }
 
-.flow-map-pipeline-step--locked {
+.flow-map-node:focus-visible {
+  stroke: var(--flow-accent, #f0f0f0);
+  stroke-width: 1.2;
+}
+
+.flow-map-node--done {
+  fill: rgba(192, 192, 192, 0.12);
+  stroke: var(--flow-accent, rgba(192, 192, 192, 0.35));
+  stroke-width: 0.8;
+}
+
+.flow-map-node--current {
+  fill: var(--flow-accent, #f0f0f0);
+  stroke: var(--flow-accent, #f0f0f0);
+  stroke-width: 1;
+  filter: drop-shadow(0 0 6px var(--flow-accent, rgba(240, 240, 240, 0.4)));
+}
+
+.flow-map-node--locked {
+  fill: rgba(255, 255, 255, 0.03);
+  stroke: rgba(255, 255, 255, 0.06);
   cursor: not-allowed;
-  opacity: 0.35;
+  opacity: 0.4;
 }
 
-.flow-map-pipeline-dot {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.06);
-  color: rgba(255, 255, 255, 0.4);
-  font-size: 0.68rem;
+.flow-map-node-pulse {
+  fill: none;
+  stroke: var(--flow-accent, #f0f0f0);
+  stroke-width: 0.6;
+  opacity: 0;
+  animation: node-pulse 2s ease-in-out infinite;
+}
+
+@keyframes node-pulse {
+  0%, 100% { opacity: 0; r: 8; }
+  50% { opacity: 0.4; r: 11; }
+}
+
+.flow-map-node-check {
+  fill: var(--flow-accent, #ccc);
+  font-size: 5px;
+  text-anchor: middle;
+  dominant-baseline: central;
+  pointer-events: none;
+}
+
+.flow-map-node-label {
+  fill: rgba(255, 255, 255, 0.35);
+  font-size: 3.2px;
+  text-anchor: middle;
+  pointer-events: none;
+  transition: fill 0.2s ease;
+}
+
+.flow-map-node-label--current {
+  fill: var(--flow-accent, #f0f0f0);
   font-weight: 700;
-  transition: all 0.25s ease;
-  border: 2px solid transparent;
 }
 
-.flow-map-pipeline-step--done .flow-map-pipeline-dot {
-  background: rgba(192, 192, 192, 0.18);
-  color: #ccc;
-  border-color: rgba(192, 192, 192, 0.3);
+.flow-map-node-label--done {
+  fill: rgba(255, 255, 255, 0.55);
 }
 
-.flow-map-pipeline-step--current .flow-map-pipeline-dot {
-  background: #f0f0f0;
-  color: #101010;
-  border-color: #f0f0f0;
-  box-shadow: 0 0 14px rgba(240, 240, 240, 0.3);
-  animation: flow-dot-pulse 2s ease-in-out infinite;
-}
-
-@keyframes flow-dot-pulse {
-  0%, 100% { box-shadow: 0 0 14px rgba(240, 240, 240, 0.3); }
-  50% { box-shadow: 0 0 22px rgba(240, 240, 240, 0.5); }
-}
-
-.flow-map-pipeline-label {
-  color: rgba(255, 255, 255, 0.45);
-  font-size: 0.62rem;
-  font-weight: 600;
-  text-align: center;
-  white-space: nowrap;
-  max-width: 72px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  transition: color 0.2s ease;
-}
-
-.flow-map-pipeline-step--current .flow-map-pipeline-label {
-  color: #f0f0f0;
-}
-
-.flow-map-pipeline-step--done .flow-map-pipeline-label {
-  color: rgba(255, 255, 255, 0.6);
-}
-
-/* Progress track (thin bar under pipeline) */
+/* Progress track (threat-gradient bar) */
 
 .flow-map-progress-track {
   height: 3px;
@@ -286,8 +348,36 @@
   display: block;
   height: 100%;
   border-radius: inherit;
-  background: linear-gradient(90deg, rgba(192, 192, 192, 0.4), rgba(240, 240, 240, 0.8));
+  background: linear-gradient(90deg, var(--flow-accent, rgba(192, 192, 192, 0.4)), var(--flow-accent, rgba(240, 240, 240, 0.8)));
+  opacity: 0.7;
   transition: width 0.35s ease;
+}
+
+/* Keyboard hints */
+
+.flow-map-kbd-hints {
+  margin: 0;
+  text-align: center;
+  color: #555;
+  font-size: 0.65rem;
+  letter-spacing: 0.04em;
+}
+
+.flow-map-kbd-hints kbd {
+  display: inline-block;
+  padding: 0.1rem 0.3rem;
+  border-radius: 3px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.04);
+  color: #777;
+  font-family: inherit;
+  font-size: 0.6rem;
+  margin: 0 0.1rem;
+}
+
+.flow-map-kbd-sep {
+  margin: 0 0.3rem;
+  color: #444;
 }
 
 /* ── Story panel ── */
@@ -547,8 +637,8 @@
     flex: 1;
   }
 
-  .flow-map-pipeline {
-    padding-bottom: 0.5rem;
+  .flow-map-node-graph {
+    height: 120px;
   }
 
   .flow-map-story {
@@ -573,18 +663,19 @@
 }
 
 @media (max-width: 480px) {
-  .flow-map-pipeline-label {
-    font-size: 0.56rem;
-    max-width: 52px;
+  .flow-map-node-graph {
+    height: 100px;
   }
 
-  .flow-map-pipeline-dot {
-    width: 24px;
-    height: 24px;
-    font-size: 0.6rem;
+  .flow-map-node-label {
+    font-size: 2.8px;
   }
 
   .flow-map-stepper {
     padding: 0.8rem 0.85rem;
+  }
+
+  .flow-map-breadcrumb {
+    font-size: 0.65rem;
   }
 }

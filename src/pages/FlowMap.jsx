@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useReducer } from 'react'
+import React, { useCallback, useEffect, useMemo, useReducer, useRef } from 'react'
 import { useSEO } from '../hooks/useSEO'
 import {
   STORAGE_STAGE_KEY,
@@ -7,6 +7,7 @@ import {
   STORAGE_FLOW_KEY,
   STORAGE_ACTION_KEY,
   STORAGE_OUTCOME_KEY,
+  STORAGE_COMPLETED_KEY,
   DEFAULT_ZOOM,
   FLOW_GROUPS,
   FLOWS,
@@ -80,6 +81,36 @@ function buildInitialMachineState() {
   }
 }
 
+const GROUP_ACCENT = {
+  recon: '#22b8ff',
+  enumeration: '#4dd9c0',
+  'entry-point': '#57c7ff',
+  testing: '#ffd240',
+  vulnerability: '#ff9e4a',
+  exploitation: '#ff6b6b',
+  analysis: '#c0c0c0'
+}
+
+function getFlowAccent(flow) {
+  return GROUP_ACCENT[flow?.group] ?? '#c0c0c0'
+}
+
+function readCompletedFlows() {
+  try {
+    const raw = readSessionValue(STORAGE_COMPLETED_KEY, '[]')
+    const parsed = JSON.parse(raw)
+    return Array.isArray(parsed) ? new Set(parsed) : new Set()
+  } catch {
+    return new Set()
+  }
+}
+
+function writeCompletedFlows(completedSet) {
+  writeSessionValue(STORAGE_COMPLETED_KEY, JSON.stringify([...completedSet]))
+}
+
+const TOTAL_FLOWS = Object.entries(FLOWS).filter(([, f]) => ACTIVE_FLOW_GROUP_KEYS.has(f.group)).length
+
 export default function FlowMap({ onToolClick, onToolReferenceClick }) {
   useSEO({
     title: 'Flow Map - Guided Testing Paths',
@@ -98,6 +129,7 @@ export default function FlowMap({ onToolClick, onToolReferenceClick }) {
   } = machineState
 
   const currentFlow = getFlowByKey(selectedFlow)
+  const activeRef = useRef(null)
   const groupedFlows = useMemo(
     () => FLOW_GROUPS
       .map(([groupKey, groupLabel]) => ({
@@ -145,7 +177,18 @@ export default function FlowMap({ onToolClick, onToolReferenceClick }) {
 
   useEffect(() => {
     writeSessionValue(STORAGE_STAGE_KEY, currentStage)
-  }, [currentStage])
+    if (selectedFlow && (currentStage === 'success' || currentStage === 'next-step')) {
+      const completed = readCompletedFlows()
+      if (!completed.has(selectedFlow)) {
+        completed.add(selectedFlow)
+        writeCompletedFlows(completed)
+      }
+    }
+  }, [currentStage, selectedFlow])
+
+  // Re-read completed flows when stage/flow changes (deps trigger re-read after sessionStorage write above)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const completedFlows = useMemo(() => readCompletedFlows(), [selectedFlow, currentStage])
 
   useEffect(() => {
     writeSessionValue(STORAGE_TOOL_KEY, selectedTool)
@@ -164,6 +207,40 @@ export default function FlowMap({ onToolClick, onToolReferenceClick }) {
   }, [selectedOutcome])
 
   const currentStageIndex = stageIndex[currentStage] ?? 0
+
+  // Keyboard navigation
+  useEffect(() => {
+    const el = activeRef.current
+    if (!el || !currentFlow) return
+
+    function handleKeyDown(e) {
+      const stages = currentFlow.stages
+      const idx = stageIndex[currentStage] ?? 0
+
+      if (e.key === 'ArrowRight') {
+        e.preventDefault()
+        if (idx + 1 <= currentStageIndex && idx + 1 < stages.length) {
+          dispatch({ type: 'STAGE_SET', stage: stages[idx + 1] })
+        }
+      } else if (e.key === 'ArrowLeft') {
+        e.preventDefault()
+        if (idx - 1 >= 0) {
+          dispatch({ type: 'STAGE_SET', stage: stages[idx - 1] })
+        }
+      } else if (e.key === 'Escape') {
+        e.preventDefault()
+        dispatch({ type: 'FLOW_CLEAR', defaultZoom: DEFAULT_ZOOM })
+      } else if (e.key === 'r' || e.key === 'R') {
+        if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return
+        e.preventDefault()
+        dispatch({ type: 'FLOW_RESET' })
+      }
+    }
+
+    el.addEventListener('keydown', handleKeyDown)
+    el.focus({ preventScroll: true })
+    return () => el.removeEventListener('keydown', handleKeyDown)
+  }, [currentFlow, currentStage, currentStageIndex, stageIndex])
 
   const transitionToStage = useCallback((nextStage) => {
     if (!currentFlow || !currentFlow.stages.includes(nextStage)) {
@@ -264,19 +341,7 @@ export default function FlowMap({ onToolClick, onToolReferenceClick }) {
     dispatch({ type: 'FLOW_SELECT', flowKey, defaultZoom: DEFAULT_ZOOM })
   }, [])
 
-  const currentStageNumber = currentFlow ? currentStageIndex + 1 : 0
-  const totalStages = currentFlow?.stages.length ?? 0
   const currentStageLabel = currentFlow ? getStageLabel(currentFlow, currentStage) : ''
-  const nextStageId = currentFlow ? currentFlow.stages[Math.min(currentStageIndex + 1, totalStages - 1)] : ''
-  const nextStageLabel = currentFlow && currentStage !== 'start' && currentStageNumber < totalStages
-    ? getStageLabel(currentFlow, nextStageId)
-    : ''
-
-  const toolbarCopy = currentStage === 'start'
-    ? `Step 1 of ${totalStages}: review the flow summary, then begin when you are ready.`
-    : nextStageLabel
-      ? `Step ${currentStageNumber} of ${totalStages}: ${currentStageLabel}. Up next: ${nextStageLabel}.`
-      : `Step ${currentStageNumber} of ${totalStages}: ${currentStageLabel}.`
 
   const storyProps = {
     currentFlow,
@@ -351,7 +416,12 @@ export default function FlowMap({ onToolClick, onToolReferenceClick }) {
     <div className="tool-page flow-map-page">
       {!currentFlow ? (
         <div className="flow-map-selector">
-          <h1 className="flow-map-selector-title">Guided Testing Flows</h1>
+          <div className="flow-map-selector-head">
+            <h1 className="flow-map-selector-title">Guided Testing Flows</h1>
+            {completedFlows.size > 0 && (
+              <span className="flow-map-completed-counter">{completedFlows.size}/{TOTAL_FLOWS} completed</span>
+            )}
+          </div>
           <p className="flow-map-selector-copy">Pick a flow to walk through a structured testing path step by step.</p>
           <div className="flow-map-groups">
             {groupedFlows.map((group) => (
@@ -362,11 +432,14 @@ export default function FlowMap({ onToolClick, onToolReferenceClick }) {
                     <button
                       key={flowKey}
                       type="button"
-                      className="flow-map-flow-button"
+                      className={`flow-map-flow-button${completedFlows.has(flowKey) ? ' flow-map-flow-button--done' : ''}`}
                       aria-label={flow.label}
                       onClick={() => handleFlowSelect(flowKey)}
                     >
-                      <span className="flow-map-flow-name">{flow.label}</span>
+                      <span className="flow-map-flow-name">
+                        {completedFlows.has(flowKey) && <span className="flow-map-flow-badge" aria-label="completed">✓</span>}
+                        {flow.label}
+                      </span>
                       <span className="flow-map-flow-summary">{flow.summary}</span>
                     </button>
                   ))}
@@ -376,13 +449,18 @@ export default function FlowMap({ onToolClick, onToolReferenceClick }) {
           </div>
         </div>
       ) : (
-        <section className="flow-map-active" aria-label="Flow map canvas">
+        <section
+          ref={activeRef}
+          className="flow-map-active"
+          aria-label="Flow map canvas"
+          style={{ '--flow-accent': getFlowAccent(currentFlow) }}
+          tabIndex={-1}
+        >
           <FlowMapStepper
             currentFlow={currentFlow}
             currentStage={currentStage}
             currentStageIndex={currentStageIndex}
             currentStageLabel={currentStageLabel}
-            toolbarCopy={toolbarCopy}
             selectedFlow={selectedFlow}
             getStageLabel={getStageLabel}
             onStageSelect={navigateToUnlockedStage}

@@ -5,6 +5,7 @@ export const STORAGE_FEEDBACK_KEY = 'flow-map-feedback'
 export const STORAGE_FLOW_KEY = 'flow-map-selected-flow'
 export const STORAGE_ACTION_KEY = 'flow-map-selected-action'
 export const STORAGE_OUTCOME_KEY = 'flow-map-selected-outcome'
+export const STORAGE_COMPLETED_KEY = 'flow-map-completed'
 
 export const MIN_ZOOM = 0.8
 export const MAX_ZOOM = 1.8
