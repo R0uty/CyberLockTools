@@ -191,11 +191,19 @@ export default function App() {
     </footer>
   )
 
-  const renderAppShell = (content) => {
+  const renderAppShell = (content, options = {}) => {
+    const { showMap = false } = options
+
     return (
       <div className="app">
         <Header onLogoClick={handleLogoClick} currentPage={currentPage} onPageChange={handlePageChange} />
         <FeedbackToast />
+        {showMap && (
+          <HomeToolMap
+            onCategoryClick={handleCategoryClick}
+            onFlowMapClick={() => handlePageChange('flow-map')}
+          />
+        )}
         <div className="main-content">
           <Suspense fallback={<div className="page-loading" role="status" aria-live="polite">Loading…</div>}>
             {content}
@@ -254,13 +262,8 @@ export default function App() {
   }
 
   return renderAppShell(
-    <>
-      <HomeToolMap
-        onCategoryClick={handleCategoryClick}
-        onFlowMapClick={() => handlePageChange('flow-map')}
-      />
-      <section className="home-landing">
-        <PageHeader
+    <section className="home-landing">
+      <PageHeader
         kicker="My personal lab"
         title="A Practical Cyber Lab I Built for Real Testing Work"
         subtitle="Flow maps, browser tools, payload helpers, and agent skills — built for authorized testing with zero signup friction."
@@ -290,7 +293,7 @@ export default function App() {
       <div className="privacy-badge">
         All processing happens in your browser · No data is sent to any server
       </div>
-    </section>
-    </>
+    </section>,
+    { showMap: true }
   )
 }
