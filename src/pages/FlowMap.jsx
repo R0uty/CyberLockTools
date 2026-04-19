@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useReducer, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useReducer } from 'react'
 import { useSEO } from '../hooks/useSEO'
 import {
   STORAGE_STAGE_KEY,
@@ -7,12 +7,7 @@ import {
   STORAGE_FLOW_KEY,
   STORAGE_ACTION_KEY,
   STORAGE_OUTCOME_KEY,
-  MIN_ZOOM,
-  MAX_ZOOM,
-  ZOOM_STEP,
   DEFAULT_ZOOM,
-  BASE_SCENE_WIDTH,
-  BASE_SCENE_HEIGHT,
   FLOW_GROUPS,
   FLOWS,
   ACTIVE_FLOW_GROUP_KEYS
@@ -25,34 +20,10 @@ import {
   resolveFlowTransition,
   validateFlowConfigConsistency
 } from './flowMapMachine'
-import FlowMapProgressPanel from '../components/flow-map/FlowMapProgressPanel'
-import FlowMapCanvas from '../components/flow-map/FlowMapCanvas'
+import FlowMapStepper from '../components/flow-map/FlowMapStepper'
 import '../styles/pages/FlowMap.css'
 
 const DEFAULT_STAGE = 'start'
-
-const TOOL_USAGE_EXAMPLES = {
-  'Browser DevTools': 'Open DevTools (F12), go to Network, submit the form once, then click the request to inspect URL, headers, and response body.',
-  'Burp Suite': 'Turn on Intercept, submit one request from the browser, send it to Repeater, then change a single parameter and compare the response.',
-  'Burp Suite Repeater': 'Send one captured request to Repeater, change only one value (like id=1 to id=2), then compare status code and response body.',
-  curl: 'Run: curl -i "https://target.example/api/items?id=1" and compare output after changing one parameter value at a time.',
-  Nmap: 'Run: nmap -sV target.example to identify open ports and service versions before choosing deeper tests.',
-  ffuf: 'Run: ffuf -u https://target.example/FUZZ -w /path/to/wordlist.txt to discover hidden paths quickly.',
-  dirb: 'Run: dirb https://target.example/ to brute-force common directories and files as a first pass.',
-  'enum4linux-ng': 'Run: enum4linux-ng -A target.example to gather SMB users, shares, and policy details.',
-  smbclient: 'Run: smbclient -L //target.example -N to list shares, then test readable paths in accessible shares.',
-  snmpwalk: 'Run: snmpwalk -v2c -c public target.example to check for exposed SNMP data.',
-  ldapsearch: 'Run: ldapsearch -x -H ldap://target.example -b "dc=example,dc=local" to enumerate directory objects.',
-  Postman: 'Create one saved request, duplicate it, change auth or one field, then compare response status and body side by side.'
-}
-
-function getToolExample(toolName) {
-  return TOOL_USAGE_EXAMPLES[toolName] ?? 'Use one baseline request first, then change a single field to clearly compare behavior.'
-}
-
-function clampZoomLevel(nextZoomLevel) {
-  return Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, nextZoomLevel))
-}
 
 function getStageLabel(flow, stageId) {
   return flow?.nodes.find((node) => node.id === stageId)?.label ?? stageId
@@ -123,20 +94,8 @@ export default function FlowMap({ onToolClick, onToolReferenceClick }) {
     selectedTool,
     feedback,
     selectedAction,
-    selectedOutcome,
-    zoomLevel
+    selectedOutcome
   } = machineState
-
-  const [isDraggingViewport, setIsDraggingViewport] = useState(false)
-  const viewportRef = useRef(null)
-  const dragStateRef = useRef({
-    active: false,
-    pointerId: null,
-    startX: 0,
-    startY: 0,
-    scrollLeft: 0,
-    scrollTop: 0
-  })
 
   const currentFlow = getFlowByKey(selectedFlow)
   const groupedFlows = useMemo(
@@ -153,7 +112,6 @@ export default function FlowMap({ onToolClick, onToolReferenceClick }) {
     () => Object.fromEntries((currentFlow?.stages ?? ['start']).map((stage, index) => [stage, index])),
     [currentFlow]
   )
-  const availableCategoryCopy = groupedFlows.map((group) => group.label).join(', ')
 
   useEffect(() => {
     const configIssues = validateFlowConfigConsistency({
@@ -169,7 +127,10 @@ export default function FlowMap({ onToolClick, onToolReferenceClick }) {
         response: 'response-data-found',
         request: 'http-request-observed',
         authz: 'privileged-action-found',
-        exploitation: 'confirmed-finding'
+        exploitation: 'confirmed-finding',
+        'info-disclosure': 'source-found',
+        session: 'session-captured',
+        upload: 'upload-found'
       }
     })
 
@@ -201,21 +162,6 @@ export default function FlowMap({ onToolClick, onToolReferenceClick }) {
   useEffect(() => {
     writeSessionValue(STORAGE_OUTCOME_KEY, selectedOutcome)
   }, [selectedOutcome])
-
-  useEffect(() => {
-    const viewport = viewportRef.current
-
-    if (!viewport) {
-      return
-    }
-
-    const frameId = window.requestAnimationFrame(() => {
-      viewport.scrollLeft = Math.max((viewport.scrollWidth - viewport.clientWidth) / 2, 0)
-      viewport.scrollTop = Math.max((viewport.scrollHeight - viewport.clientHeight) / 2, 0)
-    })
-
-    return () => window.cancelAnimationFrame(frameId)
-  }, [selectedFlow])
 
   const currentStageIndex = stageIndex[currentStage] ?? 0
 
@@ -318,79 +264,6 @@ export default function FlowMap({ onToolClick, onToolReferenceClick }) {
     dispatch({ type: 'FLOW_SELECT', flowKey, defaultZoom: DEFAULT_ZOOM })
   }, [])
 
-  const updateZoomLevel = useCallback((nextZoomLevel) => {
-    dispatch({ type: 'ZOOM_SET', zoomLevel: clampZoomLevel(nextZoomLevel) })
-  }, [])
-
-  const handleViewportWheel = useCallback((event) => {
-    if (!event.ctrlKey && !event.metaKey) {
-      return
-    }
-
-    event.preventDefault()
-    const delta = event.deltaY < 0 ? ZOOM_STEP : -ZOOM_STEP
-    dispatch({ type: 'ZOOM_SET', zoomLevel: clampZoomLevel(zoomLevel + delta) })
-  }, [zoomLevel])
-
-  const stopViewportDrag = useCallback(() => {
-    dragStateRef.current.active = false
-    dragStateRef.current.pointerId = null
-    setIsDraggingViewport(false)
-  }, [])
-
-  const handleViewportPointerDown = useCallback((event) => {
-    if (event.button !== 0) {
-      return
-    }
-
-    if (event.target instanceof Element && event.target.closest('button, a, input, textarea, select, label')) {
-      return
-    }
-
-    const viewport = viewportRef.current
-
-    if (!viewport) {
-      return
-    }
-
-    dragStateRef.current = {
-      active: true,
-      pointerId: event.pointerId,
-      startX: event.clientX,
-      startY: event.clientY,
-      scrollLeft: viewport.scrollLeft,
-      scrollTop: viewport.scrollTop
-    }
-
-    viewport.setPointerCapture(event.pointerId)
-    setIsDraggingViewport(true)
-  }, [])
-
-  const handleViewportPointerMove = useCallback((event) => {
-    const viewport = viewportRef.current
-
-    if (!viewport || !dragStateRef.current.active || dragStateRef.current.pointerId !== event.pointerId) {
-      return
-    }
-
-    const deltaX = event.clientX - dragStateRef.current.startX
-    const deltaY = event.clientY - dragStateRef.current.startY
-
-    viewport.scrollLeft = dragStateRef.current.scrollLeft - deltaX
-    viewport.scrollTop = dragStateRef.current.scrollTop - deltaY
-  }, [])
-
-  const handleViewportPointerUp = useCallback((event) => {
-    const viewport = viewportRef.current
-
-    if (!viewport || dragStateRef.current.pointerId !== event.pointerId) {
-      return
-    }
-
-    viewport.releasePointerCapture(event.pointerId)
-    stopViewportDrag()
-  }, [stopViewportDrag])
-
   const currentStageNumber = currentFlow ? currentStageIndex + 1 : 0
   const totalStages = currentFlow?.stages.length ?? 0
   const currentStageLabel = currentFlow ? getStageLabel(currentFlow, currentStage) : ''
@@ -398,28 +271,12 @@ export default function FlowMap({ onToolClick, onToolReferenceClick }) {
   const nextStageLabel = currentFlow && currentStage !== 'start' && currentStageNumber < totalStages
     ? getStageLabel(currentFlow, nextStageId)
     : ''
-  const sceneWidth = Math.round(BASE_SCENE_WIDTH * zoomLevel)
-  const sceneHeight = Math.round(BASE_SCENE_HEIGHT * zoomLevel)
 
-  const handlePreviousStage = useCallback(() => {
-    if (!currentFlow) {
-      return
-    }
-
-    const previousStageId = currentFlow.stages[(stageIndex[currentStage] ?? 0) - 1]
-
-    if (previousStageId) {
-      navigateToUnlockedStage(previousStageId)
-    }
-  }, [currentFlow, currentStage, navigateToUnlockedStage, stageIndex])
-
-  const toolbarCopy = !currentFlow
-    ? `Pick a flow from ${availableCategoryCopy} to load its guided path.`
-    : currentStage === 'start'
-      ? `Step 1 of ${totalStages}: review the flow summary, then begin when you are ready.`
-      : nextStageLabel
-        ? `Step ${currentStageNumber} of ${totalStages}: ${currentStageLabel}. Up next: ${nextStageLabel}.`
-        : `Step ${currentStageNumber} of ${totalStages}: ${currentStageLabel}.`
+  const toolbarCopy = currentStage === 'start'
+    ? `Step 1 of ${totalStages}: review the flow summary, then begin when you are ready.`
+    : nextStageLabel
+      ? `Step ${currentStageNumber} of ${totalStages}: ${currentStageLabel}. Up next: ${nextStageLabel}.`
+      : `Step ${currentStageNumber} of ${totalStages}: ${currentStageLabel}.`
 
   const storyProps = {
     currentFlow,
@@ -474,62 +331,65 @@ export default function FlowMap({ onToolClick, onToolReferenceClick }) {
     handleExploitationActionSelect: (action) => applyFlowEvent('exploitation.actionSelect', action),
     handleExploitationContinue: () => applyFlowEvent('exploitation.continue'),
     handleExploitationResultChoice: (outcome) => applyFlowEvent('exploitation.result', outcome),
-    handleExploitationNextStep: () => applyFlowEvent('exploitation.nextStep')
+    handleExploitationNextStep: () => applyFlowEvent('exploitation.nextStep'),
+    handleInfoDisclosureActionSelect: (action) => applyFlowEvent('info-disclosure.actionSelect', action),
+    handleInfoDisclosureContinue: () => applyFlowEvent('info-disclosure.continue'),
+    handleInfoDisclosureResultChoice: (outcome) => applyFlowEvent('info-disclosure.result', outcome),
+    handleInfoDisclosureNextStep: () => applyFlowEvent('info-disclosure.nextStep'),
+    handleSessionActionSelect: (action) => applyFlowEvent('session.actionSelect', action),
+    handleSessionContinue: () => applyFlowEvent('session.continue'),
+    handleSessionResultChoice: (outcome) => applyFlowEvent('session.result', outcome),
+    handleSessionNextStep: () => applyFlowEvent('session.nextStep'),
+    handleUploadActionSelect: (action) => applyFlowEvent('upload.actionSelect', action),
+    handleUploadContinue: () => applyFlowEvent('upload.continue'),
+    handleUploadResultChoice: (outcome) => applyFlowEvent('upload.result', outcome),
+    handleUploadNextStep: () => applyFlowEvent('upload.nextStep'),
+    handleFollowUpFlow: handleFlowSelect
   }
 
   return (
     <div className="tool-page flow-map-page">
-      <div className="tool-header flow-map-header">
-        <span className="flow-map-kicker">Flow categories</span>
-        <p className="flow-map-header-copy">
-          Active flow groups currently live here: <strong>{availableCategoryCopy}</strong>. Each category now has at least one flow ready to open.
-        </p>
-        <div className="flow-map-category-groups">
-          {groupedFlows.map((group) => (
-            <div key={group.key} className="flow-map-category-group">
-              <span className="flow-map-category-group-title">{group.label}</span>
-              <div className="flow-map-categories">
-                {group.flows.map(([flowKey, flow]) => (
-                  <button
-                    key={flowKey}
-                    type="button"
-                    className={`flow-map-category-button${selectedFlow === flowKey ? ' flow-map-category-button--active' : ''}`}
-                    onClick={() => handleFlowSelect(flowKey)}
-                  >
-                    {flow.label}
-                  </button>
-                ))}
+      {!currentFlow ? (
+        <div className="flow-map-selector">
+          <h1 className="flow-map-selector-title">Guided Testing Flows</h1>
+          <p className="flow-map-selector-copy">Pick a flow to walk through a structured testing path step by step.</p>
+          <div className="flow-map-groups">
+            {groupedFlows.map((group) => (
+              <div key={group.key} className="flow-map-group">
+                <span className="flow-map-group-label">{group.label}</span>
+                <div className="flow-map-group-flows">
+                  {group.flows.map(([flowKey, flow]) => (
+                    <button
+                      key={flowKey}
+                      type="button"
+                      className="flow-map-flow-button"
+                      aria-label={flow.label}
+                      onClick={() => handleFlowSelect(flowKey)}
+                    >
+                      <span className="flow-map-flow-name">{flow.label}</span>
+                      <span className="flow-map-flow-summary">{flow.summary}</span>
+                    </button>
+                  ))}
+                </div>
               </div>
-            </div>
-          ))}
-          <button
-            type="button"
-            className="flow-map-category-button flow-map-category-button--ghost"
-            onClick={clearFlow}
-          >
-            Clear
-          </button>
+            ))}
+          </div>
         </div>
-      </div>
-
-      <section className={`flow-map-stage${currentFlow ? ' flow-map-stage--active' : ''}`} aria-label="Flow map canvas">
-        {currentFlow ? (
-          <FlowMapProgressPanel
+      ) : (
+        <section className="flow-map-active" aria-label="Flow map canvas">
+          <FlowMapStepper
             currentFlow={currentFlow}
             currentStage={currentStage}
+            currentStageIndex={currentStageIndex}
             currentStageLabel={currentStageLabel}
             toolbarCopy={toolbarCopy}
-            onPreviousStage={handlePreviousStage}
-            onRestart={resetFlowState}
-            currentStageIndex={currentStageIndex}
-            totalStages={totalStages}
             selectedFlow={selectedFlow}
             getStageLabel={getStageLabel}
             onStageSelect={navigateToUnlockedStage}
+            onRestart={resetFlowState}
+            onClearFlow={clearFlow}
           />
-        ) : null}
 
-        {currentFlow && (
           <div className="flow-map-story-panel">
             <div className={`flow-map-story${currentStage === 'success' || currentStage === 'next-step' ? ' flow-map-story--success' : ''}`}>
               {currentStage === 'start'
@@ -537,97 +397,57 @@ export default function FlowMap({ onToolClick, onToolReferenceClick }) {
                 : renderFlowStoryContent({ selectedFlow, storyProps })}
             </div>
           </div>
-        )}
 
-        {currentFlow?.tools?.length ? (
-          <div className="flow-map-tools-panel" aria-label="Recommended tools">
-            <div className="flow-map-tools-header">
-              <span className="flow-map-tools-kicker">Recommended tools</span>
-              <p>These are the practical tools I recommend for this flow while you move through each stage.</p>
-            </div>
-            <div className="flow-map-tools-grid">
-              {currentFlow.tools.map((tool) => (
-                <div key={`${selectedFlow}-${tool.name}`} className="flow-map-tool-card">
-                  <h3>
-                    <button
-                      type="button"
-                      className="flow-map-tool-link"
-                      onClick={() => onToolReferenceClick?.(tool.name)}
-                    >
-                      {tool.name}
-                    </button>
-                  </h3>
-                  <p>{tool.purpose}</p>
-                  <p className="flow-map-tool-example">
-                    <span>Example:</span> {getToolExample(tool.name)}
-                  </p>
-                  <button
-                    type="button"
-                    className="flow-map-tool-guide-button"
-                    onClick={() => onToolReferenceClick?.(tool.name)}
-                  >
-                    Open pentesting reference
-                  </button>
-                </div>
-              ))}
-            </div>
-          </div>
-        ) : null}
+          {currentFlow.tools?.length || currentFlow.suggestedSkills?.length ? (
+            <div className="flow-map-extras">
+              {currentFlow.tools?.length ? (
+                <details className="flow-map-details">
+                  <summary className="flow-map-details-summary">
+                    Recommended Tools
+                    <span className="flow-map-details-count">{currentFlow.tools.length}</span>
+                  </summary>
+                  <div className="flow-map-details-grid">
+                    {currentFlow.tools.map((tool) => (
+                      <div key={`${selectedFlow}-${tool.name}`} className="flow-map-detail-card">
+                        <h3>
+                          <button
+                            type="button"
+                            className="flow-map-tool-link"
+                            onClick={() => onToolReferenceClick?.(tool.name)}
+                          >
+                            {tool.name}
+                          </button>
+                        </h3>
+                        <p>{tool.purpose}</p>
+                      </div>
+                    ))}
+                  </div>
+                </details>
+              ) : null}
 
-        {currentFlow?.suggestedSkills?.length ? (
-          <div className="flow-map-skills-panel" aria-label="Suggested agent skills">
-            <div className="flow-map-skills-header">
-              <span className="flow-map-skills-kicker">Suggested agent skills</span>
-              <p>Use these skills as practical guidance while moving through the flow.</p>
+              {currentFlow.suggestedSkills?.length ? (
+                <details className="flow-map-details">
+                  <summary className="flow-map-details-summary">
+                    Suggested Skills
+                    <span className="flow-map-details-count">{currentFlow.suggestedSkills.length}</span>
+                  </summary>
+                  <div className="flow-map-details-grid">
+                    {currentFlow.suggestedSkills.map((skill) => (
+                      <article key={`${selectedFlow}-${skill.name}`} className="flow-map-detail-card">
+                        <h3>{skill.name}</h3>
+                        <span className={`flow-map-skill-difficulty flow-map-skill-difficulty--${skill.difficulty}`}>
+                          {skill.difficulty}
+                        </span>
+                        <p>{skill.reason}</p>
+                      </article>
+                    ))}
+                  </div>
+                </details>
+              ) : null}
             </div>
-            <div className="flow-map-skills-grid">
-              {currentFlow.suggestedSkills.map((skill) => (
-                <article key={`${selectedFlow}-${skill.name}`} className="flow-map-skill-card">
-                  <h3>{skill.name}</h3>
-                  <span className={`flow-map-skill-difficulty flow-map-skill-difficulty--${skill.difficulty}`}>
-                    {skill.difficulty}
-                  </span>
-                  <p>{skill.reason}</p>
-                </article>
-              ))}
-            </div>
-          </div>
-        ) : null}
-
-        <div className="flow-map-toolbar">
-          <p className="flow-map-toolbar-copy">{toolbarCopy} Drag to explore the map. Hold Ctrl or Cmd while scrolling to zoom.</p>
-          <div className="flow-map-zoom-controls" aria-label="Flow map zoom controls">
-            <button type="button" className="flow-map-zoom-button" onClick={() => updateZoomLevel(zoomLevel - ZOOM_STEP)}>
-              -
-            </button>
-            <span className="flow-map-zoom-value">{Math.round(zoomLevel * 100)}%</span>
-            <button type="button" className="flow-map-zoom-button" onClick={() => updateZoomLevel(zoomLevel + ZOOM_STEP)}>
-              +
-            </button>
-            <button type="button" className="flow-map-zoom-button flow-map-zoom-button--reset" onClick={() => updateZoomLevel(DEFAULT_ZOOM)}>
-              Reset view
-            </button>
-          </div>
-        </div>
-
-        <FlowMapCanvas
-          viewportRef={viewportRef}
-          isDraggingViewport={isDraggingViewport}
-          onWheel={handleViewportWheel}
-          onPointerDown={handleViewportPointerDown}
-          onPointerMove={handleViewportPointerMove}
-          onPointerUp={handleViewportPointerUp}
-          onPointerCancel={stopViewportDrag}
-          sceneWidth={sceneWidth}
-          sceneHeight={sceneHeight}
-          currentFlow={currentFlow}
-          selectedFlow={selectedFlow}
-          stageIndex={stageIndex}
-          currentStage={currentStage}
-          currentStageIndex={currentStageIndex}
-          onStageSelect={navigateToUnlockedStage}
-        />
-      </section>
+          ) : null}
+        </section>
+      )}
     </div>
   )
 }

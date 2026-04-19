@@ -141,6 +141,36 @@ describe('FlowMap interactions', () => {
       step2Action: 'Use a read-only proof',
       step3Heading: 'Prepare Validation',
     },
+    {
+      flowButton: 'Information Disclosure Flow',
+      step2Heading: 'Source Found',
+      step2Action: 'Review page source and JS files',
+      step3Heading: 'Inspect Source',
+    },
+    {
+      flowButton: 'Session Testing Flow',
+      step2Heading: 'Session Captured',
+      step2Action: 'Check cookie flags and scope',
+      step3Heading: 'Inspect Session',
+    },
+    {
+      flowButton: 'File Upload Testing Flow',
+      step2Heading: 'Upload Found',
+      step2Action: 'Test extension filtering',
+      step3Heading: 'Test Upload',
+    },
+    {
+      flowButton: 'Response Analysis Flow',
+      step2Heading: 'Response Data Found',
+      step2Action: 'Inspect the response',
+      step3Heading: 'Analyze Data',
+    },
+    {
+      flowButton: 'Decode Flow',
+      step2Heading: 'Encoded?',
+      step2Action: 'Try decoding',
+      step3Heading: 'Decode',
+    },
   ])('covers active flow family path: $flowButton', ({ flowButton, step2Heading, step2Action, step3Heading }) => {
     renderFlowMap()
 

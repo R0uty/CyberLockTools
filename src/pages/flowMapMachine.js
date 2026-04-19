@@ -194,6 +194,65 @@ const TRANSITION_DEFINITIONS = {
   'exploitation.nextStep': () => ({
     nextStage: 'next-step',
     feedback: 'Preserve the exact proof, record scope, and hand off clear remediation details so the issue can be fixed without repeating unnecessary impact.'
+  }),
+  'info-disclosure.actionSelect': ({ payload }) => ({ nextStage: 'inspect-source', selectedAction: payload, feedback: '' }),
+  'info-disclosure.continue': () => ({ nextStage: 'sensitive-data', feedback: '' }),
+  'info-disclosure.result': ({ payload }) => {
+    if (payload === 'found-secrets' || payload === 'found-source') {
+      return { nextStage: 'assess-exposure', selectedOutcome: payload, feedback: '' }
+    }
+
+    return {
+      nextStage: 'next-step',
+      selectedOutcome: payload,
+      feedback: 'No clear leak yet. Broaden the search to backup files, error-triggering inputs, and alternate response formats before closing this path.'
+    }
+  },
+  'info-disclosure.nextStep': () => ({
+    nextStage: 'next-step',
+    feedback: 'Use leaked details to feed other flows: credentials go to login testing, internal paths to discovery, and exposed logic to input or API testing.'
+  }),
+  'session.actionSelect': ({ payload }) => ({ nextStage: 'inspect-session', selectedAction: payload, feedback: '' }),
+  'session.continue': () => ({ nextStage: 'test-session', feedback: '' }),
+  'session.result': ({ payload }) => {
+    if (payload === 'fixation-possible' || payload === 'missing-flags') {
+      return { nextStage: 'next-step', selectedOutcome: payload, feedback: '' }
+    }
+
+    if (payload === 'csrf-missing') {
+      return {
+        nextStage: 'next-step',
+        selectedOutcome: payload,
+        feedback: 'Missing CSRF protection on state-changing actions is a real finding. Document the exact endpoint and method before moving to exploitation.'
+      }
+    }
+
+    return {
+      nextStage: 'next-step',
+      selectedOutcome: payload,
+      feedback: 'Session controls look solid for this endpoint. Keep sampling other actions and check whether token rotation happens after privilege changes.'
+    }
+  },
+  'session.nextStep': () => ({
+    nextStage: 'next-step',
+    feedback: 'Carry session findings into authorization testing or exploitation depending on severity.'
+  }),
+  'upload.actionSelect': ({ payload }) => ({ nextStage: 'test-upload', selectedAction: payload, feedback: '' }),
+  'upload.continue': () => ({ nextStage: 'upload-result', feedback: '' }),
+  'upload.result': ({ payload }) => {
+    if (payload === 'file-executed' || payload === 'filter-bypassed') {
+      return { nextStage: 'analyze-upload', selectedOutcome: payload, feedback: '' }
+    }
+
+    return {
+      nextStage: 'next-step',
+      selectedOutcome: payload,
+      feedback: 'Upload was blocked or sanitized. Try alternate extensions, double extensions, null bytes, or different Content-Type values before closing.'
+    }
+  },
+  'upload.nextStep': () => ({
+    nextStage: 'next-step',
+    feedback: 'If the upload bypass succeeded, move into controlled exploitation to prove impact safely and document the chain.'
   })
 }
 
@@ -207,7 +266,10 @@ export const FLOW_START_STAGE_BY_KEY = {
   response: 'response-data-found',
   request: 'http-request-observed',
   authz: 'privileged-action-found',
-  exploitation: 'confirmed-finding'
+  exploitation: 'confirmed-finding',
+  'info-disclosure': 'source-found',
+  session: 'session-captured',
+  upload: 'upload-found'
 }
 
 export const DEFAULT_MACHINE_STATE = {

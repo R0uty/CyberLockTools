@@ -122,7 +122,8 @@ export function renderLoginStoryContent({
   handleLoginTestContinue,
   resetFlowState,
   handleLoginResultChoice,
-  handleLoginNextStep
+  handleLoginNextStep,
+  handleFollowUpFlow
 }) {
   if (currentStage === 'login-page') {
     return (
@@ -213,7 +214,26 @@ export function renderLoginStoryContent({
       <p>{nextStepCopy}</p>
       {feedback ? <p className="flow-map-feedback">{feedback}</p> : null}
       <div className="flow-map-actions">
-        <button type="button" className="flow-map-button" onClick={resetFlowState}>
+        {selectedOutcome === 'login-success' ? (
+          <>
+            <button type="button" className="flow-map-button" onClick={() => handleFollowUpFlow('authz')}>
+              Continue to Authorization Testing
+            </button>
+            <button type="button" className="flow-map-button flow-map-button--ghost" onClick={() => handleFollowUpFlow('session')}>
+              Continue to Session Testing
+            </button>
+          </>
+        ) : (
+          <>
+            <button type="button" className="flow-map-button" onClick={() => handleFollowUpFlow('input')}>
+              Continue to Input Testing
+            </button>
+            <button type="button" className="flow-map-button flow-map-button--ghost" onClick={() => handleFollowUpFlow('request')}>
+              Continue to Request Tampering
+            </button>
+          </>
+        )}
+        <button type="button" className="flow-map-button flow-map-button--ghost" onClick={resetFlowState}>
           Restart
         </button>
       </div>
@@ -230,7 +250,8 @@ export function renderDiscoveryStoryContent({
   handleDiscoveryEnumerate,
   goToStage,
   handleDiscoveryResultChoice,
-  handleDiscoveryNextStep
+  handleDiscoveryNextStep,
+  handleFollowUpFlow
 }) {
   if (currentStage === 'web-page-found') {
     return (
@@ -329,7 +350,26 @@ export function renderDiscoveryStoryContent({
       <p>{nextStepCopy}</p>
       {feedback ? <p className="flow-map-feedback">{feedback}</p> : null}
       <div className="flow-map-actions">
-        <button type="button" className="flow-map-button" onClick={resetFlowState}>
+        {selectedOutcome === 'found-endpoint' ? (
+          <>
+            <button type="button" className="flow-map-button" onClick={() => handleFollowUpFlow('login')}>
+              Continue to Login Entry
+            </button>
+            <button type="button" className="flow-map-button flow-map-button--ghost" onClick={() => handleFollowUpFlow('api')}>
+              Continue to API Testing
+            </button>
+          </>
+        ) : selectedOutcome === 'got-403' ? (
+          <>
+            <button type="button" className="flow-map-button" onClick={() => handleFollowUpFlow('authz')}>
+              Continue to Authorization Testing
+            </button>
+            <button type="button" className="flow-map-button flow-map-button--ghost" onClick={() => handleFollowUpFlow('request')}>
+              Continue to Request Tampering
+            </button>
+          </>
+        ) : null}
+        <button type="button" className="flow-map-button flow-map-button--ghost" onClick={resetFlowState}>
           Restart
         </button>
       </div>
@@ -347,7 +387,8 @@ export function renderEnumerationStoryContent({
   resetFlowState,
   goToStage,
   handleEnumerationResultChoice,
-  handleEnumerationNextStep
+  handleEnumerationNextStep,
+  handleFollowUpFlow
 }) {
   if (currentStage === 'service-found') {
     return (
@@ -459,7 +500,17 @@ export function renderEnumerationStoryContent({
       <p>{nextStepCopy}</p>
       {feedback ? <p className="flow-map-feedback">{feedback}</p> : null}
       <div className="flow-map-actions">
-        <button type="button" className="flow-map-button" onClick={resetFlowState}>
+        {selectedOutcome !== 'nothing-useful' ? (
+          <>
+            <button type="button" className="flow-map-button" onClick={() => handleFollowUpFlow('login')}>
+              Continue to Login Entry
+            </button>
+            <button type="button" className="flow-map-button flow-map-button--ghost" onClick={() => handleFollowUpFlow('authz')}>
+              Continue to Authorization Testing
+            </button>
+          </>
+        ) : null}
+        <button type="button" className="flow-map-button flow-map-button--ghost" onClick={resetFlowState}>
           Restart
         </button>
       </div>
@@ -475,7 +526,8 @@ export function renderInputStoryContent({
   resetFlowState,
   handleInputContinue,
   handleInputResultChoice,
-  handleInputNextStep
+  handleInputNextStep,
+  handleFollowUpFlow
 }) {
   if (currentStage === 'input-field-found') {
     return (
@@ -557,7 +609,17 @@ export function renderInputStoryContent({
       <p>{nextStepCopy}</p>
       {feedback ? <p className="flow-map-feedback">{feedback}</p> : null}
       <div className="flow-map-actions">
-        <button type="button" className="flow-map-button" onClick={resetFlowState}>
+        {selectedOutcome !== 'no-difference' ? (
+          <>
+            <button type="button" className="flow-map-button" onClick={() => handleFollowUpFlow('request')}>
+              Continue to Request Tampering
+            </button>
+            <button type="button" className="flow-map-button flow-map-button--ghost" onClick={() => handleFollowUpFlow('response')}>
+              Continue to Response Analysis
+            </button>
+          </>
+        ) : null}
+        <button type="button" className="flow-map-button flow-map-button--ghost" onClick={resetFlowState}>
           Restart
         </button>
       </div>
@@ -575,7 +637,8 @@ export function renderApiStoryContent({
   handleApiContinue,
   goToStage,
   handleApiResultChoice,
-  handleApiNextStep
+  handleApiNextStep,
+  handleFollowUpFlow
 }) {
   if (currentStage === 'api-endpoint-found') {
     return (
@@ -679,7 +742,17 @@ export function renderApiStoryContent({
       <p>{nextStepCopy}</p>
       {feedback ? <p className="flow-map-feedback">{feedback}</p> : null}
       <div className="flow-map-actions">
-        <button type="button" className="flow-map-button" onClick={resetFlowState}>
+        {selectedOutcome !== 'stable-response' ? (
+          <>
+            <button type="button" className="flow-map-button" onClick={() => handleFollowUpFlow('authz')}>
+              Continue to Authorization Testing
+            </button>
+            <button type="button" className="flow-map-button flow-map-button--ghost" onClick={() => handleFollowUpFlow('exploitation')}>
+              Continue to Exploitation
+            </button>
+          </>
+        ) : null}
+        <button type="button" className="flow-map-button flow-map-button--ghost" onClick={resetFlowState}>
           Restart
         </button>
       </div>
@@ -695,7 +768,8 @@ export function renderResponseStoryContent({
   resetFlowState,
   handleResponseContinue,
   handleResponseResultChoice,
-  handleResponseNextStep
+  handleResponseNextStep,
+  handleFollowUpFlow
 }) {
   if (currentStage === 'response-data-found') {
     return (
@@ -777,7 +851,21 @@ export function renderResponseStoryContent({
       <p>{nextStepCopy}</p>
       {feedback ? <p className="flow-map-feedback">{feedback}</p> : null}
       <div className="flow-map-actions">
-        <button type="button" className="flow-map-button" onClick={resetFlowState}>
+        {selectedOutcome === 'found-token' ? (
+          <>
+            <button type="button" className="flow-map-button" onClick={() => handleFollowUpFlow('authz')}>
+              Continue to Authorization Testing
+            </button>
+            <button type="button" className="flow-map-button flow-map-button--ghost" onClick={() => handleFollowUpFlow('session')}>
+              Continue to Session Testing
+            </button>
+          </>
+        ) : selectedOutcome === 'found-encoded-value' ? (
+          <button type="button" className="flow-map-button" onClick={() => handleFollowUpFlow('decode')}>
+            Continue to Decode Flow
+          </button>
+        ) : null}
+        <button type="button" className="flow-map-button flow-map-button--ghost" onClick={resetFlowState}>
           Restart
         </button>
       </div>
@@ -793,7 +881,8 @@ export function renderRequestStoryContent({
   resetFlowState,
   handleRequestContinue,
   handleRequestResultChoice,
-  handleRequestNextStep
+  handleRequestNextStep,
+  handleFollowUpFlow
 }) {
   if (currentStage === 'http-request-observed') {
     return (
@@ -875,7 +964,17 @@ export function renderRequestStoryContent({
       <p>{nextStepCopy}</p>
       {feedback ? <p className="flow-map-feedback">{feedback}</p> : null}
       <div className="flow-map-actions">
-        <button type="button" className="flow-map-button" onClick={resetFlowState}>
+        {selectedOutcome !== 'no-change' ? (
+          <>
+            <button type="button" className="flow-map-button" onClick={() => handleFollowUpFlow('authz')}>
+              Continue to Authorization Testing
+            </button>
+            <button type="button" className="flow-map-button flow-map-button--ghost" onClick={() => handleFollowUpFlow('exploitation')}>
+              Continue to Exploitation
+            </button>
+          </>
+        ) : null}
+        <button type="button" className="flow-map-button flow-map-button--ghost" onClick={resetFlowState}>
           Restart
         </button>
       </div>
@@ -893,7 +992,8 @@ export function renderAuthzStoryContent({
   handleAuthzContinue,
   goToStage,
   handleAuthzResultChoice,
-  handleAuthzNextStep
+  handleAuthzNextStep,
+  handleFollowUpFlow
 }) {
   if (currentStage === 'privileged-action-found') {
     return (
@@ -997,7 +1097,12 @@ export function renderAuthzStoryContent({
       <p>{nextStepCopy}</p>
       {feedback ? <p className="flow-map-feedback">{feedback}</p> : null}
       <div className="flow-map-actions">
-        <button type="button" className="flow-map-button" onClick={resetFlowState}>
+        {selectedOutcome !== 'blocked-correctly' ? (
+          <button type="button" className="flow-map-button" onClick={() => handleFollowUpFlow('exploitation')}>
+            Continue to Exploitation
+          </button>
+        ) : null}
+        <button type="button" className="flow-map-button flow-map-button--ghost" onClick={resetFlowState}>
           Restart
         </button>
       </div>
@@ -1127,6 +1232,396 @@ export function renderExploitationStoryContent({
   )
 }
 
+export function renderInfoDisclosureStoryContent({
+  currentStage,
+  selectedAction,
+  selectedOutcome,
+  feedback,
+  handleInfoDisclosureActionSelect,
+  resetFlowState,
+  handleInfoDisclosureContinue,
+  handleInfoDisclosureResultChoice,
+  handleInfoDisclosureNextStep,
+  handleFollowUpFlow
+}) {
+  if (currentStage === 'source-found') {
+    return (
+      <>
+        <span className="flow-map-story-step">Step 2</span>
+        <h2>Source Found</h2>
+        <p>You found client-side code, an error page, or a response that might leak internal details. Choose where to start looking.</p>
+        <div className="flow-map-actions flow-map-actions--stacked">
+          <button type="button" className="flow-map-button" onClick={() => handleInfoDisclosureActionSelect('page-source')}>
+            Review page source and JS files
+          </button>
+          <button type="button" className="flow-map-button flow-map-button--ghost" onClick={() => handleInfoDisclosureActionSelect('error-response')}>
+            Trigger and inspect error responses
+          </button>
+          <button type="button" className="flow-map-button flow-map-button--ghost" onClick={() => handleInfoDisclosureActionSelect('config-files')}>
+            Probe for exposed config files
+          </button>
+        </div>
+      </>
+    )
+  }
+
+  if (currentStage === 'inspect-source') {
+    const description = selectedAction === 'page-source'
+      ? 'Look for HTML comments, hardcoded API keys, internal URLs, developer TODO notes, and JS files that reveal endpoint paths or tokens.'
+      : selectedAction === 'error-response'
+        ? 'Force errors with malformed input, invalid paths, or missing parameters. Watch for stack traces, framework versions, file paths, and database details.'
+        : 'Check for .git/HEAD, .env, .DS_Store, backup files (.bak, .old, ~), and common debug endpoints like /debug, /actuator, or /elmah.'
+
+    return (
+      <>
+        <span className="flow-map-story-step">Step 3</span>
+        <h2>Inspect Source</h2>
+        <p>{description}</p>
+        <div className="flow-map-actions">
+          <button type="button" className="flow-map-button" onClick={handleInfoDisclosureContinue}>
+            Continue to Data Check
+          </button>
+          <button type="button" className="flow-map-button flow-map-button--ghost" onClick={resetFlowState}>
+            Restart
+          </button>
+        </div>
+      </>
+    )
+  }
+
+  if (currentStage === 'sensitive-data') {
+    return (
+      <>
+        <span className="flow-map-story-step">Step 4</span>
+        <h2>Sensitive Data?</h2>
+        <p>Select what you found so the flow can guide the right next move.</p>
+        <div className="flow-map-actions flow-map-actions--stacked">
+          <button type="button" className="flow-map-button" onClick={() => handleInfoDisclosureResultChoice('found-secrets')}>
+            Found credentials or keys
+          </button>
+          <button type="button" className="flow-map-button flow-map-button--ghost" onClick={() => handleInfoDisclosureResultChoice('found-source')}>
+            Found source code or internal paths
+          </button>
+          <button type="button" className="flow-map-button flow-map-button--ghost" onClick={() => handleInfoDisclosureResultChoice('nothing-sensitive')}>
+            Nothing sensitive
+          </button>
+        </div>
+      </>
+    )
+  }
+
+  if (currentStage === 'assess-exposure') {
+    return (
+      <>
+        <span className="flow-map-story-step">Step 5</span>
+        <h2>Assess Exposure</h2>
+        <p>Evaluate the scope: can leaked credentials be used elsewhere? Do internal paths reveal hidden endpoints? Document exactly what is exposed and how it extends the attack surface.</p>
+        <div className="flow-map-actions">
+          <button type="button" className="flow-map-button" onClick={handleInfoDisclosureNextStep}>
+            Continue to Next Step
+          </button>
+        </div>
+      </>
+    )
+  }
+
+  const nextStepCopy = selectedOutcome === 'found-secrets'
+    ? 'Leaked credentials or keys should be tested immediately. Use the Login flow for credential pairs, or the API Testing flow for API keys and tokens.'
+    : selectedOutcome === 'found-source'
+      ? 'Internal paths and source code can reveal hidden endpoints, logic flaws, and parameter names. Feed them into Discovery or Input Testing flows.'
+      : 'No clear leak yet. Broaden the search to alternate error conditions, backup files, and different response formats before closing.'
+
+  return (
+    <>
+      <span className="flow-map-story-step">Step 6</span>
+      <h2>Next Step</h2>
+      <p>{nextStepCopy}</p>
+      {feedback ? <p className="flow-map-feedback">{feedback}</p> : null}
+      <div className="flow-map-actions">
+        {selectedOutcome === 'found-secrets' ? (
+          <>
+            <button type="button" className="flow-map-button" onClick={() => handleFollowUpFlow('login')}>
+              Continue to Login Entry
+            </button>
+            <button type="button" className="flow-map-button flow-map-button--ghost" onClick={() => handleFollowUpFlow('api')}>
+              Continue to API Testing
+            </button>
+          </>
+        ) : selectedOutcome === 'found-source' ? (
+          <>
+            <button type="button" className="flow-map-button" onClick={() => handleFollowUpFlow('discovery')}>
+              Continue to Discovery
+            </button>
+            <button type="button" className="flow-map-button flow-map-button--ghost" onClick={() => handleFollowUpFlow('input')}>
+              Continue to Input Testing
+            </button>
+          </>
+        ) : null}
+        <button type="button" className="flow-map-button flow-map-button--ghost" onClick={resetFlowState}>
+          Restart
+        </button>
+      </div>
+    </>
+  )
+}
+
+export function renderSessionStoryContent({
+  currentStage,
+  selectedAction,
+  selectedOutcome,
+  feedback,
+  handleSessionActionSelect,
+  resetFlowState,
+  handleSessionContinue,
+  handleSessionResultChoice,
+  handleSessionNextStep,
+  handleFollowUpFlow
+}) {
+  if (currentStage === 'session-captured') {
+    return (
+      <>
+        <span className="flow-map-story-step">Step 2</span>
+        <h2>Session Captured</h2>
+        <p>You have an active session token or cookie. Choose what to check first.</p>
+        <div className="flow-map-actions flow-map-actions--stacked">
+          <button type="button" className="flow-map-button" onClick={() => handleSessionActionSelect('cookie-flags')}>
+            Check cookie flags and scope
+          </button>
+          <button type="button" className="flow-map-button flow-map-button--ghost" onClick={() => handleSessionActionSelect('session-lifecycle')}>
+            Test session lifecycle
+          </button>
+          <button type="button" className="flow-map-button flow-map-button--ghost" onClick={() => handleSessionActionSelect('csrf-check')}>
+            Check CSRF protection
+          </button>
+        </div>
+      </>
+    )
+  }
+
+  if (currentStage === 'inspect-session') {
+    const description = selectedAction === 'cookie-flags'
+      ? 'Check Secure, HttpOnly, SameSite attributes, cookie domain and path scope, and whether the session ID has enough entropy.'
+      : selectedAction === 'session-lifecycle'
+        ? 'Test whether session IDs rotate after login, whether old tokens remain valid after logout, and how the server handles expired sessions.'
+        : 'Identify state-changing endpoints and check whether they enforce anti-CSRF tokens. Try removing or modifying the token to see if the action still succeeds.'
+
+    return (
+      <>
+        <span className="flow-map-story-step">Step 3</span>
+        <h2>Inspect Session</h2>
+        <p>{description}</p>
+        <div className="flow-map-actions">
+          <button type="button" className="flow-map-button" onClick={handleSessionContinue}>
+            Continue to Test
+          </button>
+          <button type="button" className="flow-map-button flow-map-button--ghost" onClick={resetFlowState}>
+            Restart
+          </button>
+        </div>
+      </>
+    )
+  }
+
+  if (currentStage === 'test-session') {
+    return (
+      <>
+        <span className="flow-map-story-step">Step 4</span>
+        <h2>Test Session</h2>
+        <p>Run the test and compare before/after behavior. Change one thing at a time: swap tokens between users, replay expired tokens, or remove CSRF fields entirely.</p>
+        <div className="flow-map-actions">
+          <button type="button" className="flow-map-button" onClick={() => handleSessionResultChoice('fixation-possible')}>
+            Session fixation possible
+          </button>
+          <button type="button" className="flow-map-button flow-map-button--ghost" onClick={() => handleSessionResultChoice('missing-flags')}>
+            Missing security flags
+          </button>
+          <button type="button" className="flow-map-button flow-map-button--ghost" onClick={() => handleSessionResultChoice('csrf-missing')}>
+            CSRF protection missing
+          </button>
+          <button type="button" className="flow-map-button flow-map-button--ghost" onClick={() => handleSessionResultChoice('session-secure')}>
+            Session looks secure
+          </button>
+        </div>
+      </>
+    )
+  }
+
+  if (currentStage === 'session-result') {
+    const resultCopy = selectedOutcome === 'fixation-possible'
+      ? 'Session fixation means an attacker can set a known session ID before login. This is a real finding if the token is not rotated on authentication.'
+      : selectedOutcome === 'missing-flags'
+        ? 'Missing Secure, HttpOnly, or SameSite flags increase the risk of session theft through XSS or insecure transport.'
+        : selectedOutcome === 'csrf-missing'
+          ? 'State-changing actions without CSRF protection can be exploited via cross-site requests from attacker-controlled pages.'
+          : 'Session handling looks correct for this endpoint. Keep checking other actions and edge cases.'
+
+    return (
+      <>
+        <span className="flow-map-story-step">Step 5</span>
+        <h2>Session Result</h2>
+        <p>{resultCopy}</p>
+        {feedback ? <p className="flow-map-feedback">{feedback}</p> : null}
+        <div className="flow-map-actions">
+          <button type="button" className="flow-map-button" onClick={handleSessionNextStep}>
+            Continue to Next Step
+          </button>
+        </div>
+      </>
+    )
+  }
+
+  const nextStepCopy = selectedOutcome === 'session-secure'
+    ? 'Session controls look solid here. Keep sampling other endpoints and check whether token behavior changes under different privilege levels.'
+    : 'Document the session weakness and consider moving into Authorization Testing to check if the issue compounds with privilege boundary problems.'
+
+  return (
+    <>
+      <span className="flow-map-story-step">Step 6</span>
+      <h2>Next Step</h2>
+      <p>{nextStepCopy}</p>
+      {feedback ? <p className="flow-map-feedback">{feedback}</p> : null}
+      <div className="flow-map-actions">
+        {selectedOutcome !== 'session-secure' ? (
+          <>
+            <button type="button" className="flow-map-button" onClick={() => handleFollowUpFlow('authz')}>
+              Continue to Authorization Testing
+            </button>
+            <button type="button" className="flow-map-button flow-map-button--ghost" onClick={() => handleFollowUpFlow('exploitation')}>
+              Continue to Exploitation
+            </button>
+          </>
+        ) : null}
+        <button type="button" className="flow-map-button flow-map-button--ghost" onClick={resetFlowState}>
+          Restart
+        </button>
+      </div>
+    </>
+  )
+}
+
+export function renderUploadStoryContent({
+  currentStage,
+  selectedAction,
+  selectedOutcome,
+  feedback,
+  handleUploadActionSelect,
+  resetFlowState,
+  handleUploadContinue,
+  handleUploadResultChoice,
+  handleUploadNextStep,
+  handleFollowUpFlow
+}) {
+  if (currentStage === 'upload-found') {
+    return (
+      <>
+        <span className="flow-map-story-step">Step 2</span>
+        <h2>Upload Found</h2>
+        <p>You found a file upload endpoint. Choose the first testing angle based on what the upload appears to accept.</p>
+        <div className="flow-map-actions flow-map-actions--stacked">
+          <button type="button" className="flow-map-button" onClick={() => handleUploadActionSelect('extension-bypass')}>
+            Test extension filtering
+          </button>
+          <button type="button" className="flow-map-button flow-map-button--ghost" onClick={() => handleUploadActionSelect('mime-confusion')}>
+            Test MIME type handling
+          </button>
+          <button type="button" className="flow-map-button flow-map-button--ghost" onClick={() => handleUploadActionSelect('content-check')}>
+            Test content-based validation
+          </button>
+        </div>
+      </>
+    )
+  }
+
+  if (currentStage === 'test-upload') {
+    const description = selectedAction === 'extension-bypass'
+      ? 'Try double extensions (.php.jpg), null bytes (file.php%00.jpg), case variations (.PhP), and uncommon executable extensions (.phtml, .shtml).'
+      : selectedAction === 'mime-confusion'
+        ? 'Upload a file with a safe extension but change the Content-Type header to something executable, or vice versa. Compare how the server stores and serves it.'
+        : 'Upload files with valid image headers but embedded code (polyglot files), or files that start with valid magic bytes but contain payloads after the header.'
+
+    return (
+      <>
+        <span className="flow-map-story-step">Step 3</span>
+        <h2>Test Upload</h2>
+        <p>{description}</p>
+        <div className="flow-map-actions">
+          <button type="button" className="flow-map-button" onClick={handleUploadContinue}>
+            Continue to Result
+          </button>
+          <button type="button" className="flow-map-button flow-map-button--ghost" onClick={resetFlowState}>
+            Restart
+          </button>
+        </div>
+      </>
+    )
+  }
+
+  if (currentStage === 'upload-result') {
+    return (
+      <>
+        <span className="flow-map-story-step">Step 4</span>
+        <h2>Upload Result</h2>
+        <p>Select what happened after your upload attempt.</p>
+        <div className="flow-map-actions flow-map-actions--stacked">
+          <button type="button" className="flow-map-button" onClick={() => handleUploadResultChoice('file-executed')}>
+            File was executed server-side
+          </button>
+          <button type="button" className="flow-map-button flow-map-button--ghost" onClick={() => handleUploadResultChoice('filter-bypassed')}>
+            Filter bypassed but not executed
+          </button>
+          <button type="button" className="flow-map-button flow-map-button--ghost" onClick={() => handleUploadResultChoice('upload-blocked')}>
+            Upload was blocked
+          </button>
+        </div>
+      </>
+    )
+  }
+
+  if (currentStage === 'analyze-upload') {
+    return (
+      <>
+        <span className="flow-map-story-step">Step 5</span>
+        <h2>Analyze Upload</h2>
+        <p>Determine the full scope: where is the file stored, can it be accessed directly, does the server parse or render it, and what content types are served back to the browser?</p>
+        <div className="flow-map-actions">
+          <button type="button" className="flow-map-button" onClick={handleUploadNextStep}>
+            Continue to Next Step
+          </button>
+        </div>
+      </>
+    )
+  }
+
+  const nextStepCopy = selectedOutcome === 'file-executed'
+    ? 'Server-side execution through upload is a critical finding. Move directly to controlled exploitation to prove impact safely and document the chain.'
+    : selectedOutcome === 'filter-bypassed'
+      ? 'A bypassed filter is still a finding even without execution. Document the bypass method and check if the stored file can be weaponized through other means.'
+      : 'Upload was blocked. Try alternate bypass techniques, different file types, or check whether the filtering changes based on request context or user role.'
+
+  return (
+    <>
+      <span className="flow-map-story-step">Step 6</span>
+      <h2>Next Step</h2>
+      <p>{nextStepCopy}</p>
+      {feedback ? <p className="flow-map-feedback">{feedback}</p> : null}
+      <div className="flow-map-actions">
+        {selectedOutcome === 'file-executed' ? (
+          <button type="button" className="flow-map-button" onClick={() => handleFollowUpFlow('exploitation')}>
+            Continue to Exploitation
+          </button>
+        ) : selectedOutcome === 'filter-bypassed' ? (
+          <button type="button" className="flow-map-button" onClick={() => handleFollowUpFlow('request')}>
+            Continue to Request Tampering
+          </button>
+        ) : null}
+        <button type="button" className="flow-map-button flow-map-button--ghost" onClick={resetFlowState}>
+          Restart
+        </button>
+      </div>
+    </>
+  )
+}
+
 export function renderFlowStoryContent({ selectedFlow, storyProps }) {
   if (selectedFlow === 'login') {
     return renderLoginStoryContent(storyProps)
@@ -1162,6 +1657,18 @@ export function renderFlowStoryContent({ selectedFlow, storyProps }) {
 
   if (selectedFlow === 'exploitation') {
     return renderExploitationStoryContent(storyProps)
+  }
+
+  if (selectedFlow === 'info-disclosure') {
+    return renderInfoDisclosureStoryContent(storyProps)
+  }
+
+  if (selectedFlow === 'session') {
+    return renderSessionStoryContent(storyProps)
+  }
+
+  if (selectedFlow === 'upload') {
+    return renderUploadStoryContent(storyProps)
   }
 
   return renderDecodeStoryContent(storyProps)

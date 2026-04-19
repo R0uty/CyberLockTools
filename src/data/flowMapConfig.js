@@ -14,14 +14,13 @@ export const BASE_SCENE_WIDTH = 2200
 export const BASE_SCENE_HEIGHT = 1240
 
 export const FLOW_GROUPS = [
-  ['recon', 'Recon Flows'],
-  ['enumeration', 'Enumeration Flows'],
-  ['entry-point', 'Entry Point Flows'],
-  ['testing', 'Testing Flows'],
-  ['vulnerability', 'Vulnerability Flows'],
-  ['exploitation', 'Exploitation Flows'],
-  // ['main', 'Main Flows'],
-  // ['niche', 'Niche Flows']
+  ['recon', 'Reconnaissance'],
+  ['enumeration', 'Enumeration'],
+  ['entry-point', 'Entry Points'],
+  ['testing', 'Testing'],
+  ['vulnerability', 'Vulnerability Validation'],
+  ['exploitation', 'Exploitation & Reporting'],
+  ['analysis', 'Analysis']
 ]
 
 export const BACKGROUND_STARS = [
@@ -40,8 +39,18 @@ export const BACKGROUND_STARS = [
 export const FLOWS = {
   decode: {
     label: 'Decode Flow',
-    group: 'niche',
+    group: 'analysis',
     summary: 'Follow a suspicious value from first glance to readable output using lightweight decoders.',
+    suggestedSkills: [
+      { name: 'Encoding Identification', difficulty: 'beginner', reason: 'Quickly recognizing Base64, URL encoding, hex, and ROT patterns saves time during analysis.' },
+      { name: 'Multi-Layer Decoding', difficulty: 'intermediate', reason: 'Some values are encoded multiple times; knowing when to chain decoders is key.' },
+      { name: 'Hash vs Encoding Recognition', difficulty: 'beginner', reason: 'Avoids wasting time trying to decode values that are actually hashed and irreversible.' }
+    ],
+    tools: [
+      { name: 'Browser DevTools', purpose: 'Inspect cookies, URL parameters, and hidden form values that may contain encoded data.' },
+      { name: 'Burp Suite', purpose: 'Use the Decoder tab to try multiple encoding schemes on intercepted values quickly.' },
+      { name: 'curl', purpose: 'Fetch raw responses to capture encoded values before the browser processes them.' }
+    ],
     stages: ['start', 'encoded', 'decode', 'result', 'success'],
     nodes: [
       { id: 'start', label: 'Start', x: 50, y: 50 },
@@ -222,9 +231,19 @@ export const FLOWS = {
     ]
   },
   response: {
-    label: 'Response Flow',
-    group: 'niche',
+    label: 'Response Analysis Flow',
+    group: 'analysis',
     summary: 'Inspect response data, identify useful values, and decide what to investigate next.',
+    suggestedSkills: [
+      { name: 'Header Analysis', difficulty: 'beginner', reason: 'Reveals security headers, caching policy, and server fingerprints in every response.' },
+      { name: 'Token Identification', difficulty: 'intermediate', reason: 'Helps classify embedded tokens, session IDs, and encoded values for follow-up testing.' },
+      { name: 'Data Leakage Assessment', difficulty: 'intermediate', reason: 'Spots excessive data exposure, debug fields, and internal references in response bodies.' }
+    ],
+    tools: [
+      { name: 'Burp Suite Repeater', purpose: 'Replay requests and compare response differences field by field.' },
+      { name: 'Browser DevTools', purpose: 'Inspect response headers, body, and timing in the Network tab.' },
+      { name: 'curl', purpose: 'Fetch raw responses with full headers for clean comparison.' }
+    ],
     stages: ['start', 'response-data-found', 'analyze-data', 'interesting-data', 'investigate-value', 'next-step'],
     nodes: [
       { id: 'start', label: 'Start', x: 50, y: 50 },
@@ -337,6 +356,99 @@ export const FLOWS = {
       ['execute-safely', 'impact-observed'],
       ['impact-observed', 'document-impact'],
       ['document-impact', 'next-step']
+    ]
+  },
+  'info-disclosure': {
+    label: 'Information Disclosure Flow',
+    group: 'recon',
+    summary: 'Find and assess leaked information such as source comments, debug endpoints, exposed config files, error traces, and version headers.',
+    suggestedSkills: [
+      { name: 'Source Code Review', difficulty: 'beginner', reason: 'Catches developer comments, hardcoded secrets, and logic hints in client-side code.' },
+      { name: 'Git Repository Mining', difficulty: 'intermediate', reason: 'Exposed .git directories can leak full source history, credentials, and internal paths.' },
+      { name: 'Error-Based Information Gathering', difficulty: 'beginner', reason: 'Stack traces and verbose errors reveal frameworks, file paths, and database details.' }
+    ],
+    tools: [
+      { name: 'Browser DevTools', purpose: 'Inspect page source, console output, and network responses for leaked data.' },
+      { name: 'curl', purpose: 'Probe common sensitive paths like /.git/HEAD, /.env, /debug, and compare responses.' },
+      { name: 'ffuf', purpose: 'Fuzz for backup files, config endpoints, and debug routes using targeted wordlists.' }
+    ],
+    stages: ['start', 'source-found', 'inspect-source', 'sensitive-data', 'assess-exposure', 'next-step'],
+    nodes: [
+      { id: 'start', label: 'Start', x: 50, y: 50 },
+      { id: 'source-found', label: 'Source Found', x: 28, y: 30 },
+      { id: 'inspect-source', label: 'Inspect Source', x: 48, y: 26 },
+      { id: 'sensitive-data', label: 'Sensitive Data?', x: 68, y: 40 },
+      { id: 'assess-exposure', label: 'Assess Exposure', x: 82, y: 24 },
+      { id: 'next-step', label: 'Next Step', x: 90, y: 60 }
+    ],
+    connections: [
+      ['start', 'source-found'],
+      ['source-found', 'inspect-source'],
+      ['inspect-source', 'sensitive-data'],
+      ['sensitive-data', 'assess-exposure'],
+      ['assess-exposure', 'next-step']
+    ]
+  },
+  session: {
+    label: 'Session Testing Flow',
+    group: 'testing',
+    summary: 'Evaluate session management by inspecting cookie flags, testing fixation and expiry, and validating CSRF protections.',
+    suggestedSkills: [
+      { name: 'Cookie Security Analysis', difficulty: 'beginner', reason: 'Checks Secure, HttpOnly, SameSite flags and cookie scope for session tokens.' },
+      { name: 'CSRF Testing', difficulty: 'intermediate', reason: 'Validates whether state-changing actions enforce anti-forgery tokens correctly.' },
+      { name: 'Session Fixation', difficulty: 'intermediate', reason: 'Tests whether the application rotates session IDs after authentication.' }
+    ],
+    tools: [
+      { name: 'Browser DevTools', purpose: 'Inspect cookie attributes, storage, and session behavior across tabs and domains.' },
+      { name: 'Burp Suite Repeater', purpose: 'Replay requests with swapped or expired session tokens to test enforcement.' },
+      { name: 'curl', purpose: 'Send requests with crafted cookie headers to verify server-side session handling.' }
+    ],
+    stages: ['start', 'session-captured', 'inspect-session', 'test-session', 'session-result', 'next-step'],
+    nodes: [
+      { id: 'start', label: 'Start', x: 50, y: 50 },
+      { id: 'session-captured', label: 'Session Captured', x: 28, y: 30 },
+      { id: 'inspect-session', label: 'Inspect Session', x: 48, y: 26 },
+      { id: 'test-session', label: 'Test Session', x: 68, y: 34 },
+      { id: 'session-result', label: 'Session Result', x: 80, y: 50 },
+      { id: 'next-step', label: 'Next Step', x: 90, y: 60 }
+    ],
+    connections: [
+      ['start', 'session-captured'],
+      ['session-captured', 'inspect-session'],
+      ['inspect-session', 'test-session'],
+      ['test-session', 'session-result'],
+      ['session-result', 'next-step']
+    ]
+  },
+  upload: {
+    label: 'File Upload Testing Flow',
+    group: 'entry-point',
+    summary: 'Test file upload endpoints for extension bypass, MIME confusion, path traversal in filenames, oversized payloads, and content-based execution.',
+    suggestedSkills: [
+      { name: 'File Type Bypass', difficulty: 'intermediate', reason: 'Tests whether the server relies on extension or Content-Type alone for filtering.' },
+      { name: 'Webshell Detection', difficulty: 'intermediate', reason: 'Validates whether uploaded code can be executed through the web server.' },
+      { name: 'Content-Type Manipulation', difficulty: 'beginner', reason: 'Changing MIME headers can bypass client-side and weak server-side checks.' }
+    ],
+    tools: [
+      { name: 'Burp Suite Repeater', purpose: 'Modify filename, Content-Type, and body in upload requests to test server filtering.' },
+      { name: 'curl', purpose: 'Script upload attempts with controlled filenames and MIME types for clean comparisons.' },
+      { name: 'Browser DevTools', purpose: 'Inspect client-side upload validation and observe where uploaded files are served.' }
+    ],
+    stages: ['start', 'upload-found', 'test-upload', 'upload-result', 'analyze-upload', 'next-step'],
+    nodes: [
+      { id: 'start', label: 'Start', x: 50, y: 50 },
+      { id: 'upload-found', label: 'Upload Found', x: 28, y: 30 },
+      { id: 'test-upload', label: 'Test Upload', x: 48, y: 26 },
+      { id: 'upload-result', label: 'Upload Result', x: 68, y: 40 },
+      { id: 'analyze-upload', label: 'Analyze Upload', x: 82, y: 24 },
+      { id: 'next-step', label: 'Next Step', x: 90, y: 60 }
+    ],
+    connections: [
+      ['start', 'upload-found'],
+      ['upload-found', 'test-upload'],
+      ['test-upload', 'upload-result'],
+      ['upload-result', 'analyze-upload'],
+      ['analyze-upload', 'next-step']
     ]
   }
 }
