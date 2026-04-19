@@ -2,6 +2,7 @@ import { lazy, Suspense, useCallback, useEffect, useState } from 'react'
 import { useSEO } from './hooks/useSEO'
 import Header from './components/Header'
 import PageHeader from './components/PageHeader'
+import HomeToolMap from './components/HomeToolMap'
 import FeedbackToast from './components/FeedbackToast'
 import { TOOL_CATALOG, buildToolComponents } from './data/toolRegistry'
 import './styles/app/App.css'
@@ -122,6 +123,11 @@ export default function App() {
 
   const handleToolReferenceClick = (toolGuideName) => {
     navigateTo('tool-guides', null, toolGuideName)
+  }
+
+  const handleCategoryClick = (category) => {
+    if (category === 'skills') navigateTo('skills')
+    else navigateTo('tools', null, category)
   }
 
   const tools = TOOL_CATALOG
@@ -248,8 +254,13 @@ export default function App() {
   }
 
   return renderAppShell(
-    <section className="home-landing">
-      <PageHeader
+    <>
+      <HomeToolMap
+        onCategoryClick={handleCategoryClick}
+        onFlowMapClick={() => handlePageChange('flow-map')}
+      />
+      <section className="home-landing">
+        <PageHeader
         kicker="My personal lab"
         title="A Practical Cyber Lab I Built for Real Testing Work"
         subtitle="Flow maps, browser tools, payload helpers, and agent skills — built for authorized testing with zero signup friction."
@@ -280,5 +291,6 @@ export default function App() {
         All processing happens in your browser · No data is sent to any server
       </div>
     </section>
+    </>
   )
 }
