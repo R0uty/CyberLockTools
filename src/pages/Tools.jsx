@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useSEO } from '../hooks/useSEO';
+import PageHeader from '../components/PageHeader';
 import ToolCard from '../components/ToolCard';
 import { Search01Icon, ArrowDataTransferHorizontalIcon, LockKeyIcon, BookOpen01Icon, SmileIcon, CheckmarkBadge01Icon, GlobeIcon } from 'hugeicons-react'
 import '../styles/pages/Tools.css'
@@ -83,7 +84,6 @@ export default function Tools({ tools, onToolClick, initialCategory = null }) {
     keywords: 'general tools, payload generators, encoder, decoder, formatter, generator, browser tools, utilities',
   })
 
-  // Get unique categories
   const categories = [...new Set(tools.map(tool => tool.category))].sort()
 
   const getDefaultCategory = (catList, preferred) =>
@@ -93,7 +93,6 @@ export default function Tools({ tools, onToolClick, initialCategory = null }) {
     () => getDefaultCategory(categories, initialCategory)
   )
 
-  // Synchronize with initialCategory changes using previous-value tracking
   const [prevInitialCategory, setPrevInitialCategory] = useState(initialCategory)
   if (prevInitialCategory !== initialCategory) {
     setPrevInitialCategory(initialCategory)
@@ -106,7 +105,6 @@ export default function Tools({ tools, onToolClick, initialCategory = null }) {
   const hasSearchQuery = searchQuery.trim() !== ''
   const normalizedSearchQuery = searchQuery.toLowerCase()
 
-  // Filter tools based on category and search query
   const filteredTools = tools.filter(tool => {
     const matchesCategory = hasSearchQuery ? true : tool.category === selectedCategory
     const matchesSearch = hasSearchQuery
@@ -123,38 +121,25 @@ export default function Tools({ tools, onToolClick, initialCategory = null }) {
 
   return (
     <div className="tool-page tools-page">
-      <div className="privacy-badge">
-        All processing happens in your browser • No data is sent to server
-      </div>
-        <div className="tool-header">
-          <span className="tools-kicker">Tool index</span>
-          <h1>General Tools &amp; Payloads</h1>
-          <p>This is my working collection of browser-based utilities and payload helpers for practical analysis. Everything runs locally in your browser.</p>
-          <div className="tools-header-meta">
-            <div className="tools-header-pill">
-              <span>Tools &amp; Payloads</span>
-              <strong>{tools.length}</strong>
-            </div>
-          <div className="tools-header-pill">
-            <span>Categories</span>
-            <strong>{categoryCount}</strong>
-          </div>
-          <div className="tools-header-pill">
-            <span>Processing</span>
-            <strong>Local</strong>
-          </div>
-        </div>
-      </div>
+      <PageHeader
+        kicker="Tool index"
+        title="General Tools & Payloads"
+        subtitle="Browser-based utilities and payload helpers for practical analysis. Everything runs locally."
+        pills={[
+          { label: 'Tools & Payloads', value: String(tools.length) },
+          { label: 'Categories', value: String(categoryCount) },
+          { label: 'Processing', value: 'Local' },
+        ]}
+      />
 
       <div className="tool-container">
         <section className="tools-grid tools-panel">
           <div className="tools-controls">
-            {/* Search Bar */}
             <div className="tools-search-wrapper">
               <div className="tools-search-container">
-                <Search01Icon 
-                  size={20} 
-                  color="#c0c0c0" 
+                <Search01Icon
+                  size={20}
+                  color="#c0c0c0"
                   className="tools-search-icon"
                 />
                 <input
@@ -179,7 +164,6 @@ export default function Tools({ tools, onToolClick, initialCategory = null }) {
               )}
             </div>
 
-            {/* Category Tabs */}
             <div className="tools-category-tabs">
               <div className="tools-category-list">
                 {categories.map(category => (
@@ -222,84 +206,6 @@ export default function Tools({ tools, onToolClick, initialCategory = null }) {
                 </div>
               )
             })}
-          </div>
-        </section>
-
-        <section className="tools-benefits tools-panel">
-          <span className="tools-section-kicker">Browse by focus</span>
-          <h2>Tool Categories</h2>
-          <div className="category-grid">
-            <div className="category-item">
-              <div className="icon-wrapper"><ArrowDataTransferHorizontalIcon size={32} color="#c0c0c0" /></div>
-              <h3>Encoders & Decoders</h3>
-              <ul>
-                <li>ROT13 / Caesar Cipher</li>
-                <li>Base64 Encoder/Decoder</li>
-                <li>URL Encoder/Decoder</li>
-              </ul>
-            </div>
-            <div className="category-item">
-              <div className="icon-wrapper"><LockKeyIcon size={32} color="#c0c0c0" /></div>
-              <h3>Hash & Cryptography</h3>
-              <ul>
-                <li>Hash Generator (MD5, SHA-1-512)</li>
-                <li>JWT Debugger & Decoder</li>
-              </ul>
-            </div>
-            <div className="category-item">
-              <div className="icon-wrapper"><FileScriptIcon size={32} color="#c0c0c0" /></div>
-              <h3>Formatters & Converters</h3>
-              <ul>
-                <li>JSON Formatter & Validator</li>
-                <li>YAML Formatter & Converter</li>
-                <li>Markdown Preview</li>
-              </ul>
-            </div>
-            <div className="category-item">
-              <div className="icon-wrapper"><Search01Icon size={32} color="#c0c0c0" /></div>
-              <h3>Testers & Parsers</h3>
-              <ul>
-                <li>Regex Tester & Matcher</li>
-                <li>Cron Expression Parser</li>
-              </ul>
-            </div>
-          </div>
-        </section>
-
-        <section className="tools-features tools-panel">
-          <span className="tools-section-kicker">Why it works</span>
-          <h2>Why These General Tools &amp; Payloads?</h2>
-          <div className="features-grid">
-            <div className="feature-card">
-              <div className="icon-wrapper"><LockKeyIcon size={32} color="#c0c0c0" /></div>
-              <h3>100% Private & Secure</h3>
-              <p>All processing happens in your browser. Your data never leaves your device.</p>
-            </div>
-            <div className="feature-card">
-              <div className="icon-wrapper"><CheckmarkBadge01Icon size={32} color="#c0c0c0" /></div>
-              <h3>Lightning Fast</h3>
-              <p>Instant results with no queue or upload delay. Computation runs locally in your browser.</p>
-            </div>
-            <div className="feature-card">
-              <div className="icon-wrapper"><BookOpen01Icon size={32} color="#c0c0c0" /></div>
-              <h3>Educational</h3>
-              <p>Use these tools to understand encoding, hashing, formatting, and pattern-matching behavior step by step.</p>
-            </div>
-            <div className="feature-card">
-              <div className="icon-wrapper"><SmileIcon size={32} color="#c0c0c0" /></div>
-              <h3>User-Friendly</h3>
-              <p>Simple interfaces with clear input fields, readable output, and practical hints.</p>
-            </div>
-            <div className="feature-card">
-              <div className="icon-wrapper"><CheckmarkBadge01Icon size={32} color="#c0c0c0" /></div>
-              <h3>Built for Utility</h3>
-              <p>This collection is maintained to be useful in real workflows, not to sell access.</p>
-            </div>
-            <div className="feature-card">
-              <div className="icon-wrapper"><GlobeIcon size={32} color="#c0c0c0" /></div>
-              <h3>Browser-Based</h3>
-              <p>Works on any device with a modern web browser. No installation or downloads needed.</p>
-            </div>
           </div>
         </section>
       </div>

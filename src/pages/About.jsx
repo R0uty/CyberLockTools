@@ -1,4 +1,5 @@
 import { useSEO } from '../hooks/useSEO'
+import PageHeader from '../components/PageHeader'
 import '../styles/pages/About.css'
 
 export default function About() {
@@ -10,22 +11,19 @@ export default function About() {
 
   return (
     <div className="tool-page about-page">
-      <div className="privacy-badge">
-        All processing happens in your browser • No data is sent to server
-      </div>
-      <div className="tool-header">
-        <span className="about-kicker">About the lab</span>
-        <h1>About R0uty's Cyber Lab</h1>
-        <p>This is my personal cyber lab: a practical workspace I keep refining for authorized security testing and learning.</p>
-        <div className="about-header-meta">
-          <div className="about-header-pill"><span>Privacy</span><strong>Browser-first</strong></div>
-          <div className="about-header-pill"><span>Cost</span><strong>Free</strong></div>
-          <div className="about-header-pill"><span>Focus</span><strong>Usefulness</strong></div>
-        </div>
-      </div>
+      <PageHeader
+        kicker="About the lab"
+        title="About R0uty's Cyber Lab"
+        subtitle="A practical workspace I keep refining for authorized security testing and learning."
+        pills={[
+          { label: 'Privacy', value: 'Browser-first' },
+          { label: 'Cost', value: 'Free' },
+          { label: 'Focus', value: 'Usefulness' },
+        ]}
+      />
 
       <div className="tool-container about-layout">
-        <section className="info-box about-intro-panel">
+        <section className="info-box">
           <h2>My Mission</h2>
           <p>
             I built this lab to make repeatable security workflows easier to run. Instead of only collecting isolated utilities, I combine guided Flow Maps with browser-first tools so each step has practical support.
@@ -41,9 +39,7 @@ export default function About() {
 
         <section className="info-box">
           <h2>How the Suite Works</h2>
-          <p>
-            The lab is organized as connected building blocks:
-          </p>
+          <p>The lab is organized as connected building blocks:</p>
           <ul className="about-list">
             <li><strong>Flow Maps:</strong> Guided paths for recon, enumeration, entry-point analysis, testing, and validation</li>
             <li><strong>Browser utilities:</strong> Decoders, formatters, generators, parsers, and helpers for quick analysis</li>
@@ -53,10 +49,8 @@ export default function About() {
         </section>
 
         <section className="info-box">
-          <h2>Privacy & Security</h2>
-          <p>
-            <strong>Privacy is a core rule in this project:</strong>
-          </p>
+          <h2>Privacy &amp; Security</h2>
+          <p><strong>Privacy is a core rule in this project:</strong></p>
           <ul className="about-list">
             <li>All built-in processing happens in your browser using JavaScript</li>
             <li>No data is sent to my servers or any third parties</li>
@@ -78,9 +72,6 @@ export default function About() {
 
         <section className="info-box">
           <h2>Technologies</h2>
-          <p>
-            This lab is built with:
-          </p>
           <ul className="about-list">
             <li><strong>React:</strong> Modern JavaScript library for building user interfaces</li>
             <li><strong>Vite:</strong> Fast, next-generation build tool</li>
@@ -88,13 +79,6 @@ export default function About() {
             <li><strong>crypto-js:</strong> JavaScript library for cryptographic functions</li>
             <li><strong>cronstrue:</strong> Library for parsing cron expressions to English</li>
           </ul>
-        </section>
-
-        <section className="info-box about-wide-panel">
-          <h2>Why the Browser-First Model Matters</h2>
-          <p>
-            Keeping the tools in the browser removes upload delays and keeps sensitive input local. The goal is simple: make this lab genuinely useful, not commercial noise.
-          </p>
         </section>
       </div>
     </div>

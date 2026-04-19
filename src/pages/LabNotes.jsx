@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react'
 import { useSEO } from '../hooks/useSEO'
+import PageHeader from '../components/PageHeader'
 import { getLabNote } from '../data/labNotes'
 import '../styles/pages/LabNotes.css'
 
@@ -68,20 +69,16 @@ export default function LabNotes({ tools, onToolClick }) {
 
   return (
     <div className="tool-page lab-notes-page">
-      <div className="privacy-badge">
-        All processing happens in your browser • No data is sent to server
-      </div>
-
-      <div className="tool-header">
-        <span className="lab-notes-kicker">Lab reference</span>
-        <h1>Lab Notes</h1>
-        <p>Simple notes for every tool in the lab: what it is, where it is used, and a quick example to make the collection easier to learn and browse.</p>
-        <div className="lab-notes-header-meta">
-          <div className="lab-notes-header-pill"><span>Notes</span><strong>{filteredTools.length}</strong></div>
-          <div className="lab-notes-header-pill"><span>Categories</span><strong>{categories.length}</strong></div>
-          <div className="lab-notes-header-pill"><span>Style</span><strong>Reference first</strong></div>
-        </div>
-      </div>
+      <PageHeader
+        kicker="Lab reference"
+        title="Lab Notes"
+        subtitle="Simple notes for every tool in the lab: what it is, where it is used, and a quick example."
+        pills={[
+          { label: 'Notes', value: String(filteredTools.length) },
+          { label: 'Categories', value: String(categories.length) },
+          { label: 'Style', value: 'Reference first' },
+        ]}
+      />
 
       <div className="tool-container">
         <section className="tool-section lab-notes-updates-panel">

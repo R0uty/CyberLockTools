@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { useSEO } from '../hooks/useSEO'
+import PageHeader from '../components/PageHeader'
 import '../styles/pages/Skills.css'
 import '../styles/pages/ToolGuides.css'
 
@@ -248,20 +249,16 @@ export default function ToolGuides({ initialToolName = '' }) {
 
   return (
     <div className="tool-page skills-page tool-guides-page">
-      <div className="privacy-badge">
-        All processing happens in your browser • No data is sent to server
-      </div>
-
-      <div className="tool-header">
-        <span className="skills-kicker">Pentesting reference</span>
-        <h1>Pentesting Tools for Recon and Testing</h1>
-        <p>This is my quick-reference list. Examples are shown at the top of each card; command-style entries can be copied directly.</p>
-        <div className="skills-header-meta">
-          <div className="skills-header-pill"><span>Pentesting Tools</span><strong>{TOOL_GUIDES.length}</strong></div>
-          <div className="skills-header-pill"><span>Categories</span><strong>{CATEGORY_ORDER.length - 1}</strong></div>
-          <div className="skills-header-pill"><span>Format</span><strong>Examples + notes</strong></div>
-        </div>
-      </div>
+      <PageHeader
+        kicker="Pentesting reference"
+        title="Pentesting Tools for Recon and Testing"
+        subtitle="Quick-reference list. Command-style examples can be copied directly."
+        pills={[
+          { label: 'Pentesting Tools', value: String(TOOL_GUIDES.length) },
+          { label: 'Categories', value: String(CATEGORY_ORDER.length - 1) },
+          { label: 'Format', value: 'Examples + notes' },
+        ]}
+      />
 
       <div className="skills-controls">
         <div className="skills-filter-group">

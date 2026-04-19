@@ -1,5 +1,6 @@
 import { useState, useMemo } from 'react'
 import { useSEO } from '../hooks/useSEO'
+import PageHeader from '../components/PageHeader'
 import '../styles/pages/Skills.css'
 
 const SKILL_CATEGORIES = {
@@ -565,19 +566,16 @@ export default function Skills() {
 
   return (
     <div className="tool-page skills-page">
-      <div className="privacy-badge">
-        All processing happens in your browser • No data is sent to server
-      </div>
-      <div className="tool-header">
-        <span className="skills-kicker">Personal skill library</span>
-        <h1>Pentesting &amp; Bug Bounty Agent Skills</h1>
-        <p>This is my structured skill collection for agent-assisted testing. Each skill includes a practical hint you can paste into a prompt or tool call.</p>
-        <div className="skills-header-meta">
-          <div className="skills-header-pill"><span>Agent Skills</span><strong>{SKILLS.length}</strong></div>
-          <div className="skills-header-pill"><span>Categories</span><strong>{Object.keys(SKILL_CATEGORIES).length}</strong></div>
-          <div className="skills-header-pill"><span>Format</span><strong>JSON-ready</strong></div>
-        </div>
-      </div>
+      <PageHeader
+        kicker="Personal skill library"
+        title="Pentesting & Bug Bounty Agent Skills"
+        subtitle="Structured skill collection for agent-assisted testing. Each skill includes a practical hint for prompts or tool calls."
+        pills={[
+          { label: 'Agent Skills', value: String(SKILLS.length) },
+          { label: 'Categories', value: String(Object.keys(SKILL_CATEGORIES).length) },
+          { label: 'Format', value: 'JSON-ready' },
+        ]}
+      />
 
       <div className="skills-controls">
         <div className="skills-filter-group">

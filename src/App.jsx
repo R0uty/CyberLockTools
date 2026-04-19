@@ -1,15 +1,7 @@
 import { lazy, Suspense, useCallback, useEffect, useState } from 'react'
-import {
-  LockKeyIcon,
-  CheckmarkBadge01Icon,
-  BookOpen01Icon,
-  SmileIcon,
-  GitPullRequestIcon,
-  AiBrain01Icon,
-} from 'hugeicons-react'
 import { useSEO } from './hooks/useSEO'
 import Header from './components/Header'
-import HomeToolMap from './components/HomeToolMap'
+import PageHeader from './components/PageHeader'
 import FeedbackToast from './components/FeedbackToast'
 import { TOOL_CATALOG, buildToolComponents } from './data/toolRegistry'
 import './styles/app/App.css'
@@ -124,14 +116,6 @@ export default function App() {
     navigateTo('tools', title, null)
   }
 
-  const handleCategoryClick = (category) => {
-    if (category === 'skills') {
-      navigateTo('skills', null, null)
-    } else {
-      navigateTo('tools', null, category)
-    }
-  }
-
   const handleLogoClick = () => {
     navigateTo('home', null, null)
   }
@@ -187,36 +171,25 @@ export default function App() {
   const renderFooter = () => (
     <footer className="site-footer">
       <div className="site-footer-inner">
-        <div>
-          <strong>R0uty&apos;s Cyber Lab</strong>
-          <p>This is my personal collection: {tools.length}+ browser-based tools and payload helpers I use for day-to-day testing and analysis.</p>
-        </div>
-        <div className="site-footer-links">
-          <button className="site-footer-link" onClick={() => handlePageChange('tools')}>General Tools &amp; Payloads</button>
+        <span className="site-footer-brand">R0uty&apos;s Cyber Lab</span>
+        <nav className="site-footer-links">
           <button className="site-footer-link" onClick={() => handlePageChange('flow-map')}>Flow Map</button>
+          <button className="site-footer-link" onClick={() => handlePageChange('tools')}>Tools</button>
+          <button className="site-footer-link" onClick={() => handlePageChange('skills')}>Skills</button>
           <button className="site-footer-link" onClick={() => handlePageChange('tool-guides')}>Pentesting Tools</button>
           <button className="site-footer-link" onClick={() => handlePageChange('lab-notes')}>Lab Notes</button>
           <button className="site-footer-link" onClick={() => handlePageChange('about')}>About</button>
-          <button className="site-footer-link" onClick={() => handlePageChange('skills')}>Agent Skills</button>
-        </div>
-        <p className="site-footer-note">All processing happens locally in your browser.</p>
+        </nav>
+        <span className="site-footer-note">Browser-only · No data sent</span>
       </div>
     </footer>
   )
 
-  const renderAppShell = (content, options = {}) => {
-    const { showMap = false } = options
-
+  const renderAppShell = (content) => {
     return (
       <div className="app">
         <Header onLogoClick={handleLogoClick} currentPage={currentPage} onPageChange={handlePageChange} />
         <FeedbackToast />
-        {showMap && (
-          <HomeToolMap
-            onCategoryClick={handleCategoryClick}
-            onFlowMapClick={() => handlePageChange('flow-map')}
-          />
-        )}
         <div className="main-content">
           <Suspense fallback={<div className="page-loading" role="status" aria-live="polite">Loading…</div>}>
             {content}
@@ -275,99 +248,37 @@ export default function App() {
   }
 
   return renderAppShell(
-    <>
-        <section className="hero">
-          <div className="hero-copy">
-            <span className="hero-kicker">My personal lab</span>
-            <h1>A Practical Cyber Lab I Built for Real Testing Work</h1>
-            <p>This site is my personal collection of flow maps, browser tools, payload helpers, and agent skills. I built it to be useful first: quick references, clear next steps, and zero signup friction for authorized testing.</p>
-            <div className="privacy-badge hero-privacy-badge">
-              All processing happens in your browser • No data is sent to server
-            </div>
-            <div className="hero-actions">
-              <button className="cta-button" onClick={() => handlePageChange('flow-map')}>Open Flow Map</button>
-              <button className="hero-secondary-button" onClick={() => handlePageChange('skills')}>Browse Agent Skills</button>
-              <button className="hero-secondary-button" onClick={() => handlePageChange('tools')}>Browse General Tools &amp; Payloads</button>
-            </div>
-          </div>
+    <section className="home-landing">
+      <PageHeader
+        kicker="My personal lab"
+        title="A Practical Cyber Lab I Built for Real Testing Work"
+        subtitle="Flow maps, browser tools, payload helpers, and agent skills — built for authorized testing with zero signup friction."
+        pills={[
+          { label: 'Flows', value: '13 paths' },
+          { label: 'Tools', value: `${tools.length}+` },
+          { label: 'Skills', value: '51' },
+          { label: 'Privacy', value: '100 %' },
+        ]}
+      />
 
-          <div className="hero-summary">
-            <div className="hero-summary-card">
-              <span className="hero-summary-label">Flow Map</span>
-              <strong>10 flows</strong>
-              <p>My stage-by-stage paths for recon, enumeration, entry points, testing, validation, and exploitation.</p>
-            </div>
-            <div className="hero-summary-card">
-              <span className="hero-summary-label">General Tools &amp; Payloads</span>
-              <strong>{tools.length}+</strong>
-              <p>The browser utilities and payload builders I rely on most during analysis.</p>
-            </div>
-            <div className="hero-summary-card">
-              <span className="hero-summary-label">Agent Skills</span>
-              <strong>51 skills</strong>
-              <p>Structured pentesting and bug bounty skills with practical hints you can reuse in agent workflows.</p>
-            </div>
-            <div className="hero-summary-card">
-              <span className="hero-summary-label">Privacy</span>
-              <strong>100%</strong>
-              <p>Browser-side processing keeps payloads, tokens, and samples off the server.</p>
-            </div>
-          </div>
-        </section>
+      <div className="home-actions">
+        <button className="home-action-card" onClick={() => handlePageChange('flow-map')}>
+          <strong>Flow Map</strong>
+          <p>Stage-by-stage paths for recon, enumeration, entry points, testing, and exploitation.</p>
+        </button>
+        <button className="home-action-card" onClick={() => handlePageChange('tools')}>
+          <strong>General Tools &amp; Payloads</strong>
+          <p>Browser-side utilities and payload builders for analysis work.</p>
+        </button>
+        <button className="home-action-card" onClick={() => handlePageChange('skills')}>
+          <strong>Agent Skills</strong>
+          <p>Structured pentesting and bug bounty skills for agent workflows.</p>
+        </button>
+      </div>
 
-        <section className="features">
-          <div className="features-intro">
-            <span className="features-kicker">What you will find here</span>
-            <h2>Flows, tools, payloads, and skills in one practical workspace</h2>
-            <p>I keep this lab focused on utility: clear assessment paths, fast browser-side helpers, and reusable skill definitions you can apply immediately.</p>
-          </div>
-
-          <div className="features-grid">
-            <article className="feature-item">
-              <div className="feature-icon-wrapper"><GitPullRequestIcon size={28} color="#c0c0c0" /></div>
-              <div className="feature-copy">
-                <h3>Guided flow maps</h3>
-                <p>Ten flows covering recon to exploitation, each with clear stage transitions and linked references.</p>
-              </div>
-            </article>
-            <article className="feature-item">
-              <div className="feature-icon-wrapper"><AiBrain01Icon size={28} color="#22b8ff" /></div>
-              <div className="feature-copy">
-                <h3>Agent skills for AI workflows</h3>
-                <p>A curated skill library with category and difficulty filters so you can quickly copy structured guidance.</p>
-              </div>
-            </article>
-            <article className="feature-item">
-              <div className="feature-icon-wrapper"><BookOpen01Icon size={28} color="#c0c0c0" /></div>
-              <div className="feature-copy">
-                <h3>Made to teach</h3>
-                <p>I wrote the flows and skill notes so both practitioners and learners can follow a full assessment process with less guesswork.</p>
-              </div>
-            </article>
-            <article className="feature-item">
-              <div className="feature-icon-wrapper"><LockKeyIcon size={28} color="#c0c0c0" /></div>
-              <div className="feature-copy">
-                <h3>Privacy first</h3>
-                <p>Everything runs in the browser, so payloads, tokens, and samples stay on your machine.</p>
-              </div>
-            </article>
-            <article className="feature-item">
-              <div className="feature-icon-wrapper"><CheckmarkBadge01Icon size={28} color="#c0c0c0" /></div>
-              <div className="feature-copy">
-                <h3>Fast by default</h3>
-                <p>No uploads or queues. Paste input, inspect output, and move on.</p>
-              </div>
-            </article>
-            <article className="feature-item">
-              <div className="feature-icon-wrapper"><SmileIcon size={28} color="#c0c0c0" /></div>
-              <div className="feature-copy">
-                <h3>Low-friction UX</h3>
-                <p>Simple inputs, readable outputs, and focused flows without accounts or tracking.</p>
-              </div>
-            </article>
-          </div>
-        </section>
-    </>,
-    { showMap: true }
+      <div className="privacy-badge">
+        All processing happens in your browser · No data is sent to any server
+      </div>
+    </section>
   )
 }
