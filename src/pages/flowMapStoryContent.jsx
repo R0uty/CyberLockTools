@@ -36,8 +36,8 @@ export function renderDecodeStoryContent({
     return (
       <>
         <span className="flow-map-story-step">Step 2</span>
-        <h2>Encoded?</h2>
-        <p>You found a suspicious string: <strong>uryyb</strong> — this might be encoded data.</p>
+        <h2>Possible Encoding</h2>
+        <p>You found a suspicious string: <strong>uryyb</strong>. It may be encoded rather than plain text.</p>
         <div className="flow-map-actions">
           <button type="button" className="flow-map-button" onClick={handleContinueToDecode}>
             Try decoding
@@ -55,7 +55,7 @@ export function renderDecodeStoryContent({
       <>
         <span className="flow-map-story-step">Step 3</span>
         <h2>Decode</h2>
-        <p>Use a simple decoder first. Try ROT, Base64, or URL decode and see if the suspicious string becomes readable.</p>
+        <p>Start with simple decoding checks. Try ROT, Base64, or the URL Encoder/Decoder tool and see whether the string becomes readable.</p>
         <div className="flow-map-actions flow-map-actions--stacked">
           {DECODE_TOOLS.map((toolName) => (
             <button
@@ -80,8 +80,8 @@ export function renderDecodeStoryContent({
         <h2>Result</h2>
         <p>
           {selectedTool
-            ? `After trying ${selectedTool}, choose the result that matches what you saw.`
-            : 'Choose the result that best matches what you got back from the decoder.'}
+            ? `After trying ${selectedTool}, choose the result that best matches what you observed.`
+            : 'Choose the result that best matches what you observed from the decoder.'}
         </p>
         <div className="flow-map-actions flow-map-actions--stacked">
           <button type="button" className="flow-map-button" onClick={() => handleDecodeResultChoice('readable')}>
@@ -103,7 +103,7 @@ export function renderDecodeStoryContent({
     <>
       <span className="flow-map-story-step">Step 5</span>
       <h2>Success</h2>
-      <p>You decoded the string (<strong>hello</strong>) and now have a useful value. Next step: test it in input fields or validation points.</p>
+      <p>You decoded the string (<strong>hello</strong>) and now have a useful value. Next, check where that value appears in the page flow, input handling, or validation logic.</p>
       <div className="flow-map-actions">
         <button type="button" className="flow-map-button" onClick={resetFlowState}>
           Restart
@@ -130,7 +130,7 @@ export function renderLoginStoryContent({
       <>
         <span className="flow-map-story-step">Step 2</span>
         <h2>Login Page</h2>
-        <p>You found a login form on a web page. Start simple and choose how you want to probe the behavior first.</p>
+        <p>You found a login form on a web page. Start with simple checks and choose how you want to compare the behavior first.</p>
         <div className="flow-map-actions flow-map-actions--stacked">
           <button type="button" className="flow-map-button" onClick={() => handleLoginActionSelect('common-creds')}>
             Try common/default credentials
@@ -145,8 +145,8 @@ export function renderLoginStoryContent({
 
   if (currentStage === 'test-login') {
     const description = selectedAction === 'input-behavior'
-      ? 'Try basic usernames and passwords, then use slight variations and watch for changes in messaging, timing, or validation behavior.'
-      : 'Start with simple combinations like admin/admin or admin/password, then try slight variations such as admin/admin123 or blank values.'
+      ? 'Try basic usernames and passwords, then make small changes and watch for differences in messages, timing, or validation behavior.'
+      : 'Start with simple combinations like admin/admin or admin/password, then try small variations such as admin/admin123 or blank values.'
 
     return (
       <>
@@ -191,7 +191,7 @@ export function renderLoginStoryContent({
       <>
         <span className="flow-map-story-step">Step 5</span>
         <h2>Analyze Error</h2>
-        <p>Look for differences like wrong username versus wrong password responses. Even small wording or timing changes can reveal useful behavior in the login logic.</p>
+        <p>Look for differences such as wrong username versus wrong password responses. Even small wording or timing changes can reveal useful clues about the login logic.</p>
         <div className="flow-map-actions">
           <button type="button" className="flow-map-button" onClick={handleLoginNextStep}>
             Continue to Next Step
@@ -202,10 +202,10 @@ export function renderLoginStoryContent({
   }
 
   const nextStepCopy = selectedOutcome === 'login-success'
-    ? 'A successful login with simple credentials points to a real weakness. Next, verify what access was gained and whether weak defaults can be repeated elsewhere.'
+    ? 'A successful login with simple credentials is a meaningful signal. Next, confirm what access was granted and whether the same weakness appears elsewhere in the authorized test scope.'
     : selectedOutcome === 'error-message'
-      ? 'Different login errors can reveal weakness in how authentication is checked. The next step is to test basic injection or bypass ideas and compare responses carefully.'
-      : 'Even without visible changes, login behavior should still be tested further. Small bypass attempts or basic injection checks may expose weaknesses hidden behind generic responses.'
+      ? 'Different login errors can reveal how authentication decisions are made. Next, compare responses carefully and use that signal to choose the most relevant follow-up flow.'
+      : 'Even without visible changes, the login flow may still reveal useful patterns. Keep comparing behavior carefully and move into a more specific follow-up flow if new signals appear.'
 
   return (
     <>
@@ -258,7 +258,7 @@ export function renderDiscoveryStoryContent({
       <>
         <span className="flow-map-story-step">Step 2</span>
         <h2>Web Page Found</h2>
-        <p>You discovered a website or endpoint but nothing obvious is visible. Start by checking host and service exposure with <strong>Nmap</strong>, then move into hidden content discovery.</p>
+        <p>You discovered a website or endpoint, but nothing obvious is visible. Start by confirming what is exposed, then move into hidden content discovery within the authorized scope.</p>
         <div className="flow-map-actions">
           <button type="button" className="flow-map-button" onClick={handleDiscoveryActionSelect}>
             Look for hidden content
@@ -276,7 +276,7 @@ export function renderDiscoveryStoryContent({
       <>
         <span className="flow-map-story-step">Step 3</span>
         <h2>Discovery</h2>
-        <p>Check common paths, hidden files, backup names, and likely directories. Tools like <strong>ffuf</strong> or <strong>dirb</strong> make this faster by applying wordlists against likely routes and filenames.</p>
+        <p>Check common paths, hidden files, backup names, and likely directories. Tools such as <strong>ffuf</strong> or <strong>dirb</strong> can help you compare likely routes and filenames more efficiently.</p>
         <div className="flow-map-actions">
           <button type="button" className="flow-map-button" onClick={handleDiscoveryEnumerate}>
             Continue to Enumerate
@@ -291,7 +291,7 @@ export function renderDiscoveryStoryContent({
       <>
         <span className="flow-map-story-step">Step 4</span>
         <h2>Enumerate</h2>
-        <p>Run directory or file discovery with <strong>ffuf</strong> or <strong>dirb</strong>, and use <strong>curl</strong> to confirm status codes, redirects, headers, and response differences for interesting hits.</p>
+        <p>Use directory or file discovery results to compare status codes, redirects, headers, and response differences for interesting hits.</p>
         <div className="flow-map-actions">
           <button type="button" className="flow-map-button" onClick={() => goToStage('result')}>
             Continue to Result
@@ -312,7 +312,7 @@ export function renderDiscoveryStoryContent({
             Found new endpoint
           </button>
           <button type="button" className="flow-map-button flow-map-button--ghost" onClick={() => handleDiscoveryResultChoice('got-403')}>
-            Got forbidden / 403
+            Found a restricted page
           </button>
           <button type="button" className="flow-map-button flow-map-button--ghost" onClick={() => handleDiscoveryResultChoice('nothing-found')}>
             Nothing found
@@ -327,7 +327,7 @@ export function renderDiscoveryStoryContent({
       <>
         <span className="flow-map-story-step">Step 6</span>
         <h2>Investigate</h2>
-        <p>Open the new endpoint, inspect the content, and look for clues such as parameters, downloadable files, references to hidden areas, or flag-like values.</p>
+        <p>Open the new endpoint, inspect the content, and look for clues such as parameters, downloadable files, references to hidden areas, or other reusable signals.</p>
         <div className="flow-map-actions">
           <button type="button" className="flow-map-button" onClick={handleDiscoveryNextStep}>
             Continue to Next Step
@@ -338,10 +338,10 @@ export function renderDiscoveryStoryContent({
   }
 
   const nextStepCopy = selectedOutcome === 'found-endpoint'
-    ? 'Keep exploring the content you discovered, then apply other flows if the new page suggests login testing, decoding, or deeper analysis.'
+    ? 'Keep exploring the content you discovered, then move into other flows if the new page suggests login testing, decoding, or deeper analysis.'
     : selectedOutcome === 'got-403'
-      ? 'A forbidden response still reveals useful structure. Continue exploration around that area and apply other flows if the endpoint suggests authentication or hidden content.'
-      : 'If nothing useful appeared yet, expand the discovery approach and keep exploring nearby paths. Switch to other flows when new clues appear.'
+      ? 'A restricted response still reveals useful structure. Keep comparing nearby paths and move into other flows if the endpoint suggests authentication or access control checks.'
+      : 'If nothing useful appeared yet, broaden the discovery approach and keep exploring nearby paths. Move into other flows when new clues appear.'
 
   return (
     <>
@@ -353,7 +353,7 @@ export function renderDiscoveryStoryContent({
         {selectedOutcome === 'found-endpoint' ? (
           <>
             <button type="button" className="flow-map-button" onClick={() => handleFollowUpFlow('login')}>
-              Continue to Login Entry
+              Continue to Login Testing
             </button>
             <button type="button" className="flow-map-button flow-map-button--ghost" onClick={() => handleFollowUpFlow('api')}>
               Continue to API Testing
@@ -413,10 +413,10 @@ export function renderEnumerationStoryContent({
 
   if (currentStage === 'identify-service') {
     const description = selectedAction === 'smb'
-      ? 'Confirm SMB versions, shares, and account exposure with Nmap scripts, enum4linux-ng, and smbclient.'
+      ? 'Confirm SMB versions, shares, and account exposure with service-aware checks such as Nmap scripts, enum4linux-ng, or smbclient.'
       : selectedAction === 'directory'
         ? 'Confirm bind options, naming context, and exposed users or groups with ldapsearch and basic service fingerprinting.'
-        : 'Confirm ports, banners, and protocol details with Nmap plus service-aware checks like snmpwalk when they fit the target.'
+        : 'Confirm ports, banners, and protocol details with Nmap and other service-aware checks when they fit the target.'
 
     return (
       <>
@@ -440,7 +440,7 @@ export function renderEnumerationStoryContent({
       <>
         <span className="flow-map-story-step">Step 4</span>
         <h2>Enumerate Service</h2>
-        <p>Pull concrete data now: usernames, shares, naming contexts, community strings, version details, or readable files that can become your next foothold.</p>
+        <p>Gather concrete data now: usernames, shares, naming contexts, community strings, version details, or readable files that can inform the next step.</p>
         <div className="flow-map-actions">
           <button type="button" className="flow-map-button" onClick={() => goToStage('result')}>
             Continue to Result
@@ -479,7 +479,7 @@ export function renderEnumerationStoryContent({
       <>
         <span className="flow-map-story-step">Step 6</span>
         <h2>Inspect Findings</h2>
-        <p>Validate what you found and decide how it can be reused. Usernames can feed login testing, shares can expose credentials or code, and config details can reveal the right vulnerability path.</p>
+        <p>Validate what you found and decide how it can be reused. Usernames can inform login testing, shares can expose useful data, and config details can help identify the right follow-up path.</p>
         <div className="flow-map-actions">
           <button type="button" className="flow-map-button" onClick={handleEnumerationNextStep}>
             Continue to Next Step
@@ -490,8 +490,8 @@ export function renderEnumerationStoryContent({
   }
 
   const nextStepCopy = selectedOutcome === 'nothing-useful'
-    ? 'Try another enumeration angle, widen the script set, or pivot back into recon until a better service or host stands out.'
-    : 'Take the best artifact you found and pivot into the matching flow, such as an entry point, testing, or vulnerability path.'
+    ? 'Try another enumeration angle, widen the checks, or pivot back into recon until a stronger lead stands out.'
+    : 'Take the strongest artifact you found and move into the matching follow-up flow, such as login testing, authorization checks, or deeper analysis.'
 
   return (
     <>
@@ -503,7 +503,7 @@ export function renderEnumerationStoryContent({
         {selectedOutcome !== 'nothing-useful' ? (
           <>
             <button type="button" className="flow-map-button" onClick={() => handleFollowUpFlow('login')}>
-              Continue to Login Entry
+              Continue to Login Testing
             </button>
             <button type="button" className="flow-map-button flow-map-button--ghost" onClick={() => handleFollowUpFlow('authz')}>
               Continue to Authorization Testing
@@ -588,7 +588,7 @@ export function renderInputStoryContent({
       <>
         <span className="flow-map-story-step">Step 5</span>
         <h2>Analyze Behavior</h2>
-        <p>A visible page change or error can indicate improper input handling. Compare responses carefully and consider trying structured inputs or encoded variations to learn how the field is processed.</p>
+        <p>A visible page change or error can indicate weak input handling. Compare responses carefully and consider trying structured or encoded variations to better understand how the field is processed.</p>
         <div className="flow-map-actions">
           <button type="button" className="flow-map-button" onClick={handleInputNextStep}>
             Continue to Next Step
@@ -599,8 +599,8 @@ export function renderInputStoryContent({
   }
 
   const nextStepCopy = selectedOutcome === 'no-difference'
-    ? 'Even when nothing obvious changes, keep testing for common filtering issues or move into a more specific flow if later responses reveal more clues.'
-    : 'Use what you observed to test for common vulnerabilities like injection or filtering issues, or switch into a more specific flow that matches the response behavior.'
+    ? 'Even when nothing obvious changes, keep comparing how the application handles different inputs and move into a more specific flow if stronger signals appear.'
+    : 'Use what you observed to guide the next step, especially if the response suggests validation issues, filtering differences, or unsafe input handling.'
 
   return (
     <>
@@ -660,8 +660,8 @@ export function renderApiStoryContent({
 
   if (currentStage === 'inspect-spec') {
     const description = selectedAction === 'openapi-spec'
-      ? 'Review schema fields, required auth headers, and response models. Look for endpoints exposing debug, admin, or internal actions.'
-      : 'Capture a valid request/response pair first so you can compare auth and payload changes without extra noise.'
+      ? 'Review schema fields, required auth headers, and response models. Look for endpoints that expose debug, admin, or internal behavior.'
+      : 'Capture a valid request and response pair first so you can compare auth and payload changes without extra noise.'
 
     return (
       <>
@@ -685,7 +685,7 @@ export function renderApiStoryContent({
       <>
         <span className="flow-map-story-step">Step 4</span>
         <h2>Test Auth</h2>
-        <p>Try missing token, expired token, role-swapped token, and method changes. Keep one variable per request so you can attribute behavior precisely.</p>
+        <p>Compare missing tokens, expired tokens, role changes, and method changes. Keep one variable per request so you can attribute behavior clearly.</p>
         <div className="flow-map-actions">
           <button type="button" className="flow-map-button" onClick={() => goToStage('response-review')}>
             Continue to Response Review
@@ -700,7 +700,7 @@ export function renderApiStoryContent({
       <>
         <span className="flow-map-story-step">Step 5</span>
         <h2>Response Review</h2>
-        <p>Choose the strongest signal from your auth and request variation checks.</p>
+        <p>Choose the strongest signal from your authentication and request-variation checks.</p>
         <div className="flow-map-actions flow-map-actions--stacked">
           <button type="button" className="flow-map-button" onClick={() => handleApiResultChoice('auth-bypass-signals')}>
             Auth bypass signals
@@ -732,8 +732,8 @@ export function renderApiStoryContent({
   }
 
   const nextStepCopy = selectedOutcome === 'stable-response'
-    ? 'If behavior looked stable, expand coverage to related endpoints, methods, and object IDs before marking the path low-risk.'
-    : 'Preserve request/response evidence, then pivot into vulnerability validation with minimal reproducible API calls.'
+    ? 'If behavior looked stable, expand coverage to related endpoints, methods, and object IDs before treating the path as lower risk.'
+    : 'Preserve the request and response evidence, then move into the most relevant follow-up flow for validation and impact assessment.'
 
   return (
     <>
@@ -907,7 +907,7 @@ export function renderRequestStoryContent({
       <>
         <span className="flow-map-story-step">Step 3</span>
         <h2>Tamper Request</h2>
-        <p>Change one part of the request at a time. Try adjusting parameters, headers, IDs, or values such as <strong>id=1</strong> to <strong>id=2</strong>, or remove and alter fields to compare the server response.</p>
+        <p>Change one part of the request at a time. Compare adjustments to parameters, headers, IDs, or values such as <strong>id=1</strong> to <strong>id=2</strong>, and watch how the server responds.</p>
         <div className="flow-map-actions">
           <button type="button" className="flow-map-button" onClick={handleRequestContinue}>
             Continue to Response Check
@@ -921,7 +921,7 @@ export function renderRequestStoryContent({
     return (
       <>
         <span className="flow-map-story-step">Step 4</span>
-        <h2>Response Changed?</h2>
+        <h2>Response Difference</h2>
         <p>Select the outcome that best matches what happened after you modified the request.</p>
         <div className="flow-map-actions flow-map-actions--stacked">
           <button type="button" className="flow-map-button" onClick={() => handleRequestResultChoice('different-data-returned')}>
@@ -943,7 +943,7 @@ export function renderRequestStoryContent({
       <>
         <span className="flow-map-story-step">Step 5</span>
         <h2>Analyze Impact</h2>
-        <p>A changed response or error can indicate weak validation, missing access control, or trust in client-controlled values. Keep testing careful variations to learn what the server is really checking.</p>
+        <p>A changed response or error can indicate weak validation, missing access control, or trust in client-controlled values. Keep comparing careful variations to understand what the server is actually checking.</p>
         <div className="flow-map-actions">
           <button type="button" className="flow-map-button" onClick={handleRequestNextStep}>
             Continue to Next Step
@@ -954,8 +954,8 @@ export function renderRequestStoryContent({
   }
 
   const nextStepCopy = selectedOutcome === 'no-change'
-    ? 'Keep manipulating the request and compare one change at a time. If later responses shift, move into deeper testing with input or enumeration flows.'
-    : 'Continue manipulating requests and combine what you learned with other flows like input testing or enumeration to deepen the finding.'
+    ? 'Keep comparing one change at a time. If later responses begin to differ, move into a more specific follow-up flow.'
+    : 'Use the response differences you observed to guide the next step, especially where access control, validation, or data exposure may be involved.'
 
   return (
     <>
@@ -1000,7 +1000,7 @@ export function renderAuthzStoryContent({
       <>
         <span className="flow-map-story-step">Step 2</span>
         <h2>Privileged Action Found</h2>
-        <p>You found an action that should be restricted. Start by choosing what privilege boundary you want to validate first.</p>
+        <p>You found an action that should be restricted. Start by choosing which privilege boundary you want to validate first.</p>
         <div className="flow-map-actions flow-map-actions--stacked">
           <button type="button" className="flow-map-button" onClick={() => handleAuthzActionSelect('role-boundary')}>
             Test role boundary
@@ -1015,8 +1015,8 @@ export function renderAuthzStoryContent({
 
   if (currentStage === 'baseline-request') {
     const description = selectedAction === 'ownership-boundary'
-      ? 'Capture a valid request for your own object first, then prepare the same request against another object ID.'
-      : 'Capture one allowed request from a privileged account and one denied request from a lower role if possible.'
+      ? 'Capture a valid request for your own object first, then compare the same request against another object ID.'
+      : 'Capture one allowed request from a privileged account and one denied request from a lower-privileged account if possible.'
 
     return (
       <>
@@ -1040,7 +1040,7 @@ export function renderAuthzStoryContent({
       <>
         <span className="flow-map-story-step">Step 4</span>
         <h2>Role Switch Test</h2>
-        <p>Replay the baseline request with lower-privileged tokens, altered object IDs, or removed role hints while keeping request structure constant.</p>
+        <p>Compare the baseline request against lower-privileged tokens, different object IDs, or reduced role context while keeping the request structure consistent.</p>
         <div className="flow-map-actions">
           <button type="button" className="flow-map-button" onClick={() => goToStage('access-result')}>
             Continue to Access Result
@@ -1055,7 +1055,7 @@ export function renderAuthzStoryContent({
       <>
         <span className="flow-map-story-step">Step 5</span>
         <h2>Access Result</h2>
-        <p>Select what happened after role and ownership changes.</p>
+        <p>Select what happened after role or ownership changes.</p>
         <div className="flow-map-actions flow-map-actions--stacked">
           <button type="button" className="flow-map-button" onClick={() => handleAuthzResultChoice('unauthorized-access')}>
             Unauthorized access granted
@@ -1076,7 +1076,7 @@ export function renderAuthzStoryContent({
       <>
         <span className="flow-map-story-step">Step 6</span>
         <h2>Confirm Impact</h2>
-        <p>Verify exactly what unauthorized read or write scope is exposed, then capture minimal evidence that proves impact without broad data access.</p>
+        <p>Verify exactly what unauthorized read or write scope is exposed, then capture minimal evidence that shows impact without broad data access.</p>
         <div className="flow-map-actions">
           <button type="button" className="flow-map-button" onClick={handleAuthzNextStep}>
             Continue to Next Step
@@ -1087,8 +1087,8 @@ export function renderAuthzStoryContent({
   }
 
   const nextStepCopy = selectedOutcome === 'blocked-correctly'
-    ? 'Authorization controls look correct for this path, but keep sampling nearby endpoints and object types before closing.'
-    : 'Document the privilege context, request difference, and affected scope, then move to remediation guidance for server-side authorization enforcement.'
+    ? 'Authorization controls look correct for this path, but keep sampling nearby endpoints and object types before closing it out.'
+    : 'Document the privilege context, request difference, and affected scope, then move into remediation-focused follow-up and controlled impact validation.'
 
   return (
     <>
@@ -1127,7 +1127,7 @@ export function renderExploitationStoryContent({
       <>
         <span className="flow-map-story-step">Step 2</span>
         <h2>Confirmed Finding</h2>
-        <p>You already have a validated issue in an authorized target. Start by deciding how to prove impact with the least-disruptive action that still demonstrates the problem clearly.</p>
+        <p>You already have a validated issue in an authorized target. Start by deciding how to demonstrate impact with the least disruptive action that still makes the finding clear.</p>
         <div className="flow-map-actions flow-map-actions--stacked">
           <button type="button" className="flow-map-button" onClick={() => handleExploitationActionSelect('read-only-proof')}>
             Use a read-only proof
@@ -1143,7 +1143,7 @@ export function renderExploitationStoryContent({
   if (currentStage === 'prepare-validation') {
     const description = selectedAction === 'bounded-change'
       ? 'Define the smallest allowed state change, how you will verify it, and how you will restore the target immediately after the proof.'
-      : 'Use a minimal request or interaction that reveals the issue without changing data when possible, and capture exactly what success will look like.'
+      : 'Use the smallest request or interaction that demonstrates the issue without changing data when possible, and define exactly what success should look like.'
 
     return (
       <>
@@ -1167,7 +1167,7 @@ export function renderExploitationStoryContent({
       <>
         <span className="flow-map-story-step">Step 4</span>
         <h2>Execute Safely</h2>
-        <p>Run the proof once in a controlled way, watch the exact response, and avoid broad or repeated actions that go beyond the approved validation plan.</p>
+        <p>Carry out the approved validation step once, observe the exact response, and avoid repeated or broader actions beyond the agreed test plan.</p>
         <div className="flow-map-actions">
           <button type="button" className="flow-map-button" onClick={() => goToStage('impact-observed')}>
             Continue to Result
@@ -1182,7 +1182,7 @@ export function renderExploitationStoryContent({
       <>
         <span className="flow-map-story-step">Step 5</span>
         <h2>Impact Observed</h2>
-        <p>Choose the outcome that best matches the controlled proof so the flow can guide the right wrap-up.</p>
+        <p>Choose the outcome that best matches the controlled validation so the flow can guide the right wrap-up.</p>
         <div className="flow-map-actions flow-map-actions--stacked">
           <button type="button" className="flow-map-button" onClick={() => handleExploitationResultChoice('confirmed-impact')}>
             Clear impact confirmed
@@ -1214,8 +1214,8 @@ export function renderExploitationStoryContent({
   }
 
   const nextStepCopy = selectedOutcome === 'no-safe-proof'
-    ? 'Refine the validation plan, tighten scope, and return only when you can demonstrate impact safely and clearly.'
-    : 'Package the proof with remediation notes, scope, and evidence so the finding can move cleanly into triage and fixing.'
+    ? 'Refine the validation plan, tighten the scope, and return only when you can demonstrate the issue clearly and safely.'
+    : 'Package the evidence, scope, impact, and remediation notes so the finding can move cleanly into review and fixing.'
 
   return (
     <>
@@ -1267,10 +1267,10 @@ export function renderInfoDisclosureStoryContent({
 
   if (currentStage === 'inspect-source') {
     const description = selectedAction === 'page-source'
-      ? 'Look for HTML comments, hardcoded API keys, internal URLs, developer TODO notes, and JS files that reveal endpoint paths or tokens.'
+      ? 'Look for HTML comments, hardcoded API keys, internal URLs, developer notes, and JS files that reveal endpoint paths or tokens.'
       : selectedAction === 'error-response'
-        ? 'Force errors with malformed input, invalid paths, or missing parameters. Watch for stack traces, framework versions, file paths, and database details.'
-        : 'Check for .git/HEAD, .env, .DS_Store, backup files (.bak, .old, ~), and common debug endpoints like /debug, /actuator, or /elmah.'
+        ? 'Trigger error conditions with malformed input, invalid paths, or missing parameters. Watch for stack traces, framework versions, file paths, and database details.'
+        : 'Check for exposed config and support files such as .git/HEAD, .env, .DS_Store, backups (.bak, .old, ~), and common debug endpoints.'
 
     return (
       <>
@@ -1315,7 +1315,7 @@ export function renderInfoDisclosureStoryContent({
       <>
         <span className="flow-map-story-step">Step 5</span>
         <h2>Assess Exposure</h2>
-        <p>Evaluate the scope: can leaked credentials be used elsewhere? Do internal paths reveal hidden endpoints? Document exactly what is exposed and how it extends the attack surface.</p>
+        <p>Evaluate the scope: can leaked credentials be reused elsewhere? Do internal paths reveal hidden endpoints? Document exactly what is exposed and how it expands the attack surface.</p>
         <div className="flow-map-actions">
           <button type="button" className="flow-map-button" onClick={handleInfoDisclosureNextStep}>
             Continue to Next Step
@@ -1326,10 +1326,10 @@ export function renderInfoDisclosureStoryContent({
   }
 
   const nextStepCopy = selectedOutcome === 'found-secrets'
-    ? 'Leaked credentials or keys should be tested immediately. Use the Login flow for credential pairs, or the API Testing flow for API keys and tokens.'
+    ? 'Leaked credentials or keys should be assessed carefully. Use the Login flow for credential pairs or the API Testing flow for API keys and tokens.'
     : selectedOutcome === 'found-source'
-      ? 'Internal paths and source code can reveal hidden endpoints, logic flaws, and parameter names. Feed them into Discovery or Input Testing flows.'
-      : 'No clear leak yet. Broaden the search to alternate error conditions, backup files, and different response formats before closing.'
+      ? 'Internal paths and source code can reveal hidden endpoints, logic clues, and parameter names. Feed those signals into Discovery or Input Testing flows.'
+      : 'No clear leak appeared yet. Broaden the search to alternate error conditions, backup files, and other response formats before closing.'
 
   return (
     <>
@@ -1341,7 +1341,7 @@ export function renderInfoDisclosureStoryContent({
         {selectedOutcome === 'found-secrets' ? (
           <>
             <button type="button" className="flow-map-button" onClick={() => handleFollowUpFlow('login')}>
-              Continue to Login Entry
+              Continue to Login Testing
             </button>
             <button type="button" className="flow-map-button flow-map-button--ghost" onClick={() => handleFollowUpFlow('api')}>
               Continue to API Testing
@@ -1400,10 +1400,10 @@ export function renderSessionStoryContent({
 
   if (currentStage === 'inspect-session') {
     const description = selectedAction === 'cookie-flags'
-      ? 'Check Secure, HttpOnly, SameSite attributes, cookie domain and path scope, and whether the session ID has enough entropy.'
+      ? 'Check Secure, HttpOnly, and SameSite attributes, along with cookie domain, path scope, and whether the session ID appears strong enough.'
       : selectedAction === 'session-lifecycle'
-        ? 'Test whether session IDs rotate after login, whether old tokens remain valid after logout, and how the server handles expired sessions.'
-        : 'Identify state-changing endpoints and check whether they enforce anti-CSRF tokens. Try removing or modifying the token to see if the action still succeeds.'
+        ? 'Check whether session IDs rotate after login, whether old tokens remain valid after logout, and how expired sessions are handled.'
+        : 'Identify state-changing endpoints and check whether anti-CSRF protections are enforced. Compare behavior when the token is missing or changed.'
 
     return (
       <>
@@ -1427,7 +1427,7 @@ export function renderSessionStoryContent({
       <>
         <span className="flow-map-story-step">Step 4</span>
         <h2>Test Session</h2>
-        <p>Run the test and compare before/after behavior. Change one thing at a time: swap tokens between users, replay expired tokens, or remove CSRF fields entirely.</p>
+        <p>Run the check and compare before and after behavior. Change one variable at a time, such as swapping tokens between users, replaying expired tokens, or removing CSRF fields.</p>
         <div className="flow-map-actions">
           <button type="button" className="flow-map-button" onClick={() => handleSessionResultChoice('fixation-possible')}>
             Session fixation possible
@@ -1448,11 +1448,11 @@ export function renderSessionStoryContent({
 
   if (currentStage === 'session-result') {
     const resultCopy = selectedOutcome === 'fixation-possible'
-      ? 'Session fixation means an attacker can set a known session ID before login. This is a real finding if the token is not rotated on authentication.'
+      ? 'Session fixation means a known session ID may be usable before login. This is a meaningful finding if the token is not rotated during authentication.'
       : selectedOutcome === 'missing-flags'
-        ? 'Missing Secure, HttpOnly, or SameSite flags increase the risk of session theft through XSS or insecure transport.'
+        ? 'Missing Secure, HttpOnly, or SameSite flags increase the risk of session theft or misuse.'
         : selectedOutcome === 'csrf-missing'
-          ? 'State-changing actions without CSRF protection can be exploited via cross-site requests from attacker-controlled pages.'
+          ? 'State-changing actions without CSRF protection may be vulnerable to cross-site request submission.'
           : 'Session handling looks correct for this endpoint. Keep checking other actions and edge cases.'
 
     return (
@@ -1471,8 +1471,8 @@ export function renderSessionStoryContent({
   }
 
   const nextStepCopy = selectedOutcome === 'session-secure'
-    ? 'Session controls look solid here. Keep sampling other endpoints and check whether token behavior changes under different privilege levels.'
-    : 'Document the session weakness and consider moving into Authorization Testing to check if the issue compounds with privilege boundary problems.'
+    ? 'Session controls look solid here. Keep sampling other endpoints and check whether token behavior changes across privilege levels.'
+    : 'Document the session weakness and consider moving into Authorization Testing to see whether it compounds with privilege boundary issues.'
 
   return (
     <>
@@ -1516,7 +1516,7 @@ export function renderUploadStoryContent({
       <>
         <span className="flow-map-story-step">Step 2</span>
         <h2>Upload Found</h2>
-        <p>You found a file upload endpoint. Choose the first testing angle based on what the upload appears to accept.</p>
+        <p>You found a file upload endpoint. Choose the first angle based on what the upload appears to accept.</p>
         <div className="flow-map-actions flow-map-actions--stacked">
           <button type="button" className="flow-map-button" onClick={() => handleUploadActionSelect('extension-bypass')}>
             Test extension filtering
@@ -1534,10 +1534,10 @@ export function renderUploadStoryContent({
 
   if (currentStage === 'test-upload') {
     const description = selectedAction === 'extension-bypass'
-      ? 'Try double extensions (.php.jpg), null bytes (file.php%00.jpg), case variations (.PhP), and uncommon executable extensions (.phtml, .shtml).'
+      ? 'Compare how the upload handles double extensions, null-byte variants, case changes, and uncommon executable extensions.'
       : selectedAction === 'mime-confusion'
-        ? 'Upload a file with a safe extension but change the Content-Type header to something executable, or vice versa. Compare how the server stores and serves it.'
-        : 'Upload files with valid image headers but embedded code (polyglot files), or files that start with valid magic bytes but contain payloads after the header.'
+        ? 'Compare how the server handles differences between the file extension and the declared Content-Type header.'
+        : 'Compare how the upload handles valid file headers, mixed-content files, or files whose content does not fully match their apparent type.'
 
     return (
       <>
@@ -1582,7 +1582,7 @@ export function renderUploadStoryContent({
       <>
         <span className="flow-map-story-step">Step 5</span>
         <h2>Analyze Upload</h2>
-        <p>Determine the full scope: where is the file stored, can it be accessed directly, does the server parse or render it, and what content types are served back to the browser?</p>
+        <p>Determine the full scope: where the file is stored, whether it can be accessed directly, whether the server parses or renders it, and what content types are served back to the browser.</p>
         <div className="flow-map-actions">
           <button type="button" className="flow-map-button" onClick={handleUploadNextStep}>
             Continue to Next Step
@@ -1593,10 +1593,10 @@ export function renderUploadStoryContent({
   }
 
   const nextStepCopy = selectedOutcome === 'file-executed'
-    ? 'Server-side execution through upload is a critical finding. Move directly to controlled exploitation to prove impact safely and document the chain.'
+    ? 'Server-side execution through upload is a serious finding. Move into controlled validation so you can demonstrate impact safely and document the full chain.'
     : selectedOutcome === 'filter-bypassed'
-      ? 'A bypassed filter is still a finding even without execution. Document the bypass method and check if the stored file can be weaponized through other means.'
-      : 'Upload was blocked. Try alternate bypass techniques, different file types, or check whether the filtering changes based on request context or user role.'
+      ? 'A bypassed filter is still a meaningful finding even without execution. Document the bypass method and assess whether the stored file creates additional risk.'
+      : 'If the upload was blocked, compare alternate file types, validation paths, and request context to see whether the filtering changes under different conditions.'
 
   return (
     <>
