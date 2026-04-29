@@ -1,6 +1,6 @@
 import { useState } from 'react'
+import { copyText } from '../utils/clipboard'
 import { useSEO } from '../hooks/useSEO'
-import { showFeedback } from '../utils/feedback'
 
 // ROT47 rotates all printable ASCII characters (33–126) by 47 positions.
 // It is its own inverse, so encode and decode are the same operation.
@@ -48,8 +48,7 @@ export default function ROT() {
     : rotCaesar(input, shift, mode === 'encode')
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(output)
-    showFeedback('Copied to clipboard!')
+    copyText(output)
   }
 
   return (

@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { copyText } from '../utils/clipboard'
 import { useSEO } from '../hooks/useSEO'
 import {
   getAllCategories,
@@ -28,7 +29,7 @@ export default function PathTraversalGenerator() {
   )
 
   const handleCopy = (text, index) => {
-    navigator.clipboard.writeText(text)
+    copyText(text)
     setCopiedIndex(index)
     setTimeout(() => setCopiedIndex(null), 2000)
   }

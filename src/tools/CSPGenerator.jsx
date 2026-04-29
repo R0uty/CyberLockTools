@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react'
+import { copyText } from '../utils/clipboard'
 import { useSEO } from '../hooks/useSEO'
 import {
   analyzeCspPolicy,
@@ -86,7 +87,7 @@ export default function CSPGenerator() {
   const handleCopy = async (value, target) => {
     if (!value.trim()) return
 
-    await navigator.clipboard.writeText(value)
+    await copyText(value)
     setCopiedTarget(target)
     setTimeout(() => setCopiedTarget(''), 2000)
   }

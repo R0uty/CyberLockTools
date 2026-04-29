@@ -310,6 +310,10 @@ section:not(.tool-map-section):hover {
   .home-actions {
     grid-template-columns: 1fr;
   }
+
+  .tool-context-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 h3 {
@@ -912,6 +916,97 @@ p {
   display: flex;
   flex-direction: column;
   gap: 2rem;
+}
+
+.tool-context-panel {
+  margin-top: 1.1rem;
+  padding: 1rem 1.1rem;
+  border-radius: 14px;
+  border: 1px solid rgba(192, 192, 192, 0.12);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.tool-context-header {
+  margin-bottom: 0.7rem;
+}
+
+.tool-context-header h3 {
+  margin: 0 0 0.25rem;
+  font-size: 0.95rem;
+  color: #f0f0f0;
+}
+
+.tool-context-header p {
+  margin: 0;
+  font-size: 0.82rem;
+  color: #9f9f9f;
+}
+
+.tool-context-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.7rem;
+}
+
+.tool-context-section {
+  padding: 0.75rem;
+  border-radius: 10px;
+  border: 1px solid rgba(192, 192, 192, 0.1);
+  background: rgba(255, 255, 255, 0.015);
+}
+
+.tool-context-section h4 {
+  margin: 0 0 0.5rem;
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #a5a5a5;
+}
+
+.tool-context-chip-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.tool-context-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.42rem 0.62rem;
+  border-radius: 999px;
+  border: 1px solid rgba(87, 199, 255, 0.3);
+  background: rgba(87, 199, 255, 0.1);
+  color: #bfe8ff;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.75rem;
+  font-weight: 600;
+  transition: transform 0.15s ease, border-color 0.2s ease;
+}
+
+.tool-context-chip:hover {
+  transform: translateY(-1px);
+  border-color: rgba(87, 199, 255, 0.5);
+}
+
+.tool-context-chip--flow {
+  border-radius: 10px;
+  background: rgba(77, 217, 192, 0.12);
+  border-color: rgba(77, 217, 192, 0.34);
+  color: #d5fff5;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.tool-context-chip--flow strong {
+  font-size: 0.81rem;
+}
+
+.tool-context-empty {
+  margin: 0;
+  font-size: 0.8rem;
+  color: #8f8f8f;
 }
 
 .tool-row {

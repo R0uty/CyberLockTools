@@ -46,6 +46,65 @@
   line-height: 1.6;
 }
 
+.flow-map-quick-start {
+  margin: 0 0 1.2rem;
+  padding: 0.85rem;
+  border-radius: 12px;
+  border: 1px solid rgba(87, 199, 255, 0.2);
+  background: rgba(87, 199, 255, 0.06);
+}
+
+.flow-map-quick-start h2 {
+  margin: 0 0 0.25rem;
+  font-size: 0.95rem;
+  color: #e5f7ff;
+}
+
+.flow-map-quick-start p {
+  margin: 0;
+  color: #a8c2d1;
+  font-size: 0.82rem;
+}
+
+.flow-map-quick-grid {
+  margin-top: 0.7rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 0.5rem;
+}
+
+.flow-map-quick-button {
+  display: flex;
+  flex-direction: column;
+  gap: 0.28rem;
+  padding: 0.7rem 0.75rem;
+  border-radius: 10px;
+  border: 1px solid rgba(87, 199, 255, 0.26);
+  background: rgba(10, 26, 37, 0.6);
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  text-align: left;
+  transition: border-color 0.2s ease, transform 0.15s ease;
+}
+
+.flow-map-quick-button:hover {
+  border-color: rgba(87, 199, 255, 0.46);
+  transform: translateY(-1px);
+}
+
+.flow-map-quick-label {
+  color: #eff8ff;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.flow-map-quick-desc {
+  color: #a8c2d1;
+  font-size: 0.74rem;
+  line-height: 1.5;
+}
+
 .flow-map-groups {
   display: flex;
   flex-direction: column;
@@ -384,6 +443,56 @@
 
 .flow-map-story-panel {
   width: 100%;
+}
+
+.flow-map-outcome-export {
+  margin-top: 0.75rem;
+  padding: 0.95rem 1rem;
+  border-radius: 12px;
+  border: 1px solid rgba(192, 192, 192, 0.12);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.flow-map-outcome-export h3 {
+  margin: 0 0 0.3rem;
+  color: #f0f0f0;
+  font-size: 0.95rem;
+}
+
+.flow-map-outcome-export p {
+  margin: 0 0 0.6rem;
+  color: #9f9f9f;
+  font-size: 0.82rem;
+  line-height: 1.55;
+}
+
+.flow-map-outcome-label {
+  display: inline-block;
+  margin-bottom: 0.35rem;
+  color: #b3b3b3;
+  font-size: 0.74rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.flow-map-outcome-notes {
+  width: 100%;
+  min-height: 88px;
+  margin-bottom: 0.6rem;
+  padding: 0.65rem 0.75rem;
+  border-radius: 10px;
+  border: 1px solid rgba(192, 192, 192, 0.16);
+  background: rgba(8, 8, 8, 0.45);
+  color: #efefef;
+  font: inherit;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  resize: vertical;
+}
+
+.flow-map-outcome-notes:focus-visible {
+  outline: 2px solid rgba(87, 199, 255, 0.7);
+  outline-offset: 2px;
 }
 
 .flow-map-story {

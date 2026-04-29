@@ -241,7 +241,7 @@ export const TOOL_CATALOG = [
   }
 ]
 
-const TOOL_COMPONENT_KEYS = {
+export const TOOL_COMPONENT_KEYS = {
   ROT: 'ROT',
   Base64: 'Base64',
   'URL Encoder': 'URLEncoder',
@@ -286,5 +286,27 @@ const TOOL_COMPONENT_KEYS = {
 export function buildToolComponents(componentLibrary) {
   return Object.fromEntries(
     Object.entries(TOOL_COMPONENT_KEYS).map(([toolTitle, componentName]) => [toolTitle, componentLibrary[componentName]])
+  )
+}
+
+export function buildToolComponentsFromModules(moduleLoaders, toLazyComponent) {
+  const componentLoaders = Object.fromEntries(
+    Object.entries(moduleLoaders).map(([modulePath, moduleLoader]) => {
+      const filename = modulePath.split('/').pop() || ''
+      const componentName = filename.replace(/\.(jsx|js|tsx|ts)$/u, '')
+      return [componentName, moduleLoader]
+    })
+  )
+
+  return Object.fromEntries(
+    Object.entries(TOOL_COMPONENT_KEYS).map(([toolTitle, componentName]) => {
+      const moduleLoader = componentLoaders[componentName]
+
+      if (!moduleLoader) {
+        throw new Error(`Missing tool component module for "${toolTitle}" (${componentName}).`)
+      }
+
+      return [toolTitle, toLazyComponent(moduleLoader)]
+    })
   )
 }

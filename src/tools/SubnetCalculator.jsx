@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { copyText } from '../utils/clipboard'
 import { useSEO } from '../hooks/useSEO'
 import { calculateSubnet, COMMON_SUBNETS } from '../utils/subnetCalculator'
 import '../styles/pages/SubnetCalculator.css'
@@ -44,7 +45,7 @@ export default function SubnetCalculator() {
 
   const handleCopy = (value, field) => {
     if (!value) return
-    navigator.clipboard.writeText(value)
+    copyText(value)
     setCopiedField(field)
     setTimeout(() => setCopiedField(null), 2000)
   }

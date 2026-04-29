@@ -1,6 +1,6 @@
 import { useState } from 'react'
+import { copyText } from '../utils/clipboard'
 import { useSEO } from '../hooks/useSEO'
-import { showFeedback } from '../utils/feedback'
 import { createJWT, decodeJWT, verifyJWT } from '../utils/jwtEncoder'
 import '../styles/pages/JWTEncoder.css'
 
@@ -98,8 +98,7 @@ export default function JWTEncoder() {
   }
 
   const handleCopy = (text) => {
-    navigator.clipboard.writeText(text)
-    showFeedback('Copied to clipboard!')
+    copyText(text)
   }
 
   const handleClear = () => {

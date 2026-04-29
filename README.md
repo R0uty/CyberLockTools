@@ -58,3 +58,11 @@ npm run preview
 - Vite
 - ESLint
 - Vitest
+
+## Contributor notes: add a new tool
+
+1. Create the tool component in `src/tools` using a default export. Example: `src/tools/MyNewTool.jsx`.
+2. Add the catalog entry and user-facing metadata in `src/data/toolRegistry.js`.
+3. Add the title-to-component mapping in `TOOL_COMPONENT_KEYS` in `src/data/toolRegistry.js`.
+4. If needed, add page styles under `src/styles/pages` and wire `useSEO()` in the tool component.
+5. Add or update tests (smoke test and any utility tests), then run `npm run test` and `npm run lint`.

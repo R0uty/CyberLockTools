@@ -1,7 +1,7 @@
 import { useState } from 'react'
+import { copyText } from '../utils/clipboard'
 import cronstrue from 'cronstrue'
 import { useSEO } from '../hooks/useSEO'
-import { showFeedback } from '../utils/feedback'
 import '../styles/pages/CronParser.css'
 
 export default function CronParser() {
@@ -68,8 +68,7 @@ export default function CronParser() {
       setError('Nothing to copy. Please generate a cron expression first.')
       return
     }
-    navigator.clipboard.writeText(rawCron)
-    showFeedback('Cron expression copied to clipboard!')
+    copyText(rawCron)
   }
 
   const handleClear = () => {

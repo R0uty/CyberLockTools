@@ -11,9 +11,10 @@ export default defineConfig({
       provider: 'v8',
       reporter: ['text', 'html'],
       include: [
-        'src/utils/jsonFormatter.js',
-        'src/utils/numberBaseConverter.js',
-        'src/utils/httpHeadersParser.js'
+        'src/utils/**/*.js',
+        'src/pages/FlowMap.jsx',
+        'src/pages/flowMapMachine.js',
+        'src/pages/ToolGuides.jsx'
       ],
       thresholds: {
         statements: 70,

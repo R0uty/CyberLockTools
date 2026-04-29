@@ -1,6 +1,6 @@
 import { useState } from 'react'
+import { copyText } from '../utils/clipboard'
 import { useSEO } from '../hooks/useSEO'
-import { showFeedback } from '../utils/feedback'
 import { formatSQL, getSQLStats, minifySQL, validateSQL } from '../utils/sqlFormatter'
 import '../styles/pages/SQLFormatter.css'
 
@@ -97,8 +97,7 @@ export default function SQLFormatter() {
       setError('Nothing to copy. Please format SQL first.')
       return
     }
-    navigator.clipboard.writeText(output)
-    showFeedback('Copied to clipboard!')
+    copyText(output)
   }
 
   const handleDownload = () => {

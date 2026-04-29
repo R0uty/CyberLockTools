@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { copyText } from '../utils/clipboard'
 import { useSEO } from '../hooks/useSEO'
 import { encodeHTMLStandard, encodeHTMLFull, decodeHTML, getEncodingStats } from '../utils/htmlEncoder'
 import '../styles/pages/HTMLEncoder.css'
@@ -31,7 +32,7 @@ export default function HTMLEncoder() {
   }
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(output)
+    copyText(output)
     setCopied(true)
     setTimeout(() => setCopied(false), 2000)
   }

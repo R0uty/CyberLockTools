@@ -1,6 +1,8 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
+import { copyText } from '../utils/clipboard'
 import { marked } from 'marked';
 import { useSEO } from '../hooks/useSEO';
+import { sanitizeHtml } from '../utils/htmlSanitizer';
 import '../styles/pages/MarkdownPreview.css';
 
 export default function MarkdownPreview() {
@@ -13,10 +15,10 @@ export default function MarkdownPreview() {
   const [markdown, setMarkdown] = useState('# Welcome to Markdown Preview\n\nType or paste markdown here to see the live preview on the right.\n\n## Features\n- **Live preview** updates as you type\n- **Export options**: Copy HTML, copy text, or download as HTML\n- **Support for**: headings, lists, code blocks, links, images, and more\n\n### Example Markdown\n\n```javascript\nconst greeting = "Hello, Markdown!";\nconsole.log(greeting);\n```\n\n> This is a blockquote. Great for highlighting important information.\n\n[Visit GitHub](https://github.com)');
   const [copied, setCopied] = useState('');
 
-  const html = marked(markdown);
+  const html = sanitizeHtml(marked(markdown));
 
   const copyToClipboard = (text, type) => {
-    navigator.clipboard.writeText(text);
+    copyText(text);
     setCopied(type);
     setTimeout(() => setCopied(''), 2000);
   };

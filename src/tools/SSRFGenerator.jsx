@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { copyText } from '../utils/clipboard'
 import { useSEO } from '../hooks/useSEO'
 import { getAllCategories, getPayloadsByCategory } from '../utils/ssrfGenerator'
 import '../styles/pages/ReverseShellGenerator.css'
@@ -34,7 +35,7 @@ export default function SSRFGenerator() {
   }
 
   const handleCopy = (text, index) => {
-    navigator.clipboard.writeText(text)
+    copyText(text)
     setCopiedIndex(index)
     setTimeout(() => setCopiedIndex(null), 2000)
   }

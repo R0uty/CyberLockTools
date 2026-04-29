@@ -1,3 +1,5 @@
+import React from 'react'
+
 export default function ToolCard({ icon, title, description }) {
   return (
     <div className="tool-card">

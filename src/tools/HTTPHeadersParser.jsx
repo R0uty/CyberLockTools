@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react'
+import { copyText } from '../utils/clipboard'
 import { useSEO } from '../hooks/useSEO'
 import { parseHttpHeaders, toHeadersJson } from '../utils/httpHeadersParser'
 import '../styles/pages/HTTPHeadersParser.css'
@@ -56,7 +57,7 @@ export default function HTTPHeadersParser() {
   const handleCopy = async (value, key) => {
     if (!value.trim()) return
 
-    await navigator.clipboard.writeText(value)
+    await copyText(value)
     setCopied(key)
     setTimeout(() => setCopied(''), 2000)
   }

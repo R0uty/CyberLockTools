@@ -1,6 +1,6 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
+import { copyText } from '../utils/clipboard'
 import { useSEO } from '../hooks/useSEO'
-import { showFeedback } from '../utils/feedback'
 import { formatJSON, getJSONStats } from '../utils/jsonFormatter'
 import '../styles/pages/JSONFormatter.css'
 
@@ -72,8 +72,7 @@ export default function JSONFormatter() {
       setError('Nothing to copy. Please format JSON first.')
       return
     }
-    navigator.clipboard.writeText(output)
-    showFeedback('Copied to clipboard!')
+    copyText(output)
   }
 
   const handleClear = () => {

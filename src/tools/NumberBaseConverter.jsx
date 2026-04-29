@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { copyText } from '../utils/clipboard'
 import { useSEO } from '../hooks/useSEO'
 import { convertToAllBases, BASE_LABELS, BASE_PREFIXES, EXAMPLES } from '../utils/numberBaseConverter'
 import '../styles/pages/NumberBaseConverter.css'
@@ -18,7 +19,7 @@ export default function NumberBaseConverter() {
 
   const handleCopy = (value, field) => {
     if (!value) return
-    navigator.clipboard.writeText(value)
+    copyText(value)
     setCopiedField(field)
     setTimeout(() => setCopiedField(null), 2000)
   }

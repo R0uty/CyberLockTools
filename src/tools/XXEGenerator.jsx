@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { copyText } from '../utils/clipboard'
 import { useSEO } from '../hooks/useSEO'
 import { commonTargets, getAllCategories, getPayloadsByCategory } from '../utils/xxeGenerator'
 import '../styles/pages/XXEGenerator.css'
@@ -38,7 +39,7 @@ export default function XXEGenerator() {
   }
 
   const handleCopyCommand = (text, index) => {
-    navigator.clipboard.writeText(text)
+    copyText(text)
     setCopiedIndex(index)
     setTimeout(() => setCopiedIndex(null), 2000)
   }

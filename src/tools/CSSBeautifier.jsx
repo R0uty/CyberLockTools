@@ -1,6 +1,6 @@
 import { useState } from 'react'
+import { copyText } from '../utils/clipboard'
 import { useSEO } from '../hooks/useSEO'
-import { showFeedback } from '../utils/feedback'
 import { formatCSS, minifyCSS, validateCSS, getCSSStats, getCompressionRatio } from '../utils/cssFormatter'
 import '../styles/pages/CSSBeautifier.css'
 
@@ -76,8 +76,7 @@ export default function CSSBeautifier() {
       setError('Nothing to copy')
       return
     }
-    navigator.clipboard.writeText(text)
-    showFeedback('Copied to clipboard!')
+    copyText(text)
   }
 
   const handleDownload = (filename) => {

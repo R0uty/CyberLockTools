@@ -1,4 +1,5 @@
-import { useState, useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
+import { copyText } from '../utils/clipboard'
 import { useSEO } from '../hooks/useSEO';
 import '../styles/pages/RegexTester.css'
 
@@ -16,10 +17,10 @@ export default function RegexTester() {
   const [copied, setCopied] = useState('');
 
   // Compute regex results memoized
-  const { regex, matches, highlightedString, error } = useMemo(() => {
+  const { regex, matches, highlightedSegments, error } = useMemo(() => {
     let computedRegex = null;
     let computedMatches = [];
-    let computedHighlightedString = testString;
+    let computedHighlightedSegments = [{ text: testString, isMatch: false }];
     let computedError = '';
 
     try {
@@ -35,6 +36,10 @@ export default function RegexTester() {
             index: match.index,
             length: match[0].length,
           });
+
+          if (match[0] === '') {
+            computedRegex.lastIndex += 1;
+          }
         }
       } else {
         const match = testString.match(computedRegex);
@@ -48,16 +53,22 @@ export default function RegexTester() {
         }
       }
 
-      // Create highlighted string
+      // Create safe highlighted segments for rendering without injecting HTML.
       if (computedMatches.length > 0) {
         let lastIndex = 0;
-        computedHighlightedString = '';
+        computedHighlightedSegments = [];
         computedMatches.forEach((match) => {
-          computedHighlightedString += testString.substring(lastIndex, match.index);
-          computedHighlightedString += `<mark>${match.full}</mark>`;
+          const prefix = testString.substring(lastIndex, match.index);
+          if (prefix) {
+            computedHighlightedSegments.push({ text: prefix, isMatch: false });
+          }
+          computedHighlightedSegments.push({ text: match.full, isMatch: true });
           lastIndex = match.index + match.length;
         });
-        computedHighlightedString += testString.substring(lastIndex);
+        const suffix = testString.substring(lastIndex);
+        if (suffix) {
+          computedHighlightedSegments.push({ text: suffix, isMatch: false });
+        }
       }
     } catch (err) {
       computedError = err.message;
@@ -66,13 +77,13 @@ export default function RegexTester() {
     return {
       regex: computedRegex,
       matches: computedMatches,
-      highlightedString: computedHighlightedString,
+      highlightedSegments: computedHighlightedSegments,
       error: computedError,
     };
   }, [pattern, testString, flags]);
 
   const copyToClipboard = (text, type) => {
-    navigator.clipboard.writeText(text);
+    copyText(text);
     setCopied(type);
     setTimeout(() => setCopied(''), 2000);
   };
@@ -239,10 +250,11 @@ ${getReplacedString()}`;
 
                 <div className="regex-section">
                   <h3>Highlighted Text</h3>
-                  <div
-                    className="highlighted-text"
-                    dangerouslySetInnerHTML={{ __html: highlightedString.replace(/\n/g, '<br />') }}
-                  />
+                  <div className="highlighted-text">
+                    {highlightedSegments.map((segment, index) => (
+                      segment.isMatch ? <mark key={index}>{segment.text}</mark> : <span key={index}>{segment.text}</span>
+                    ))}
+                  </div>
                 </div>
 
                 <div className="regex-section">

@@ -279,6 +279,7 @@ export const DEFAULT_MACHINE_STATE = {
   feedback: '',
   selectedAction: '',
   selectedOutcome: '',
+  notes: '',
   zoomLevel: 1
 }
 
@@ -295,6 +296,7 @@ export function flowMapReducer(state, action) {
         feedback: '',
         selectedAction: '',
         selectedOutcome: '',
+        notes: '',
         zoomLevel: action.defaultZoom
       }
     case 'FLOW_CLEAR':
@@ -306,6 +308,7 @@ export function flowMapReducer(state, action) {
         feedback: '',
         selectedAction: '',
         selectedOutcome: '',
+        notes: '',
         zoomLevel: action.defaultZoom
       }
     case 'FLOW_RESET':
@@ -315,7 +318,8 @@ export function flowMapReducer(state, action) {
         selectedTool: '',
         feedback: '',
         selectedAction: '',
-        selectedOutcome: ''
+        selectedOutcome: '',
+        notes: ''
       }
     case 'STAGE_SET':
       return { ...state, currentStage: action.stage }

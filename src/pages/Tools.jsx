@@ -1,3 +1,4 @@
+import React from 'react'
 import { useState } from 'react'
 import { useSEO } from '../hooks/useSEO';
 import PageHeader from '../components/PageHeader';
@@ -148,6 +149,7 @@ export default function Tools({ tools, onToolClick, initialCategory = null }) {
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="tools-search-input"
+                  aria-label="Search tools and payloads"
                 />
               </div>
               {filteredTools.length > 0 && (
@@ -169,10 +171,12 @@ export default function Tools({ tools, onToolClick, initialCategory = null }) {
                 {categories.map(category => (
                   <button
                     key={category}
+                    type="button"
                     onClick={() => {
                       setSelectedCategory(category)
                     }}
                     className={activeCategory === category ? 'tools-category-btn tools-category-btn--active' : 'tools-category-btn'}
+                    aria-pressed={activeCategory === category}
                   >
                     {category}
                   </button>
@@ -189,20 +193,29 @@ export default function Tools({ tools, onToolClick, initialCategory = null }) {
             </p>
           </div>
 
-          <div className="cards-container">
+          <div className="cards-container" role="list" aria-label="Tools listing">
             {filteredTools.map((tool) => {
               const IconComponent = iconMap[tool.iconName] ?? Search01Icon
               return (
-                <div
-                  key={tool.title}
-                  onClick={() => onToolClick(tool.title)}
-                  className="tool-card-wrapper"
-                >
-                  <ToolCard
-                    icon={<IconComponent size={32} color="currentColor" />}
-                    title={tool.title}
-                    description={tool.description}
-                  />
+                <div key={tool.title} role="listitem" className="tool-card-list-item">
+                  <button
+                    type="button"
+                    onClick={() => onToolClick(tool.title)}
+                    onKeyDown={(event) => {
+                      if (event.key === 'Enter' || event.key === ' ') {
+                        event.preventDefault()
+                        onToolClick(tool.title)
+                      }
+                    }}
+                    className="tool-card-wrapper tool-card-button"
+                    aria-label={`Open ${tool.title} tool`}
+                  >
+                    <ToolCard
+                      icon={<IconComponent size={32} color="currentColor" />}
+                      title={tool.title}
+                      description={tool.description}
+                    />
+                  </button>
                 </div>
               )
             })}

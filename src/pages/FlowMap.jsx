@@ -7,12 +7,14 @@ import {
   STORAGE_FLOW_KEY,
   STORAGE_ACTION_KEY,
   STORAGE_OUTCOME_KEY,
+  STORAGE_NOTES_KEY,
   STORAGE_COMPLETED_KEY,
   DEFAULT_ZOOM,
   FLOW_GROUPS,
   FLOWS,
   ACTIVE_FLOW_GROUP_KEYS
 } from '../data/flowMapConfig'
+import { copyText } from '../utils/clipboard'
 import { readSessionValue, writeSessionValue } from '../utils/sessionStorage'
 import { renderFlowStoryContent, renderStartStoryContent } from './flowMapStoryContent'
 import {
@@ -77,6 +79,7 @@ function buildInitialMachineState() {
     feedback: getStoredValue(STORAGE_FEEDBACK_KEY),
     selectedAction: getStoredValue(STORAGE_ACTION_KEY),
     selectedOutcome: getStoredValue(STORAGE_OUTCOME_KEY),
+    notes: getStoredValue(STORAGE_NOTES_KEY),
     zoomLevel: DEFAULT_ZOOM
   }
 }
@@ -111,6 +114,81 @@ function writeCompletedFlows(completedSet) {
 
 const TOTAL_FLOWS = Object.entries(FLOWS).filter(([, f]) => ACTIVE_FLOW_GROUP_KEYS.has(f.group)).length
 
+const FINDING_QUICK_STARTS = [
+  {
+    id: 'finding-token',
+    label: 'I found a token/value',
+    description: 'Jump into response analysis to classify and trace suspicious values.',
+    flowKey: 'response',
+    stageId: 'response-data-found'
+  },
+  {
+    id: 'finding-login',
+    label: 'I found a login page',
+    description: 'Start directly at login testing for auth behavior checks.',
+    flowKey: 'login',
+    stageId: 'login-page'
+  },
+  {
+    id: 'finding-403',
+    label: 'I got 403 / access denied',
+    description: 'Branch into authorization and request tampering validation.',
+    flowKey: 'authz',
+    stageId: 'privileged-action-found'
+  },
+  {
+    id: 'finding-api',
+    label: 'I saw an API endpoint',
+    description: 'Start from API inspection and auth behavior checks.',
+    flowKey: 'api',
+    stageId: 'api-endpoint-found'
+  },
+  {
+    id: 'finding-upload',
+    label: 'I found file upload',
+    description: 'Jump into upload validation and controlled exploitation.',
+    flowKey: 'upload',
+    stageId: 'upload-found'
+  }
+]
+
+function buildFlowOutcomeSummary({
+  selectedFlow,
+  currentFlow,
+  currentStage,
+  selectedTool,
+  selectedAction,
+  selectedOutcome,
+  feedback,
+  notes,
+  currentStageIndex,
+}) {
+  const stageTrail = (currentFlow?.stages ?? [])
+    .slice(0, currentStageIndex + 1)
+    .map((stageId, index) => `${index + 1}. ${getStageLabel(currentFlow, stageId)} (${stageId})`)
+    .join('\n')
+
+  const lines = [
+    'Flow Outcome Export',
+    `Flow: ${currentFlow?.label ?? selectedFlow}`,
+    `Current stage: ${getStageLabel(currentFlow, currentStage)} (${currentStage})`,
+    selectedTool ? `Selected tool: ${selectedTool}` : 'Selected tool: None',
+    selectedAction ? `Selected action: ${selectedAction}` : 'Selected action: None',
+    selectedOutcome ? `Selected outcome: ${selectedOutcome}` : 'Selected outcome: None',
+    '',
+    'Visited stages:',
+    stageTrail || 'No stages visited yet.',
+    '',
+    'Feedback:',
+    feedback || 'None',
+    '',
+    'Notes:',
+    notes || 'None'
+  ]
+
+  return lines.join('\n')
+}
+
 export default function FlowMap({ onToolClick, onToolReferenceClick }) {
   useSEO({
     title: 'Flow Map - Guided Testing Paths',
@@ -125,7 +203,8 @@ export default function FlowMap({ onToolClick, onToolReferenceClick }) {
     selectedTool,
     feedback,
     selectedAction,
-    selectedOutcome
+    selectedOutcome,
+    notes
   } = machineState
 
   const currentFlow = getFlowByKey(selectedFlow)
@@ -143,6 +222,10 @@ export default function FlowMap({ onToolClick, onToolReferenceClick }) {
   const stageIndex = useMemo(
     () => Object.fromEntries((currentFlow?.stages ?? ['start']).map((stage, index) => [stage, index])),
     [currentFlow]
+  )
+  const quickStartOptions = useMemo(
+    () => FINDING_QUICK_STARTS.filter(({ flowKey }) => getFlowByKey(flowKey)),
+    []
   )
 
   useEffect(() => {
@@ -205,6 +288,10 @@ export default function FlowMap({ onToolClick, onToolReferenceClick }) {
   useEffect(() => {
     writeSessionValue(STORAGE_OUTCOME_KEY, selectedOutcome)
   }, [selectedOutcome])
+
+  useEffect(() => {
+    writeSessionValue(STORAGE_NOTES_KEY, notes)
+  }, [notes])
 
   const currentStageIndex = stageIndex[currentStage] ?? 0
 
@@ -341,6 +428,52 @@ export default function FlowMap({ onToolClick, onToolReferenceClick }) {
     dispatch({ type: 'FLOW_SELECT', flowKey, defaultZoom: DEFAULT_ZOOM })
   }, [])
 
+  const handleQuickStart = useCallback((flowKey, stageId) => {
+    const flow = getFlowByKey(flowKey)
+    if (!flow) {
+      return
+    }
+
+    dispatch({ type: 'FLOW_SELECT', flowKey, defaultZoom: DEFAULT_ZOOM })
+    const validStage = getValidStage(flow, stageId)
+    if (validStage !== DEFAULT_STAGE) {
+      dispatch({ type: 'STAGE_SET', stage: validStage })
+    }
+  }, [])
+
+  const handleExportOutcome = useCallback(() => {
+    if (!currentFlow) {
+      return
+    }
+
+    const summary = buildFlowOutcomeSummary({
+      selectedFlow,
+      currentFlow,
+      currentStage,
+      selectedTool,
+      selectedAction,
+      selectedOutcome,
+      feedback,
+      notes,
+      currentStageIndex,
+    })
+
+    copyText(summary, {
+      successMessage: 'Flow outcome summary copied',
+      errorMessage: 'Failed to export flow outcome'
+    })
+  }, [
+    currentFlow,
+    currentStage,
+    currentStageIndex,
+    feedback,
+    notes,
+    selectedAction,
+    selectedFlow,
+    selectedOutcome,
+    selectedTool,
+  ])
+
   const currentStageLabel = currentFlow ? getStageLabel(currentFlow, currentStage) : ''
 
   const storyProps = {
@@ -423,6 +556,24 @@ export default function FlowMap({ onToolClick, onToolReferenceClick }) {
             )}
           </div>
           <p className="flow-map-selector-copy">Pick a flow to walk through a structured testing path step by step.</p>
+          <section className="flow-map-quick-start" aria-label="Start from finding">
+            <h2>Start From Finding</h2>
+            <p>Jump directly to the most likely flow stage based on what you observed.</p>
+            <div className="flow-map-quick-grid">
+              {quickStartOptions.map((finding) => (
+                <button
+                  key={finding.id}
+                  type="button"
+                  className="flow-map-quick-button"
+                  aria-label={finding.label}
+                  onClick={() => handleQuickStart(finding.flowKey, finding.stageId)}
+                >
+                  <span className="flow-map-quick-label">{finding.label}</span>
+                  <span className="flow-map-quick-desc">{finding.description}</span>
+                </button>
+              ))}
+            </div>
+          </section>
           <div className="flow-map-groups">
             {groupedFlows.map((group) => (
               <div key={group.key} className="flow-map-group">
@@ -473,6 +624,26 @@ export default function FlowMap({ onToolClick, onToolReferenceClick }) {
               {currentStage === 'start'
                 ? renderStartStoryContent(storyProps)
                 : renderFlowStoryContent({ selectedFlow, storyProps })}
+            </div>
+
+            <div className="flow-map-outcome-export" aria-label="Flow outcome export">
+              <h3>Flow Outcome Export</h3>
+              <p>Capture your current steps, selected tools, and notes as a copyable summary.</p>
+              <label htmlFor="flow-outcome-notes" className="flow-map-outcome-label">Notes</label>
+              <textarea
+                id="flow-outcome-notes"
+                value={notes}
+                onChange={(event) => dispatch({ type: 'CONTEXT_PATCH', patch: { notes: event.target.value } })}
+                className="flow-map-outcome-notes"
+                placeholder="Add observations, evidence references, or next-step notes..."
+              />
+              <button
+                type="button"
+                className="flow-map-button"
+                onClick={handleExportOutcome}
+              >
+                Copy outcome summary
+              </button>
             </div>
           </div>
 

@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react'
+import { copyText } from '../utils/clipboard'
 import { useSEO } from '../hooks/useSEO'
 import {
   analyzeSstiProbe,
@@ -67,7 +68,7 @@ export default function SSTIGenerator() {
   const handleCopy = async (value, key) => {
     if (!value.trim()) return
 
-    await navigator.clipboard.writeText(value)
+    await copyText(value)
     setCopied(key)
     setTimeout(() => setCopied(''), 1800)
   }

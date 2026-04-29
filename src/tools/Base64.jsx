@@ -1,6 +1,6 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
+import { copyText } from '../utils/clipboard'
 import { useSEO } from '../hooks/useSEO'
-import { showFeedback } from '../utils/feedback'
 
 export default function Base64() {
   useSEO({
@@ -50,8 +50,7 @@ export default function Base64() {
       setError('Nothing to copy. Please encode or decode first.')
       return
     }
-    navigator.clipboard.writeText(output)
-    showFeedback('Copied to clipboard!')
+    copyText(output)
   }
 
   const handleClear = () => {

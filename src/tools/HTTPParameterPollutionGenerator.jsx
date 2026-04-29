@@ -1,6 +1,6 @@
 import { useState } from 'react';
+import { copyText } from '../utils/clipboard'
 import { useSEO } from '../hooks/useSEO';
-import { showFeedback } from '../utils/feedback';
 import { Copy01Icon } from 'hugeicons-react';
 import {
   getAllCategories,
@@ -32,8 +32,7 @@ export default function HTTPParameterPollutionGenerator() {
   const currentPayload = currentPayloads[selectedPayload] || null;
 
   const copyToClipboard = (text) => {
-    navigator.clipboard.writeText(text);
-    showFeedback('Copied to clipboard!');
+    copyText(text);
   };
 
   if (showLegalWarning) {

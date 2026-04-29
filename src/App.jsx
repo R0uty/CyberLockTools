@@ -4,49 +4,17 @@ import Header from './components/Header'
 import PageHeader from './components/PageHeader'
 import HomeToolMap from './components/HomeToolMap'
 import FeedbackToast from './components/FeedbackToast'
-import { TOOL_CATALOG, buildToolComponents } from './data/toolRegistry'
+import ToolContextPanel from './components/ToolContextPanel'
+import { TOOL_CATALOG, buildToolComponentsFromModules } from './data/toolRegistry'
+import { getRelatedFlowStages, getRelatedGuides } from './data/toolContext'
+import { STORAGE_FLOW_KEY, STORAGE_STAGE_KEY } from './data/flowMapConfig'
+import { writeSessionValue } from './utils/sessionStorage'
 import './styles/app/App.css'
 import './styles/app/App.extra.css'
 
-const ROT = lazy(() => import('./tools/ROT'))
-const Base64 = lazy(() => import('./tools/Base64'))
-const URLEncoder = lazy(() => import('./tools/URLEncoder'))
-const HashGenerator = lazy(() => import('./tools/HashGenerator'))
-const CronParser = lazy(() => import('./tools/CronParser'))
-const JWTDebugger = lazy(() => import('./tools/JWTDebugger'))
-const JSONFormatter = lazy(() => import('./tools/JSONFormatter'))
-const YAMLFormatter = lazy(() => import('./tools/YAMLFormatter'))
-const MarkdownPreview = lazy(() => import('./tools/MarkdownPreview'))
-const RegexTester = lazy(() => import('./tools/RegexTester'))
-const XMLFormatter = lazy(() => import('./tools/XMLFormatter'))
-const SQLFormatter = lazy(() => import('./tools/SQLFormatter'))
-const CSVFormatter = lazy(() => import('./tools/CSVFormatter'))
-const UUIDGenerator = lazy(() => import('./tools/UUIDGenerator'))
-const TimestampConverter = lazy(() => import('./tools/TimestampConverter'))
-const PasswordGenerator = lazy(() => import('./tools/PasswordGenerator'))
-const JWTEncoder = lazy(() => import('./tools/JWTEncoder'))
-const QRCodeGenerator = lazy(() => import('./tools/QRCodeGenerator'))
-const ColorConverter = lazy(() => import('./tools/ColorConverter'))
-const CSSBeautifier = lazy(() => import('./tools/CSSBeautifier'))
-const HTMLEncoder = lazy(() => import('./tools/HTMLEncoder'))
-const CSPGenerator = lazy(() => import('./tools/CSPGenerator'))
-const ReverseShellGenerator = lazy(() => import('./tools/ReverseShellGenerator'))
-const XXEGenerator = lazy(() => import('./tools/XXEGenerator'))
-const XSSGenerator = lazy(() => import('./tools/XSSGenerator'))
-const SQLInjectionGenerator = lazy(() => import('./tools/SQLInjectionGenerator'))
-const NoSQLInjectionGenerator = lazy(() => import('./tools/NoSQLInjectionGenerator'))
-const GraphQLInjectionGenerator = lazy(() => import('./tools/GraphQLInjectionGenerator'))
-const SSTIGenerator = lazy(() => import('./tools/SSTIGenerator'))
-const HTTPParameterPollutionGenerator = lazy(() => import('./tools/HTTPParameterPollutionGenerator'))
-const CommandInjectionGenerator = lazy(() => import('./tools/CommandInjectionGenerator'))
-const LDAPInjectionGenerator = lazy(() => import('./tools/LDAPInjectionGenerator'))
-const PathTraversalGenerator = lazy(() => import('./tools/PathTraversalGenerator'))
-const SSRFGenerator = lazy(() => import('./tools/SSRFGenerator'))
-const NumberBaseConverter = lazy(() => import('./tools/NumberBaseConverter'))
-const SubnetCalculator = lazy(() => import('./tools/SubnetCalculator'))
-const TextToDSL = lazy(() => import('./tools/TextToDSL'))
-const DiffViewer = lazy(() => import('./tools/DiffViewer'))
-const HTTPHeadersParser = lazy(() => import('./tools/HTTPHeadersParser'))
+const TOOL_MODULE_LOADERS = import.meta.glob('./tools/*.jsx')
+const TOOL_COMPONENTS = buildToolComponentsFromModules(TOOL_MODULE_LOADERS, (moduleLoader) => lazy(moduleLoader))
+
 const Tools = lazy(() => import('./pages/Tools'))
 const FlowMap = lazy(() => import('./pages/FlowMap'))
 const LabNotes = lazy(() => import('./pages/LabNotes'))
@@ -125,54 +93,19 @@ export default function App() {
     navigateTo('tool-guides', null, toolGuideName)
   }
 
+  const handleFlowStageReferenceClick = (flowKey, stageId) => {
+    writeSessionValue(STORAGE_FLOW_KEY, flowKey)
+    writeSessionValue(STORAGE_STAGE_KEY, stageId)
+    navigateTo('flow-map', null, null)
+  }
+
   const handleCategoryClick = (category) => {
     if (category === 'skills') navigateTo('skills')
     else navigateTo('tools', null, category)
   }
 
   const tools = TOOL_CATALOG
-
-  const toolComponents = buildToolComponents({
-    ROT,
-    Base64,
-    URLEncoder,
-    HashGenerator,
-    CronParser,
-    JWTDebugger,
-    JSONFormatter,
-    YAMLFormatter,
-    MarkdownPreview,
-    RegexTester,
-    DiffViewer,
-    HTTPHeadersParser,
-    XMLFormatter,
-    SQLFormatter,
-    CSVFormatter,
-    UUIDGenerator,
-    TimestampConverter,
-    PasswordGenerator,
-    JWTEncoder,
-    QRCodeGenerator,
-    ColorConverter,
-    CSSBeautifier,
-    HTMLEncoder,
-    CSPGenerator,
-    ReverseShellGenerator,
-    XXEGenerator,
-    XSSGenerator,
-    SQLInjectionGenerator,
-    NoSQLInjectionGenerator,
-    GraphQLInjectionGenerator,
-    SSTIGenerator,
-    HTTPParameterPollutionGenerator,
-    SSRFGenerator,
-    CommandInjectionGenerator,
-    LDAPInjectionGenerator,
-    PathTraversalGenerator,
-    NumberBaseConverter,
-    SubnetCalculator,
-    TextToDSL
-  })
+  const activeToolMeta = currentTool ? tools.find((tool) => tool.title === currentTool) : null
 
   const renderFooter = () => (
     <footer className="site-footer">
@@ -214,10 +147,24 @@ export default function App() {
     )
   }
 
-  const ActiveToolComponent = currentTool ? toolComponents[currentTool] : null
+  const ActiveToolComponent = currentTool ? TOOL_COMPONENTS[currentTool] : null
 
   if (ActiveToolComponent) {
-    return renderAppShell(<ActiveToolComponent />)
+    const relatedGuides = getRelatedGuides(activeToolMeta?.title ?? currentTool)
+    const relatedFlowStages = getRelatedFlowStages(activeToolMeta?.title ?? currentTool)
+
+    return renderAppShell(
+      <>
+        <ActiveToolComponent />
+        <ToolContextPanel
+          toolTitle={activeToolMeta?.title ?? currentTool}
+          relatedGuides={relatedGuides}
+          relatedFlowStages={relatedFlowStages}
+          onOpenGuide={handleToolReferenceClick}
+          onOpenFlowStage={handleFlowStageReferenceClick}
+        />
+      </>
+    )
   }
 
   if (currentPage === 'tools' && !currentTool) {

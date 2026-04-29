@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react'
+import { copyText } from '../utils/clipboard'
 import { Copy01Icon } from 'hugeicons-react'
 import { useSEO } from '../hooks/useSEO'
 import {
@@ -63,7 +64,7 @@ export default function NoSQLInjectionGenerator() {
   const handleCopy = async () => {
     if (!renderedPayload.trim()) return
 
-    await navigator.clipboard.writeText(renderedPayload)
+    await copyText(renderedPayload)
     setCopied(true)
     setTimeout(() => setCopied(false), 1800)
   }

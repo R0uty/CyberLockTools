@@ -1,6 +1,6 @@
 import { useState } from 'react'
+import { copyText } from '../utils/clipboard'
 import { useSEO } from '../hooks/useSEO'
-import { showFeedback } from '../utils/feedback'
 import { formatXML, getXMLStats, minifyXML } from '../utils/xmlFormatter'
 import '../styles/pages/XMLFormatter.css'
 
@@ -97,8 +97,7 @@ export default function XMLFormatter() {
       setError('Nothing to copy. Please format XML first.')
       return
     }
-    navigator.clipboard.writeText(output)
-    showFeedback('Copied to clipboard!')
+    copyText(output)
   }
 
   const handleDownload = () => {
