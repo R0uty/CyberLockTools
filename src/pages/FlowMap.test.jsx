@@ -4,12 +4,76 @@ import React from 'react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { cleanup, fireEvent, render, screen, within } from '@testing-library/react'
 import FlowMap from './FlowMap'
+import {
+  FINDING_QUICK_STARTS,
+  FLOW_OUTCOME_PHRASE_STARTS,
+  FLOWS,
+  STORAGE_COMPLETED_KEY,
+  STORAGE_IN_PROGRESS_KEY,
+  VULNERABILITY_TYPE_STARTS
+} from '../data/flowMapConfig'
 
 function renderFlowMap() {
   const onToolClick = vi.fn()
   render(<FlowMap onToolClick={onToolClick} />)
   return { onToolClick }
 }
+
+describe('FINDING_QUICK_STARTS config', () => {
+  it('every entry has the required fields', () => {
+    for (const entry of FINDING_QUICK_STARTS) {
+      expect(entry.id, `${entry.id} missing id`).toBeTruthy()
+      expect(entry.label, `${entry.id} missing label`).toBeTruthy()
+      expect(entry.description, `${entry.id} missing description`).toBeTruthy()
+      expect(entry.category, `${entry.id} missing category`).toBeTruthy()
+      expect(entry.flowKey, `${entry.id} missing flowKey`).toBeTruthy()
+      expect(entry.stageId, `${entry.id} missing stageId`).toBeTruthy()
+      expect(['low', 'medium', 'high']).toContain(entry.confidence)
+    }
+  })
+
+  it('every flowKey references a real flow in FLOWS', () => {
+    for (const entry of FINDING_QUICK_STARTS) {
+      expect(FLOWS[entry.flowKey], `${entry.id} flowKey "${entry.flowKey}" not in FLOWS`).toBeTruthy()
+    }
+  })
+
+  it('every stageId references a real stage in its flow', () => {
+    for (const entry of FINDING_QUICK_STARTS) {
+      const flow = FLOWS[entry.flowKey]
+      if (!flow) continue
+      expect(
+        flow.stages.includes(entry.stageId),
+        `${entry.id} stageId "${entry.stageId}" not found in flow "${entry.flowKey}" stages`
+      ).toBe(true)
+    }
+  })
+
+  it('all ids are unique', () => {
+    const ids = FINDING_QUICK_STARTS.map(e => e.id)
+    expect(new Set(ids).size).toBe(ids.length)
+  })
+})
+
+describe('flow command datasets', () => {
+  it('maps outcome phrase starts to valid flow stages', () => {
+    for (const entry of FLOW_OUTCOME_PHRASE_STARTS) {
+      const flow = FLOWS[entry.flowKey]
+      expect(flow, `${entry.id} has unknown flow ${entry.flowKey}`).toBeTruthy()
+      expect(flow.stages.includes(entry.stageId), `${entry.id} has unknown stage ${entry.stageId}`).toBe(true)
+      expect(['low', 'medium', 'high']).toContain(entry.confidence)
+    }
+  })
+
+  it('maps vulnerability starts to valid flow stages', () => {
+    for (const entry of VULNERABILITY_TYPE_STARTS) {
+      const flow = FLOWS[entry.flowKey]
+      expect(flow, `${entry.id} has unknown flow ${entry.flowKey}`).toBeTruthy()
+      expect(flow.stages.includes(entry.stageId), `${entry.id} has unknown stage ${entry.stageId}`).toBe(true)
+      expect(['low', 'medium', 'high']).toContain(entry.confidence)
+    }
+  })
+})
 
 describe('FlowMap interactions', () => {
   beforeEach(() => {
@@ -28,6 +92,8 @@ describe('FlowMap interactions', () => {
 
     const progressPanel = screen.getByLabelText('Flow progress')
     expect(within(progressPanel).getByRole('heading', { name: 'Ready to begin' })).toBeTruthy()
+    expect(screen.getByRole('heading', { name: 'Why this matters' })).toBeTruthy()
+    expect(screen.getByRole('heading', { name: 'What would count as a real signal' })).toBeTruthy()
 
     const stageTabs = screen.getByLabelText('Flow steps')
     const startTab = within(stageTabs).getByRole('button', { name: /Start$/i })
@@ -182,5 +248,49 @@ describe('FlowMap interactions', () => {
 
     fireEvent.click(screen.getByRole('button', { name: step2Action }))
     expect(within(progressPanel).getByRole('heading', { name: step3Heading })).toBeTruthy()
+  })
+
+  it('opens command palette with Ctrl+K and jumps using an outcome phrase', () => {
+    renderFlowMap()
+
+    fireEvent.keyDown(window, { key: 'k', ctrlKey: true })
+
+    const dialog = screen.getByRole('dialog', { name: 'Flow command palette' })
+    const input = within(dialog).getByLabelText('Search finding, tool, vulnerability type, or outcome phrase')
+
+    fireEvent.change(input, { target: { value: 'token found in response' } })
+    fireEvent.keyDown(input, { key: 'Enter' })
+
+    const progressPanel = screen.getByLabelText('Flow progress')
+    expect(within(progressPanel).getByRole('heading', { name: 'Interesting Data' })).toBeTruthy()
+  })
+
+  it('supports searching by vulnerability type and selecting result by click', () => {
+    renderFlowMap()
+
+    fireEvent.click(screen.getByRole('button', { name: 'Open flow command palette' }))
+
+    const dialog = screen.getByRole('dialog', { name: 'Flow command palette' })
+    const input = within(dialog).getByLabelText('Search finding, tool, vulnerability type, or outcome phrase')
+    fireEvent.change(input, { target: { value: 'SQL injection' } })
+
+    const resultButton = within(dialog).getByRole('button', { name: 'Open Input Testing Flow at Input Field Found' })
+    fireEvent.click(resultButton)
+
+    const progressPanel = screen.getByLabelText('Flow progress')
+    expect(within(progressPanel).getByRole('heading', { name: 'Input Field Found' })).toBeTruthy()
+  })
+
+  it('shows group-level completed, in-progress, and untouched states from persisted progress', () => {
+    window.sessionStorage.setItem(STORAGE_COMPLETED_KEY, JSON.stringify(['discovery', 'info-disclosure']))
+    window.sessionStorage.setItem(STORAGE_IN_PROGRESS_KEY, JSON.stringify(['input']))
+
+    renderFlowMap()
+
+    const groupProgress = screen.getByLabelText('Flow group progress')
+
+    expect(within(groupProgress).getByLabelText('Reconnaissance completed')).toBeTruthy()
+    expect(within(groupProgress).getByLabelText('Testing in-progress')).toBeTruthy()
+    expect(within(groupProgress).getByLabelText('Vulnerability Validation untouched')).toBeTruthy()
   })
 })

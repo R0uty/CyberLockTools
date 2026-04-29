@@ -1,4 +1,4 @@
-import { lazy, Suspense, useCallback, useEffect, useState } from 'react'
+import { lazy, Suspense, useCallback, useEffect, useMemo, useState } from 'react'
 import { useSEO } from './hooks/useSEO'
 import Header from './components/Header'
 import PageHeader from './components/PageHeader'
@@ -7,8 +7,13 @@ import FeedbackToast from './components/FeedbackToast'
 import ToolContextPanel from './components/ToolContextPanel'
 import { TOOL_CATALOG, buildToolComponentsFromModules } from './data/toolRegistry'
 import { getRelatedFlowStages, getRelatedGuides } from './data/toolContext'
-import { STORAGE_FLOW_KEY, STORAGE_STAGE_KEY } from './data/flowMapConfig'
-import { writeSessionValue } from './utils/sessionStorage'
+import {
+  STORAGE_FLOW_KEY,
+  STORAGE_OUTCOME_PROFILE_KEY,
+  STORAGE_STAGE_KEY,
+  STORAGE_TOOL_FLOW_ORIGIN_KEY
+} from './data/flowMapConfig'
+import { readSessionValue, writeSessionValue } from './utils/sessionStorage'
 import './styles/app/App.css'
 import './styles/app/App.extra.css'
 
@@ -21,6 +26,15 @@ const LabNotes = lazy(() => import('./pages/LabNotes'))
 const About = lazy(() => import('./pages/About'))
 const Skills = lazy(() => import('./pages/Skills'))
 const ToolGuides = lazy(() => import('./pages/ToolGuides'))
+
+function readJsonValue(key) {
+  try {
+    const raw = readSessionValue(key, '')
+    return raw ? JSON.parse(raw) : null
+  } catch {
+    return null
+  }
+}
 
 export default function App() {
   const [currentTool, setCurrentTool] = useState(() => window.history.state?.tool ?? null)
@@ -81,7 +95,17 @@ export default function App() {
     navigateTo(page, null, null)
   }
 
-  const handleToolClick = (title) => {
+  const handleToolClick = (title, flowOrigin = null) => {
+    if (flowOrigin && typeof flowOrigin === 'object') {
+      writeSessionValue(STORAGE_TOOL_FLOW_ORIGIN_KEY, JSON.stringify({
+        ...flowOrigin,
+        toolTitle: title,
+        timestamp: new Date().toISOString()
+      }))
+    } else {
+      writeSessionValue(STORAGE_TOOL_FLOW_ORIGIN_KEY, '')
+    }
+
     navigateTo('tools', title, null)
   }
 
@@ -106,6 +130,49 @@ export default function App() {
 
   const tools = TOOL_CATALOG
   const activeToolMeta = currentTool ? tools.find((tool) => tool.title === currentTool) : null
+
+  const flowOriginContext = useMemo(() => {
+    if (!currentTool) {
+      return null
+    }
+
+    const origin = readJsonValue(STORAGE_TOOL_FLOW_ORIGIN_KEY)
+    if (!origin || typeof origin !== 'object') {
+      return null
+    }
+
+    if (origin.toolTitle && origin.toolTitle !== currentTool) {
+      return null
+    }
+
+    const flowKey = typeof origin.flowKey === 'string' ? origin.flowKey : ''
+    const stageId = typeof origin.stageId === 'string' ? origin.stageId : ''
+    if (!flowKey || !stageId) {
+      return null
+    }
+
+    let recommendedFlowKey = typeof origin.recommendedFlowKey === 'string' ? origin.recommendedFlowKey : ''
+    let recommendedStageId = typeof origin.recommendedStageId === 'string' ? origin.recommendedStageId : ''
+
+    if (!recommendedFlowKey || !recommendedStageId) {
+      const outcomeProfile = readJsonValue(STORAGE_OUTCOME_PROFILE_KEY)
+      const firstRecommendation = outcomeProfile?.recommendedNextFlows?.[0]
+      if (firstRecommendation?.flowKey) {
+        recommendedFlowKey = firstRecommendation.flowKey
+        recommendedStageId = typeof firstRecommendation.stageId === 'string'
+          ? firstRecommendation.stageId
+          : stageId
+      }
+    }
+
+    return {
+      flowKey,
+      stageId,
+      recommendedFlowKey,
+      recommendedStageId,
+      recommendationReason: typeof origin.recommendationReason === 'string' ? origin.recommendationReason : ''
+    }
+  }, [currentTool])
 
   const renderFooter = () => (
     <footer className="site-footer">
@@ -160,6 +227,7 @@ export default function App() {
           toolTitle={activeToolMeta?.title ?? currentTool}
           relatedGuides={relatedGuides}
           relatedFlowStages={relatedFlowStages}
+          flowOriginContext={flowOriginContext}
           onOpenGuide={handleToolReferenceClick}
           onOpenFlowStage={handleFlowStageReferenceClick}
         />

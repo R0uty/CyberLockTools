@@ -2,7 +2,149 @@ import React from 'react'
 
 const DECODE_TOOLS = ['ROT', 'Base64', 'URL Encoder']
 
+const STAGE_GUIDANCE_OVERRIDES = {
+  decode: {
+    result: {
+      why: 'Selecting an accurate decoder outcome prevents false positives and points you to the right verification path.',
+      signal: 'Readable output that is reproducible with the same transform and remains meaningful in surrounding context.'
+    }
+  },
+  login: {
+    result: {
+      why: 'Authentication result differences reveal whether controls are weak, inconsistent, or simply noisy.',
+      signal: 'Consistent success or consistently different error/timing behavior across repeated controlled attempts.'
+    }
+  },
+  response: {
+    result: {
+      why: 'Response outcomes often indicate whether sensitive data exposure or token misuse risk is real.',
+      signal: 'Sensitive fields, tokens, or role data repeatedly appearing for similar requests and user states.'
+    }
+  },
+  request: {
+    result: {
+      why: 'Tampering outcomes can confirm trust-boundary weaknesses between client and server validation.',
+      signal: 'Modified parameters are accepted server-side and produce repeatable privilege or behavior changes.'
+    }
+  },
+  authz: {
+    result: {
+      why: 'Authorization outcomes separate legitimate access from broken access control hypotheses.',
+      signal: 'Cross-role requests reliably return data or actions that should require stronger permissions.'
+    }
+  },
+  session: {
+    result: {
+      why: 'Session findings are high impact only when token lifecycle flaws can be reproduced safely.',
+      signal: 'Session token reuse, fixation, or invalidation failures that repeat after logout, role change, or timeout.'
+    }
+  },
+  upload: {
+    'upload-result': {
+      why: 'Upload outcomes distinguish harmless filter behavior from exploitable server-side handling gaps.',
+      signal: 'File acceptance, storage, execution, or direct retrieval behaviors that are consistent across controlled variants.'
+    }
+  },
+  exploitation: {
+    result: {
+      why: 'Validation outcomes confirm impact while keeping demonstrations within safe, approved boundaries.',
+      signal: 'Read-only proof actions produce deterministic impact without destructive effects or uncontrolled execution.'
+    }
+  }
+}
+
+const STAGE_GUIDANCE_DEFAULTS = {
+  start: {
+    why: 'Starting with a clear baseline keeps later conclusions tied to evidence instead of assumptions.',
+    signal: 'A defined objective, known starting state, and a repeatable first action before branching.'
+  },
+  result: {
+    why: 'Result selection drives the next branch, so this is where many false positives can be avoided.',
+    signal: 'Observed outcomes can be reproduced at least twice under the same conditions.'
+  },
+  'next-step': {
+    why: 'A deliberate next step keeps the investigation focused on validation instead of random exploration.',
+    signal: 'The chosen follow-up is directly justified by prior observed behavior and recorded evidence.'
+  },
+  analyze: {
+    why: 'Analysis stages turn raw observations into defensible conclusions.',
+    signal: 'Clear deltas in payload, status, timing, or content that remain stable across retries.'
+  },
+  test: {
+    why: 'Testing stages establish controlled comparisons that separate expected behavior from flaws.',
+    signal: 'Input or request variations produce specific, repeatable behavior differences.'
+  },
+  inspect: {
+    why: 'Inspection stages reduce guesswork by confirming assumptions against real data.',
+    signal: 'Artifacts such as headers, tokens, parameters, or source patterns support the hypothesis.'
+  },
+  fallback: {
+    why: 'This step helps tighten your hypothesis before committing to a branch or claim.',
+    signal: 'At least one reproducible indicator supports your conclusion, and contradictory signals are noted.'
+  }
+}
+
+function resolveDefaultGuidance(currentStage = '') {
+  if (currentStage === 'start') {
+    return STAGE_GUIDANCE_DEFAULTS.start
+  }
+
+  if (currentStage === 'result' || currentStage.endsWith('-result')) {
+    return STAGE_GUIDANCE_DEFAULTS.result
+  }
+
+  if (currentStage === 'next-step') {
+    return STAGE_GUIDANCE_DEFAULTS['next-step']
+  }
+
+  if (currentStage.startsWith('analyze-') || currentStage.includes('analyze')) {
+    return STAGE_GUIDANCE_DEFAULTS.analyze
+  }
+
+  if (currentStage.startsWith('test-') || currentStage.includes('test')) {
+    return STAGE_GUIDANCE_DEFAULTS.test
+  }
+
+  if (currentStage.startsWith('inspect-') || currentStage.includes('inspect')) {
+    return STAGE_GUIDANCE_DEFAULTS.inspect
+  }
+
+  return STAGE_GUIDANCE_DEFAULTS.fallback
+}
+
+function getStageGuidance(selectedFlow, currentStage) {
+  const flowGuidance = STAGE_GUIDANCE_OVERRIDES[selectedFlow] ?? {}
+  const override = flowGuidance[currentStage]
+
+  if (override) {
+    return override
+  }
+
+  return resolveDefaultGuidance(currentStage)
+}
+
+function renderStageGuidance(guidance) {
+  if (!guidance) {
+    return null
+  }
+
+  return (
+    <section className="flow-map-guidance" aria-label="Stage guidance">
+      <div className="flow-map-guidance-card">
+        <h3>Why this matters</h3>
+        <p>{guidance.why}</p>
+      </div>
+      <div className="flow-map-guidance-card">
+        <h3>What would count as a real signal</h3>
+        <p>{guidance.signal}</p>
+      </div>
+    </section>
+  )
+}
+
 export function renderStartStoryContent({ currentFlow, handleStartClick, clearFlow }) {
+  const stageGuidance = getStageGuidance(currentFlow?.key ?? '', 'start')
+
   return (
     <>
       <span className="flow-map-story-step">Step 1</span>
@@ -19,6 +161,7 @@ export function renderStartStoryContent({ currentFlow, handleStartClick, clearFl
           Choose another flow
         </button>
       </div>
+      {renderStageGuidance(stageGuidance)}
     </>
   )
 }
@@ -1623,53 +1766,42 @@ export function renderUploadStoryContent({
 }
 
 export function renderFlowStoryContent({ selectedFlow, storyProps }) {
+  let content
+
   if (selectedFlow === 'login') {
-    return renderLoginStoryContent(storyProps)
+    content = renderLoginStoryContent(storyProps)
+  } else if (selectedFlow === 'discovery') {
+    content = renderDiscoveryStoryContent(storyProps)
+  } else if (selectedFlow === 'enumeration') {
+    content = renderEnumerationStoryContent(storyProps)
+  } else if (selectedFlow === 'input') {
+    content = renderInputStoryContent(storyProps)
+  } else if (selectedFlow === 'api') {
+    content = renderApiStoryContent(storyProps)
+  } else if (selectedFlow === 'response') {
+    content = renderResponseStoryContent(storyProps)
+  } else if (selectedFlow === 'request') {
+    content = renderRequestStoryContent(storyProps)
+  } else if (selectedFlow === 'authz') {
+    content = renderAuthzStoryContent(storyProps)
+  } else if (selectedFlow === 'exploitation') {
+    content = renderExploitationStoryContent(storyProps)
+  } else if (selectedFlow === 'info-disclosure') {
+    content = renderInfoDisclosureStoryContent(storyProps)
+  } else if (selectedFlow === 'session') {
+    content = renderSessionStoryContent(storyProps)
+  } else if (selectedFlow === 'upload') {
+    content = renderUploadStoryContent(storyProps)
+  } else {
+    content = renderDecodeStoryContent(storyProps)
   }
 
-  if (selectedFlow === 'discovery') {
-    return renderDiscoveryStoryContent(storyProps)
-  }
+  const stageGuidance = getStageGuidance(selectedFlow, storyProps.currentStage)
 
-  if (selectedFlow === 'enumeration') {
-    return renderEnumerationStoryContent(storyProps)
-  }
-
-  if (selectedFlow === 'input') {
-    return renderInputStoryContent(storyProps)
-  }
-
-  if (selectedFlow === 'api') {
-    return renderApiStoryContent(storyProps)
-  }
-
-  if (selectedFlow === 'response') {
-    return renderResponseStoryContent(storyProps)
-  }
-
-  if (selectedFlow === 'request') {
-    return renderRequestStoryContent(storyProps)
-  }
-
-  if (selectedFlow === 'authz') {
-    return renderAuthzStoryContent(storyProps)
-  }
-
-  if (selectedFlow === 'exploitation') {
-    return renderExploitationStoryContent(storyProps)
-  }
-
-  if (selectedFlow === 'info-disclosure') {
-    return renderInfoDisclosureStoryContent(storyProps)
-  }
-
-  if (selectedFlow === 'session') {
-    return renderSessionStoryContent(storyProps)
-  }
-
-  if (selectedFlow === 'upload') {
-    return renderUploadStoryContent(storyProps)
-  }
-
-  return renderDecodeStoryContent(storyProps)
+  return (
+    <>
+      {content}
+      {renderStageGuidance(stageGuidance)}
+    </>
+  )
 }

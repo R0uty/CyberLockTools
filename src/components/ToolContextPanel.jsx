@@ -4,6 +4,7 @@ export default function ToolContextPanel({
   toolTitle,
   relatedGuides,
   relatedFlowStages,
+  flowOriginContext,
   onOpenGuide,
   onOpenFlowStage,
 }) {
@@ -17,6 +18,34 @@ export default function ToolContextPanel({
         <h3>Related Next Steps</h3>
         <p>Jump to relevant pentesting guides or continue from a matching flow stage.</p>
       </div>
+
+      {flowOriginContext?.flowKey && flowOriginContext?.stageId ? (
+        <section className="tool-context-resume" aria-label="Resume flow from tool">
+          <h4>Resume Flow</h4>
+          <p>You opened this tool from Flow Map. Jump back to where you left off or continue at the recommended stage.</p>
+          <div className="tool-context-resume-actions">
+            <button
+              type="button"
+              className="tool-context-chip tool-context-chip--resume"
+              onClick={() => onOpenFlowStage?.(flowOriginContext.flowKey, flowOriginContext.stageId)}
+            >
+              Return to current flow
+            </button>
+            {flowOriginContext.recommendedFlowKey && flowOriginContext.recommendedStageId ? (
+              <button
+                type="button"
+                className="tool-context-chip tool-context-chip--resume-secondary"
+                onClick={() => onOpenFlowStage?.(flowOriginContext.recommendedFlowKey, flowOriginContext.recommendedStageId)}
+              >
+                Continue at recommended stage
+              </button>
+            ) : null}
+          </div>
+          {flowOriginContext.recommendationReason ? (
+            <p className="tool-context-resume-reason">{flowOriginContext.recommendationReason}</p>
+          ) : null}
+        </section>
+      ) : null}
 
       <div className="tool-context-grid">
         <section className="tool-context-section" aria-label="Related guides">

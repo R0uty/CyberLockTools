@@ -22,6 +22,39 @@
   flex-wrap: wrap;
 }
 
+.flow-map-command-open {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 32px;
+  padding: 0.35rem 0.65rem;
+  border-radius: 8px;
+  border: 1px solid rgba(192, 192, 192, 0.2);
+  background: rgba(255, 255, 255, 0.05);
+  color: #e7e7e7;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.flow-map-command-open:hover {
+  border-color: rgba(87, 199, 255, 0.48);
+  background: rgba(87, 199, 255, 0.16);
+}
+
+.flow-map-command-open:focus-visible {
+  outline: 2px solid rgba(87, 199, 255, 0.76);
+  outline-offset: 2px;
+}
+
+.flow-map-command-row {
+  display: flex;
+  justify-content: flex-end;
+}
+
 .flow-map-selector-title {
   margin: 0 0 0.25rem;
   color: #f4f4f4;
@@ -44,6 +77,70 @@
   color: #b4b4b4;
   font-size: 0.92rem;
   line-height: 1.6;
+}
+
+.flow-map-group-progress {
+  margin: 0 0 1rem;
+  padding: 0.85rem;
+  border-radius: 12px;
+  border: 1px solid rgba(192, 192, 192, 0.16);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.flow-map-group-progress h2 {
+  margin: 0;
+  font-size: 0.95rem;
+  color: #ededed;
+}
+
+.flow-map-group-progress-grid {
+  margin-top: 0.65rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  gap: 0.5rem;
+}
+
+.flow-map-group-progress-card {
+  padding: 0.65rem 0.7rem;
+  border-radius: 10px;
+  border: 1px solid rgba(192, 192, 192, 0.16);
+  background: rgba(0, 0, 0, 0.16);
+}
+
+.flow-map-group-progress-card--completed {
+  border-color: rgba(77, 217, 192, 0.28);
+  background: rgba(77, 217, 192, 0.08);
+}
+
+.flow-map-group-progress-card--in-progress {
+  border-color: rgba(255, 210, 64, 0.28);
+  background: rgba(255, 210, 64, 0.08);
+}
+
+.flow-map-group-progress-card--untouched {
+  border-color: rgba(192, 192, 192, 0.16);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.flow-map-group-progress-label {
+  margin: 0;
+  color: #ddd;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.flow-map-group-progress-status {
+  margin: 0.24rem 0 0;
+  color: #f5f5f5;
+  font-size: 0.86rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.flow-map-group-progress-meta {
+  margin: 0.22rem 0 0;
+  color: #b8b8b8;
+  font-size: 0.72rem;
 }
 
 .flow-map-quick-start {
@@ -439,6 +536,179 @@
   color: #444;
 }
 
+/* ── Flow command palette ── */
+
+.flow-map-command-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1200;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 8vh 1rem 1rem;
+  background: rgba(2, 4, 8, 0.76);
+  backdrop-filter: blur(4px);
+}
+
+.flow-map-command-dialog {
+  width: min(760px, 100%);
+  max-height: 84vh;
+  overflow: auto;
+  padding: 0.9rem;
+  border-radius: 14px;
+  border: 1px solid rgba(87, 199, 255, 0.24);
+  background: linear-gradient(180deg, rgba(18, 24, 30, 0.98), rgba(10, 14, 18, 0.99));
+  box-shadow: 0 26px 52px rgba(0, 0, 0, 0.45);
+}
+
+.flow-map-command-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.7rem;
+  margin-bottom: 0.6rem;
+}
+
+.flow-map-command-head h2 {
+  margin: 0;
+  color: #f2f9ff;
+  font-size: 1rem;
+}
+
+.flow-map-command-close {
+  padding: 0.25rem 0.5rem;
+  border-radius: 7px;
+  border: 1px solid rgba(192, 192, 192, 0.2);
+  background: rgba(255, 255, 255, 0.04);
+  color: #dedede;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.74rem;
+}
+
+.flow-map-command-close:hover {
+  border-color: rgba(192, 192, 192, 0.35);
+}
+
+.flow-map-command-label {
+  display: block;
+  margin-bottom: 0.36rem;
+  color: #acacac;
+  font-size: 0.73rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.flow-map-command-input {
+  width: 100%;
+  margin-bottom: 0.65rem;
+  padding: 0.62rem 0.7rem;
+  border-radius: 9px;
+  border: 1px solid rgba(87, 199, 255, 0.28);
+  background: rgba(6, 11, 16, 0.84);
+  color: #f1f1f1;
+  font: inherit;
+  font-size: 0.9rem;
+}
+
+.flow-map-command-input:focus-visible,
+.flow-map-command-close:focus-visible,
+.flow-map-command-item:focus-visible {
+  outline: 2px solid rgba(87, 199, 255, 0.76);
+  outline-offset: 2px;
+}
+
+.flow-map-command-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.42rem;
+}
+
+.flow-map-command-item {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.18rem;
+  align-items: flex-start;
+  padding: 0.62rem 0.68rem;
+  border-radius: 9px;
+  border: 1px solid rgba(192, 192, 192, 0.15);
+  background: rgba(255, 255, 255, 0.03);
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  text-align: left;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.flow-map-command-item:hover,
+.flow-map-command-item--active {
+  border-color: rgba(87, 199, 255, 0.5);
+  background: rgba(87, 199, 255, 0.13);
+}
+
+.flow-map-command-item-top {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.55rem;
+}
+
+.flow-map-command-item-label {
+  color: #f0f7ff;
+  font-size: 0.86rem;
+  font-weight: 700;
+}
+
+.flow-map-command-kind {
+  padding: 0.12rem 0.42rem;
+  border-radius: 999px;
+  border: 1px solid rgba(192, 192, 192, 0.2);
+  background: rgba(255, 255, 255, 0.05);
+  color: #cfcfcf;
+  font-size: 0.64rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  flex-shrink: 0;
+}
+
+.flow-map-command-kind--finding,
+.flow-map-command-kind--outcome {
+  border-color: rgba(87, 199, 255, 0.5);
+  color: #c8ecff;
+}
+
+.flow-map-command-kind--vulnerability {
+  border-color: rgba(255, 158, 74, 0.52);
+  color: #ffd9b5;
+}
+
+.flow-map-command-kind--tool {
+  border-color: rgba(120, 210, 170, 0.5);
+  color: #c9f3e2;
+}
+
+.flow-map-command-item-meta {
+  color: #acc5d4;
+  font-size: 0.72rem;
+}
+
+.flow-map-command-item-desc {
+  color: #9ea9b1;
+  font-size: 0.75rem;
+  line-height: 1.45;
+}
+
+.flow-map-command-empty {
+  margin: 0;
+  color: #9a9a9a;
+  font-size: 0.82rem;
+}
+
 /* ── Story panel ── */
 
 .flow-map-story-panel {
@@ -464,6 +734,227 @@
   color: #9f9f9f;
   font-size: 0.82rem;
   line-height: 1.55;
+}
+
+.flow-map-evidence {
+  margin: 0 0 0.7rem;
+  padding: 0.75rem;
+  border-radius: 10px;
+  border: 1px solid rgba(192, 192, 192, 0.14);
+  background: rgba(0, 0, 0, 0.22);
+}
+
+.flow-map-evidence h4 {
+  margin: 0 0 0.2rem;
+  color: #e6e6e6;
+  font-size: 0.85rem;
+}
+
+.flow-map-evidence p {
+  margin: 0 0 0.55rem;
+  color: #9d9d9d;
+  font-size: 0.76rem;
+}
+
+.flow-map-evidence-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.55rem;
+}
+
+.flow-map-evidence-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.flow-map-evidence-field--full {
+  grid-column: 1 / -1;
+}
+
+.flow-map-evidence-input,
+.flow-map-evidence-textarea {
+  width: 100%;
+  padding: 0.55rem 0.65rem;
+  border-radius: 8px;
+  border: 1px solid rgba(192, 192, 192, 0.16);
+  background: rgba(8, 8, 8, 0.5);
+  color: #efefef;
+  font: inherit;
+  font-size: 0.85rem;
+}
+
+.flow-map-evidence-textarea {
+  min-height: 74px;
+  resize: vertical;
+}
+
+.flow-map-evidence-input:focus-visible,
+.flow-map-evidence-textarea:focus-visible {
+  outline: 2px solid rgba(87, 199, 255, 0.7);
+  outline-offset: 2px;
+}
+
+.flow-map-handoff {
+  margin: 0 0 0.85rem;
+  padding: 0.7rem;
+  border-radius: 10px;
+  border: 1px solid rgba(87, 199, 255, 0.22);
+  background: rgba(87, 199, 255, 0.07);
+}
+
+.flow-map-handoff h3 {
+  margin: 0 0 0.2rem;
+  color: #e7f7ff;
+  font-size: 0.9rem;
+}
+
+.flow-map-handoff p {
+  margin-bottom: 0.55rem;
+  color: #abc8d9;
+}
+
+.flow-map-handoff-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 0.45rem;
+}
+
+.flow-map-handoff-button {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  align-items: flex-start;
+  width: 100%;
+  padding: 0.65rem 0.75rem;
+  border-radius: 10px;
+  border: 1px solid rgba(87, 199, 255, 0.3);
+  background: rgba(6, 20, 30, 0.58);
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  text-align: left;
+  transition: border-color 0.2s ease, transform 0.15s ease;
+}
+
+.flow-map-handoff-button:hover {
+  transform: translateY(-1px);
+  border-color: rgba(87, 199, 255, 0.5);
+}
+
+.flow-map-handoff-button:focus-visible {
+  outline: 2px solid rgba(87, 199, 255, 0.7);
+  outline-offset: 2px;
+}
+
+.flow-map-handoff-title {
+  color: #f2fbff;
+  font-size: 0.84rem;
+  font-weight: 700;
+}
+
+.flow-map-handoff-reason {
+  color: #abc8d9;
+  font-size: 0.75rem;
+  line-height: 1.45;
+}
+
+.flow-map-signal {
+  margin: 0 0 0.7rem;
+  padding: 0.65rem 0.75rem;
+  border-radius: 10px;
+  border: 1px solid rgba(192, 192, 192, 0.2);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.flow-map-signal h4 {
+  margin: 0 0 0.15rem;
+  color: #f1f1f1;
+  font-size: 0.83rem;
+}
+
+.flow-map-signal p {
+  margin: 0;
+  color: #d4d4d4;
+  font-size: 0.78rem;
+}
+
+.flow-map-signal-hint {
+  margin-top: 0.35rem;
+  color: #ececec;
+  font-size: 0.76rem;
+  line-height: 1.45;
+}
+
+.flow-map-signal-checklist {
+  margin: 0.5rem 0 0;
+  padding-left: 1rem;
+  color: #e5e5e5;
+  font-size: 0.76rem;
+  line-height: 1.45;
+}
+
+.flow-map-signal-checklist li + li {
+  margin-top: 0.2rem;
+}
+
+.flow-map-signal-tools {
+  margin-top: 0.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.flow-map-related-tool {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 30px;
+  padding: 0.32rem 0.58rem;
+  border-radius: 8px;
+  border: 1px solid rgba(240, 240, 240, 0.24);
+  background: rgba(0, 0, 0, 0.24);
+  color: #f4f4f4;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.72rem;
+  font-weight: 700;
+  transition: border-color 0.2s ease, transform 0.15s ease;
+}
+
+.flow-map-related-tool:hover {
+  transform: translateY(-1px);
+  border-color: rgba(240, 240, 240, 0.5);
+}
+
+.flow-map-related-tool:focus-visible {
+  outline: 2px solid rgba(87, 199, 255, 0.7);
+  outline-offset: 2px;
+}
+
+.flow-map-signal-separator {
+  margin: 0 0.45rem;
+  color: rgba(240, 240, 240, 0.45);
+}
+
+.flow-map-signal--low {
+  border-color: rgba(120, 210, 170, 0.45);
+  background: rgba(120, 210, 170, 0.1);
+}
+
+.flow-map-signal--medium {
+  border-color: rgba(255, 210, 90, 0.5);
+  background: rgba(255, 210, 90, 0.12);
+}
+
+.flow-map-signal--high {
+  border-color: rgba(255, 158, 74, 0.5);
+  background: rgba(255, 158, 74, 0.12);
+}
+
+.flow-map-signal--critical {
+  border-color: rgba(255, 107, 107, 0.5);
+  background: rgba(255, 107, 107, 0.14);
 }
 
 .flow-map-outcome-label {
@@ -541,6 +1032,34 @@
   max-width: 68ch;
 }
 
+.flow-map-guidance {
+  margin-top: 0.45rem;
+  display: grid;
+  gap: 0.55rem;
+}
+
+.flow-map-guidance-card {
+  padding: 0.68rem 0.78rem;
+  border-radius: 11px;
+  border: 1px solid rgba(192, 192, 192, 0.16);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.flow-map-guidance-card h3 {
+  margin: 0 0 0.24rem;
+  color: #f2f2f2;
+  font-size: 0.82rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.flow-map-guidance-card p {
+  margin: 0;
+  color: #c7c7c7;
+  font-size: 0.88rem;
+  line-height: 1.6;
+}
+
 .flow-map-story strong {
   color: #ffffff;
 }
@@ -581,6 +1100,18 @@
 .flow-map-button--ghost {
   background: rgba(255, 255, 255, 0.03);
   color: #efefef;
+}
+
+.flow-map-export-actions {
+  margin-top: 0.55rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.flow-map-export-actions .flow-map-button {
+  min-height: 38px;
+  font-size: 0.82rem;
 }
 
 .flow-map-feedback {
@@ -734,6 +1265,22 @@
 /* ── Responsive ── */
 
 @media (max-width: 768px) {
+  .flow-map-command-row {
+    justify-content: stretch;
+  }
+
+  .flow-map-command-open {
+    width: 100%;
+  }
+
+  .flow-map-command-backdrop {
+    padding-top: 4vh;
+  }
+
+  .flow-map-command-dialog {
+    max-height: 90vh;
+  }
+
   .flow-map-stepper-header {
     flex-direction: column;
   }
@@ -748,6 +1295,10 @@
 
   .flow-map-node-graph {
     height: 120px;
+  }
+
+  .flow-map-evidence-grid {
+    grid-template-columns: 1fr;
   }
 
   .flow-map-story {

@@ -5,8 +5,15 @@ export const STORAGE_FEEDBACK_KEY = 'flow-map-feedback'
 export const STORAGE_FLOW_KEY = 'flow-map-selected-flow'
 export const STORAGE_ACTION_KEY = 'flow-map-selected-action'
 export const STORAGE_OUTCOME_KEY = 'flow-map-selected-outcome'
+export const STORAGE_OUTCOME_SIGNAL_KEY = 'flow-map-outcome-signal'
+export const STORAGE_OUTCOME_PROFILE_KEY = 'flow-map-outcome-profile'
 export const STORAGE_NOTES_KEY = 'flow-map-notes'
+export const STORAGE_STAGE_EVIDENCE_KEY = 'flow-map-stage-evidence'
 export const STORAGE_COMPLETED_KEY = 'flow-map-completed'
+export const STORAGE_IN_PROGRESS_KEY = 'flow-map-in-progress'
+export const STORAGE_STAGE_HISTORY_KEY = 'flow-map-stage-history'
+export const STORAGE_DECISION_HISTORY_KEY = 'flow-map-decision-history'
+export const STORAGE_TOOL_FLOW_ORIGIN_KEY = 'flow-map-tool-origin'
 
 export const MIN_ZOOM = 0.8
 export const MAX_ZOOM = 1.8
@@ -456,3 +463,156 @@ export const FLOWS = {
 }
 
 export const ACTIVE_FLOW_GROUP_KEYS = new Set(FLOW_GROUPS.map(([groupKey]) => groupKey))
+
+export const FINDING_QUICK_STARTS = [
+  {
+    id: 'finding-token',
+    label: 'I found a token/value',
+    description: 'Jump into response analysis to classify and trace suspicious values.',
+    category: 'analysis',
+    flowKey: 'response',
+    stageId: 'response-data-found',
+    confidence: 'high'
+  },
+  {
+    id: 'finding-login',
+    label: 'I found a login page',
+    description: 'Start directly at login testing for auth behavior checks.',
+    category: 'authentication',
+    flowKey: 'login',
+    stageId: 'login-page',
+    confidence: 'high'
+  },
+  {
+    id: 'finding-403',
+    label: 'I got 403 / access denied',
+    description: 'Branch into authorization and request tampering validation.',
+    category: 'authorization',
+    flowKey: 'authz',
+    stageId: 'privileged-action-found',
+    confidence: 'medium'
+  },
+  {
+    id: 'finding-api',
+    label: 'I saw an API endpoint',
+    description: 'Start from API inspection and auth behavior checks.',
+    category: 'enumeration',
+    flowKey: 'api',
+    stageId: 'api-endpoint-found',
+    confidence: 'medium'
+  },
+  {
+    id: 'finding-upload',
+    label: 'I found file upload',
+    description: 'Jump into upload validation and controlled exploitation.',
+    category: 'vulnerability',
+    flowKey: 'upload',
+    stageId: 'upload-found',
+    confidence: 'high'
+  }
+]
+
+export const FLOW_OUTCOME_PHRASE_STARTS = [
+  {
+    id: 'outcome-token-extracted',
+    phrase: 'token found in response',
+    description: 'Investigate token semantics, replay behavior, and trust boundaries.',
+    flowKey: 'response',
+    stageId: 'interesting-data',
+    confidence: 'high',
+    category: 'analysis'
+  },
+  {
+    id: 'outcome-authz-denied',
+    phrase: '403 after role change',
+    description: 'Validate access-control logic and ownership boundaries.',
+    flowKey: 'authz',
+    stageId: 'access-result',
+    confidence: 'medium',
+    category: 'authorization'
+  },
+  {
+    id: 'outcome-upload-anomaly',
+    phrase: 'upload accepted unexpected file type',
+    description: 'Test extension and MIME handling for execution risk.',
+    flowKey: 'upload',
+    stageId: 'upload-result',
+    confidence: 'high',
+    category: 'vulnerability'
+  },
+  {
+    id: 'outcome-input-anomaly',
+    phrase: 'input changed server behavior',
+    description: 'Branch into deeper input-validation and vulnerability analysis.',
+    flowKey: 'input',
+    stageId: 'response-change',
+    confidence: 'medium',
+    category: 'testing'
+  },
+  {
+    id: 'outcome-session-weakness',
+    phrase: 'session cookie missing secure flags',
+    description: 'Assess session fixation, expiry, and cross-site protections.',
+    flowKey: 'session',
+    stageId: 'inspect-session',
+    confidence: 'high',
+    category: 'testing'
+  }
+]
+
+export const VULNERABILITY_TYPE_STARTS = [
+  {
+    id: 'vuln-sqli',
+    type: 'SQL injection',
+    description: 'Test user input and backend query behavior for SQLi indicators.',
+    flowKey: 'input',
+    stageId: 'input-field-found',
+    confidence: 'medium',
+    category: 'vulnerability'
+  },
+  {
+    id: 'vuln-broken-access-control',
+    type: 'Broken access control',
+    description: 'Validate role and object authorization enforcement paths.',
+    flowKey: 'authz',
+    stageId: 'privileged-action-found',
+    confidence: 'high',
+    category: 'authorization'
+  },
+  {
+    id: 'vuln-info-disclosure',
+    type: 'Information disclosure',
+    description: 'Investigate leaked source, configs, and verbose error artifacts.',
+    flowKey: 'info-disclosure',
+    stageId: 'source-found',
+    confidence: 'high',
+    category: 'recon'
+  },
+  {
+    id: 'vuln-insecure-upload',
+    type: 'Insecure file upload',
+    description: 'Check upload filters and server-side execution controls.',
+    flowKey: 'upload',
+    stageId: 'upload-found',
+    confidence: 'high',
+    category: 'vulnerability'
+  },
+  {
+    id: 'vuln-session-management',
+    type: 'Session management weakness',
+    description: 'Assess cookie attributes, fixation, and expiration enforcement.',
+    flowKey: 'session',
+    stageId: 'session-captured',
+    confidence: 'medium',
+    category: 'testing'
+  },
+  {
+    id: 'vuln-ssrf',
+    type: 'SSRF behavior',
+    description: 'Inspect request tampering paths for server-side fetch indicators.',
+    flowKey: 'request',
+    stageId: 'http-request-observed',
+    confidence: 'low',
+    category: 'vulnerability'
+  }
+]
