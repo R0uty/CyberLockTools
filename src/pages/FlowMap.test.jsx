@@ -274,8 +274,8 @@ describe('FlowMap interactions', () => {
     const input = within(dialog).getByLabelText('Search finding, tool, vulnerability type, or outcome phrase')
     fireEvent.change(input, { target: { value: 'SQL injection' } })
 
-    const resultButton = within(dialog).getByRole('button', { name: 'Open Input Testing Flow at Input Field Found' })
-    fireEvent.click(resultButton)
+    const resultButtons = within(dialog).getAllByRole('button', { name: 'Open Input Testing Flow at Input Field Found' })
+    fireEvent.click(resultButtons[0])
 
     const progressPanel = screen.getByLabelText('Flow progress')
     expect(within(progressPanel).getByRole('heading', { name: 'Input Field Found' })).toBeTruthy()
