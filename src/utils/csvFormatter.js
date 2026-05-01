@@ -106,12 +106,37 @@ function parseCSVLine(line) {
   return result
 }
 
+function sanitizeSpreadsheetCell(value) {
+  const strValue = String(value ?? '')
+
+  if (strValue.startsWith("'")) {
+    return strValue
+  }
+
+  if (/^[\t\r ]*[=+\-@]/.test(strValue)) {
+    return `'${strValue}`
+  }
+
+  return strValue
+}
+
+function serializeCSVCell(value, options = {}) {
+  const sanitizeFormulas = options.sanitizeFormulas ?? true
+  const safeValue = sanitizeFormulas ? sanitizeSpreadsheetCell(value) : String(value ?? '')
+
+  if (safeValue.includes(',') || safeValue.includes('"') || safeValue.includes('\n')) {
+    return `"${safeValue.replace(/"/g, '""')}"`
+  }
+
+  return safeValue
+}
+
 /**
  * Formats CSV with proper spacing and consistency
  * @param {string} csvString - The CSV string to format
  * @returns {object} Object with formatted CSV or error
  */
-export function formatCSV(csvString) {
+export function formatCSV(csvString, options = {}) {
   if (!csvString || typeof csvString !== 'string') {
     return {
       success: false,
@@ -142,10 +167,7 @@ export function formatCSV(csvString) {
     })
 
     // Format header
-    let formatted = headers.map(h => {
-      const value = h.toString()
-      return `"${value}"`
-    }).join(',')
+    let formatted = headers.map((header) => serializeCSVCell(String(header), options)).join(',')
 
     formatted += '\n'
 
@@ -153,12 +175,7 @@ export function formatCSV(csvString) {
     data.forEach(row => {
       const values = headers.map(header => {
         const value = row[header] || ''
-        const strValue = value.toString()
-        // Quote if contains comma or quote
-        if (strValue.includes(',') || strValue.includes('"') || strValue.includes('\n')) {
-          return `"${strValue.replace(/"/g, '""')}"`
-        }
-        return strValue
+        return serializeCSVCell(value, options)
       })
       formatted += values.join(',') + '\n'
     })
@@ -214,7 +231,7 @@ export function csvToJSON(csvString) {
  * @param {string} jsonString - The JSON string to convert
  * @returns {object} Object with CSV or error
  */
-export function jsonToCSV(jsonString) {
+export function jsonToCSV(jsonString, options = {}) {
   if (!jsonString || typeof jsonString !== 'string') {
     return {
       success: false,
@@ -252,16 +269,12 @@ export function jsonToCSV(jsonString) {
     const headers = Object.keys(data[0])
 
     // Build CSV
-    let csv = headers.map(h => `"${h}"`).join(',') + '\n'
+    let csv = headers.map((header) => serializeCSVCell(String(header), options)).join(',') + '\n'
 
     data.forEach(row => {
       const values = headers.map(header => {
         const value = row[header] ?? ''
-        const strValue = value.toString()
-        if (strValue.includes(',') || strValue.includes('"') || strValue.includes('\n')) {
-          return `"${strValue.replace(/"/g, '""')}"`
-        }
-        return strValue
+        return serializeCSVCell(value, options)
       })
       csv += values.join(',') + '\n'
     })

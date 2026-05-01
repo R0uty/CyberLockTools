@@ -16,6 +16,7 @@ export default function CSVFormatter() {
   const [error, setError] = useState('')
   const [stats, setStats] = useState(null)
   const [mode, setMode] = useState('csv') // 'csv' or 'json'
+  const [sanitizeSpreadsheetFormulas, setSanitizeSpreadsheetFormulas] = useState(true)
 
   const handleFormat = () => {
     setError('')
@@ -28,7 +29,7 @@ export default function CSVFormatter() {
         return
       }
 
-      const result = formatCSV(input)
+      const result = formatCSV(input, { sanitizeFormulas: sanitizeSpreadsheetFormulas })
 
       if (result.success) {
         setOutput(result.formatted)
@@ -86,7 +87,7 @@ export default function CSVFormatter() {
           setOutput(result.json)
         }
       } else {
-        result = jsonToCSV(input)
+        result = jsonToCSV(input, { sanitizeFormulas: sanitizeSpreadsheetFormulas })
         if (result.success) {
           setOutput(result.csv)
         }
@@ -181,6 +182,18 @@ export default function CSVFormatter() {
               className="mode-radio"
             />
             JSON Input
+          </label>
+        </div>
+
+        <div className="mode-selector">
+          <label className="mode-label">
+            <input
+              type="checkbox"
+              checked={sanitizeSpreadsheetFormulas}
+              onChange={(e) => setSanitizeSpreadsheetFormulas(e.target.checked)}
+              className="mode-radio"
+            />
+            Spreadsheet-safe CSV export (neutralize formula cells)
           </label>
         </div>
 

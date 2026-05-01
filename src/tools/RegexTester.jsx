@@ -1,7 +1,11 @@
-import React, { useState, useMemo } from 'react';
+import React, { useEffect, useState } from 'react';
 import { copyText } from '../utils/clipboard'
 import { useSEO } from '../hooks/useSEO';
+import { analyzeRegexInWorker, analyzeRegexSync } from '../utils/regexEngine'
 import '../styles/pages/RegexTester.css'
+
+const MAX_INPUT_LENGTH = 20000
+const MAX_MATCHES = 2000
 
 export default function RegexTester() {
   useSEO({
@@ -15,84 +19,54 @@ export default function RegexTester() {
   const [flags, setFlags] = useState({ g: true, i: false, m: true, s: false });
   const [replacement, setReplacement] = useState('[MATCH]');
   const [copied, setCopied] = useState('');
+  const [isProcessing, setIsProcessing] = useState(false)
+  const [analysis, setAnalysis] = useState({
+    matches: [],
+    highlightedSegments: [{ text: testString, isMatch: false }],
+    error: '',
+    replacedText: testString,
+    limitReached: false,
+  })
 
-  // Compute regex results memoized
-  const { regex, matches, highlightedSegments, error } = useMemo(() => {
-    let computedRegex = null;
-    let computedMatches = [];
-    let computedHighlightedSegments = [{ text: testString, isMatch: false }];
-    let computedError = '';
+  useEffect(() => {
+    let cancelled = false
 
-    try {
-      const flagStr = (flags.g ? 'g' : '') + (flags.i ? 'i' : '') + (flags.m ? 'm' : '') + (flags.s ? 's' : '');
-      computedRegex = new RegExp(pattern, flagStr);
-
-      if (flags.g) {
-        let match;
-        while ((match = computedRegex.exec(testString)) !== null) {
-          computedMatches.push({
-            full: match[0],
-            groups: match.slice(1),
-            index: match.index,
-            length: match[0].length,
-          });
-
-          if (match[0] === '') {
-            computedRegex.lastIndex += 1;
-          }
-        }
-      } else {
-        const match = testString.match(computedRegex);
-        if (match) {
-          computedMatches.push({
-            full: match[0],
-            groups: match.slice(1),
-            index: match.index,
-            length: match[0].length,
-          });
-        }
-      }
-
-      // Create safe highlighted segments for rendering without injecting HTML.
-      if (computedMatches.length > 0) {
-        let lastIndex = 0;
-        computedHighlightedSegments = [];
-        computedMatches.forEach((match) => {
-          const prefix = testString.substring(lastIndex, match.index);
-          if (prefix) {
-            computedHighlightedSegments.push({ text: prefix, isMatch: false });
-          }
-          computedHighlightedSegments.push({ text: match.full, isMatch: true });
-          lastIndex = match.index + match.length;
-        });
-        const suffix = testString.substring(lastIndex);
-        if (suffix) {
-          computedHighlightedSegments.push({ text: suffix, isMatch: false });
-        }
-      }
-    } catch (err) {
-      computedError = err.message;
+    const payload = {
+      pattern,
+      testString,
+      flags,
+      replacement,
+      maxInputLength: MAX_INPUT_LENGTH,
+      maxMatches: MAX_MATCHES,
     }
 
-    return {
-      regex: computedRegex,
-      matches: computedMatches,
-      highlightedSegments: computedHighlightedSegments,
-      error: computedError,
-    };
-  }, [pattern, testString, flags]);
+    async function runAnalysis() {
+      setIsProcessing(true)
+
+      const canUseWorker = typeof Worker !== 'undefined' && !import.meta.env.VITEST
+      const result = canUseWorker
+        ? await analyzeRegexInWorker(payload, { timeoutMs: 450 })
+        : analyzeRegexSync(payload)
+
+      if (!cancelled) {
+        setAnalysis(result)
+        setIsProcessing(false)
+      }
+    }
+
+    runAnalysis()
+
+    return () => {
+      cancelled = true
+    }
+  }, [pattern, testString, flags, replacement])
+
+  const { matches, highlightedSegments, error, replacedText, limitReached } = analysis
 
   const copyToClipboard = (text, type) => {
     copyText(text);
     setCopied(type);
     setTimeout(() => setCopied(''), 2000);
-  };
-
-  const getReplacedString = () => {
-    if (!regex) return testString;
-    const flagStr = (flags.g ? 'g' : '') + (flags.i ? 'i' : '') + (flags.m ? 'm' : '') + (flags.s ? 's' : '');
-    const tempRegex = new RegExp(pattern, flagStr);
-    return testString.replace(tempRegex, replacement);
   };
 
   const downloadResults = () => {
@@ -111,7 +85,7 @@ Matches:
 ${matches.map((m, i) => `${i + 1}. "${m.full}" at index ${m.index}${m.groups.length > 0 ? ` - Groups: ${m.groups.join(', ')}` : ''}`).join('\n')}
 
 Replaced String (using: "${replacement}"):
-${getReplacedString()}`;
+${replacedText}`;
 
     const blob = new Blob([results], { type: 'text/plain' });
     const url = URL.createObjectURL(blob);
@@ -214,6 +188,18 @@ ${getReplacedString()}`;
           </div>
 
           <div className="regex-results-panel">
+            {isProcessing && (
+              <div className="regex-notice">
+                Running regex analysis...
+              </div>
+            )}
+
+            {limitReached && !error && (
+              <div className="regex-notice regex-notice--warning">
+                Match limit reached ({MAX_MATCHES}). Refine your pattern for full output.
+              </div>
+            )}
+
             {error && (
               <div className="error-message">
                 <strong>Regex Error:</strong> {error}
@@ -261,7 +247,7 @@ ${getReplacedString()}`;
                   <h3>Replace Demo</h3>
                   <div className="replace-box">
                     <div className="replace-label">Replace with: <code>{replacement}</code></div>
-                    <div className="replaced-text">{getReplacedString()}</div>
+                    <div className="replaced-text">{replacedText}</div>
                   </div>
                 </div>
 
@@ -280,7 +266,7 @@ ${getReplacedString()}`;
                     {copied === 'matches' ? '✓ Copied Matches' : 'Copy Matches (JSON)'}
                   </button>
                   <button
-                    onClick={() => copyToClipboard(getReplacedString(), 'replaced')}
+                    onClick={() => copyToClipboard(replacedText, 'replaced')}
                     className="action-btn decode-btn"
                   >
                     {copied === 'replaced' ? '✓ Copied' : 'Copy Replaced Text'}

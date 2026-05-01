@@ -38,6 +38,21 @@
   gap: 1rem;
 }
 
+.regex-notice {
+  padding: 0.85rem 1rem;
+  border-radius: 12px;
+  border: 1px solid rgba(192, 192, 192, 0.16);
+  background: rgba(255, 255, 255, 0.04);
+  color: #dcdcdc;
+  font-size: 0.92rem;
+}
+
+.regex-notice--warning {
+  border-color: rgba(255, 193, 79, 0.45);
+  background: rgba(255, 193, 79, 0.12);
+  color: #ffe8bc;
+}
+
 .regex-section {
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid rgba(192, 192, 192, 0.12);
