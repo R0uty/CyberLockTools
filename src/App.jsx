@@ -13,6 +13,7 @@ import {
   STORAGE_STAGE_KEY,
   STORAGE_TOOL_FLOW_ORIGIN_KEY
 } from './data/flowMapConfig'
+import { restoreWorkspaceCaseSession } from './utils/labWorkspace'
 import { readSessionValue, writeSessionValue } from './utils/sessionStorage'
 import './styles/app/App.css'
 import './styles/app/App.extra.css'
@@ -122,6 +123,11 @@ export default function App() {
     writeSessionValue(STORAGE_STAGE_KEY, stageId)
     navigateTo('flow-map', null, null)
   }
+
+  const handleWorkspaceCaseOpen = useCallback((caseFile) => {
+    restoreWorkspaceCaseSession(caseFile)
+    navigateTo('flow-map', null, null)
+  }, [navigateTo])
 
   const handleCategoryClick = (category) => {
     if (category === 'skills') navigateTo('skills')
@@ -264,6 +270,7 @@ export default function App() {
       <LabNotes
         tools={tools}
         onToolClick={handleToolClick}
+        onOpenWorkspaceCase={handleWorkspaceCaseOpen}
       />
     )
   }

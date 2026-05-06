@@ -602,6 +602,7 @@ export const FLOWS = {
     tools: [
       { name: 'Burp Suite Repeater', purpose: 'Replay requests with modified Origin headers and compare Access-Control-Allow-Origin values.' },
       { name: 'HTTP Headers Parser', purpose: 'Parse and inspect CORS response headers inline.', toolTitle: 'HTTP Headers Parser' },
+      { name: 'CORS Analyzer', purpose: 'Analyze Access-Control-* headers against a supplied Origin and credential mode in the browser.', toolTitle: 'CORS Analyzer' },
       { name: 'curl', purpose: 'Test origin reflection with custom -H "Origin: ..." headers from the command line.' }
     ],
     stages: ['start', 'cors-headers-observed', 'test-wildcard', 'test-null-origin', 'test-reflection', 'confirm-cors', 'next-step'],

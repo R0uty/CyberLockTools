@@ -14,4 +14,10 @@ describe('toolContext relations', () => {
     expect(related).toContain('Postman')
     expect(related).toContain('curl')
   })
+
+  it('returns CORS flow links for the CORS Analyzer', () => {
+    const related = getRelatedFlowStages('CORS Analyzer')
+
+    expect(related.some((entry) => entry.flowKey === 'cors' && entry.stageId === 'cors-headers-observed')).toBe(true)
+  })
 })

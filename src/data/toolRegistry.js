@@ -154,6 +154,12 @@ export const TOOL_CATALOG = [
     title: 'CSP Generator & Analyzer',
     description: 'Build Content-Security-Policy headers, generate meta tags, and analyze pasted CSP strings for risky directives.'
   },
+  {
+    category: 'Analyzers & Parsers',
+    iconName: 'GlobeIcon',
+    title: 'CORS Analyzer',
+    description: 'Analyze Access-Control-* response headers against a supplied origin, credential mode, and browser rules to spot risky or broken CORS policies.'
+  },
   // Penetration Testing Tools
   {
     category: 'Penetration Testing',
@@ -266,6 +272,7 @@ export const TOOL_COMPONENT_KEYS = {
   'CSS Beautifier': 'CSSBeautifier',
   'HTML Encoder': 'HTMLEncoder',
   'CSP Generator & Analyzer': 'CSPGenerator',
+  'CORS Analyzer': 'CORSAnalyzer',
   'Reverse Shell Generator': 'ReverseShellGenerator',
   'XXE Generator': 'XXEGenerator',
   'XSS Generator': 'XSSGenerator',

@@ -1,7 +1,17 @@
-import { useMemo, useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { useSEO } from '../hooks/useSEO'
 import PageHeader from '../components/PageHeader'
 import { getLabNote } from '../data/labNotes'
+import {
+  buildWorkspaceExport,
+  clearWorkspaceCases,
+  createWorkspaceCaseFromSession,
+  deleteWorkspaceCase,
+  getCurrentWorkspaceDraft,
+  readWorkspaceCases,
+  saveWorkspaceCase
+} from '../utils/labWorkspace'
+import { showFeedback } from '../utils/feedback'
 import '../styles/pages/LabNotes.css'
 
 const CATEGORY_NOTES = {
@@ -29,14 +39,43 @@ const FLOW_SKILL_NOTES = [
   }
 ]
 
-export default function LabNotes({ tools, onToolClick }) {
+function downloadWorkspaceExport(content) {
+  const blob = new Blob([content], { type: 'application/json;charset=utf-8' })
+  const objectUrl = URL.createObjectURL(blob)
+  const link = document.createElement('a')
+
+  link.href = objectUrl
+  link.download = `lab-workspace-${new Date().toISOString().replace(/[:.]/g, '-')}.json`
+  link.rel = 'noopener'
+  link.style.display = 'none'
+
+  document.body.appendChild(link)
+  link.click()
+  link.remove()
+  URL.revokeObjectURL(objectUrl)
+}
+
+function formatCaseTimestamp(value) {
+  if (!value) {
+    return 'Unknown'
+  }
+
+  const parsed = new Date(value)
+  return Number.isNaN(parsed.getTime()) ? value : parsed.toLocaleString()
+}
+
+export default function LabNotes({ tools, onToolClick, onOpenWorkspaceCase }) {
   useSEO({
-    title: 'Lab Notes - Tool Explanations and Use Cases',
-    description: 'Browse lab notes for every tool in R0uty\'s Cyber Lab, with simple explanations of what each tool is and where it is commonly used.',
-    keywords: 'lab notes, cyber lab reference, tool explanations, what is base64, what is cron, security tool notes'
+    title: 'Lab Notes & Workspace - Tool Explanations and Saved Cases',
+    description: 'Browse tool notes and save browser-only case files from Flow Map state inside R0uty\'s Cyber Lab workspace.',
+    keywords: 'lab notes, cyber lab workspace, saved case files, flow map notes, browser-only security notes'
   })
 
   const [searchQuery, setSearchQuery] = useState('')
+  const [workspaceCases, setWorkspaceCases] = useState(() => readWorkspaceCases())
+  const [caseTitle, setCaseTitle] = useState('')
+  const [caseTags, setCaseTags] = useState('')
+  const [currentDraft, setCurrentDraft] = useState(() => getCurrentWorkspaceDraft())
   const normalizedQuery = searchQuery.trim().toLowerCase()
 
   const filteredTools = useMemo(() => {
@@ -81,6 +120,198 @@ export default function LabNotes({ tools, onToolClick }) {
       />
 
       <div className="tool-container">
+        <section className="tool-section lab-workspace-panel">
+          <div className="lab-workspace-header">
+            <div>
+              <span className="lab-notes-category-kicker">Browser workspace</span>
+              <h2>Saved Case Files</h2>
+              <p>Save the current Flow Map session into a persistent browser-only case file, then reopen it later without re-entering the details by hand.</p>
+            </div>
+            <div className="lab-workspace-header-meta">
+              <span>{workspaceCases.length} saved case{workspaceCases.length !== 1 ? 's' : ''}</span>
+              <span>{currentDraft ? 'Flow draft ready' : 'No active Flow Map draft'}</span>
+            </div>
+          </div>
+
+          {currentDraft ? (
+            <div className="lab-workspace-draft">
+              <div className="lab-workspace-draft-grid">
+                <div>
+                  <strong>Flow</strong>
+                  <span>{currentDraft.flowLabel}</span>
+                </div>
+                <div>
+                  <strong>Stage</strong>
+                  <span>{currentDraft.currentStageLabel}</span>
+                </div>
+                <div>
+                  <strong>Evidence</strong>
+                  <span>{currentDraft.evidenceCount}</span>
+                </div>
+                <div>
+                  <strong>Decisions</strong>
+                  <span>{currentDraft.decisionCount}</span>
+                </div>
+              </div>
+
+              <div className="lab-workspace-form">
+                <div className="textarea-group">
+                  <label htmlFor="lab-workspace-title">Case title</label>
+                  <input
+                    id="lab-workspace-title"
+                    type="text"
+                    value={caseTitle}
+                    onChange={(event) => setCaseTitle(event.target.value)}
+                    placeholder={currentDraft.titleSuggestion}
+                  />
+                </div>
+                <div className="textarea-group">
+                  <label htmlFor="lab-workspace-tags">Tags</label>
+                  <input
+                    id="lab-workspace-tags"
+                    type="text"
+                    value={caseTags}
+                    onChange={(event) => setCaseTags(event.target.value)}
+                    placeholder="auth, idor, cors"
+                  />
+                </div>
+              </div>
+
+              <div className="button-group lab-workspace-actions">
+                <button
+                  type="button"
+                  className="action-btn encode-btn"
+                  onClick={() => {
+                    try {
+                      const caseFile = createWorkspaceCaseFromSession({
+                        title: caseTitle,
+                        tags: caseTags
+                      })
+                      setWorkspaceCases(saveWorkspaceCase(caseFile))
+                      setCaseTitle('')
+                      setCaseTags('')
+                      setCurrentDraft(getCurrentWorkspaceDraft())
+                      showFeedback('Case file saved to browser workspace')
+                    } catch (error) {
+                      showFeedback(error.message, 'error')
+                    }
+                  }}
+                >
+                  Save current Flow Map snapshot
+                </button>
+                <button
+                  type="button"
+                  className="action-btn clear-btn"
+                  onClick={() => setCurrentDraft(getCurrentWorkspaceDraft())}
+                >
+                  Refresh snapshot
+                </button>
+                <button
+                  type="button"
+                  className="action-btn decode-btn"
+                  onClick={() => {
+                    if (workspaceCases.length === 0) {
+                      showFeedback('Save at least one case before exporting the workspace', 'error')
+                      return
+                    }
+
+                    downloadWorkspaceExport(buildWorkspaceExport(workspaceCases))
+                    showFeedback('Workspace export downloaded')
+                  }}
+                >
+                  Export workspace JSON
+                </button>
+                <button
+                  type="button"
+                  className="action-btn clear-btn"
+                  onClick={() => {
+                    setWorkspaceCases(clearWorkspaceCases())
+                    showFeedback('Workspace cleared')
+                  }}
+                >
+                  Clear workspace
+                </button>
+              </div>
+            </div>
+          ) : (
+            <div className="lab-workspace-empty">
+              <h3>No current Flow Map draft</h3>
+              <p>Open Flow Map, walk through a path, add notes or evidence, then return here to save it as a case file.</p>
+            </div>
+          )}
+
+          {workspaceCases.length > 0 ? (
+            <div className="lab-workspace-cases">
+              {workspaceCases.map((caseFile) => (
+                <article key={caseFile.id} className="lab-workspace-case-card">
+                  <div className="lab-workspace-case-top">
+                    <div>
+                      <span className="lab-note-card-label">{caseFile.flowLabel}</span>
+                      <h3>{caseFile.title}</h3>
+                    </div>
+                    <span className="lab-workspace-case-time">{formatCaseTimestamp(caseFile.updatedAt)}</span>
+                  </div>
+
+                  <div className="lab-workspace-case-metadata">
+                    <span><strong>Stage:</strong> {caseFile.currentStageLabel}</span>
+                    <span><strong>Evidence:</strong> {caseFile.evidenceCount}</span>
+                    <span><strong>Decisions:</strong> {caseFile.decisionCount}</span>
+                    <span><strong>Visited stages:</strong> {caseFile.visitedStageCount}</span>
+                  </div>
+
+                  {caseFile.tags?.length ? (
+                    <div className="lab-workspace-tag-list" aria-label="Case tags">
+                      {caseFile.tags.map((tag) => (
+                        <span key={`${caseFile.id}-${tag}`} className="lab-workspace-tag">{tag}</span>
+                      ))}
+                    </div>
+                  ) : null}
+
+                  {caseFile.notes ? (
+                    <p className="lab-workspace-case-notes">{caseFile.notes}</p>
+                  ) : (
+                    <p className="lab-workspace-case-notes lab-workspace-case-notes--empty">No saved notes for this case yet.</p>
+                  )}
+
+                  <div className="button-group lab-workspace-case-actions">
+                    <button
+                      type="button"
+                      className="action-btn encode-btn"
+                      onClick={() => onOpenWorkspaceCase?.(caseFile)}
+                    >
+                      Reopen in Flow Map
+                    </button>
+                    {caseFile.selectedTool ? (
+                      <button
+                        type="button"
+                        className="action-btn decode-btn"
+                        onClick={() => onToolClick(caseFile.selectedTool)}
+                      >
+                        Open {caseFile.selectedTool}
+                      </button>
+                    ) : null}
+                    <button
+                      type="button"
+                      className="action-btn clear-btn"
+                      onClick={() => {
+                        setWorkspaceCases(deleteWorkspaceCase(caseFile.id))
+                        showFeedback('Case file removed from workspace')
+                      }}
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </article>
+              ))}
+            </div>
+          ) : (
+            <div className="lab-workspace-empty lab-workspace-empty--saved">
+              <h3>No saved case files yet</h3>
+              <p>Your saved browser workspace will appear here after you capture a Flow Map snapshot.</p>
+            </div>
+          )}
+        </section>
+
         <section className="tool-section lab-notes-updates-panel">
           <div className="lab-notes-updates-header">
             <span className="lab-notes-category-kicker">Platform updates</span>

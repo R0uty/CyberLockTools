@@ -124,6 +124,11 @@ export const labNotesByTool = {
     usedFor: 'Used in frontend security hardening, header tuning, inline script reduction, and reviewing risky directives that weaken page protections.',
     example: 'Useful when tightening script-src or checking whether unsafe-inline is present.'
   },
+  'CORS Analyzer': {
+    what: 'A browser-side analyzer for Access-Control-* response headers that checks how a supplied Origin and credential mode interact with browser CORS rules.',
+    usedFor: 'Used in authorized testing when reviewing API responses, origin reflection behavior, wildcard policies, null-origin handling, and credentialed cross-origin data exposure.',
+    example: 'Helpful when a response returns Access-Control-Allow-Origin and you want to see whether a specific untrusted origin would actually be able to read it in the browser.'
+  },
   'Reverse Shell Generator': {
     what: 'A payload generator for reverse shell command variants across several languages and environments.',
     usedFor: 'Used in authorized red-team, pentest, and lab scenarios when preparing controlled shell callbacks for approved targets.',

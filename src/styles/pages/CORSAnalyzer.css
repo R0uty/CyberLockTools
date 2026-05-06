@@ -1,0 +1,151 @@
+.cors-analyzer-page .tool-section {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(192, 192, 192, 0.12);
+  border-radius: 16px;
+  padding: 1.35rem;
+}
+
+.cors-button-group {
+  margin: 0;
+}
+
+.cors-context-grid,
+.cors-summary-grid,
+.cors-policy-grid,
+.cors-findings-grid {
+  display: grid;
+  gap: 1rem;
+}
+
+.cors-context-grid {
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  align-items: end;
+}
+
+.cors-checkbox {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+  padding: 0.95rem 1rem;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(192, 192, 192, 0.08);
+  color: #dddddd;
+}
+
+.cors-checkbox input {
+  margin-top: 0.18rem;
+}
+
+.cors-textarea-row {
+  align-items: stretch;
+}
+
+.cors-textarea {
+  min-height: 360px;
+}
+
+.cors-summary-grid,
+.cors-policy-grid {
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+}
+
+.cors-summary-grid div,
+.cors-policy-grid div {
+  padding: 1rem;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(192, 192, 192, 0.08);
+}
+
+.cors-summary-grid strong,
+.cors-summary-grid span,
+.cors-policy-grid strong,
+.cors-policy-grid span {
+  display: block;
+}
+
+.cors-summary-grid strong,
+.cors-policy-grid strong,
+.cors-finding-level {
+  margin-bottom: 0.35rem;
+  color: #9f9f9f;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.cors-summary-grid span,
+.cors-policy-grid span {
+  color: #f1f1f1;
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.cors-summary-verdict {
+  margin: 1rem 0 0;
+  color: #d9d9d9;
+}
+
+.cors-results-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.cors-findings-grid {
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+.cors-finding-card {
+  padding: 1rem;
+  border-radius: 16px;
+  border: 1px solid rgba(192, 192, 192, 0.12);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.cors-finding-card--high {
+  background: rgba(190, 90, 90, 0.12);
+  border-color: rgba(190, 90, 90, 0.22);
+}
+
+.cors-finding-card--medium {
+  background: rgba(204, 168, 83, 0.12);
+  border-color: rgba(204, 168, 83, 0.22);
+}
+
+.cors-finding-card--low {
+  background: rgba(103, 184, 130, 0.1);
+  border-color: rgba(103, 184, 130, 0.18);
+}
+
+.cors-finding-card h4 {
+  margin-bottom: 0.65rem;
+}
+
+.cors-finding-card p {
+  margin: 0;
+  color: #dfdfdf;
+}
+
+@media (max-width: 768px) {
+  .cors-results-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 640px) {
+  .cors-button-group {
+    flex-direction: column;
+  }
+
+  .cors-button-group .action-btn,
+  .cors-results-header .action-btn,
+  .cors-analyzer-page .copy-btn {
+    width: 100%;
+  }
+}

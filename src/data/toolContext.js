@@ -13,6 +13,7 @@ const EXPLICIT_FLOW_LINKS = {
   'HTTP Headers Parser': [{ flowKey: 'response', stageId: 'analyze-data' }],
   'Text / JSON Diff Viewer': [{ flowKey: 'request', stageId: 'response-changed' }],
   'CSP Generator & Analyzer': [{ flowKey: 'session', stageId: 'inspect-session' }],
+  'CORS Analyzer': [{ flowKey: 'cors', stageId: 'cors-headers-observed' }],
   'Reverse Shell Generator': [{ flowKey: 'exploitation', stageId: 'execute-safely' }],
   'XXE Generator': [{ flowKey: 'input', stageId: 'analyze-behavior' }],
   'XSS Generator': [{ flowKey: 'input', stageId: 'analyze-behavior' }],
@@ -37,6 +38,7 @@ const EXPLICIT_GUIDE_LINKS = {
   'Regex Tester': ['Burp Suite Repeater', 'Browser DevTools'],
   'HTTP Headers Parser': ['Browser DevTools', 'curl', 'Burp Suite'],
   'CSP Generator & Analyzer': ['Browser DevTools', 'curl'],
+  'CORS Analyzer': ['Browser DevTools', 'curl', 'Burp Suite Repeater'],
   'GraphQL Injection Generator': ['Postman', 'curl', 'Burp Suite Repeater'],
   'SQL Injection Generator': ['sqlmap', 'Burp Suite Repeater'],
   'NoSQL Injection Generator': ['Postman', 'Burp Suite Repeater'],
@@ -52,13 +54,13 @@ const EXPLICIT_GUIDE_LINKS = {
 const KEYWORD_FLOW_LINKS = [
   { regex: /(sql|nosql|xss|ssti|xxe|command injection|path traversal)/iu, links: [{ flowKey: 'input', stageId: 'test-input' }] },
   { regex: /(graphql|api|jwt)/iu, links: [{ flowKey: 'api', stageId: 'inspect-spec' }] },
-  { regex: /(headers|response|json|yaml|xml|diff)/iu, links: [{ flowKey: 'response', stageId: 'analyze-data' }] },
+  { regex: /(headers|response|json|yaml|xml|diff|cors)/iu, links: [{ flowKey: 'response', stageId: 'analyze-data' }] },
   { regex: /(enumeration|subnet|network|ldap|snmp|smb)/iu, links: [{ flowKey: 'enumeration', stageId: 'identify-service' }] }
 ]
 
 const KEYWORD_GUIDE_LINKS = [
   { regex: /(api|graphql|jwt)/iu, guides: ['Postman', 'Burp Suite Repeater', 'curl'] },
-  { regex: /(headers|request|response|parameter)/iu, guides: ['Burp Suite Repeater', 'curl', 'Browser DevTools'] },
+  { regex: /(headers|request|response|parameter|cors)/iu, guides: ['Burp Suite Repeater', 'curl', 'Browser DevTools'] },
   { regex: /(xss|html|markdown|regex)/iu, guides: ['Browser DevTools', 'Burp Suite Repeater'] },
   { regex: /(sql)/iu, guides: ['sqlmap', 'Burp Suite Repeater'] }
 ]
