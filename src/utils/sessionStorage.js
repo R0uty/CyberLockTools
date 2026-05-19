@@ -10,6 +10,20 @@ function getSessionStorage() {
   }
 }
 
+export function hasSessionValue(key) {
+  const storage = getSessionStorage()
+
+  if (!storage) {
+    return false
+  }
+
+  try {
+    return storage.getItem(key) !== null
+  } catch {
+    return false
+  }
+}
+
 export function readSessionValue(key, fallback = '') {
   const storage = getSessionStorage()
 

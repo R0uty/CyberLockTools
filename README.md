@@ -1,6 +1,6 @@
-# CyberLock Tools
+# R0uty's Cyber Lab
 
-CyberLock Tools is a browser-based toolkit for developers, security practitioners, and students.
+R0uty's Cyber Lab is a browser-based toolkit for developers, security practitioners, and students.
 
 ## What this is
 
@@ -15,6 +15,9 @@ This project is a single web app that brings many small security and utility too
 ## Privacy model
 
 All processing happens in the browser. Input data is not sent to a backend service.
+
+- Active Flow Map progress is stored in browser session storage so a workflow can resume after navigation or refresh.
+- Saved Lab Notes case files are stored in browser local storage on the current device until they are exported or cleared.
 
 ## Who it is for
 

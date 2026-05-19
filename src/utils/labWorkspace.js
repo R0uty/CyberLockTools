@@ -1,19 +1,6 @@
-import {
-  FLOWS,
-  STORAGE_ACTION_KEY,
-  STORAGE_FLOW_KEY,
-  STORAGE_NOTES_KEY,
-  STORAGE_OUTCOME_KEY,
-  STORAGE_OUTCOME_PROFILE_KEY,
-  STORAGE_OUTCOME_SIGNAL_KEY,
-  STORAGE_STAGE_EVIDENCE_KEY,
-  STORAGE_STAGE_HISTORY_KEY,
-  STORAGE_STAGE_KEY,
-  STORAGE_DECISION_HISTORY_KEY,
-  STORAGE_TOOL_KEY
-} from '../data/flowMapConfig'
+import { FLOWS } from '../data/flowMapConfig'
 import { readLocalValue, writeLocalValue } from './localStorage'
-import { readSessionValue, writeSessionValue } from './sessionStorage'
+import { readFlowMapSessionState, writeFlowMapSessionState } from './flowMapSession'
 
 export const LAB_WORKSPACE_STORAGE_KEY = 'lab-workspace-cases'
 
@@ -84,23 +71,30 @@ export function writeWorkspaceCases(caseFiles) {
 }
 
 export function getCurrentWorkspaceDraft() {
-  const flowKey = readSessionValue(STORAGE_FLOW_KEY)
+  const { machineState } = readFlowMapSessionState()
+  const flowKey = machineState.selectedFlow
   const flow = FLOWS[flowKey]
 
   if (!flow) {
     return null
   }
 
-  const currentStageId = readSessionValue(STORAGE_STAGE_KEY, 'start')
-  const selectedTool = readSessionValue(STORAGE_TOOL_KEY)
-  const selectedAction = readSessionValue(STORAGE_ACTION_KEY)
-  const selectedOutcome = readSessionValue(STORAGE_OUTCOME_KEY)
-  const notes = readSessionValue(STORAGE_NOTES_KEY)
-  const stageHistory = parseJsonValue(readSessionValue(STORAGE_STAGE_HISTORY_KEY, '[]'), [])
-  const decisionHistory = parseJsonValue(readSessionValue(STORAGE_DECISION_HISTORY_KEY, '[]'), [])
-  const stageEvidence = parseJsonValue(readSessionValue(STORAGE_STAGE_EVIDENCE_KEY, '{}'), {})
-  const outcomeSignal = parseJsonValue(readSessionValue(STORAGE_OUTCOME_SIGNAL_KEY, '{}'), {})
-  const outcomeProfile = parseJsonValue(readSessionValue(STORAGE_OUTCOME_PROFILE_KEY, '{}'), {})
+  const currentStageId = machineState.currentStage
+  const selectedTool = machineState.selectedTool
+  const selectedAction = machineState.selectedAction
+  const selectedOutcome = machineState.selectedOutcome
+  const notes = machineState.notes
+  const stageHistory = Array.isArray(machineState.stageHistory) ? machineState.stageHistory : []
+  const decisionHistory = Array.isArray(machineState.decisionHistory) ? machineState.decisionHistory : []
+  const stageEvidence = machineState.stageEvidence && typeof machineState.stageEvidence === 'object'
+    ? machineState.stageEvidence
+    : {}
+  const outcomeSignal = machineState.outcomeSignal && typeof machineState.outcomeSignal === 'object'
+    ? machineState.outcomeSignal
+    : {}
+  const outcomeProfile = machineState.outcomeProfile && typeof machineState.outcomeProfile === 'object'
+    ? machineState.outcomeProfile
+    : {}
   const currentStageLabel = getStageLabel(flow, currentStageId)
 
   return {
@@ -190,17 +184,24 @@ export function restoreWorkspaceCaseSession(caseFile) {
     return
   }
 
-  writeSessionValue(STORAGE_FLOW_KEY, snapshot.selectedFlow || '')
-  writeSessionValue(STORAGE_STAGE_KEY, snapshot.currentStage || 'start')
-  writeSessionValue(STORAGE_TOOL_KEY, snapshot.selectedTool || '')
-  writeSessionValue(STORAGE_ACTION_KEY, snapshot.selectedAction || '')
-  writeSessionValue(STORAGE_OUTCOME_KEY, snapshot.selectedOutcome || '')
-  writeSessionValue(STORAGE_NOTES_KEY, snapshot.notes || '')
-  writeSessionValue(STORAGE_STAGE_HISTORY_KEY, JSON.stringify(snapshot.stageHistory ?? []))
-  writeSessionValue(STORAGE_DECISION_HISTORY_KEY, JSON.stringify(snapshot.decisionHistory ?? []))
-  writeSessionValue(STORAGE_STAGE_EVIDENCE_KEY, JSON.stringify(snapshot.stageEvidence ?? {}))
-  writeSessionValue(STORAGE_OUTCOME_SIGNAL_KEY, JSON.stringify(snapshot.outcomeSignal ?? {}))
-  writeSessionValue(STORAGE_OUTCOME_PROFILE_KEY, JSON.stringify(snapshot.outcomeProfile ?? {}))
+  const { progressState } = readFlowMapSessionState()
+
+  writeFlowMapSessionState({
+    machineState: {
+      selectedFlow: snapshot.selectedFlow || '',
+      currentStage: snapshot.currentStage || 'start',
+      selectedTool: snapshot.selectedTool || '',
+      selectedAction: snapshot.selectedAction || '',
+      selectedOutcome: snapshot.selectedOutcome || '',
+      notes: snapshot.notes || '',
+      stageHistory: snapshot.stageHistory ?? [],
+      decisionHistory: snapshot.decisionHistory ?? [],
+      stageEvidence: snapshot.stageEvidence ?? {},
+      outcomeSignal: snapshot.outcomeSignal ?? {},
+      outcomeProfile: snapshot.outcomeProfile ?? {}
+    },
+    progressState
+  })
 }
 
 export function buildWorkspaceExport(caseFiles) {

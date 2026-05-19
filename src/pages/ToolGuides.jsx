@@ -56,7 +56,7 @@ export default function ToolGuides({ initialToolName = '' }) {
       <PageHeader
         kicker="Pentesting reference"
         title="Pentesting Tools for Recon and Testing"
-        subtitle="Quick-reference list. Command-style examples can be copied directly."
+        subtitle="Quick-reference list. Terminal examples can be copied directly, while GUI-oriented entries stay as reference steps."
         pills={[
           { label: 'Pentesting Tools', value: String(TOOL_GUIDES.length) },
           { label: 'Categories', value: String(TOOL_GUIDE_CATEGORY_ORDER.length - 1) },

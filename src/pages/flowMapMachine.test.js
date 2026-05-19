@@ -1,7 +1,19 @@
 import { describe, expect, it } from 'vitest'
-import { resolveFlowTransition } from './flowMapMachine'
+import { ACTIVE_FLOW_GROUP_KEYS, FLOWS, getFlowStartStage } from '../data/flowMapConfig'
+import { resolveFlowTransition, validateFlowConfigConsistency } from './flowMapMachine'
 
 describe('flowMapMachine outcome profiles', () => {
+  it('derives start-flow transitions from the flow config order', () => {
+    expect(getFlowStartStage('login')).toBe('login-page')
+    expect(getFlowStartStage('ctf-web')).toBe('source-hint-found')
+
+    const transition = resolveFlowTransition('startFlow', {
+      selectedFlow: 'login'
+    })
+
+    expect(transition?.nextStage).toBe('login-page')
+  })
+
   it('attaches a typed outcome profile for response token findings', () => {
     const transition = resolveFlowTransition('response.result', {
       payload: 'found-token',
@@ -35,5 +47,29 @@ describe('flowMapMachine outcome profiles', () => {
       'curl',
       'Browser DevTools'
     ])
+  })
+
+  it('keeps the shipped flow config internally consistent', () => {
+    expect(validateFlowConfigConsistency({
+      flows: FLOWS,
+      activeGroupKeys: ACTIVE_FLOW_GROUP_KEYS
+    })).toEqual([])
+  })
+
+  it('flags active flows that do not keep start as the first stage', () => {
+    expect(validateFlowConfigConsistency({
+      flows: {
+        broken: {
+          group: 'testing',
+          stages: ['test-input', 'start'],
+          nodes: [
+            { id: 'start', label: 'Start' },
+            { id: 'test-input', label: 'Test Input' }
+          ],
+          connections: [['start', 'test-input']]
+        }
+      },
+      activeGroupKeys: new Set(['testing'])
+    })).toContain('[broken] must declare "start" as the first stage.')
   })
 })

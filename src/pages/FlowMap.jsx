@@ -1,36 +1,23 @@
 import React, { useCallback, useEffect, useMemo, useReducer, useRef, useState } from 'react'
 import { useSEO } from '../hooks/useSEO'
 import {
-  STORAGE_STAGE_KEY,
-  STORAGE_TOOL_KEY,
-  STORAGE_FEEDBACK_KEY,
-  STORAGE_FLOW_KEY,
-  STORAGE_ACTION_KEY,
-  STORAGE_OUTCOME_KEY,
-  STORAGE_OUTCOME_SIGNAL_KEY,
-  STORAGE_OUTCOME_PROFILE_KEY,
-  STORAGE_NOTES_KEY,
-  STORAGE_STAGE_EVIDENCE_KEY,
-  STORAGE_COMPLETED_KEY,
-  STORAGE_IN_PROGRESS_KEY,
-  STORAGE_STAGE_HISTORY_KEY,
-  STORAGE_DECISION_HISTORY_KEY,
   STORAGE_TOOL_FLOW_ORIGIN_KEY,
   DEFAULT_ZOOM,
   FLOW_GROUPS,
   FLOWS,
   ACTIVE_FLOW_GROUP_KEYS,
+  getFlowStartStage,
   FINDING_QUICK_STARTS,
   FLOW_OUTCOME_PHRASE_STARTS,
   VULNERABILITY_TYPE_STARTS
 } from '../data/flowMapConfig'
 import { copyText } from '../utils/clipboard'
 import { showFeedback } from '../utils/feedback'
-import { readSessionValue, writeSessionValue } from '../utils/sessionStorage'
+import { writeFlowMapSessionState, readFlowMapSessionState } from '../utils/flowMapSession'
+import { writeSessionValue } from '../utils/sessionStorage'
 import { renderFlowStoryContent, renderStartStoryContent } from './flowMapStoryContent'
 import {
   DEFAULT_MACHINE_STATE,
-  FLOW_START_STAGE_BY_KEY,
   flowMapReducer,
   resolveFlowTransition,
   validateFlowConfigConsistency
@@ -44,28 +31,39 @@ function getStageLabel(flow, stageId) {
   return flow?.nodes.find((node) => node.id === stageId)?.label ?? stageId
 }
 
-function getStoredValue(key, fallback = '') {
-  return readSessionValue(key, fallback)
-}
-
-function getStoredJsonArray(key) {
-  try {
-    const raw = readSessionValue(key, '[]')
-    const parsed = JSON.parse(raw)
-    return Array.isArray(parsed) ? parsed : []
-  } catch {
-    return []
+function renderStoryStepVisual(flow, currentStage) {
+  if (!flow?.stages?.length) {
+    return null
   }
-}
 
-function getStoredJsonObject(key) {
-  try {
-    const raw = readSessionValue(key, '{}')
-    const parsed = JSON.parse(raw)
-    return parsed && typeof parsed === 'object' && !Array.isArray(parsed) ? parsed : {}
-  } catch {
-    return {}
-  }
+  const currentStageIndex = flow.stages.indexOf(currentStage)
+
+  return (
+    <aside className="flow-map-story-visual" aria-label={`${flow.label} step visual`}>
+      <span className="flow-map-story-visual-kicker">Step Map</span>
+      <ol className="flow-map-story-visual-steps">
+        {flow.stages.map((stageId, index) => {
+          const stageLabel = getStageLabel(flow, stageId)
+          const isCurrent = stageId === currentStage
+          const isCompleted = currentStageIndex >= 0 && index < currentStageIndex
+          const statusLabel = isCurrent ? 'Current' : isCompleted ? 'Completed' : 'Upcoming'
+
+          return (
+            <li
+              key={`${flow.label}-${stageId}`}
+              className={`flow-map-story-visual-step${isCurrent ? ' flow-map-story-visual-step--current' : ''}${isCompleted ? ' flow-map-story-visual-step--completed' : ''}`}
+              aria-label={`${statusLabel} step: ${stageLabel}`}
+            >
+              <span className="flow-map-story-visual-marker" aria-hidden="true">
+                <span className="flow-map-story-visual-number">{index + 1}</span>
+              </span>
+              <span className="flow-map-story-visual-label">{stageLabel}</span>
+            </li>
+          )
+        })}
+      </ol>
+    </aside>
+  )
 }
 
 function isEvidenceRecord(value) {
@@ -171,59 +169,35 @@ function getValidStage(flow, stageId) {
   return flow?.stages.includes(stageId) ? stageId : DEFAULT_STAGE
 }
 
-function getStoredFlowKey() {
-  const storedFlow = readSessionValue(STORAGE_FLOW_KEY)
-  return getFlowByKey(storedFlow) ? storedFlow : ''
-}
-
-function getInitialFlowState() {
-  const selectedFlow = getStoredFlowKey()
-  const flow = getFlowByKey(selectedFlow)
-
-  if (!flow) {
-    return {
-      selectedFlow: '',
-      currentStage: DEFAULT_STAGE
-    }
-  }
-
-  return {
-    selectedFlow,
-    currentStage: getValidStage(flow, getStoredValue(STORAGE_STAGE_KEY, DEFAULT_STAGE))
-  }
-}
-
 function buildInitialMachineState() {
-  const initialFlowState = getInitialFlowState()
-  const initialStageHistory = getStoredJsonArray(STORAGE_STAGE_HISTORY_KEY)
-  const initialDecisionHistory = getStoredJsonArray(STORAGE_DECISION_HISTORY_KEY)
-  const initialStageEvidence = getStoredJsonObject(STORAGE_STAGE_EVIDENCE_KEY)
-  const initialOutcomeSignal = normalizeOutcomeSignal(getStoredJsonObject(STORAGE_OUTCOME_SIGNAL_KEY))
-  const initialOutcomeProfile = normalizeOutcomeProfile(getStoredJsonObject(STORAGE_OUTCOME_PROFILE_KEY))
-  const initialFlow = getFlowByKey(initialFlowState.selectedFlow)
+  const { machineState: storedMachineState, progressState } = readFlowMapSessionState()
+  const initialFlow = getFlowByKey(storedMachineState.selectedFlow)
   const stageHistory = initialFlow
-    ? initialStageHistory.filter((stageId) => initialFlow.stages.includes(stageId))
+    ? storedMachineState.stageHistory.filter((stageId) => initialFlow.stages.includes(stageId))
     : []
   const fallbackHistory = initialFlow
-    ? (initialFlowState.currentStage === DEFAULT_STAGE
+    ? (getValidStage(initialFlow, storedMachineState.currentStage) === DEFAULT_STAGE
       ? [DEFAULT_STAGE]
-      : [DEFAULT_STAGE, initialFlowState.currentStage])
+      : [DEFAULT_STAGE, getValidStage(initialFlow, storedMachineState.currentStage)])
     : []
 
   return {
     ...DEFAULT_MACHINE_STATE,
-    selectedFlow: initialFlowState.selectedFlow,
-    currentStage: initialFlowState.currentStage,
+    selectedFlow: initialFlow ? storedMachineState.selectedFlow : '',
+    currentStage: getValidStage(initialFlow, storedMachineState.currentStage),
     stageHistory: stageHistory.length > 0 ? stageHistory : fallbackHistory,
-    decisionHistory: initialFlow ? initialDecisionHistory : [],
-    stageEvidence: normalizeStageEvidence(initialStageEvidence, initialFlow),
-    outcomeSignal: initialFlow ? initialOutcomeSignal : null,
-    outcomeProfile: initialFlow ? initialOutcomeProfile : null,
-    selectedTool: getStoredValue(STORAGE_TOOL_KEY),
-    feedback: getStoredValue(STORAGE_FEEDBACK_KEY),
-    selectedAction: getStoredValue(STORAGE_ACTION_KEY),
-    selectedOutcome: getStoredValue(STORAGE_OUTCOME_KEY),
-    notes: getStoredValue(STORAGE_NOTES_KEY),
+    decisionHistory: initialFlow ? storedMachineState.decisionHistory : [],
+    stageEvidence: normalizeStageEvidence(storedMachineState.stageEvidence, initialFlow),
+    outcomeSignal: initialFlow ? normalizeOutcomeSignal(storedMachineState.outcomeSignal) : null,
+    outcomeProfile: initialFlow ? normalizeOutcomeProfile(storedMachineState.outcomeProfile) : null,
+    selectedTool: storedMachineState.selectedTool,
+    feedback: storedMachineState.feedback,
+    selectedAction: storedMachineState.selectedAction,
+    selectedOutcome: storedMachineState.selectedOutcome,
+    followUpFlows: Array.isArray(storedMachineState.followUpFlows) ? storedMachineState.followUpFlows : [],
+    notes: storedMachineState.notes,
+    completedFlows: progressState.completedFlows,
+    inProgressFlows: progressState.inProgressFlows,
     zoomLevel: DEFAULT_ZOOM
   }
 }
@@ -240,34 +214,6 @@ const GROUP_ACCENT = {
 
 function getFlowAccent(flow) {
   return GROUP_ACCENT[flow?.group] ?? '#c0c0c0'
-}
-
-function readCompletedFlows() {
-  try {
-    const raw = readSessionValue(STORAGE_COMPLETED_KEY, '[]')
-    const parsed = JSON.parse(raw)
-    return Array.isArray(parsed) ? new Set(parsed) : new Set()
-  } catch {
-    return new Set()
-  }
-}
-
-function writeCompletedFlows(completedSet) {
-  writeSessionValue(STORAGE_COMPLETED_KEY, JSON.stringify([...completedSet]))
-}
-
-function readInProgressFlows() {
-  try {
-    const raw = readSessionValue(STORAGE_IN_PROGRESS_KEY, '[]')
-    const parsed = JSON.parse(raw)
-    return Array.isArray(parsed) ? new Set(parsed) : new Set()
-  } catch {
-    return new Set()
-  }
-}
-
-function writeInProgressFlows(inProgressSet) {
-  writeSessionValue(STORAGE_IN_PROGRESS_KEY, JSON.stringify([...inProgressSet]))
 }
 
 const TOTAL_FLOWS = Object.entries(FLOWS).filter(([, f]) => ACTIVE_FLOW_GROUP_KEYS.has(f.group)).length
@@ -332,7 +278,7 @@ function buildCommandOptions() {
       continue
     }
 
-    const startStage = FLOW_START_STAGE_BY_KEY[flowKey] ?? DEFAULT_STAGE
+    const startStage = getFlowStartStage(flow)
     const startStageLabel = getStageLabel(flow, startStage)
 
     options.push({
@@ -722,11 +668,15 @@ export default function FlowMap({ onToolClick, onToolReferenceClick }) {
     stageHistory,
     decisionHistory,
     stageEvidence,
-    notes
+    notes,
+    completedFlows: completedFlowKeys,
+    inProgressFlows: inProgressFlowKeys
   } = machineState
 
   const currentFlow = getFlowByKey(selectedFlow)
   const activeRef = useRef(null)
+  const completedFlows = useMemo(() => new Set(completedFlowKeys), [completedFlowKeys])
+  const inProgressFlows = useMemo(() => new Set(inProgressFlowKeys), [inProgressFlowKeys])
   const groupedFlows = useMemo(
     () => FLOW_GROUPS
       .map(([groupKey, groupLabel]) => ({
@@ -737,8 +687,6 @@ export default function FlowMap({ onToolClick, onToolReferenceClick }) {
       .filter((group) => group.flows.length > 0),
     []
   )
-  const completedFlows = readCompletedFlows()
-  const inProgressFlows = readInProgressFlows()
   const groupedProgress = useMemo(
     () => groupedFlows.map((group) => {
       const total = group.flows.length
@@ -801,7 +749,7 @@ export default function FlowMap({ onToolClick, onToolReferenceClick }) {
           flowKey: entry.flowKey,
           flowLabel: flow.label,
           reason: entry.reason || 'Follow this flow based on your latest result.',
-          stageId: FLOW_START_STAGE_BY_KEY[entry.flowKey] ?? DEFAULT_STAGE
+          stageId: getFlowStartStage(flow)
         }
       })
       .filter(Boolean)
@@ -812,10 +760,7 @@ export default function FlowMap({ onToolClick, onToolReferenceClick }) {
   useEffect(() => {
     const configIssues = validateFlowConfigConsistency({
       flows: FLOWS,
-      activeGroupKeys: ACTIVE_FLOW_GROUP_KEYS,
-      startStageByFlow: {
-        ...FLOW_START_STAGE_BY_KEY
-      }
+      activeGroupKeys: ACTIVE_FLOW_GROUP_KEYS
     })
 
     if (configIssues.length > 0) {
@@ -824,74 +769,45 @@ export default function FlowMap({ onToolClick, onToolReferenceClick }) {
   }, [])
 
   useEffect(() => {
-    writeSessionValue(STORAGE_FLOW_KEY, selectedFlow)
-  }, [selectedFlow])
-
-  useEffect(() => {
-    writeSessionValue(STORAGE_STAGE_KEY, currentStage)
-    if (selectedFlow && (currentStage === 'success' || currentStage === 'next-step')) {
-      const completed = readCompletedFlows()
-      const inProgress = readInProgressFlows()
-      if (!completed.has(selectedFlow)) {
-        completed.add(selectedFlow)
-        writeCompletedFlows(completed)
+    writeFlowMapSessionState({
+      machineState: {
+        selectedFlow,
+        currentStage,
+        selectedTool,
+        feedback,
+        selectedAction,
+        selectedOutcome,
+        outcomeSignal: outcomeSignal ?? {},
+        outcomeProfile: outcomeProfile ?? {},
+        followUpFlows,
+        stageHistory,
+        decisionHistory,
+        stageEvidence,
+        notes,
+        zoomLevel: DEFAULT_ZOOM
+      },
+      progressState: {
+        completedFlows: completedFlowKeys,
+        inProgressFlows: inProgressFlowKeys
       }
-
-      if (inProgress.has(selectedFlow)) {
-        inProgress.delete(selectedFlow)
-        writeInProgressFlows(inProgress)
-      }
-    } else if (selectedFlow && currentStage !== DEFAULT_STAGE) {
-      const completed = readCompletedFlows()
-      if (!completed.has(selectedFlow)) {
-        const inProgress = readInProgressFlows()
-        if (!inProgress.has(selectedFlow)) {
-          inProgress.add(selectedFlow)
-          writeInProgressFlows(inProgress)
-        }
-      }
-    }
-  }, [currentStage, selectedFlow])
-
-  useEffect(() => {
-    writeSessionValue(STORAGE_TOOL_KEY, selectedTool)
-  }, [selectedTool])
-
-  useEffect(() => {
-    writeSessionValue(STORAGE_FEEDBACK_KEY, feedback)
-  }, [feedback])
-
-  useEffect(() => {
-    writeSessionValue(STORAGE_ACTION_KEY, selectedAction)
-  }, [selectedAction])
-
-  useEffect(() => {
-    writeSessionValue(STORAGE_OUTCOME_KEY, selectedOutcome)
-  }, [selectedOutcome])
-
-  useEffect(() => {
-    writeSessionValue(STORAGE_OUTCOME_SIGNAL_KEY, JSON.stringify(outcomeSignal ?? {}))
-  }, [outcomeSignal])
-
-  useEffect(() => {
-    writeSessionValue(STORAGE_OUTCOME_PROFILE_KEY, JSON.stringify(outcomeProfile ?? {}))
-  }, [outcomeProfile])
-
-  useEffect(() => {
-    writeSessionValue(STORAGE_STAGE_HISTORY_KEY, JSON.stringify(stageHistory))
-  }, [stageHistory])
-
-  useEffect(() => {
-    writeSessionValue(STORAGE_DECISION_HISTORY_KEY, JSON.stringify(decisionHistory))
-  }, [decisionHistory])
-
-  useEffect(() => {
-    writeSessionValue(STORAGE_STAGE_EVIDENCE_KEY, JSON.stringify(stageEvidence))
-  }, [stageEvidence])
-
-  useEffect(() => {
-    writeSessionValue(STORAGE_NOTES_KEY, notes)
-  }, [notes])
+    })
+  }, [
+    completedFlowKeys,
+    currentStage,
+    decisionHistory,
+    feedback,
+    followUpFlows,
+    inProgressFlowKeys,
+    notes,
+    outcomeProfile,
+    outcomeSignal,
+    selectedAction,
+    selectedFlow,
+    selectedOutcome,
+    selectedTool,
+    stageEvidence,
+    stageHistory
+  ])
 
   const currentStageIndex = stageIndex[currentStage] ?? 0
 
@@ -1150,7 +1066,7 @@ export default function FlowMap({ onToolClick, onToolReferenceClick }) {
     }
 
     dispatch({ type: 'FLOW_SELECT', flowKey, defaultZoom: DEFAULT_ZOOM })
-    const targetStage = getValidStage(flow, stageId ?? FLOW_START_STAGE_BY_KEY[flowKey] ?? DEFAULT_STAGE)
+    const targetStage = getValidStage(flow, stageId ?? getFlowStartStage(flow))
     if (targetStage !== DEFAULT_STAGE) {
       dispatch({ type: 'STAGE_SET', stage: targetStage })
       dispatch({
@@ -1444,6 +1360,79 @@ export default function FlowMap({ onToolClick, onToolReferenceClick }) {
     handleUploadContinue: () => applyFlowEvent('upload.continue'),
     handleUploadResultChoice: (outcome) => applyFlowEvent('upload.result', outcome),
     handleUploadNextStep: () => applyFlowEvent('upload.nextStep'),
+    handleJwtActionSelect: (action) => applyFlowEvent('jwt.actionSelect', action),
+    handleJwtContinue: () => applyFlowEvent('jwt.continue'),
+    handleJwtResultChoice: (outcome) => applyFlowEvent('jwt.result', outcome),
+    handleJwtForge: () => applyFlowEvent('jwt.forge'),
+    handleJwtNextStep: () => applyFlowEvent('jwt.nextStep'),
+    handleXxeInjectEntity: () => applyFlowEvent('xxe.injectEntity'),
+    handleXxeTestFileRead: () => applyFlowEvent('xxe.testFileRead'),
+    handleXxeTestSsrfDtd: () => applyFlowEvent('xxe.testSsrfDtd'),
+    handleXxeOobExfil: () => applyFlowEvent('xxe.oobExfil'),
+    handleXxeResultChoice: (outcome) => applyFlowEvent('xxe.result', outcome),
+    handleXxeNextStep: () => applyFlowEvent('xxe.nextStep'),
+    handleSsrfProbeLoopback: () => applyFlowEvent('ssrf.probeLoopback'),
+    handleSsrfProbeCloudMetadata: () => applyFlowEvent('ssrf.probeCloudMetadata'),
+    handleSsrfInternalHostScan: () => applyFlowEvent('ssrf.internalHostScan'),
+    handleSsrfResultChoice: (outcome) => applyFlowEvent('ssrf.result', outcome),
+    handleSsrfNextStep: () => applyFlowEvent('ssrf.nextStep'),
+    handleCorsTestWildcard: () => applyFlowEvent('cors.testWildcard'),
+    handleCorsTestNullOrigin: () => applyFlowEvent('cors.testNullOrigin'),
+    handleCorsTestReflection: () => applyFlowEvent('cors.testReflection'),
+    handleCorsResultChoice: (outcome) => applyFlowEvent('cors.result', outcome),
+    handleCorsNextStep: () => applyFlowEvent('cors.nextStep'),
+    handleOauthMapEndpoints: () => applyFlowEvent('oauth.mapEndpoints'),
+    handleOauthTestStateParam: () => applyFlowEvent('oauth.testStateParam'),
+    handleOauthTestRedirectUri: () => applyFlowEvent('oauth.testRedirectUri'),
+    handleOauthTestCodeReuse: () => applyFlowEvent('oauth.testCodeReuse'),
+    handleOauthResultChoice: (outcome) => applyFlowEvent('oauth.result', outcome),
+    handleOauthNextStep: () => applyFlowEvent('oauth.nextStep'),
+    handlePrivescEnumerateRoles: () => applyFlowEvent('privesc.enumerateRoles'),
+    handlePrivescTestHorizontal: () => applyFlowEvent('privesc.testHorizontal'),
+    handlePrivescTestVertical: () => applyFlowEvent('privesc.testVertical'),
+    handlePrivescResultChoice: (outcome) => applyFlowEvent('privesc.result', outcome),
+    handlePrivescNextStep: () => applyFlowEvent('privesc.nextStep'),
+    handleCryptoIdentifyType: () => applyFlowEvent('crypto.identifyType'),
+    handleCryptoCheckKnownList: () => applyFlowEvent('crypto.checkKnownList'),
+    handleCryptoWordlistCrack: () => applyFlowEvent('crypto.wordlistCrack'),
+    handleCryptoRainbowTable: () => applyFlowEvent('crypto.rainbowTable'),
+    handleCryptoResultChoice: (outcome) => applyFlowEvent('crypto.result', outcome),
+    handleCryptoNextStep: () => applyFlowEvent('crypto.nextStep'),
+    handleRaceBaseline: () => applyFlowEvent('race.baseline'),
+    handleRaceConcurrentRequests: () => applyFlowEvent('race.concurrentRequests'),
+    handleRaceCompareOutcomes: () => applyFlowEvent('race.compareOutcomes'),
+    handleRaceResultChoice: (outcome) => applyFlowEvent('race.result', outcome),
+    handleRaceNextStep: () => applyFlowEvent('race.nextStep'),
+    handleXssActionSelect: (action) => applyFlowEvent('xss.actionSelect', action),
+    handleXssContextIdentified: () => applyFlowEvent('xss.contextIdentified'),
+    handleXssTestStored: () => applyFlowEvent('xss.testStored'),
+    handleXssBypassFilters: () => applyFlowEvent('xss.bypassFilters'),
+    handleXssResultChoice: (outcome) => applyFlowEvent('xss.result', outcome),
+    handleXssNextStep: () => applyFlowEvent('xss.nextStep'),
+    handleCsrfActionSelect: (action) => applyFlowEvent('csrf.actionSelect', action),
+    handleCsrfCheckTokens: () => applyFlowEvent('csrf.checkTokens'),
+    handleCsrfTestSameSite: () => applyFlowEvent('csrf.testSameSite'),
+    handleCsrfCraftPoc: () => applyFlowEvent('csrf.craftPoc'),
+    handleCsrfResultChoice: (outcome) => applyFlowEvent('csrf.result', outcome),
+    handleCsrfNextStep: () => applyFlowEvent('csrf.nextStep'),
+    handleDeserializeActionSelect: (action) => applyFlowEvent('deserialize.actionSelect', action),
+    handleDeserializeIdentifyFormat: () => applyFlowEvent('deserialize.identifyFormat'),
+    handleDeserializeInspectGadgets: () => applyFlowEvent('deserialize.inspectGadgets'),
+    handleDeserializeCraftPayload: () => applyFlowEvent('deserialize.craftPayload'),
+    handleDeserializeResultChoice: (outcome) => applyFlowEvent('deserialize.result', outcome),
+    handleDeserializeNextStep: () => applyFlowEvent('deserialize.nextStep'),
+    handleCtfStegoActionSelect: (action) => applyFlowEvent('ctf-stego.actionSelect', action),
+    handleCtfStegoIdentifyStego: () => applyFlowEvent('ctf-stego.identifyStego'),
+    handleCtfStegoExtractMetadata: () => applyFlowEvent('ctf-stego.extractMetadata'),
+    handleCtfStegoDecodeHidden: () => applyFlowEvent('ctf-stego.decodeHidden'),
+    handleCtfStegoResultChoice: (outcome) => applyFlowEvent('ctf-stego.result', outcome),
+    handleCtfStegoNextStep: () => applyFlowEvent('ctf-stego.nextStep'),
+    handleCtfWebActionSelect: (action) => applyFlowEvent('ctf-web.actionSelect', action),
+    handleCtfWebChainFirstVuln: () => applyFlowEvent('ctf-web.chainFirstVuln'),
+    handleCtfWebChainSecondVuln: () => applyFlowEvent('ctf-web.chainSecondVuln'),
+    handleCtfWebPivot: () => applyFlowEvent('ctf-web.pivot'),
+    handleCtfWebResultChoice: (outcome) => applyFlowEvent('ctf-web.result', outcome),
+    handleCtfWebNextStep: () => applyFlowEvent('ctf-web.nextStep'),
     handleFollowUpFlow: handleFlowSelect
   }
 
@@ -1521,15 +1510,15 @@ export default function FlowMap({ onToolClick, onToolReferenceClick }) {
                       className={`flow-map-flow-button${completedFlows.has(flowKey) ? ' flow-map-flow-button--done' : ''}`}
                       aria-label={flow.label}
                       onClick={() => handleFlowSelect(flowKey)}
-                    >
-                      <span className="flow-map-flow-name">
-                        {completedFlows.has(flowKey) && <span className="flow-map-flow-badge" aria-label="completed">✓</span>}
-                        {flow.label}
-                      </span>
-                      <span className="flow-map-flow-summary">{flow.summary}</span>
-                    </button>
-                  ))}
-                </div>
+                      >
+                        <span className="flow-map-flow-name">
+                          {completedFlows.has(flowKey) && <span className="flow-map-flow-badge" aria-label="completed">✓</span>}
+                          {flow.label}
+                        </span>
+                        <span className="flow-map-flow-summary">{flow.summary}</span>
+                      </button>
+                    ))}
+                  </div>
               </div>
             ))}
           </div>
@@ -1567,9 +1556,14 @@ export default function FlowMap({ onToolClick, onToolReferenceClick }) {
 
           <div className="flow-map-story-panel">
             <div className={`flow-map-story${currentStage === 'success' || currentStage === 'next-step' ? ' flow-map-story--success' : ''}`}>
-              {currentStage === 'start'
-                ? renderStartStoryContent(storyProps)
-                : renderFlowStoryContent({ selectedFlow, storyProps })}
+              <div className="flow-map-story-layout">
+                <div className="flow-map-story-copy">
+                  {currentStage === 'start'
+                    ? renderStartStoryContent(storyProps)
+                    : renderFlowStoryContent({ selectedFlow, storyProps })}
+                </div>
+                {renderStoryStepVisual(currentFlow, currentStage)}
+              </div>
             </div>
 
             <div className="flow-map-outcome-export" aria-label="Flow outcome export">

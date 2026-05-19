@@ -21,16 +21,16 @@ const CATEGORY_NOTES = {
 const FLOW_SKILL_NOTES = [
   {
     title: 'Flow Map Guidance',
-    summary: 'Flow Map now includes guided paths for recon, enumeration, entry-point, testing, vulnerability, and controlled exploitation.',
+    summary: 'Flow Map provides guided paths for recon, enumeration, entry-point, testing, vulnerability validation, and controlled exploitation.',
     highlights: [
       'Each flow has stage-by-stage story guidance so next actions stay clear.',
       'Recommended tools are shown inline with concrete usage examples.',
-      'API and authorization testing paths are now part of the active flow set.'
+      'API and authorization testing paths sit alongside the rest of the active flow set.'
     ]
   },
   {
     title: 'Agent Skills Suggestions',
-    summary: 'Selected flows now surface agent skill suggestions that map directly to the current testing objective.',
+    summary: 'Selected flows surface agent skill suggestions that map directly to the current testing objective.',
     highlights: [
       'Skill cards include difficulty labels (beginner, intermediate, advanced).',
       'Suggestions help bridge from “what tool to use” to “what capability to apply”.',
@@ -66,9 +66,9 @@ function formatCaseTimestamp(value) {
 
 export default function LabNotes({ tools, onToolClick, onOpenWorkspaceCase }) {
   useSEO({
-    title: 'Lab Notes & Workspace - Tool Explanations and Saved Cases',
-    description: 'Browse tool notes and save browser-only case files from Flow Map state inside R0uty\'s Cyber Lab workspace.',
-    keywords: 'lab notes, cyber lab workspace, saved case files, flow map notes, browser-only security notes'
+    title: 'Lab Notes & Workspace',
+    description: 'Browse tool notes and save browser-local case files from Flow Map state inside the R0uty\'s Cyber Lab workspace.',
+    keywords: 'lab notes, browser-local workspace, saved case files, flow map notes, browser-only security notes'
   })
 
   const [searchQuery, setSearchQuery] = useState('')
@@ -125,7 +125,7 @@ export default function LabNotes({ tools, onToolClick, onOpenWorkspaceCase }) {
             <div>
               <span className="lab-notes-category-kicker">Browser workspace</span>
               <h2>Saved Case Files</h2>
-              <p>Save the current Flow Map session into a persistent browser-only case file, then reopen it later without re-entering the details by hand.</p>
+              <p>Save the current Flow Map session into a browser-local case file on this device, then reopen it later without re-entering the details by hand.</p>
             </div>
             <div className="lab-workspace-header-meta">
               <span>{workspaceCases.length} saved case{workspaceCases.length !== 1 ? 's' : ''}</span>

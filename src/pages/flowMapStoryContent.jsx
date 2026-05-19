@@ -50,6 +50,88 @@ const STAGE_GUIDANCE_OVERRIDES = {
       why: 'Validation outcomes confirm impact while keeping demonstrations within safe, approved boundaries.',
       signal: 'Read-only proof actions produce deterministic impact without destructive effects or uncontrolled execution.'
     }
+  },
+  jwt: {
+    'inspect-claims': {
+      why: 'JWT weaknesses are only meaningful when the token structure, algorithm choice, and trust assumptions are understood first.',
+      signal: 'Header, claims, and signature details clearly indicate what attack class is realistic for this token.'
+    },
+    'confirm-access': {
+      why: 'Forged tokens matter only if the server accepts them and changes authorization decisions.',
+      signal: 'A modified token repeatedly grants access, role changes, or data exposure that the original token should not allow.'
+    }
+  },
+  xxe: {
+    'confirm-xxe': {
+      why: 'XXE becomes actionable when entity resolution proves file access, outbound requests, or data exfiltration.',
+      signal: 'Controlled entity payloads consistently trigger file reads, OOB callbacks, or internal fetch behavior.'
+    }
+  },
+  ssrf: {
+    'confirm-ssrf': {
+      why: 'SSRF severity depends on what the server can reach, not just whether a URL parameter exists.',
+      signal: 'Loopback, internal hosts, metadata endpoints, or OOB targets are reachable in a repeatable way.'
+    }
+  },
+  cors: {
+    'confirm-cors': {
+      why: 'CORS findings are only high value when the misconfiguration actually exposes authenticated or sensitive responses cross-origin.',
+      signal: 'The tested origin receives the target response under the same header conditions across repeated requests.'
+    }
+  },
+  oauth: {
+    'confirm-oauth': {
+      why: 'OAuth bugs are impactful when they let an attacker steal codes, force-link accounts, or replay authorization artifacts.',
+      signal: 'Manipulated state, redirect URI, or authorization code handling produces a reproducible auth flow break.'
+    }
+  },
+  privesc: {
+    'confirm-escalation': {
+      why: 'Privilege escalation claims require clear proof of crossing a role or ownership boundary.',
+      signal: 'A lower-privileged context repeatedly gains access to higher-privileged data or admin-only actions.'
+    }
+  },
+  crypto: {
+    result: {
+      why: 'Crypto analysis is valuable when the artifact is identified accurately and recovery attempts are tied to real risk.',
+      signal: 'You can name the algorithm confidently, or recover plaintext in a way that is reproducible and security-relevant.'
+    }
+  },
+  race: {
+    'confirm-race': {
+      why: 'Race findings matter when concurrency breaks business rules, not just when timing looks noisy.',
+      signal: 'Parallel requests deterministically produce duplicate actions, limit bypasses, or inconsistent protected state.'
+    }
+  },
+  xss: {
+    'confirm-xss': {
+      why: 'XSS is only defensible when the browser executes attacker-controlled script or a sink is shown to be exploitable.',
+      signal: 'A payload reliably executes, or a verified source-to-sink path supports a working exploit path.'
+    }
+  },
+  csrf: {
+    'confirm-csrf': {
+      why: 'CSRF impact depends on whether a victim browser can actually trigger a state change without intended consent.',
+      signal: 'A cross-origin PoC or token bypass reliably performs a protected action in the victim context.'
+    }
+  },
+  deserialize: {
+    'test-execution': {
+      why: 'Deserialization issues become serious when gadget execution or object injection is demonstrated safely.',
+      signal: 'A crafted serialized payload consistently triggers execution, a callback, or privileged object manipulation.'
+    }
+  },
+  'ctf-stego': {
+    'confirm-flag': {
+      why: 'Forensics progress is only complete when the extraction path is clear enough to reproduce and explain.',
+      signal: 'The hidden data or flag can be recovered again with the same tool chain and artifact.'
+    }
+  },
+  'ctf-web': {
+    'confirm-flag': {
+      why: 'A web challenge chain should be documented as a sequence of concrete pivots, not a lucky one-off.',
+      signal: 'Each vulnerability in the chain produces the next foothold or hint in a way you can replay.'
+    }
   }
 }
 
@@ -1765,6 +1847,844 @@ export function renderUploadStoryContent({
   )
 }
 
+function resolveStoryValue(value, storyProps) {
+  return typeof value === 'function' ? value(storyProps) : value
+}
+
+function invokeStoryAction(storyProps, handler, value) {
+  const callback = storyProps?.[handler]
+  if (typeof callback === 'function') {
+    callback(value)
+  }
+}
+
+function renderConfiguredStoryStage(stageConfig, storyProps) {
+  if (!stageConfig) {
+    return null
+  }
+
+  const title = resolveStoryValue(stageConfig.title, storyProps)
+  const description = resolveStoryValue(stageConfig.description, storyProps)
+  const note = resolveStoryValue(stageConfig.note, storyProps)
+  const actions = resolveStoryValue(stageConfig.actions, storyProps) ?? []
+  const isStacked = stageConfig.stacked || actions.length > 2
+
+  return (
+    <>
+      <span className="flow-map-story-step">Step {stageConfig.step}</span>
+      <h2>{title}</h2>
+      <p>{description}</p>
+      {note ? <p>{note}</p> : null}
+      <div className={`flow-map-actions${isStacked ? ' flow-map-actions--stacked' : ''}`}>
+        {actions.map((action) => (
+          <button
+            key={`${stageConfig.step}-${action.label}`}
+            type="button"
+            className={`flow-map-button${action.variant === 'ghost' ? ' flow-map-button--ghost' : ''}`}
+            onClick={() => invokeStoryAction(storyProps, action.handler, action.value)}
+          >
+            {action.label}
+          </button>
+        ))}
+        {stageConfig.includeRestart ? (
+          <button type="button" className="flow-map-button flow-map-button--ghost" onClick={storyProps.resetFlowState}>
+            Restart
+          </button>
+        ) : null}
+      </div>
+      {storyProps.feedback ? <p className="flow-map-feedback">{storyProps.feedback}</p> : null}
+    </>
+  )
+}
+
+const EXTENDED_FLOW_STAGE_CONTENT = {
+  jwt: {
+    'jwt-discovered': {
+      step: 2,
+      title: 'JWT Discovered',
+      description: 'You found a JWT in a cookie, header, or URL. Choose the attack path that best matches the header and the implementation hints you have so far.',
+      stacked: true,
+      actions: [
+        { label: 'Start with alg:none / unsigned token', handler: 'handleJwtActionSelect', value: 'alg-none' },
+        { label: 'Start with weak HMAC secret', handler: 'handleJwtActionSelect', value: 'weak-secret', variant: 'ghost' },
+        { label: 'Start with key confusion / kid abuse', handler: 'handleJwtActionSelect', value: 'key-confusion', variant: 'ghost' }
+      ]
+    },
+    'inspect-claims': {
+      step: 3,
+      title: 'Inspect Claims',
+      description: ({ selectedAction }) => selectedAction === 'alg-none'
+        ? 'Confirm whether the token header already hints at alg:none or whether the server trusts unsigned tokens when the signature is removed.'
+        : selectedAction === 'weak-secret'
+          ? 'Inspect the signing algorithm, issuer, and claim structure so you can judge whether an HMAC secret attack is realistic and worth cracking.'
+          : 'Inspect alg, kid, and key identifiers to see whether the implementation could accept a mismatched key type or attacker-controlled key lookup.',
+      note: 'Capture the original header and payload before changing claims so you can compare access decisions cleanly.',
+      actions: [
+        { label: 'Continue to attack tests', handler: 'handleJwtContinue' }
+      ],
+      includeRestart: true
+    },
+    'test-attacks': {
+      step: 4,
+      title: 'Test Attacks',
+      description: 'Replay the modified token and compare authorization outcomes. Choose the best summary of what actually happened.',
+      stacked: true,
+      actions: [
+        { label: 'Forged token was accepted', handler: 'handleJwtResultChoice', value: 'token-forged' },
+        { label: 'Claims changed behavior partially', handler: 'handleJwtResultChoice', value: 'partial-bypass', variant: 'ghost' },
+        { label: 'Server rejected the tampered token', handler: 'handleJwtResultChoice', value: 'token-rejected', variant: 'ghost' }
+      ]
+    },
+    'forge-token': {
+      step: 5,
+      title: 'Forge Token',
+      description: ({ selectedOutcome }) => selectedOutcome === 'token-forged'
+        ? 'You have a token the server accepts. Keep the forged claims minimal so you can prove the trust boundary break without muddying the result.'
+        : 'You have partial trust in tampered claims. Build the smallest token change that demonstrates an authorization difference.',
+      actions: [
+        { label: 'Continue to confirm access', handler: 'handleJwtForge' }
+      ]
+    },
+    'confirm-access': {
+      step: 6,
+      title: 'Confirm Access',
+      description: ({ selectedOutcome }) => selectedOutcome === 'token-forged'
+        ? 'Use the forged token against a protected endpoint and confirm exactly what new role, tenant, or data access it unlocks.'
+        : 'Validate which claims are trusted server-side and which ones were ignored so the finding stays precise.',
+      actions: [
+        { label: 'Continue to Next Step', handler: 'handleJwtNextStep' }
+      ]
+    },
+    'next-step': {
+      step: 7,
+      title: 'Next Step',
+      description: ({ selectedOutcome }) => selectedOutcome === 'token-rejected'
+        ? 'Record the tested JWT attack paths and move on to alternate weaknesses like claim leakage, token reuse, or endpoint-specific trust issues.'
+        : 'Document the accepted token structure, the changed claims, and the exact server-side decision that proves broken trust in the JWT.',
+      includeRestart: true
+    }
+  },
+  xxe: {
+    'xml-input-found': {
+      step: 2,
+      title: 'XML Input Found',
+      description: 'You found XML being parsed. Start by confirming that the parser accepts a DOCTYPE or external entity declaration at all.',
+      actions: [
+        { label: 'Inject external entity declaration', handler: 'handleXxeInjectEntity' }
+      ],
+      includeRestart: true
+    },
+    'inject-entity': {
+      step: 3,
+      title: 'Inject Entity',
+      description: 'Use a harmless entity first so you can tell whether the parser resolves entities before you escalate to file reads or outbound fetches.',
+      actions: [
+        { label: 'Test local file read', handler: 'handleXxeTestFileRead' }
+      ],
+      includeRestart: true
+    },
+    'test-file-read': {
+      step: 4,
+      title: 'Test File Read',
+      description: 'Try controlled reads like /etc/hostname or a known application file before targeting anything sensitive.',
+      actions: [
+        { label: 'Escalate to SSRF / external DTD', handler: 'handleXxeTestSsrfDtd' }
+      ]
+    },
+    'test-ssrf-dtd': {
+      step: 5,
+      title: 'Test SSRF via DTD',
+      description: 'If direct file output is suppressed, pivot to external DTD loading or secondary fetches that can still confirm parser reachability.',
+      actions: [
+        { label: 'Check out-of-band exfiltration', handler: 'handleXxeOobExfil' }
+      ]
+    },
+    'oob-exfil': {
+      step: 6,
+      title: 'OOB Exfil',
+      description: 'Choose the strongest signal produced by your XXE payloads.',
+      stacked: true,
+      actions: [
+        { label: 'Local file content was read', handler: 'handleXxeResultChoice', value: 'file-read' },
+        { label: 'Out-of-band callback received', handler: 'handleXxeResultChoice', value: 'oob-confirmed', variant: 'ghost' },
+        { label: 'No visible output yet', handler: 'handleXxeResultChoice', value: 'no-output', variant: 'ghost' }
+      ]
+    },
+    'confirm-xxe': {
+      step: 7,
+      title: 'Confirm XXE',
+      description: ({ selectedOutcome }) => selectedOutcome === 'file-read'
+        ? 'Confirm the file read with the same payload twice, then scope which parser input types and endpoints are affected.'
+        : 'Confirm the OOB signal belongs to the XML parser path you targeted and not to a separate background fetch.',
+      actions: [
+        { label: 'Continue to Next Step', handler: 'handleXxeNextStep' }
+      ]
+    },
+    'next-step': {
+      step: 8,
+      title: 'Next Step',
+      description: 'Keep the payload history, content types tested, and parser behavior together so the finding is easy to reproduce later.',
+      includeRestart: true
+    }
+  },
+  ssrf: {
+    'url-param-found': {
+      step: 2,
+      title: 'URL Parameter Found',
+      description: 'You found a server-side URL or host input. Begin with low-risk loopback targets to prove the server is making the request.',
+      actions: [
+        { label: 'Probe loopback / localhost', handler: 'handleSsrfProbeLoopback' }
+      ],
+      includeRestart: true
+    },
+    'probe-loopback': {
+      step: 3,
+      title: 'Probe Loopback',
+      description: 'Compare response size, status, and timing against a benign external host so you can tell whether loopback access is real.',
+      actions: [
+        { label: 'Probe cloud metadata', handler: 'handleSsrfProbeCloudMetadata' }
+      ]
+    },
+    'probe-cloud-metadata': {
+      step: 4,
+      title: 'Probe Cloud Metadata',
+      description: 'Move to metadata endpoints only after confirming the server performs the request, and keep the request read-only where possible.',
+      actions: [
+        { label: 'Scan internal hosts', handler: 'handleSsrfInternalHostScan' }
+      ]
+    },
+    'internal-host-scan': {
+      step: 5,
+      title: 'Internal Host Scan',
+      description: 'Summarize what your SSRF payloads actually reached.',
+      stacked: true,
+      actions: [
+        { label: 'Cloud metadata responded', handler: 'handleSsrfResultChoice', value: 'metadata-read' },
+        { label: 'Internal host was reachable', handler: 'handleSsrfResultChoice', value: 'internal-reached', variant: 'ghost' },
+        { label: 'OOB callback confirmed SSRF', handler: 'handleSsrfResultChoice', value: 'oob-confirmed', variant: 'ghost' },
+        { label: 'Requests looked blocked', handler: 'handleSsrfResultChoice', value: 'blocked', variant: 'ghost' }
+      ]
+    },
+    'confirm-ssrf': {
+      step: 6,
+      title: 'Confirm SSRF',
+      description: ({ selectedOutcome }) => selectedOutcome === 'metadata-read'
+        ? 'Confirm the same metadata path and capture only the minimum proof needed to show server-side access.'
+        : selectedOutcome === 'internal-reached'
+          ? 'Confirm which host or port was reachable and whether the same SSRF primitive works on adjacent internal targets.'
+          : 'Confirm the OOB interaction with the same payload and note which schemes, redirects, or DNS variants were required.',
+      actions: [
+        { label: 'Continue to Next Step', handler: 'handleSsrfNextStep' }
+      ]
+    },
+    'next-step': {
+      step: 7,
+      title: 'Next Step',
+      description: 'Document every target tested, the evidence that proved server-side reachability, and any protocol or redirect tricks required.',
+      includeRestart: true
+    }
+  },
+  cors: {
+    'cors-headers-observed': {
+      step: 2,
+      title: 'CORS Headers Observed',
+      description: 'Start with the simplest header checks first so you know whether wildcard, null origin, or reflection is worth deeper work.',
+      actions: [
+        { label: 'Test wildcard policy', handler: 'handleCorsTestWildcard' }
+      ],
+      includeRestart: true
+    },
+    'test-wildcard': {
+      step: 3,
+      title: 'Test Wildcard',
+      description: 'Check whether the server allows broad origins and whether credentials are involved before moving to more specific origin probes.',
+      actions: [
+        { label: 'Test null origin', handler: 'handleCorsTestNullOrigin' }
+      ]
+    },
+    'test-null-origin': {
+      step: 4,
+      title: 'Test Null Origin',
+      description: 'A null origin can be surprisingly exploitable from sandboxed or file-based contexts, so compare it directly with a normal attacker origin.',
+      actions: [
+        { label: 'Test origin reflection', handler: 'handleCorsTestReflection' }
+      ]
+    },
+    'test-reflection': {
+      step: 5,
+      title: 'Test Reflection',
+      description: 'Choose the strongest CORS behavior you confirmed.',
+      stacked: true,
+      actions: [
+        { label: 'Credentialed response leaked cross-origin', handler: 'handleCorsResultChoice', value: 'credentialed-leak' },
+        { label: 'Origin reflected without credentials', handler: 'handleCorsResultChoice', value: 'reflected-origin', variant: 'ghost' },
+        { label: 'Null origin was accepted', handler: 'handleCorsResultChoice', value: 'null-origin', variant: 'ghost' },
+        { label: 'No meaningful issue found', handler: 'handleCorsResultChoice', value: 'blocked', variant: 'ghost' }
+      ]
+    },
+    'confirm-cors': {
+      step: 6,
+      title: 'Confirm CORS',
+      description: ({ selectedOutcome }) => selectedOutcome === 'credentialed-leak'
+        ? 'Build a minimal proof page that shows authenticated data is readable cross-origin under the same header conditions.'
+        : selectedOutcome === 'reflected-origin'
+          ? 'Confirm whether the reflected origin actually exposes sensitive content or if it is noisy but low impact.'
+          : 'Confirm the null-origin acceptance path and whether credentials or sensitive data are also exposed.',
+      actions: [
+        { label: 'Continue to Next Step', handler: 'handleCorsNextStep' }
+      ]
+    },
+    'next-step': {
+      step: 7,
+      title: 'Next Step',
+      description: 'Record the exact origins, headers, and credential mode used for each test so the CORS behavior is unambiguous.',
+      includeRestart: true
+    }
+  },
+  oauth: {
+    'oauth-flow-found': {
+      step: 2,
+      title: 'OAuth Flow Found',
+      description: 'Map the flow first so you know which endpoints, parameters, and redirect targets are actually in play.',
+      actions: [
+        { label: 'Map endpoints and parameters', handler: 'handleOauthMapEndpoints' }
+      ],
+      includeRestart: true
+    },
+    'map-endpoints': {
+      step: 3,
+      title: 'Map Endpoints',
+      description: 'Capture authorize, callback, token exchange, and logout behavior before changing any parameters.',
+      actions: [
+        { label: 'Test state handling', handler: 'handleOauthTestStateParam' }
+      ]
+    },
+    'test-state-param': {
+      step: 4,
+      title: 'Test State Param',
+      description: 'Check whether state is present, unique, and validated server-side when the callback is replayed or tampered with.',
+      actions: [
+        { label: 'Test redirect URI validation', handler: 'handleOauthTestRedirectUri' }
+      ]
+    },
+    'test-redirect-uri': {
+      step: 5,
+      title: 'Test Redirect URI',
+      description: 'Try partial matches, open-redirect pivots, alternate subdomains, or encoded variants to see what the server really accepts.',
+      actions: [
+        { label: 'Test authorization code reuse', handler: 'handleOauthTestCodeReuse' }
+      ]
+    },
+    'test-code-reuse': {
+      step: 6,
+      title: 'Test Code Reuse',
+      description: 'Choose the strongest OAuth weakness you confirmed.',
+      stacked: true,
+      actions: [
+        { label: 'Redirect URI bypass worked', handler: 'handleOauthResultChoice', value: 'redirect-uri-bypass' },
+        { label: 'State validation was bypassed', handler: 'handleOauthResultChoice', value: 'state-bypass', variant: 'ghost' },
+        { label: 'Authorization code was reusable', handler: 'handleOauthResultChoice', value: 'code-reuse', variant: 'ghost' },
+        { label: 'No meaningful issue found', handler: 'handleOauthResultChoice', value: 'no-issue', variant: 'ghost' }
+      ]
+    },
+    'confirm-oauth': {
+      step: 7,
+      title: 'Confirm OAuth Finding',
+      description: ({ selectedOutcome }) => selectedOutcome === 'redirect-uri-bypass'
+        ? 'Confirm the final attacker-controlled redirect target and whether you can receive a real authorization artifact there.'
+        : selectedOutcome === 'state-bypass'
+          ? 'Confirm whether the broken state handling leads to account linking, forced login, or another real victim impact.'
+          : 'Confirm that the same authorization code is accepted twice and whether token revocation happens correctly afterward.',
+      actions: [
+        { label: 'Continue to Next Step', handler: 'handleOauthNextStep' }
+      ]
+    },
+    'next-step': {
+      step: 8,
+      title: 'Next Step',
+      description: 'Keep the full request/redirect chain together so the OAuth break can be replayed exactly as observed.',
+      includeRestart: true
+    }
+  },
+  privesc: {
+    'low-priv-access': {
+      step: 2,
+      title: 'Low-Priv Access',
+      description: 'Start from the role you legitimately have, then map what higher-privilege states or objects should be off limits.',
+      actions: [
+        { label: 'Enumerate roles and boundaries', handler: 'handlePrivescEnumerateRoles' }
+      ],
+      includeRestart: true
+    },
+    'enumerate-roles': {
+      step: 3,
+      title: 'Enumerate Roles',
+      description: 'List visible roles, admin-only features, and object ownership patterns so you can test both horizontal and vertical movement deliberately.',
+      actions: [
+        { label: 'Test horizontal movement', handler: 'handlePrivescTestHorizontal' }
+      ]
+    },
+    'test-horizontal': {
+      step: 4,
+      title: 'Test Horizontal',
+      description: 'Replay requests against another user’s objects first, then escalate to admin-only routes if ownership checks look weak.',
+      actions: [
+        { label: 'Test vertical escalation', handler: 'handlePrivescTestVertical' }
+      ]
+    },
+    'test-vertical': {
+      step: 5,
+      title: 'Test Vertical',
+      description: 'Choose the clearest privilege-boundary result you confirmed.',
+      stacked: true,
+      actions: [
+        { label: 'Reached a higher-privilege role', handler: 'handlePrivescResultChoice', value: 'vertical-escalation' },
+        { label: 'Accessed another user’s data', handler: 'handlePrivescResultChoice', value: 'horizontal-escalation', variant: 'ghost' },
+        { label: 'No escalation found yet', handler: 'handlePrivescResultChoice', value: 'no-escalation', variant: 'ghost' }
+      ]
+    },
+    'confirm-escalation': {
+      step: 6,
+      title: 'Confirm Escalation',
+      description: ({ selectedOutcome }) => selectedOutcome === 'vertical-escalation'
+        ? 'Confirm which admin or elevated actions are reachable and keep the proof minimal so the access change is undeniable.'
+        : 'Confirm that the object access works across more than one resource type so the scope is clear.',
+      actions: [
+        { label: 'Continue to Next Step', handler: 'handlePrivescNextStep' }
+      ]
+    },
+    'next-step': {
+      step: 7,
+      title: 'Next Step',
+      description: 'Document the original role, the forbidden target, and the exact request delta that crossed the privilege boundary.',
+      includeRestart: true
+    }
+  },
+  crypto: {
+    'hash-found': {
+      step: 2,
+      title: 'Hash / Cipher Found',
+      description: 'Start by deciding whether the artifact is really a hash, an encoded blob, or encrypted data before you waste time cracking the wrong thing.',
+      actions: [
+        { label: 'Identify the type', handler: 'handleCryptoIdentifyType' }
+      ],
+      includeRestart: true
+    },
+    'identify-type': {
+      step: 3,
+      title: 'Identify Type',
+      description: 'Check length, alphabet, prefixes, and surrounding context to narrow the artifact down to a realistic set of algorithms.',
+      actions: [
+        { label: 'Check known lists / databases', handler: 'handleCryptoCheckKnownList' }
+      ]
+    },
+    'check-known-list': {
+      step: 4,
+      title: 'Check Known List',
+      description: 'Try fast wins first: public hash databases, challenge writeups, and whether the same artifact already appears elsewhere in your notes.',
+      actions: [
+        { label: 'Move to wordlist cracking', handler: 'handleCryptoWordlistCrack' }
+      ]
+    },
+    'wordlist-crack': {
+      step: 5,
+      title: 'Wordlist Crack',
+      description: 'Use a targeted list tied to the environment, app name, usernames, and common password patterns before switching to broader attacks.',
+      actions: [
+        { label: 'Review rainbow-table / final result', handler: 'handleCryptoRainbowTable' }
+      ]
+    },
+    'rainbow-table': {
+      step: 6,
+      title: 'Rainbow Table / Final Review',
+      description: 'Choose the most accurate summary of your crypto analysis so far.',
+      stacked: true,
+      actions: [
+        { label: 'Plaintext was recovered', handler: 'handleCryptoResultChoice', value: 'plaintext-recovered' },
+        { label: 'Algorithm identified but not cracked', handler: 'handleCryptoResultChoice', value: 'algorithm-identified', variant: 'ghost' },
+        { label: 'Still inconclusive', handler: 'handleCryptoResultChoice', value: 'inconclusive', variant: 'ghost' }
+      ]
+    },
+    result: {
+      step: 7,
+      title: 'Result',
+      description: ({ selectedOutcome }) => selectedOutcome === 'plaintext-recovered'
+        ? 'You recovered plaintext from the artifact. Validate why it matters in the target context before broadening the claim.'
+        : 'You identified the algorithm or narrowed the artifact down, which is enough to guide the next decision even if no plaintext was recovered yet.',
+      actions: [
+        { label: 'Continue to Next Step', handler: 'handleCryptoNextStep' }
+      ]
+    },
+    'next-step': {
+      step: 8,
+      title: 'Next Step',
+      description: 'Record the artifact, identification path, cracking method, and whether the recovered value changed access or understanding.',
+      includeRestart: true
+    }
+  },
+  race: {
+    'state-action-found': {
+      step: 2,
+      title: 'State Action Found',
+      description: 'Pick an action where duplicate execution would matter — purchases, balance changes, coupon redemption, seat booking, or limit checks are ideal.',
+      actions: [
+        { label: 'Baseline the normal behavior', handler: 'handleRaceBaseline' }
+      ],
+      includeRestart: true
+    },
+    baseline: {
+      step: 3,
+      title: 'Baseline',
+      description: 'Send the action sequentially first so you know what the correct server-side enforcement looks like before racing it.',
+      actions: [
+        { label: 'Send concurrent requests', handler: 'handleRaceConcurrentRequests' }
+      ]
+    },
+    'concurrent-requests': {
+      step: 4,
+      title: 'Concurrent Requests',
+      description: 'Use the same request set with tight timing and keep the count small enough that you can still reason about the outcomes.',
+      actions: [
+        { label: 'Compare the outcomes', handler: 'handleRaceCompareOutcomes' }
+      ]
+    },
+    'compare-outcomes': {
+      step: 5,
+      title: 'Compare Outcomes',
+      description: 'Choose the strongest race signal from the concurrent run.',
+      stacked: true,
+      actions: [
+        { label: 'Logic flaw confirmed', handler: 'handleRaceResultChoice', value: 'logic-flaw-confirmed' },
+        { label: 'Outcome was inconsistent', handler: 'handleRaceResultChoice', value: 'inconsistent-outcome', variant: 'ghost' },
+        { label: 'No race observed', handler: 'handleRaceResultChoice', value: 'no-race', variant: 'ghost' }
+      ]
+    },
+    'confirm-race': {
+      step: 6,
+      title: 'Confirm Race',
+      description: ({ selectedOutcome }) => selectedOutcome === 'logic-flaw-confirmed'
+        ? 'Repeat the exact timing technique to prove the business rule can be broken on demand, not just once.'
+        : 'Refine the timing method and request count until you can tell whether the issue is real or just noisy concurrency.',
+      actions: [
+        { label: 'Continue to Next Step', handler: 'handleRaceNextStep' }
+      ]
+    },
+    'next-step': {
+      step: 7,
+      title: 'Next Step',
+      description: 'Capture the baseline behavior, concurrency method, and the exact broken business rule so the race is easy to explain.',
+      includeRestart: true
+    }
+  },
+  xss: {
+    'reflection-found': {
+      step: 2,
+      title: 'Reflection Found',
+      description: ({ selectedAction }) => selectedAction
+        ? `You are currently focusing on the ${selectedAction} angle. Keep the source and sink pair explicit before moving on.`
+        : 'Choose whether the first lead is reflected, stored, or DOM-based XSS so the next tests stay focused.',
+      stacked: true,
+      actions: [
+        { label: 'Focus on reflected XSS', handler: 'handleXssActionSelect', value: 'reflected' },
+        { label: 'Focus on stored XSS', handler: 'handleXssActionSelect', value: 'stored', variant: 'ghost' },
+        { label: 'Focus on DOM-based XSS', handler: 'handleXssActionSelect', value: 'dom', variant: 'ghost' },
+        { label: 'Continue to identify context', handler: 'handleXssContextIdentified' }
+      ]
+    },
+    'identify-context': {
+      step: 3,
+      title: 'Identify Context',
+      description: 'Work out whether the payload lands in HTML, an attribute, JavaScript, or a URL context before picking bypass payloads.',
+      actions: [
+        { label: 'Test stored / DOM variants', handler: 'handleXssTestStored' }
+      ]
+    },
+    'test-stored': {
+      step: 4,
+      title: 'Test Stored / DOM',
+      description: 'Check whether the payload persists across requests, reaches another user, or flows through client-side sinks after page load.',
+      actions: [
+        { label: 'Move to filter bypass', handler: 'handleXssBypassFilters' }
+      ]
+    },
+    'bypass-filters': {
+      step: 5,
+      title: 'Bypass Filters',
+      description: 'Choose the strongest XSS signal you confirmed.',
+      stacked: true,
+      actions: [
+        { label: 'Script executed in the browser', handler: 'handleXssResultChoice', value: 'script-executed' },
+        { label: 'Filter was bypassed', handler: 'handleXssResultChoice', value: 'filter-bypassed', variant: 'ghost' },
+        { label: 'DOM sink was identified', handler: 'handleXssResultChoice', value: 'dom-sink-found', variant: 'ghost' },
+        { label: 'No exploit path yet', handler: 'handleXssResultChoice', value: 'no-xss', variant: 'ghost' }
+      ]
+    },
+    'confirm-xss': {
+      step: 6,
+      title: 'Confirm XSS',
+      description: ({ selectedOutcome }) => selectedOutcome === 'script-executed'
+        ? 'Lock the payload down to the smallest working version and confirm the exact context where it executes.'
+        : selectedOutcome === 'filter-bypassed'
+          ? 'Confirm that the bypass leads to real execution, not just unusual rendering or HTML injection.'
+          : 'Trace the source and sink with enough detail that another tester can reproduce the same exploit path.',
+      actions: [
+        { label: 'Continue to Next Step', handler: 'handleXssNextStep' }
+      ]
+    },
+    'next-step': {
+      step: 7,
+      title: 'Next Step',
+      description: 'Record the source, sink, payload, browser context, and whether CSP or encoding changed exploitability.',
+      includeRestart: true
+    }
+  },
+  csrf: {
+    'state-action-found': {
+      step: 2,
+      title: 'State Action Found',
+      description: ({ selectedAction }) => selectedAction
+        ? `You are focusing on a ${selectedAction} action. Confirm it changes state before building a cross-origin test.`
+        : 'Choose a high-value state-changing action first so the CSRF proof is easy to reason about and worth testing.',
+      stacked: true,
+      actions: [
+        { label: 'Focus on profile / account change', handler: 'handleCsrfActionSelect', value: 'profile-change' },
+        { label: 'Focus on money / purchase action', handler: 'handleCsrfActionSelect', value: 'transaction', variant: 'ghost' },
+        { label: 'Focus on admin-style action', handler: 'handleCsrfActionSelect', value: 'admin-action', variant: 'ghost' },
+        { label: 'Continue to token checks', handler: 'handleCsrfCheckTokens' }
+      ]
+    },
+    'check-tokens': {
+      step: 3,
+      title: 'Check Tokens',
+      description: 'See whether CSRF tokens exist, whether they are bound to the session, and whether the server really rejects missing or swapped values.',
+      actions: [
+        { label: 'Test SameSite behavior', handler: 'handleCsrfTestSameSite' }
+      ]
+    },
+    'test-samesite': {
+      step: 4,
+      title: 'Test SameSite',
+      description: 'Check whether cookie policy alone blocks the forged request path, or whether the action still works under realistic browser conditions.',
+      actions: [
+        { label: 'Craft a CSRF PoC', handler: 'handleCsrfCraftPoc' }
+      ]
+    },
+    'craft-poc': {
+      step: 5,
+      title: 'Craft PoC',
+      description: 'Choose the clearest outcome from your CSRF proof-of-concept attempts.',
+      stacked: true,
+      actions: [
+        { label: 'Cross-origin PoC succeeded', handler: 'handleCsrfResultChoice', value: 'poc-succeeded' },
+        { label: 'Token was bypassed', handler: 'handleCsrfResultChoice', value: 'token-bypass', variant: 'ghost' },
+        { label: 'Mitigations held up', handler: 'handleCsrfResultChoice', value: 'no-csrf', variant: 'ghost' }
+      ]
+    },
+    'confirm-csrf': {
+      step: 6,
+      title: 'Confirm CSRF',
+      description: ({ selectedOutcome }) => selectedOutcome === 'poc-succeeded'
+        ? 'Confirm the exact victim-side state change and keep the proof limited to a safe, reversible action if possible.'
+        : 'Confirm the bypass path across more than one state-changing action so the weakness is clearly systemic.',
+      actions: [
+        { label: 'Continue to Next Step', handler: 'handleCsrfNextStep' }
+      ]
+    },
+    'next-step': {
+      step: 7,
+      title: 'Next Step',
+      description: 'Keep the captured request, PoC HTML, cookie behavior, and token observations together so the CSRF claim is easy to audit.',
+      includeRestart: true
+    }
+  },
+  deserialize: {
+    'serialized-data-found': {
+      step: 2,
+      title: 'Serialized Data Found',
+      description: ({ selectedAction }) => selectedAction
+        ? `You are treating the payload like ${selectedAction}. Confirm the format markers before spending time on gadget chains.`
+        : 'Choose the most likely format family first so the gadget research stays grounded in the actual serialization technology.',
+      stacked: true,
+      actions: [
+        { label: 'Looks like Java serialization', handler: 'handleDeserializeActionSelect', value: 'java-object-stream' },
+        { label: 'Looks like PHP object serialization', handler: 'handleDeserializeActionSelect', value: 'php-serialize', variant: 'ghost' },
+        { label: 'Looks like Python pickle / binary blob', handler: 'handleDeserializeActionSelect', value: 'python-pickle', variant: 'ghost' },
+        { label: 'Continue to identify format', handler: 'handleDeserializeIdentifyFormat' }
+      ]
+    },
+    'identify-format': {
+      step: 3,
+      title: 'Identify Format',
+      description: 'Fingerprint the format and likely framework version before you select gadgets or proof payloads.',
+      actions: [
+        { label: 'Inspect gadget chains', handler: 'handleDeserializeInspectGadgets' }
+      ]
+    },
+    'inspect-gadgets': {
+      step: 4,
+      title: 'Inspect Gadgets',
+      description: 'Pick a chain that gives you a safe confirmation path first, such as a DNS callback, file write, or other low-impact proof.',
+      actions: [
+        { label: 'Craft the payload', handler: 'handleDeserializeCraftPayload' }
+      ]
+    },
+    'craft-payload': {
+      step: 5,
+      title: 'Craft Payload',
+      description: 'Choose the strongest result from your deserialization payload tests.',
+      stacked: true,
+      actions: [
+        { label: 'Remote code execution confirmed', handler: 'handleDeserializeResultChoice', value: 'rce-confirmed' },
+        { label: 'Object injection confirmed', handler: 'handleDeserializeResultChoice', value: 'object-injected', variant: 'ghost' },
+        { label: 'No gadget chain worked', handler: 'handleDeserializeResultChoice', value: 'no-gadget', variant: 'ghost' }
+      ]
+    },
+    'test-execution': {
+      step: 6,
+      title: 'Test Execution',
+      description: ({ selectedOutcome }) => selectedOutcome === 'rce-confirmed'
+        ? 'Confirm the gadget chain and execution evidence with the smallest safe payload that still proves code execution.'
+        : 'Confirm how the injected object changes behavior, even if it does not reach code execution.',
+      actions: [
+        { label: 'Continue to Next Step', handler: 'handleDeserializeNextStep' }
+      ]
+    },
+    'next-step': {
+      step: 7,
+      title: 'Next Step',
+      description: 'Document the format, library assumptions, gadget chain, and the evidence that separates RCE from plain object injection.',
+      includeRestart: true
+    }
+  },
+  'ctf-stego': {
+    'artifact-found': {
+      step: 2,
+      title: 'Artifact Found',
+      description: ({ selectedAction }) => selectedAction
+        ? `You are focusing on a ${selectedAction} artifact. Match the tool choice to the file type before going deeper.`
+        : 'Choose the artifact type first so the extraction path starts with the right tool set.',
+      stacked: true,
+      actions: [
+        { label: 'It is primarily an image', handler: 'handleCtfStegoActionSelect', value: 'image' },
+        { label: 'It is audio or media', handler: 'handleCtfStegoActionSelect', value: 'audio', variant: 'ghost' },
+        { label: 'It looks like an archive / mixed blob', handler: 'handleCtfStegoActionSelect', value: 'archive', variant: 'ghost' },
+        { label: 'Identify the hiding technique', handler: 'handleCtfStegoIdentifyStego' }
+      ]
+    },
+    'identify-stego': {
+      step: 3,
+      title: 'Identify Technique',
+      description: 'Look for the quickest clues first: file signatures, appended data, metadata, or LSB-style patterns.',
+      actions: [
+        { label: 'Extract metadata', handler: 'handleCtfStegoExtractMetadata' }
+      ]
+    },
+    'extract-metadata': {
+      step: 4,
+      title: 'Extract Metadata',
+      description: 'Metadata often gives you the next password, filename, coordinate, or decode hint needed for the hidden payload.',
+      actions: [
+        { label: 'Decode hidden data', handler: 'handleCtfStegoDecodeHidden' }
+      ]
+    },
+    'decode-hidden': {
+      step: 5,
+      title: 'Decode Hidden Data',
+      description: 'Choose the clearest forensics outcome from your extraction attempts.',
+      stacked: true,
+      actions: [
+        { label: 'Flag was recovered', handler: 'handleCtfStegoResultChoice', value: 'flag-found' },
+        { label: 'Hidden data extracted but not solved', handler: 'handleCtfStegoResultChoice', value: 'hidden-data-extracted', variant: 'ghost' },
+        { label: 'Nothing useful found yet', handler: 'handleCtfStegoResultChoice', value: 'nothing-found', variant: 'ghost' }
+      ]
+    },
+    'confirm-flag': {
+      step: 6,
+      title: 'Confirm Flag',
+      description: ({ selectedOutcome }) => selectedOutcome === 'flag-found'
+        ? 'Re-run the extraction path once so the solution is stable enough for a writeup.'
+        : 'Confirm the extracted data is real and decide whether it needs decode or crypto follow-up before you keep digging in the original file.',
+      actions: [
+        { label: 'Continue to Next Step', handler: 'handleCtfStegoNextStep' }
+      ]
+    },
+    'next-step': {
+      step: 7,
+      title: 'Next Step',
+      description: 'Capture the artifact, tool chain, extraction settings, and any passwords or hints so the solve path is easy to replay.',
+      includeRestart: true
+    }
+  },
+  'ctf-web': {
+    'source-hint-found': {
+      step: 2,
+      title: 'Source / Hint Found',
+      description: ({ selectedAction }) => selectedAction
+        ? `You are following the ${selectedAction} lead. Keep the first foothold explicit so the chain is easy to explain later.`
+        : 'Choose the strongest lead first so the chain starts with something concrete instead of broad guessing.',
+      stacked: true,
+      actions: [
+        { label: 'Start from source / comment leak', handler: 'handleCtfWebActionSelect', value: 'source-leak' },
+        { label: 'Start from template / SSTI hint', handler: 'handleCtfWebActionSelect', value: 'template-hint', variant: 'ghost' },
+        { label: 'Start from auth / access control issue', handler: 'handleCtfWebActionSelect', value: 'auth-issue', variant: 'ghost' },
+        { label: 'Chain the first vulnerability', handler: 'handleCtfWebChainFirstVuln' }
+      ]
+    },
+    'chain-first-vuln': {
+      step: 3,
+      title: 'Chain First Vulnerability',
+      description: 'Turn the first bug into a concrete foothold: leaked creds, source access, a token, or another pivot point.',
+      actions: [
+        { label: 'Chain the second vulnerability', handler: 'handleCtfWebChainSecondVuln' }
+      ]
+    },
+    'chain-second-vuln': {
+      step: 4,
+      title: 'Chain Second Vulnerability',
+      description: 'Use the output from the first foothold to reach the next restricted feature, file, or execution surface.',
+      actions: [
+        { label: 'Pivot toward the flag', handler: 'handleCtfWebPivot' }
+      ]
+    },
+    pivot: {
+      step: 5,
+      title: 'Pivot',
+      description: 'Choose the strongest chain status you confirmed.',
+      stacked: true,
+      actions: [
+        { label: 'Flag was found', handler: 'handleCtfWebResultChoice', value: 'flag-found' },
+        { label: 'Chain is confirmed but flag is still ahead', handler: 'handleCtfWebResultChoice', value: 'chain-confirmed', variant: 'ghost' },
+        { label: 'Chain broke / stalled', handler: 'handleCtfWebResultChoice', value: 'chain-broken', variant: 'ghost' }
+      ]
+    },
+    'confirm-flag': {
+      step: 6,
+      title: 'Confirm Flag',
+      description: ({ selectedOutcome }) => selectedOutcome === 'flag-found'
+        ? 'Write down each pivot in order so the final solve reads like a clean chain instead of a collection of guesses.'
+        : 'Confirm the chain is stable enough to pivot from the current foothold to the final flag location.',
+      actions: [
+        { label: 'Continue to Next Step', handler: 'handleCtfWebNextStep' }
+      ]
+    },
+    'next-step': {
+      step: 7,
+      title: 'Next Step',
+      description: 'Document the whole chain end to end: first clue, first vulnerability, second vulnerability, pivot, and final target.',
+      includeRestart: true
+    }
+  }
+}
+
+function renderExtendedFlowStoryContent({ selectedFlow, storyProps }) {
+  const flowConfig = EXTENDED_FLOW_STAGE_CONTENT[selectedFlow]
+  if (!flowConfig) {
+    return null
+  }
+
+  return renderConfiguredStoryStage(flowConfig[storyProps.currentStage], storyProps)
+}
+
 export function renderFlowStoryContent({ selectedFlow, storyProps }) {
   let content
 
@@ -1793,7 +2713,7 @@ export function renderFlowStoryContent({ selectedFlow, storyProps }) {
   } else if (selectedFlow === 'upload') {
     content = renderUploadStoryContent(storyProps)
   } else {
-    content = renderDecodeStoryContent(storyProps)
+    content = renderExtendedFlowStoryContent({ selectedFlow, storyProps }) ?? renderDecodeStoryContent(storyProps)
   }
 
   const stageGuidance = getStageGuidance(selectedFlow, storyProps.currentStage)

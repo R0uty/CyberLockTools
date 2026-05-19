@@ -193,6 +193,11 @@ export const labNotesByTool = {
     what: 'A network calculation tool that breaks CIDR notation into subnet masks, ranges, usable hosts, and related addressing details.',
     usedFor: 'Used in networking, infrastructure planning, firewall reviews, VPN setup, and quickly understanding address boundaries during troubleshooting.',
     example: 'Useful when checking host range and broadcast details for a /24 or /27 network.'
+  },
+  'Text to DSL': {
+    what: 'A structured text converter that turns short command-style lines into a predictable DSL output format.',
+    usedFor: 'Used when normalizing simple operational instructions into a repeatable format that is easier to read, compare, and paste into downstream tooling or notes.',
+    example: 'Helpful when you have several short command descriptions and want them rewritten into consistent DSL blocks.'
   }
 }
 

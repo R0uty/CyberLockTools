@@ -1,8 +1,14 @@
 import { useEffect } from 'react'
 
+const BRAND_NAME = "R0uty's Cyber Lab"
+
 export function useSEO({ title, description, keywords = '' }) {
   useEffect(() => {
-    document.title = title ? `${title} - CyberLock Tools` : 'CyberLock Tools'
+    document.title = !title
+      ? BRAND_NAME
+      : title.includes(BRAND_NAME)
+        ? title
+        : `${title} - ${BRAND_NAME}`
 
     let metaDescription = document.querySelector('meta[name="description"]')
     if (!metaDescription) {

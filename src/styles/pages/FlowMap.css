@@ -999,6 +999,20 @@
   gap: 0.75rem;
 }
 
+.flow-map-story-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 220px;
+  gap: 1rem;
+  align-items: start;
+}
+
+.flow-map-story-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  min-width: 0;
+}
+
 .flow-map-story--success {
   border-color: rgba(87, 199, 255, 0.24);
   background: linear-gradient(180deg, rgba(18, 28, 36, 0.96), rgba(10, 14, 18, 0.95));
@@ -1121,6 +1135,99 @@
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid rgba(192, 192, 192, 0.1);
   max-width: 68ch;
+}
+
+.flow-map-story-visual {
+  position: sticky;
+  top: 0.9rem;
+  padding: 0.85rem 0.9rem;
+  border-radius: 12px;
+  border: 1px solid rgba(192, 192, 192, 0.12);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.02));
+}
+
+.flow-map-story-visual-kicker {
+  display: inline-flex;
+  margin-bottom: 0.7rem;
+  color: #9fd8ff;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.flow-map-story-visual-steps {
+  position: relative;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.55rem;
+}
+
+.flow-map-story-visual-steps::before {
+  content: '';
+  position: absolute;
+  top: 0.45rem;
+  bottom: 0.45rem;
+  left: 0.58rem;
+  width: 1px;
+  background: linear-gradient(180deg, rgba(87, 199, 255, 0.35), rgba(255, 255, 255, 0.08));
+}
+
+.flow-map-story-visual-step {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1.16rem minmax(0, 1fr);
+  gap: 0.6rem;
+  align-items: center;
+  color: #aab7c2;
+}
+
+.flow-map-story-visual-step--completed {
+  color: #7de0b5;
+}
+
+.flow-map-story-visual-step--current {
+  color: #f4f8fb;
+}
+
+.flow-map-story-visual-marker {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.16rem;
+  height: 1.16rem;
+  border-radius: 50%;
+  border: 1px solid rgba(192, 192, 192, 0.16);
+  background: rgba(12, 12, 12, 0.98);
+  box-shadow: 0 0 0 4px rgba(12, 12, 12, 0.95);
+}
+
+.flow-map-story-visual-step--completed .flow-map-story-visual-marker {
+  border-color: rgba(125, 224, 181, 0.5);
+  background: rgba(125, 224, 181, 0.16);
+}
+
+.flow-map-story-visual-step--current .flow-map-story-visual-marker {
+  border-color: rgba(87, 199, 255, 0.62);
+  background: rgba(87, 199, 255, 0.18);
+  box-shadow: 0 0 0 4px rgba(10, 10, 10, 0.95), 0 0 18px rgba(87, 199, 255, 0.2);
+}
+
+.flow-map-story-visual-number {
+  font-size: 0.62rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.flow-map-story-visual-label {
+  display: block;
+  min-width: 0;
+  font-size: 0.76rem;
+  line-height: 1.35;
 }
 
 /* ── Collapsible extras (tools + skills) ── */
@@ -1303,6 +1410,15 @@
 
   .flow-map-story {
     padding: 1rem 0.95rem;
+  }
+
+  .flow-map-story-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .flow-map-story-visual {
+    position: static;
+    order: -1;
   }
 
   .flow-map-story h2 {

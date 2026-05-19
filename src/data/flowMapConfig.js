@@ -934,6 +934,15 @@ export const FLOWS = {
 
 export const ACTIVE_FLOW_GROUP_KEYS = new Set(FLOW_GROUPS.map(([groupKey]) => groupKey))
 
+export function getFlowStartStage(flowOrFlowKey) {
+  const flow = typeof flowOrFlowKey === 'string' ? FLOWS[flowOrFlowKey] : flowOrFlowKey
+  if (!flow || !Array.isArray(flow.stages) || flow.stages.length === 0) {
+    return 'start'
+  }
+
+  return flow.stages.find((stageId) => stageId !== 'start') ?? flow.stages[0] ?? 'start'
+}
+
 export const FINDING_QUICK_STARTS = [
   {
     id: 'finding-token',
@@ -1078,6 +1087,42 @@ export const FINDING_QUICK_STARTS = [
     flowKey: 'deserialize',
     stageId: 'serialized-data-found',
     confidence: 'high'
+  },
+  {
+    id: 'finding-xss',
+    label: 'I saw reflected HTML or JavaScript',
+    description: 'Jump into XSS testing to identify context, bypass filters, and confirm script execution.',
+    category: 'vulnerability',
+    flowKey: 'xss',
+    stageId: 'reflection-found',
+    confidence: 'high'
+  },
+  {
+    id: 'finding-csrf',
+    label: 'I found a sensitive state-changing action',
+    description: 'Validate CSRF tokens, SameSite behavior, and whether a cross-origin PoC can trigger the action.',
+    category: 'vulnerability',
+    flowKey: 'csrf',
+    stageId: 'state-action-found',
+    confidence: 'medium'
+  },
+  {
+    id: 'finding-session-cookie',
+    label: 'I captured a session cookie',
+    description: 'Assess session flags, fixation, and expiry behavior around the active session.',
+    category: 'authentication',
+    flowKey: 'session',
+    stageId: 'session-captured',
+    confidence: 'medium'
+  },
+  {
+    id: 'finding-debug-output',
+    label: 'I saw a stack trace or debug output',
+    description: 'Start from information disclosure to assess leaked internals, configs, and follow-up attack paths.',
+    category: 'recon',
+    flowKey: 'info-disclosure',
+    stageId: 'source-found',
+    confidence: 'high'
   }
 ]
 
@@ -1126,6 +1171,69 @@ export const FLOW_OUTCOME_PHRASE_STARTS = [
     stageId: 'inspect-session',
     confidence: 'high',
     category: 'testing'
+  },
+  {
+    id: 'outcome-xss-executed',
+    phrase: 'script executed in browser',
+    description: 'Confirm XSS context, payload stability, and follow-on impact.',
+    flowKey: 'xss',
+    stageId: 'confirm-xss',
+    confidence: 'high',
+    category: 'vulnerability'
+  },
+  {
+    id: 'outcome-csrf-worked',
+    phrase: 'csrf proof of concept worked',
+    description: 'Confirm victim-side state change and document token or SameSite gaps.',
+    flowKey: 'csrf',
+    stageId: 'confirm-csrf',
+    confidence: 'high',
+    category: 'vulnerability'
+  },
+  {
+    id: 'outcome-ssrf-metadata',
+    phrase: 'metadata endpoint responded',
+    description: 'Escalate SSRF validation with internal reachability and metadata evidence.',
+    flowKey: 'ssrf',
+    stageId: 'confirm-ssrf',
+    confidence: 'high',
+    category: 'vulnerability'
+  },
+  {
+    id: 'outcome-jwt-accepted',
+    phrase: 'jwt accepted modified token',
+    description: 'Validate forged claims and broken JWT trust decisions.',
+    flowKey: 'jwt',
+    stageId: 'confirm-access',
+    confidence: 'high',
+    category: 'authentication'
+  },
+  {
+    id: 'outcome-oauth-reuse',
+    phrase: 'authorization code reused successfully',
+    description: 'Confirm OAuth code replay and token handling weaknesses.',
+    flowKey: 'oauth',
+    stageId: 'confirm-oauth',
+    confidence: 'high',
+    category: 'authentication'
+  },
+  {
+    id: 'outcome-race-duplicate',
+    phrase: 'duplicate action happened under concurrency',
+    description: 'Confirm a race window and measure business logic impact.',
+    flowKey: 'race',
+    stageId: 'confirm-race',
+    confidence: 'high',
+    category: 'testing'
+  },
+  {
+    id: 'outcome-deserialize-callback',
+    phrase: 'deserialization payload triggered callback',
+    description: 'Confirm gadget execution or object injection without destructive payloads.',
+    flowKey: 'deserialize',
+    stageId: 'test-execution',
+    confidence: 'high',
+    category: 'vulnerability'
   }
 ]
 
@@ -1273,5 +1381,32 @@ export const VULNERABILITY_TYPE_STARTS = [
     stageId: 'serialized-data-found',
     confidence: 'high',
     category: 'vulnerability'
+  },
+  {
+    id: 'vuln-ssti',
+    type: 'Server-side template injection',
+    description: 'Probe rendered templates for code execution, context leakage, and template-engine specific payload behavior.',
+    flowKey: 'input',
+    stageId: 'input-field-found',
+    confidence: 'medium',
+    category: 'vulnerability'
+  },
+  {
+    id: 'vuln-open-redirect',
+    type: 'Open redirect',
+    description: 'Tamper redirect-related parameters and compare whether the server trusts attacker-controlled destinations.',
+    flowKey: 'request',
+    stageId: 'http-request-observed',
+    confidence: 'medium',
+    category: 'vulnerability'
+  },
+  {
+    id: 'vuln-graphql-auth',
+    type: 'GraphQL authorization weakness',
+    description: 'Inspect GraphQL schema and auth handling for object-level and field-level access control gaps.',
+    flowKey: 'api',
+    stageId: 'api-endpoint-found',
+    confidence: 'medium',
+    category: 'authentication'
   }
 ]

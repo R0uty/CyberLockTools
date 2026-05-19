@@ -4,9 +4,9 @@ import '../styles/pages/Contact.css'
 
 export default function Contact() {
   useSEO({
-    title: 'Contact R0uty - Cyber Lab',
-    description: 'Send feedback about flows, tools, bugs, and workflow ideas for R0uty\'s Cyber Lab.',
-    keywords: 'contact, feedback, workflow ideas, bug report, feature request'
+    title: 'Demo Feedback Form',
+    description: 'Preview the local feedback form for flows, tools, bugs, and workflow ideas inside R0uty\'s Cyber Lab.',
+    keywords: 'demo feedback form, workflow ideas, bug report, feature request, browser-only form'
   })
 
   const [formData, setFormData] = useState({
@@ -55,16 +55,16 @@ export default function Contact() {
   return (
     <div className="tool-page contact-page">
       <div className="privacy-badge">
-        All processing happens in your browser • No data is sent to server
+        All processing happens in your browser • No data leaves this device
       </div>
       <div className="tool-header">
-        <span className="contact-kicker">Get in touch</span>
-        <h1>Get In Touch</h1>
-        <p>Send feedback on the Flow Map, the browser tools, or the overall workflow experience you want this suite to support.</p>
+        <span className="contact-kicker">Local demo form</span>
+        <h1>Preview the Feedback Form</h1>
+        <p>Use this browser-only demo to preview how a feedback form for Flow Map, tools, and workflow ideas could feel before wiring it to a real inbox.</p>
         <div className="contact-header-meta">
           <div className="contact-header-pill"><span>Channel</span><strong>Demo inbox</strong></div>
           <div className="contact-header-pill"><span>Validation</span><strong>Browser-side</strong></div>
-          <div className="contact-header-pill"><span>Best for</span><strong>Flows, bugs, ideas</strong></div>
+          <div className="contact-header-pill"><span>Delivery</span><strong>Not sent</strong></div>
         </div>
       </div>
 
@@ -72,7 +72,7 @@ export default function Contact() {
         <section className="contact-form-panel">
           {submitted && (
             <div className="contact-success">
-              Thank you for your message! Feedback on the suite, flows, and tools is always helpful.
+              Form preview complete. Your message was validated locally and was not sent anywhere.
             </div>
           )}
 
@@ -139,7 +139,7 @@ export default function Contact() {
               type="submit"
               className="contact-submit-btn"
             >
-              Send Message
+              Validate Demo Message
             </button>
           </form>
         </section>
@@ -155,7 +155,7 @@ export default function Contact() {
           <section className="info-box contact-info-box">
             <h2>How this page works</h2>
             <p>
-              The form validates locally in your browser. It is still a demo surface, so nothing is actually delivered anywhere, but the intent is to model a feedback channel for the suite.
+              The form validates locally in your browser. It does not send email, create an issue, or store submissions remotely; it only previews the interaction and validation copy.
             </p>
           </section>
 
@@ -168,7 +168,7 @@ export default function Contact() {
               <li><strong>Share UX Feedback:</strong> Tell me where the suite feels clear, confusing, too big, or too thin</li>
             </ul>
             <p className="contact-note">
-              In a production setup, this would connect to a real inbox or issue intake flow for the project.
+              If this becomes a production page later, it can be wired to a real inbox or issue intake flow with matching privacy copy.
             </p>
           </section>
         </aside>

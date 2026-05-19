@@ -293,4 +293,40 @@ describe('FlowMap interactions', () => {
     expect(within(groupProgress).getByLabelText('Testing in-progress')).toBeTruthy()
     expect(within(groupProgress).getByLabelText('Vulnerability Validation untouched')).toBeTruthy()
   })
+
+  it('shows a step visual inside the story panel for the active flow stage', () => {
+    renderFlowMap()
+
+    fireEvent.click(screen.getByRole('button', { name: 'Discovery Flow' }))
+
+    const storyVisual = screen.getByLabelText('Discovery Flow step visual')
+    expect(within(storyVisual).getByLabelText('Current step: Start')).toBeTruthy()
+    expect(within(storyVisual).getByText('Web Page Found')).toBeTruthy()
+  })
+
+  it('shows dedicated story content for JWT flow instead of decode fallback copy', () => {
+    renderFlowMap()
+
+    fireEvent.click(screen.getByRole('button', { name: 'JWT Attack Flow' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Start flow' }))
+
+    const progressPanel = screen.getByLabelText('Flow progress')
+    expect(within(progressPanel).getByRole('heading', { name: 'JWT Discovered' })).toBeTruthy()
+    expect(screen.getByRole('button', { name: 'Start with alg:none / unsigned token' })).toBeTruthy()
+    expect(screen.queryByRole('heading', { name: 'Possible Encoding' })).toBeNull()
+  })
+
+  it('supports command palette outcome jumps for newer flow vocabulary', () => {
+    renderFlowMap()
+
+    fireEvent.click(screen.getByRole('button', { name: 'Open flow command palette' }))
+
+    const dialog = screen.getByRole('dialog', { name: 'Flow command palette' })
+    const input = within(dialog).getByLabelText('Search finding, tool, vulnerability type, or outcome phrase')
+    fireEvent.change(input, { target: { value: 'script executed in browser' } })
+    fireEvent.keyDown(input, { key: 'Enter' })
+
+    const progressPanel = screen.getByLabelText('Flow progress')
+    expect(within(progressPanel).getByRole('heading', { name: 'Confirm XSS' })).toBeTruthy()
+  })
 })

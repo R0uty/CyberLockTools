@@ -56,7 +56,8 @@ export default function About() {
             <li>No data is sent to my servers or any third parties</li>
             <li>No cookies or tracking of any kind</li>
             <li>You can use these tools completely offline</li>
-            <li>Your input is never logged or stored anywhere</li>
+            <li>Flow Map progress is stored in browser session storage so you can leave and resume without losing your place</li>
+            <li>Saved case files stay in browser local storage on your device until you export or clear them</li>
           </ul>
         </section>
 

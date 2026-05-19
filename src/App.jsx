@@ -8,12 +8,11 @@ import ToolContextPanel from './components/ToolContextPanel'
 import { TOOL_CATALOG, buildToolComponentsFromModules } from './data/toolRegistry'
 import { getRelatedFlowStages, getRelatedGuides } from './data/toolContext'
 import {
-  STORAGE_FLOW_KEY,
   STORAGE_OUTCOME_PROFILE_KEY,
-  STORAGE_STAGE_KEY,
   STORAGE_TOOL_FLOW_ORIGIN_KEY
 } from './data/flowMapConfig'
 import { restoreWorkspaceCaseSession } from './utils/labWorkspace'
+import { writeFlowMapRouteState } from './utils/flowMapSession'
 import { readSessionValue, writeSessionValue } from './utils/sessionStorage'
 import './styles/app/App.css'
 import './styles/app/App.extra.css'
@@ -43,7 +42,7 @@ export default function App() {
   const [currentCategory, setCurrentCategory] = useState(() => window.history.state?.category ?? null)
 
   useSEO({
-    title: "R0uty's Cyber Lab - Flow-Driven Security Toolkit",
+    title: 'Flow-Driven Security Toolkit',
     description: "My personal cyber lab with practical flow maps, browser-based tools, and pentesting references for authorized testing.",
     keywords: 'security workflow tools, recon flow, enumeration flow, browser tools, cyber lab, r0uty'
   })
@@ -119,8 +118,7 @@ export default function App() {
   }
 
   const handleFlowStageReferenceClick = (flowKey, stageId) => {
-    writeSessionValue(STORAGE_FLOW_KEY, flowKey)
-    writeSessionValue(STORAGE_STAGE_KEY, stageId)
+    writeFlowMapRouteState({ flowKey, stageId })
     navigateTo('flow-map', null, null)
   }
 

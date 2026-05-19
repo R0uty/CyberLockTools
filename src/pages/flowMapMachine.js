@@ -1,3 +1,5 @@
+import { getFlowStartStage } from '../data/flowMapConfig'
+
 function withFollowUpFlows(transition, followUpFlows = []) {
   return {
     ...transition,
@@ -917,7 +919,7 @@ function resolveOutcomeProfile(eventName, payload, context = {}) {
 
 const TRANSITION_DEFINITIONS = {
   startFlow: ({ selectedFlow }) => ({
-    nextStage: FLOW_START_STAGE_BY_KEY[selectedFlow] ?? 'encoded',
+    nextStage: getFlowStartStage(selectedFlow),
     feedback: ''
   }),
   'decode.continue': () => ({ nextStage: 'decode', feedback: '' }),
@@ -1624,35 +1626,6 @@ const TRANSITION_DEFINITIONS = {
   })
 }
 
-export const FLOW_START_STAGE_BY_KEY = {
-  decode: 'encoded',
-  login: 'login-page',
-  discovery: 'web-page-found',
-  enumeration: 'service-found',
-  input: 'input-field-found',
-  api: 'api-endpoint-found',
-  response: 'response-data-found',
-  request: 'http-request-observed',
-  authz: 'privileged-action-found',
-  exploitation: 'confirmed-finding',
-  'info-disclosure': 'source-found',
-  session: 'session-captured',
-  upload: 'upload-found',
-  jwt: 'jwt-discovered',
-  xxe: 'xml-input-found',
-  ssrf: 'url-param-found',
-  cors: 'cors-headers-observed',
-  oauth: 'oauth-flow-found',
-  privesc: 'low-priv-access',
-  crypto: 'hash-found',
-  race: 'state-action-found',
-  xss: 'reflection-found',
-  csrf: 'state-action-found',
-  deserialize: 'serialized-data-found',
-  'ctf-stego': 'artifact-found',
-  'ctf-web': 'source-hint-found'
-}
-
 export const DEFAULT_MACHINE_STATE = {
   selectedFlow: '',
   currentStage: 'start',
@@ -1667,15 +1640,35 @@ export const DEFAULT_MACHINE_STATE = {
   selectedOutcome: '',
   followUpFlows: [],
   notes: '',
+  completedFlows: [],
+  inProgressFlows: [],
   zoomLevel: 1
+}
+
+function syncFlowProgress(state) {
+  const completedFlows = new Set(Array.isArray(state.completedFlows) ? state.completedFlows : [])
+  const inProgressFlows = new Set(Array.isArray(state.inProgressFlows) ? state.inProgressFlows : [])
+
+  if (state.selectedFlow && (state.currentStage === 'success' || state.currentStage === 'next-step')) {
+    completedFlows.add(state.selectedFlow)
+    inProgressFlows.delete(state.selectedFlow)
+  } else if (state.selectedFlow && state.currentStage !== 'start' && !completedFlows.has(state.selectedFlow)) {
+    inProgressFlows.add(state.selectedFlow)
+  }
+
+  return {
+    ...state,
+    completedFlows: [...completedFlows],
+    inProgressFlows: [...inProgressFlows]
+  }
 }
 
 export function flowMapReducer(state, action) {
   switch (action.type) {
     case 'MACHINE_INIT':
-      return { ...state, ...action.payload }
+      return syncFlowProgress({ ...state, ...action.payload })
     case 'FLOW_SELECT':
-      return {
+      return syncFlowProgress({
         ...state,
         selectedFlow: action.flowKey,
         currentStage: 'start',
@@ -1691,9 +1684,9 @@ export function flowMapReducer(state, action) {
         followUpFlows: [],
         notes: '',
         zoomLevel: action.defaultZoom
-      }
+      })
     case 'FLOW_CLEAR':
-      return {
+      return syncFlowProgress({
         ...state,
         selectedFlow: '',
         currentStage: 'start',
@@ -1709,9 +1702,9 @@ export function flowMapReducer(state, action) {
         followUpFlows: [],
         notes: '',
         zoomLevel: action.defaultZoom
-      }
+      })
     case 'FLOW_RESET':
-      return {
+      return syncFlowProgress({
         ...state,
         currentStage: 'start',
         stageHistory: ['start'],
@@ -1725,13 +1718,13 @@ export function flowMapReducer(state, action) {
         selectedOutcome: '',
         followUpFlows: [],
         notes: ''
-      }
+      })
     case 'STAGE_SET':
-      return {
+      return syncFlowProgress({
         ...state,
         currentStage: action.stage,
         stageHistory: [...state.stageHistory, action.stage]
-      }
+      })
     case 'FLOW_EVENT_APPLY': {
       const nextState = {
         ...state,
@@ -1747,12 +1740,12 @@ export function flowMapReducer(state, action) {
         nextState.decisionHistory = [...state.decisionHistory, action.decision]
       }
 
-      return nextState
+      return syncFlowProgress(nextState)
     }
     case 'ZOOM_SET':
       return { ...state, zoomLevel: action.zoomLevel }
     case 'CONTEXT_PATCH':
-      return { ...state, ...action.patch }
+      return syncFlowProgress({ ...state, ...action.patch })
     default:
       return state
   }
@@ -1797,7 +1790,7 @@ export function resolveFlowTransition(eventName, context) {
   return resolvedTransition
 }
 
-export function validateFlowConfigConsistency({ flows, activeGroupKeys, startStageByFlow }) {
+export function validateFlowConfigConsistency({ flows, activeGroupKeys }) {
   const issues = []
 
   for (const [flowKey, flow] of Object.entries(flows)) {
@@ -1807,6 +1800,10 @@ export function validateFlowConfigConsistency({ flows, activeGroupKeys, startSta
 
     if (active && !stageSet.has('start')) {
       issues.push(`[${flowKey}] missing required stage "start".`)
+    }
+
+    if (active && flow.stages[0] !== 'start') {
+      issues.push(`[${flowKey}] must declare "start" as the first stage.`)
     }
 
     for (const stageId of flow.stages) {
@@ -1827,12 +1824,13 @@ export function validateFlowConfigConsistency({ flows, activeGroupKeys, startSta
       }
     }
 
-    if (active && flowKey in startStageByFlow && !stageSet.has(startStageByFlow[flowKey])) {
-      issues.push(`[${flowKey}] start stage mapping points to unknown stage "${startStageByFlow[flowKey]}".`)
+    const startStage = getFlowStartStage(flow)
+    if (active && startStage === 'start') {
+      issues.push(`[${flowKey}] must declare a playable stage after "start".`)
     }
 
-    if (active && !(flowKey in startStageByFlow)) {
-      issues.push(`[${flowKey}] missing start stage mapping.`)
+    if (active && !stageSet.has(startStage)) {
+      issues.push(`[${flowKey}] derived start stage "${startStage}" is not declared in stages.`)
     }
   }
 
